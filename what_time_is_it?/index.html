@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Clock Challenge - Grade 4 Digital Time (Reset & Verified)</title>
+<style>
+  :root {
+    --blue:#1f67da;
+    --blue2:#4da7ff;
+    --navy:#13235d;
+    --green:#32be55;
+    --green2:#b6f38d;
+    --yellow:#ffd72d;
+    --pink:#ffd2e7;
+    --purple:#8f52ff;
+    --panel:#ffffff;
+    --cream:#fff8e5;
+    --shadow:0 12px 28px rgba(18,40,90,.18);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body {
+    margin:0;
+    font-family: "Trebuchet MS", "Arial Rounded MT Bold", Arial, sans-serif;
+    color:var(--navy);
+    background:#dff4ff;
+    overflow:hidden;
+  }
+  .bg {
+    position:fixed; inset:0;
+    background-image: linear-gradient(rgba(255,255,255,.30), rgba(255,255,255,.30)), url('assets/image_01.png');
+    background-size:cover;
+    background-position:center;
+    filter: blur(8px) saturate(1.08);
+    transform: scale(1.08);
+    z-index:-2;
+  }
+  .overlay {
+    position:fixed; inset:0;
+    background:
+      linear-gradient(to bottom, rgba(222,247,255,.55), rgba(255,255,255,.2)),
+      radial-gradient(circle at top right, rgba(255,244,170,.35), transparent 28%);
+    z-index:-1;
+  }
+  .app {
+    width:min(1500px, 97vw);
+    height:min(94vh, 980px);
+    margin:2vh auto;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .topbar {
+    display:grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap:14px;
+    align-items:center;
+  }
+  .banner {
+    background:linear-gradient(180deg,#20a84d,#118f40);
+    color:white;
+    border-radius:999px;
+    padding:12px 22px;
+    font-weight:900;
+    box-shadow:var(--shadow);
+    font-size:clamp(15px,1.5vw,26px);
+    white-space:nowrap;
+    text-shadow:0 2px 0 rgba(0,0,0,.12);
+  }
+  .banner .mini{font-size:1.1em;margin-right:8px}
+  .wood {
+    background:linear-gradient(180deg,#efbf7c,#d98c45);
+    border:6px solid #b96f30;
+    border-radius:26px;
+    padding:12px 28px;
+    text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .wood h1 {
+    margin:0;
+    font-size:clamp(28px,4vw,64px);
+    line-height:1;
+    color:var(--navy);
+    text-shadow:0 2px 0 #fff5d6;
+    font-weight:900;
+  }
+  .wood .green{color:#1a8d2d}
+  .sun {
+    width:96px; height:96px; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #fff7a0 0 25%, #ffd227 50%, #ffb300 100%);
+    box-shadow:0 0 0 10px rgba(255,217,58,.16), 0 0 32px rgba(255,217,58,.55);
+    position:relative; justify-self:end;
+  }
+  .sun:before {
+    content:"";
+    position:absolute; inset:-14px;
+    background:
+      conic-gradient(from 0deg, rgba(255,208,0,0) 0 6%, #ffd83d 6% 11%, rgba(255,208,0,0) 11% 17%, #ffd83d 17% 22%, rgba(255,208,0,0) 22% 28%, #ffd83d 28% 33%, rgba(255,208,0,0) 33% 39%, #ffd83d 39% 44%, rgba(255,208,0,0) 44% 50%, #ffd83d 50% 55%, rgba(255,208,0,0) 55% 61%, #ffd83d 61% 66%, rgba(255,208,0,0) 66% 72%, #ffd83d 72% 77%, rgba(255,208,0,0) 77% 83%, #ffd83d 83% 88%, rgba(255,208,0,0) 88% 94%, #ffd83d 94% 100%);
+    border-radius:50%;
+    z-index:-1;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.05));
+  }
+  .sun .face {
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:34px;
+  }
+  .smallnum {
+    width:74px;height:74px; border-radius:50%;
+    background:linear-gradient(180deg,#4e9dff,#2176f0);
+    color:white; display:flex; align-items:center; justify-content:center;
+    font-size:44px; font-weight:900;
+    border:5px solid #e9f3ff; box-shadow:var(--shadow);
+  }
+
+  .tabs {
+    display:flex; gap:10px; flex-wrap:wrap;
+    justify-content:center;
+  }
+  .tab {
+    border:none; cursor:pointer;
+    background:linear-gradient(180deg,#ffffff,#e7f2ff);
+    color:var(--navy);
+    border-radius:18px;
+    padding:12px 18px;
+    font-size:18px; font-weight:900;
+    box-shadow:var(--shadow);
+  }
+  .tab.active {
+    background:linear-gradient(180deg,#49a7ff,#1f70f1);
+    color:white;
+  }
+
+  .screen {
+    flex:1;
+    min-height:0;
+    display:none;
+  }
+  .screen.active {display:block}
+
+  /* slides screen */
+  .slides-layout {
+    height:100%;
+    display:grid;
+    grid-template-columns: 100px 1fr 100px;
+    gap:12px;
+    align-items:center;
+  }
+  .slide-nav {
+    height:72px; width:72px;
+    border-radius:50%;
+    font-size:34px; font-weight:900;
+    color:white; background:linear-gradient(180deg,#51a7ff,#1f71f2);
+    box-shadow:var(--shadow);
+    border:none; justify-self:center;
+  }
+  .slide-card {
+    height:100%;
+    background:rgba(255,255,255,.72);
+    border-radius:28px;
+    padding:10px;
+    box-shadow:var(--shadow);
+    display:flex; flex-direction:column;
+  }
+  .slide-stage {
+    flex:1; min-height:0;
+    border-radius:20px;
+    overflow:hidden;
+    background:#fff;
+    display:flex; align-items:center; justify-content:center;
+    border:4px solid rgba(255,255,255,.85);
+  }
+  .slide-stage img {
+    width:100%; height:100%; object-fit:contain; background:#fff;
+  }
+  .slide-caption {
+    text-align:center; font-size:22px; font-weight:900;
+    padding:12px 6px 4px;
+  }
+  .dotrow {
+    display:flex; gap:10px; justify-content:center; padding:0 0 6px;
+  }
+  .dot {
+    width:14px;height:14px;border-radius:50%; background:#c8dcff;
+  }
+  .dot.active {background:#2e7cf5}
+
+  /* interactive teacher/practice/game */
+  .game-layout {
+    height:100%;
+    display:grid;
+    grid-template-columns: 260px 1fr 270px;
+    gap:16px;
+  }
+  .left-col, .center-col, .right-col {
+    min-height:0;
+  }
+  .left-col {
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .character-card {
+    flex:1;
+    min-height:250px;
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    background:
+      linear-gradient(to bottom, rgba(255,255,255,.08), rgba(255,255,255,.08)),
+      url('assets/image_02.png');
+    background-size:cover;
+    background-position:left center;
+    border:5px solid rgba(255,255,255,.85);
+  }
+  .quote {
+    background:linear-gradient(180deg,#f6d6b0,#edbb87);
+    border:5px solid #fff3dc;
+    border-radius:22px;
+    padding:14px;
+    box-shadow:var(--shadow);
+    font-weight:900; font-size:28px;
+    text-align:center; line-height:1.05;
+  }
+  .quote small {
+    display:block; font-size:18px; color:#6a4223; margin-top:6px;
+  }
+
+  .center-col {
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .bubble {
+    align-self:center;
+    background:linear-gradient(180deg,#e4f4ff,#beddff);
+    color:#0f3a9d;
+    border:6px solid rgba(255,255,255,.9);
+    border-radius:999px;
+    padding:10px 24px;
+    font-weight:900;
+    font-size:clamp(30px,3vw,54px);
+    box-shadow:var(--shadow);
+    text-align:center;
+  }
+  .board {
+    flex:1;
+    background:linear-gradient(180deg,#ffffff,#f1f8ff);
+    border-radius:32px;
+    border:7px solid #d69a60;
+    box-shadow:var(--shadow);
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    position:relative;
+    overflow:hidden;
+  }
+  .board:before, .board:after {
+    content:"";
+    position:absolute;
+    width:12px;height:12px;border-radius:50%;
+    background:#ffc933; top:14px;
+    box-shadow:0 0 0 4px #ffe477;
+  }
+  .board:before{left:16px}
+  .board:after{right:16px}
+
+  .board-top {
+    display:grid;
+    grid-template-columns: 180px 1fr 180px;
+    align-items:center;
+    gap:10px;
+  }
+  .note {
+    background:#fff1a9;
+    transform:rotate(-4deg);
+    border-radius:8px;
+    padding:12px;
+    font-size:22px; font-weight:900;
+    box-shadow:0 10px 18px rgba(0,0,0,.10);
+    width:150px; justify-self:center; text-align:center;
+  }
+  .note.right {
+    background:#d8f0ff;
+    transform:rotate(4deg);
+  }
+
+  .clock-wrap {
+    display:flex; justify-content:center; align-items:center;
+    position:relative;
+    padding:10px 0;
+  }
+  .burst i {
+    position:absolute;
+    width:18px;height:18px;border-radius:50%;
+    background:#ffd538;
+    opacity:.9;
+  }
+  .burst i:nth-child(1){left:7%;top:40%}
+  .burst i:nth-child(2){left:15%;top:16%}
+  .burst i:nth-child(3){left:21%;bottom:20%}
+  .burst i:nth-child(4){right:7%;top:36%}
+  .burst i:nth-child(5){right:15%;top:18%}
+  .burst i:nth-child(6){right:18%;bottom:18%}
+
+  .clock {
+    width:min(460px, 40vw);
+    aspect-ratio:1/1;
+    background:radial-gradient(circle at 38% 30%, #ffffff 0 30%, #f4f9ff 64%, #d7e9ff 100%);
+    border-radius:50%;
+    border:16px solid #2d8dff;
+    box-shadow:0 16px 36px rgba(0,0,0,.14), inset 0 10px 26px rgba(255,255,255,.9);
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* Tick marks are drawn as real HTML elements, so they work reliably in Chrome. */
+  .clock::before,
+  .clock::after{
+    content:none;
+  }
+
+  .clock.shuffle{animation:wobble .65s ease}
+  @keyframes wobble {
+    0%{transform:rotate(0deg) scale(1)}
+    18%{transform:rotate(-4deg) scale(1.02)}
+    38%{transform:rotate(4deg) scale(1.04)}
+    60%{transform:rotate(-3deg) scale(1.02)}
+    100%{transform:rotate(0deg) scale(1)}
+  }
+  .num {
+    position:absolute;
+    width:42px; height:42px;
+    transform:translate(-50%,-50%);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:900; font-size:clamp(22px,2vw,38px);
+    color:#141d5e;
+    text-shadow:0 1px 0 white;
+    z-index:4;
+    pointer-events:none;
+  }
+
+  /* 60 small minute/second marks, with stronger marks every 5 minutes */
+  .tick {
+    display:block;
+    position:absolute;
+    width:3px;
+    height:9px;
+    background:#7a91bd;
+    border-radius:3px;
+    transform:translate(-50%,-50%);
+    z-index:2;
+    pointer-events:none;
+  }
+  .tick.big{
+    width:4px;
+    height:16px;
+    background:#17285f;
+    border-radius:4px;
+  }
+
+  .hand {
+    position:absolute;
+    left:50%; top:50%;
+    transform-origin:50% 100%;
+    border-radius:999px;
+    box-shadow:0 4px 8px rgba(0,0,0,.18);
+  }
+  .minute {
+    width:14px; height:140px; background:#ff2c2c;
+    margin-left:-7px; margin-top:-140px;
+    z-index:6; transform:rotate(0deg);
+  }
+  .hour {
+    width:18px; height:108px; background:#1f7aff;
+    margin-left:-9px; margin-top:-108px;
+    z-index:7; transform:rotate(120deg);
+    transition:transform .35s cubic-bezier(.2,.9,.2,1);
+  }
+  .hub {
+    position:absolute; left:50%; top:50%;
+    transform:translate(-50%,-50%);
+    width:30px;height:30px;border-radius:50%;
+    background:#1f7aff;border:7px solid #3f8fff;
+    z-index:8;
+  }
+  .answer-line {
+    background:linear-gradient(180deg,#ffe366,#ffd329);
+    border-radius:24px;
+    border:6px solid #ffe996;
+    padding:10px 18px;
+    box-shadow:var(--shadow);
+    display:flex; align-items:center; gap:14px; justify-content:center;
+    font-size:clamp(26px,2.4vw,48px); font-weight:900;
+    text-align:center;
+    color:#10215d;
+  }
+  .answer-line .blank {
+    min-width:240px;
+    background:white;
+    border-radius:20px;
+    padding:10px 18px;
+    box-shadow: inset 0 0 0 3px #f2c03d;
+  }
+  .answer-line.hidden .blank {
+    color:transparent;
+    text-shadow:0 0 16px rgba(0,0,0,.25);
+    user-select:none;
+  }
+
+  .choices {
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:14px;
+  }
+  .choice {
+    border:none; cursor:pointer;
+    border-radius:26px;
+    padding:22px 14px;
+    box-shadow:var(--shadow);
+    font-size:clamp(22px,2.2vw,38px);
+    font-weight:900;
+    color:#15235c;
+    border:6px solid rgba(255,255,255,.85);
+    min-height:128px;
+    line-height:1.12;
+  }
+  .choice.pink{background:linear-gradient(180deg,#ffeaf3,#ffd1e6)}
+  .choice.green{background:linear-gradient(180deg,#d8ffc8,#baf59e)}
+  .choice.blue{background:linear-gradient(180deg,#edf7ff,#d3ebff)}
+  .choice.correct{outline:8px solid #37c44d}
+  .choice.wrong{outline:8px solid #ff5d7a}
+
+  .feedback {
+    min-height:44px;
+    text-align:center;
+    font-size:clamp(24px,2vw,34px);
+    font-weight:900;
+  }
+  .feedback.good{color:#178d35}
+  .feedback.bad{color:#e84562}
+
+  .right-col {
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .score-card {
+    background:linear-gradient(180deg,#fff5b3,#fff0a0);
+    border:6px solid #fff9d8;
+    border-radius:26px;
+    box-shadow:var(--shadow);
+    padding:18px;
+    font-weight:900;
+    font-size:clamp(26px,2vw,38px);
+    text-align:center;
+  }
+  .score-star{font-size:1.2em; margin-right:8px}
+  .side-btn {
+    border:none; cursor:pointer;
+    border-radius:28px;
+    padding:20px 16px;
+    font-size:clamp(22px,1.8vw,34px);
+    font-weight:900;
+    color:white;
+    box-shadow:var(--shadow);
+    text-align:center;
+  }
+  .side-btn.blue{background:linear-gradient(180deg,#47a7ff,#2274f2)}
+  .side-btn.purple{background:linear-gradient(180deg,#9b64ff,#7a38f2)}
+  .side-btn.green{background:linear-gradient(180deg,#48cf65,#28ad49)}
+  .side-btn.yellow{background:linear-gradient(180deg,#ffd94c,#f4bc18); color:#13235d}
+  .mode-card {
+    background:rgba(255,255,255,.78);
+    border-radius:24px;
+    padding:16px;
+    box-shadow:var(--shadow);
+    font-weight:900;
+    font-size:20px;
+    line-height:1.35;
+  }
+  .thumb {
+    width:100%;
+    border-radius:18px;
+    overflow:hidden;
+    border:4px solid rgba(255,255,255,.9);
+    box-shadow:var(--shadow);
+  }
+  .thumb img{display:block; width:100%; height:auto}
+
+  .footer-buttons {
+    display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+  }
+  .mini-btn {
+    border:none; cursor:pointer;
+    border-radius:16px;
+    padding:10px 16px;
+    font-size:18px; font-weight:900;
+    box-shadow:var(--shadow);
+    background:white;
+    color:var(--navy);
+  }
+
+  .confetti {
+    position:fixed; inset:0; pointer-events:none; overflow:hidden;
+  }
+  .confetti-piece {
+    position:absolute; top:-30px; width:14px; height:20px; border-radius:4px;
+    animation:fall 1.6s linear forwards;
+  }
+  @keyframes fall {
+    to { transform:translateY(110vh) rotate(720deg); opacity:.95; }
+  }
+
+  @media (max-width: 1200px) {
+    .game-layout {
+      grid-template-columns: 220px 1fr 230px;
+    }
+    .clock {width:min(400px, 45vw)}
+  }
+  @media (max-width: 980px) {
+    body{overflow:auto}
+    .app{height:auto; min-height:96vh}
+    .topbar {
+      grid-template-columns:1fr;
+      justify-items:center;
+    }
+    .game-layout {
+      grid-template-columns:1fr;
+    }
+    .character-card{min-height:200px}
+    .board-top{grid-template-columns:1fr}
+    .choices{grid-template-columns:1fr}
+    .slides-layout{grid-template-columns:70px 1fr 70px}
+    .clock{width:min(360px, 82vw)}
+  }
+
+  .practice-progress{
+    align-self:center;
+    text-align:center;
+    background:linear-gradient(180deg,#ffffff,#edf6ff);
+    border:4px solid #d9eaff;
+    border-radius:18px;
+    padding:8px 18px;
+    font-size:20px;
+    font-weight:900;
+    color:#17366f;
+    box-shadow:0 8px 18px rgba(18,40,90,.10);
+  }
+
+  @media (max-width: 1400px){
+    .game-layout{grid-template-columns:210px minmax(0,1fr) 225px;gap:12px}
+    .quote{font-size:22px}
+    .side-btn{padding:16px 10px}
+    .score-card{padding:14px}
+    .choice{min-height:105px;padding:16px 10px}
+  }
+
+  @media (max-height: 900px) and (min-width: 981px){
+    .app{height:96vh;margin:1vh auto;gap:7px}
+    .topbar{gap:8px}
+    .wood{padding:8px 20px}
+    .sun{width:72px;height:72px}
+    .smallnum{width:62px;height:62px;font-size:36px}
+    .tabs{gap:6px}
+    .tab{padding:8px 14px;font-size:16px}
+    .bubble{padding:7px 20px}
+    .board{padding:10px;gap:8px}
+    .clock{width:min(390px,34vw)}
+    .choice{min-height:90px;padding:12px 8px}
+    .feedback{min-height:34px}
+    .thumb{display:none}
+  }
+
+
+  .voice-box{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    margin-top:4px;
+  }
+  .mic-btn{
+    border:none;
+    cursor:pointer;
+    min-width:280px;
+    border-radius:24px;
+    padding:16px 24px;
+    font-size:clamp(22px,2vw,32px);
+    font-weight:900;
+    color:white;
+    background:linear-gradient(180deg,#ff6f75,#e94155);
+    box-shadow:0 10px 24px rgba(180,40,60,.22);
+    border:5px solid rgba(255,255,255,.92);
+  }
+  .mic-btn.listening{
+    background:linear-gradient(180deg,#52c8ff,#217cf2);
+    animation:pulseMic 1s infinite;
+  }
+  @keyframes pulseMic{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.035)}
+  }
+  .heard{
+    min-height:36px;
+    font-size:20px;
+    font-weight:900;
+    text-align:center;
+    color:#17366f;
+    background:rgba(255,255,255,.78);
+    border-radius:14px;
+    padding:6px 12px;
+  }
+  .heard.good{color:#178d35;background:#eaffee}
+  .heard.bad{color:#d73b52;background:#fff0f3}
+  .answer-audio-big{
+    border:none;
+    cursor:pointer;
+    min-width:300px;
+    border-radius:22px;
+    padding:15px 24px;
+    font-size:clamp(20px,1.8vw,29px);
+    font-weight:900;
+    color:white;
+    background:linear-gradient(180deg,#5b9dff,#246de6);
+    box-shadow:0 9px 20px rgba(30,90,180,.20);
+    border:4px solid rgba(255,255,255,.92);
+  }
+  .answer-audio-big:active{transform:translateY(2px)}
+
+  .next-practice-big{
+    border:none;
+    cursor:pointer;
+    border-radius:22px;
+    padding:15px 24px;
+    font-size:clamp(20px,1.7vw,28px);
+    font-weight:900;
+    color:white;
+    background:linear-gradient(180deg,#49c969,#24aa46);
+    box-shadow:0 9px 20px rgba(20,120,50,.18);
+    border:4px solid rgba(255,255,255,.9);
+  }
+
+
+  .top-actions{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:-2px;
+  }
+  .top-action-btn{
+    border:none;
+    cursor:pointer;
+    border-radius:18px;
+    padding:11px 20px;
+    font-size:clamp(17px,1.5vw,24px);
+    font-weight:900;
+    box-shadow:0 9px 20px rgba(18,40,90,.16);
+    border:4px solid rgba(255,255,255,.9);
+  }
+  .top-next{
+    color:white;
+    background:linear-gradient(180deg,#4bd06a,#22a946);
+  }
+  .top-mic{
+    color:white;
+    background:linear-gradient(180deg,#ff6d78,#e94358);
+  }
+  .top-mic.good{
+    background:linear-gradient(180deg,#4bd06a,#22a946);
+  }
+
+  .mic-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(18,36,70,.50);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:500;
+    padding:20px;
+  }
+  .mic-modal.show{display:flex}
+  .mic-panel{
+    width:min(620px,92vw);
+    background:linear-gradient(180deg,#ffffff,#edf7ff);
+    border:7px solid #ffffff;
+    border-radius:30px;
+    box-shadow:0 24px 60px rgba(0,0,0,.25);
+    padding:26px;
+    text-align:center;
+    color:#13235d;
+  }
+  .mic-panel h2{
+    margin:0 0 10px;
+    font-size:clamp(30px,4vw,48px);
+  }
+  .mic-panel p{
+    font-size:20px;
+    font-weight:800;
+    line-height:1.35;
+  }
+  .mic-test-status{
+    margin:14px 0;
+    min-height:62px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:18px;
+    padding:12px;
+    background:#f5f8ff;
+    border:3px solid #dce8ff;
+    font-size:22px;
+    font-weight:900;
+  }
+  .mic-test-status.good{
+    background:#eaffee;
+    border-color:#72d989;
+    color:#167f31;
+  }
+  .mic-test-status.bad{
+    background:#fff0f3;
+    border-color:#ff9aaa;
+    color:#c9334b;
+  }
+  .mic-modal-buttons{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .mic-modal-buttons button{
+    border:none;
+    cursor:pointer;
+    border-radius:18px;
+    padding:13px 20px;
+    font-size:20px;
+    font-weight:900;
+    box-shadow:0 7px 16px rgba(18,40,90,.12);
+  }
+  .mic-start-test{
+    color:white;
+    background:linear-gradient(180deg,#4b9fff,#2475ee);
+  }
+  .mic-close{
+    color:#13235d;
+    background:white;
+  }
+
+  @media (max-height: 820px) and (min-width: 981px){
+    .top-actions{gap:7px}
+    .top-action-btn{padding:7px 15px;font-size:16px}
+  }
+
+
+  /* GAME MODE: keep the answer choices fully visible on classroom screens */
+  #screen-game .center-col{
+    gap:8px;
+  }
+  #screen-game .bubble{
+    padding:6px 20px;
+    font-size:clamp(28px,2.8vw,48px);
+  }
+  #screen-game .board{
+    padding:10px 12px 12px;
+    gap:8px;
+    overflow:visible;
+  }
+  #screen-game .board-top{
+    grid-template-columns:125px minmax(0,1fr) 125px;
+    gap:4px;
+  }
+  #screen-game .clock-wrap{
+    padding:2px 0;
+  }
+  #screen-game .clock{
+    width:min(330px,29vw);
+    border-width:13px;
+  }
+  #screen-game .note{
+    width:118px;
+    padding:9px 7px;
+    font-size:18px;
+  }
+  #screen-game .choices{
+    gap:10px;
+    margin-top:0;
+  }
+  #screen-game .choice{
+    min-height:88px;
+    padding:11px 8px;
+    border-width:5px;
+    border-radius:22px;
+    font-size:clamp(20px,1.8vw,30px);
+  }
+  #screen-game .feedback{
+    min-height:28px;
+    padding:0;
+    font-size:clamp(19px,1.7vw,28px);
+  }
+  #screen-game .footer-buttons{
+    min-height:0;
+  }
+
+  @media (max-height: 850px) and (min-width:981px){
+    #screen-game .clock{
+      width:min(285px,25vw);
+    }
+    #screen-game .choice{
+      min-height:74px;
+      padding:8px 6px;
+      font-size:clamp(18px,1.6vw,26px);
+    }
+    #screen-game .bubble{
+      font-size:clamp(25px,2.5vw,42px);
+    }
+  }
+
+  /* Completion celebration */
+  .complete-modal{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(18,35,75,.48);
+  }
+  .complete-modal.show{
+    display:flex;
+  }
+  .complete-card{
+    width:min(680px,92vw);
+    text-align:center;
+    background:linear-gradient(180deg,#fffdf1,#fff4af);
+    border:8px solid white;
+    border-radius:36px;
+    box-shadow:0 28px 70px rgba(0,0,0,.28);
+    padding:30px 26px 26px;
+    color:#13235d;
+  }
+  .complete-trophy{
+    font-size:72px;
+    line-height:1;
+  }
+  .complete-card h2{
+    margin:10px 0 8px;
+    font-size:clamp(38px,5vw,64px);
+    color:#168c35;
+  }
+  .complete-card p{
+    margin:0 0 20px;
+    font-size:clamp(27px,3vw,42px);
+    font-weight:900;
+  }
+  .complete-score{
+    display:inline-block;
+    margin-bottom:20px;
+    padding:10px 22px;
+    border-radius:999px;
+    background:white;
+    font-size:24px;
+    font-weight:900;
+  }
+  .complete-play{
+    border:none;
+    cursor:pointer;
+    border-radius:24px;
+    padding:16px 28px;
+    background:linear-gradient(180deg,#48ce68,#22a947);
+    color:white;
+    font-size:clamp(22px,2.4vw,34px);
+    font-weight:900;
+    box-shadow:0 10px 22px rgba(30,130,60,.20);
+    border:5px solid rgba(255,255,255,.9);
+  }
+
+
+  /* Grade 4 digital-time upgrade */
+  .minute { transition:transform .35s cubic-bezier(.2,.9,.2,1); }
+  .digital-chip {
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:126px; padding:9px 16px; border-radius:18px;
+    background:#13235d; color:#fff; border:4px solid #4da7ff;
+    font-family:Arial, sans-serif; font-size:clamp(28px,2.6vw,48px);
+    font-weight:900; letter-spacing:2px; box-shadow:0 5px 12px rgba(15,35,90,.22);
+  }
+  .answer-line.hidden .digital-chip { color:transparent; text-shadow:0 0 14px rgba(255,255,255,.55); }
+  .choice .choice-digital { display:block; font-size:1.12em; color:#10215d; margin-bottom:6px; letter-spacing:1px; }
+  .choice .choice-words { display:block; font-size:.78em; line-height:1.12; }
+  .local-voice-note { font-size:14px; font-weight:800; color:#176c34; }
+
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="overlay"></div>
+
+<div class="app">
+  <div class="topbar">
+    <div class="banner"><span class="mini">🌍</span> My Footprints → My Community Life 👣</div>
+    <div class="wood"><h1><span>Clock</span> <span class="green">Challenge!</span></h1></div>
+    <div class="sun"><div class="face">😊</div></div>
+    <div class="smallnum" id="unitBadge">4</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-screen="slides">📘 Lesson Slides</button>
+    <button class="tab" data-screen="teacher">👩‍🏫 Teacher Practice</button>
+    <button class="tab" data-screen="practice">🗣 Class Practice</button>
+    <button class="tab" data-screen="game">🎮 Game Mode</button>
+  </div>
+
+  <div class="top-actions">
+    <button class="top-action-btn top-next" id="topNextBtn">NEXT SLIDE ▶</button>
+    <button class="top-action-btn top-mic" id="micTestBtn">🎤 MIC TEST</button>
+    <span class="local-voice-note">🔊 Teacher voice stored locally — no online TTS</span>
+  </div>
+
+  <!-- LESSON SLIDES -->
+  <section class="screen active" id="screen-slides">
+    <div class="slides-layout">
+      <button class="slide-nav" id="slidePrev">‹</button>
+      <div class="slide-card">
+        <div class="slide-stage">
+          <img id="slideImage" alt="lesson slide"/>
+        </div>
+        <div class="slide-caption" id="slideCaption"></div>
+        <div class="dotrow">
+          <div class="dot" data-dot="0"></div>
+          <div class="dot" data-dot="1"></div>
+          <div class="dot" data-dot="2"></div>
+          <div class="dot" data-dot="3"></div>
+        </div>
+      </div>
+      <button class="slide-nav" id="slideNext">›</button>
+    </div>
+  </section>
+
+  <!-- TEACHER / PRACTICE / GAME share same layout -->
+  <section class="screen" id="screen-teacher">
+    <div class="game-layout">
+      <div class="left-col">
+        <div class="character-card"></div>
+        <div class="quote">Practice builds brighter tomorrows!<small>Look at the clock and say the time.</small></div>
+      </div>
+
+      <div class="center-col">
+        <div class="bubble">Listen and repeat.</div>
+
+        <div class="board">
+          <div class="board-top">
+            <div class="note">Look at the clock! 😊</div>
+            <div class="clock-wrap">
+              <div class="burst"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="clock" id="clockTeacher">
+                <div class="minute hand minute" id="minuteTeacher"></div>
+                <div class="hour hand hour" id="hourTeacher"></div>
+                <div class="hub"></div>
+              </div>
+            </div>
+            <div class="note right">You can do it! ♡</div>
+          </div>
+
+          <div class="answer-line" id="teacherAnswerLine">
+            <span>📣 Repeat:</span>
+            <span class="digital-chip" id="teacherDigital">4:00</span>
+            <span class="blank" id="teacherAnswer">It’s four o’clock.</span>
+          </div>
+          <div class="practice-progress">Guided sequence: <span id="teacherStep">1</span>/144</div>
+
+          <div class="voice-box">
+            <button class="answer-audio-big" id="teacherHearBig">🔊 HEAR &amp; REPEAT THE TIME</button>
+            <button class="mic-btn" id="teacherMic">🎤 SAY THE TIME</button>
+            <div class="heard" id="teacherHeard">Listen to the teacher voice, then repeat the time.</div>
+            <button class="next-practice-big" id="teacherNextBig">NEXT PRACTICE ▶</button>
+          </div>
+
+          <div class="footer-buttons">
+            <button class="mini-btn" id="teacherBack">◀ Previous</button>
+            <button class="mini-btn" id="teacherNext">Next ▶</button>
+            <button class="mini-btn" id="teacherShuffle">🔀 Random</button>
+            <button class="mini-btn" id="teacherHide">🙈 Hide Answer</button>
+            <button class="mini-btn" id="teacherQuestion">🔊 Ask Question</button>
+            <button class="mini-btn" id="teacherSpeak">🔊 Replay Time</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="score-card"><span class="score-star">⭐</span> 144 Guided Times</div>
+        <button class="side-btn blue" onclick="showScreen('slides')">📘 Lesson<br>Slides</button>
+        <button class="side-btn purple" onclick="showScreen('practice')">🗣 Class<br>Practice</button>
+        <button class="side-btn green" onclick="showScreen('game')">🎮 Start<br>Game</button>
+        <div class="thumb"><img src="assets/image_03.png" alt="Teacher Practice slide"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-practice">
+    <div class="game-layout">
+      <div class="left-col">
+        <div class="character-card"></div>
+        <div class="quote">Say it together!<small>Students answer aloud first.</small></div>
+      </div>
+
+      <div class="center-col">
+        <div class="bubble">What time is it?</div>
+
+        <div class="board">
+          <div class="board-top">
+            <div class="note">Say the answer! 🎤</div>
+            <div class="clock-wrap">
+              <div class="burst"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="clock" id="clockPractice">
+                <div class="minute hand minute" id="minutePractice"></div>
+                <div class="hour hand hour" id="hourPractice"></div>
+                <div class="hub"></div>
+              </div>
+            </div>
+            <div class="note right">Then check! ✔</div>
+          </div>
+
+          <div class="answer-line hidden" id="practiceAnswerLine">
+            <span class="digital-chip" id="practiceDigital">4:05</span>
+            <span class="blank" id="practiceAnswer">It’s four oh five.</span>
+          </div>
+          <div class="practice-progress">Student Practice: <span id="practiceStep">1</span>/24</div>
+
+          <div class="voice-box">
+            <button class="answer-audio-big" id="practiceAnswerBig">✅ SHOW &amp; HEAR ANSWER 🔊</button>
+            <button class="mic-btn" id="practiceMic">🎤 SAY THE TIME</button>
+            <div class="heard" id="practiceHeard">Teacher asks “What time is it?” Students answer aloud, then press SHOW &amp; HEAR ANSWER.</div>
+            <button class="next-practice-big" id="practiceNextBig">NEXT PRACTICE ▶</button>
+          </div>
+
+          <div class="footer-buttons">
+            <button class="mini-btn" id="practiceNew">Next ▶</button>
+            <button class="mini-btn" id="practiceReveal">✅ Show + Hear Answer 🔊</button>
+            <button class="mini-btn" id="practiceHide">🙈 Hide Answer</button>
+            <button class="mini-btn" id="practiceQuestion">🔊 Ask Question</button>
+            <button class="mini-btn" id="practiceSpeak">🔊 Replay Answer</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="score-card"><span class="score-star">⭐</span> 24 Student Practices</div>
+        <button class="side-btn blue" onclick="showScreen('teacher')">👩‍🏫 Teacher<br>Practice</button>
+        <button class="side-btn purple" onclick="showScreen('slides')">📘 Lesson<br>Slides</button>
+        <button class="side-btn green" onclick="showScreen('game')">🎮 Start<br>Game</button>
+        <div class="thumb"><img src="assets/image_04.png" alt="Student exercise slide"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-game">
+    <div class="game-layout">
+      <div class="left-col">
+        <div class="character-card"></div>
+        <div class="quote">Choose or say the answer!<small>Digital time in 5-minute steps: :00, :05, :10 … :55.</small></div>
+      </div>
+
+      <div class="center-col">
+        <div class="bubble">What time is it?</div>
+
+        <div class="board">
+          <div class="board-top">
+            <div class="note">Look at the clock! 😊</div>
+            <div class="clock-wrap">
+              <div class="burst"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="clock" id="clockGame">
+                <div class="minute hand minute" id="minuteGame"></div>
+                <div class="hour hand hour" id="hourGame"></div>
+                <div class="hub"></div>
+              </div>
+            </div>
+            <div class="note right">You can do it! ♡</div>
+          </div>
+
+          <div class="choices" id="choices"></div>
+          <div class="feedback" id="feedback"></div>
+
+          <div class="footer-buttons">
+            <button class="mini-btn" id="gameQuestion">🔊 Ask Question</button>
+            <button class="mini-btn" id="nextRoundBtn" style="display:none;">Next Clock ▶</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="score-card"><span class="score-star">⭐</span> Score: <span id="score">0</span>/10</div>
+        <button class="side-btn blue" id="shuffleGameBtn">🔀 New<br>Question</button>
+        <button class="side-btn purple" onclick="showScreen('teacher')">👩‍🏫 Teacher<br>Practice</button>
+        <button class="side-btn yellow">Round<br><span id="round">1</span>/10</button>
+        <div class="thumb"><img src="assets/image_01.png" alt="Game preview"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<div class="mic-modal" id="micTestModal">
+  <div class="mic-panel">
+    <h2>🎤 Microphone Test</h2>
+    <p>Press <b>START TEST</b>, then say:</p>
+    <p style="font-size:28px;color:#1c55b6;">“It’s four oh five.”</p>
+    <div class="mic-test-status" id="micTestStatus">
+      Ready to test your microphone.
+    </div>
+    <div class="mic-modal-buttons">
+      <button class="mic-start-test" id="micStartTest">🎤 START TEST</button>
+      <button class="mic-close" id="micCloseTest">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="complete-modal" id="completeModal">
+  <div class="complete-card">
+    <div class="complete-trophy">🏆🎉</div>
+    <h2>Congratulations!</h2>
+    <p>You can read digital time now!</p>
+    <div class="complete-score">⭐ Score: <span id="completeScore">10</span>/10</div><br>
+    <button class="complete-play" id="completePlayAgain">PLAY AGAIN ▶</button>
+  </div>
+</div>
+
+<div class="confetti" id="confetti"></div>
+
+<script>
+const slides = [
+  { img: "assets/image_02.png", title: "Slide 1 — Numbers + Clock" },
+  { img: "assets/image_05.png", title: "Slide 2 — Learn “o’clock”" },
+  { img: "assets/image_03.png", title: "Slide 3 — Teacher Practice" },
+  { img: "assets/image_04.png", title: "Slide 4 — Student Exercise" }
+];
+
+
+const hourWords = {
+  1:'one',2:'two',3:'three',4:'four',5:'five',6:'six',
+  7:'seven',8:'eight',9:'nine',10:'ten',11:'eleven',12:'twelve'
+};
+const minuteWords = {
+  0:"o’clock",5:'oh five',10:'ten',15:'fifteen',20:'twenty',25:'twenty-five',
+  30:'thirty',35:'thirty-five',40:'forty',45:'forty-five',50:'fifty',55:'fifty-five'
+};
+const MINUTES = [0,5,10,15,20,25,30,35,40,45,50,55];
+const HOUR_ORDER = [4,5,6,7,8,9,10,11,12,1,2,3];
+const MASTER_TIMES = [{"hour":1,"minute":0,"digital":"1:00","speech":"It’s one o’clock.","audioKey":"t_01_00","hourAngle":30.0,"minuteAngle":0},{"hour":1,"minute":5,"digital":"1:05","speech":"It’s one oh five.","audioKey":"t_01_05","hourAngle":32.5,"minuteAngle":30},{"hour":1,"minute":10,"digital":"1:10","speech":"It’s one ten.","audioKey":"t_01_10","hourAngle":35.0,"minuteAngle":60},{"hour":1,"minute":15,"digital":"1:15","speech":"It’s one fifteen.","audioKey":"t_01_15","hourAngle":37.5,"minuteAngle":90},{"hour":1,"minute":20,"digital":"1:20","speech":"It’s one twenty.","audioKey":"t_01_20","hourAngle":40.0,"minuteAngle":120},{"hour":1,"minute":25,"digital":"1:25","speech":"It’s one twenty-five.","audioKey":"t_01_25","hourAngle":42.5,"minuteAngle":150},{"hour":1,"minute":30,"digital":"1:30","speech":"It’s one thirty.","audioKey":"t_01_30","hourAngle":45.0,"minuteAngle":180},{"hour":1,"minute":35,"digital":"1:35","speech":"It’s one thirty-five.","audioKey":"t_01_35","hourAngle":47.5,"minuteAngle":210},{"hour":1,"minute":40,"digital":"1:40","speech":"It’s one forty.","audioKey":"t_01_40","hourAngle":50.0,"minuteAngle":240},{"hour":1,"minute":45,"digital":"1:45","speech":"It’s one forty-five.","audioKey":"t_01_45","hourAngle":52.5,"minuteAngle":270},{"hour":1,"minute":50,"digital":"1:50","speech":"It’s one fifty.","audioKey":"t_01_50","hourAngle":55.0,"minuteAngle":300},{"hour":1,"minute":55,"digital":"1:55","speech":"It’s one fifty-five.","audioKey":"t_01_55","hourAngle":57.5,"minuteAngle":330},{"hour":2,"minute":0,"digital":"2:00","speech":"It’s two o’clock.","audioKey":"t_02_00","hourAngle":60.0,"minuteAngle":0},{"hour":2,"minute":5,"digital":"2:05","speech":"It’s two oh five.","audioKey":"t_02_05","hourAngle":62.5,"minuteAngle":30},{"hour":2,"minute":10,"digital":"2:10","speech":"It’s two ten.","audioKey":"t_02_10","hourAngle":65.0,"minuteAngle":60},{"hour":2,"minute":15,"digital":"2:15","speech":"It’s two fifteen.","audioKey":"t_02_15","hourAngle":67.5,"minuteAngle":90},{"hour":2,"minute":20,"digital":"2:20","speech":"It’s two twenty.","audioKey":"t_02_20","hourAngle":70.0,"minuteAngle":120},{"hour":2,"minute":25,"digital":"2:25","speech":"It’s two twenty-five.","audioKey":"t_02_25","hourAngle":72.5,"minuteAngle":150},{"hour":2,"minute":30,"digital":"2:30","speech":"It’s two thirty.","audioKey":"t_02_30","hourAngle":75.0,"minuteAngle":180},{"hour":2,"minute":35,"digital":"2:35","speech":"It’s two thirty-five.","audioKey":"t_02_35","hourAngle":77.5,"minuteAngle":210},{"hour":2,"minute":40,"digital":"2:40","speech":"It’s two forty.","audioKey":"t_02_40","hourAngle":80.0,"minuteAngle":240},{"hour":2,"minute":45,"digital":"2:45","speech":"It’s two forty-five.","audioKey":"t_02_45","hourAngle":82.5,"minuteAngle":270},{"hour":2,"minute":50,"digital":"2:50","speech":"It’s two fifty.","audioKey":"t_02_50","hourAngle":85.0,"minuteAngle":300},{"hour":2,"minute":55,"digital":"2:55","speech":"It’s two fifty-five.","audioKey":"t_02_55","hourAngle":87.5,"minuteAngle":330},{"hour":3,"minute":0,"digital":"3:00","speech":"It’s three o’clock.","audioKey":"t_03_00","hourAngle":90.0,"minuteAngle":0},{"hour":3,"minute":5,"digital":"3:05","speech":"It’s three oh five.","audioKey":"t_03_05","hourAngle":92.5,"minuteAngle":30},{"hour":3,"minute":10,"digital":"3:10","speech":"It’s three ten.","audioKey":"t_03_10","hourAngle":95.0,"minuteAngle":60},{"hour":3,"minute":15,"digital":"3:15","speech":"It’s three fifteen.","audioKey":"t_03_15","hourAngle":97.5,"minuteAngle":90},{"hour":3,"minute":20,"digital":"3:20","speech":"It’s three twenty.","audioKey":"t_03_20","hourAngle":100.0,"minuteAngle":120},{"hour":3,"minute":25,"digital":"3:25","speech":"It’s three twenty-five.","audioKey":"t_03_25","hourAngle":102.5,"minuteAngle":150},{"hour":3,"minute":30,"digital":"3:30","speech":"It’s three thirty.","audioKey":"t_03_30","hourAngle":105.0,"minuteAngle":180},{"hour":3,"minute":35,"digital":"3:35","speech":"It’s three thirty-five.","audioKey":"t_03_35","hourAngle":107.5,"minuteAngle":210},{"hour":3,"minute":40,"digital":"3:40","speech":"It’s three forty.","audioKey":"t_03_40","hourAngle":110.0,"minuteAngle":240},{"hour":3,"minute":45,"digital":"3:45","speech":"It’s three forty-five.","audioKey":"t_03_45","hourAngle":112.5,"minuteAngle":270},{"hour":3,"minute":50,"digital":"3:50","speech":"It’s three fifty.","audioKey":"t_03_50","hourAngle":115.0,"minuteAngle":300},{"hour":3,"minute":55,"digital":"3:55","speech":"It’s three fifty-five.","audioKey":"t_03_55","hourAngle":117.5,"minuteAngle":330},{"hour":4,"minute":0,"digital":"4:00","speech":"It’s four o’clock.","audioKey":"t_04_00","hourAngle":120.0,"minuteAngle":0},{"hour":4,"minute":5,"digital":"4:05","speech":"It’s four oh five.","audioKey":"t_04_05","hourAngle":122.5,"minuteAngle":30},{"hour":4,"minute":10,"digital":"4:10","speech":"It’s four ten.","audioKey":"t_04_10","hourAngle":125.0,"minuteAngle":60},{"hour":4,"minute":15,"digital":"4:15","speech":"It’s four fifteen.","audioKey":"t_04_15","hourAngle":127.5,"minuteAngle":90},{"hour":4,"minute":20,"digital":"4:20","speech":"It’s four twenty.","audioKey":"t_04_20","hourAngle":130.0,"minuteAngle":120},{"hour":4,"minute":25,"digital":"4:25","speech":"It’s four twenty-five.","audioKey":"t_04_25","hourAngle":132.5,"minuteAngle":150},{"hour":4,"minute":30,"digital":"4:30","speech":"It’s four thirty.","audioKey":"t_04_30","hourAngle":135.0,"minuteAngle":180},{"hour":4,"minute":35,"digital":"4:35","speech":"It’s four thirty-five.","audioKey":"t_04_35","hourAngle":137.5,"minuteAngle":210},{"hour":4,"minute":40,"digital":"4:40","speech":"It’s four forty.","audioKey":"t_04_40","hourAngle":140.0,"minuteAngle":240},{"hour":4,"minute":45,"digital":"4:45","speech":"It’s four forty-five.","audioKey":"t_04_45","hourAngle":142.5,"minuteAngle":270},{"hour":4,"minute":50,"digital":"4:50","speech":"It’s four fifty.","audioKey":"t_04_50","hourAngle":145.0,"minuteAngle":300},{"hour":4,"minute":55,"digital":"4:55","speech":"It’s four fifty-five.","audioKey":"t_04_55","hourAngle":147.5,"minuteAngle":330},{"hour":5,"minute":0,"digital":"5:00","speech":"It’s five o’clock.","audioKey":"t_05_00","hourAngle":150.0,"minuteAngle":0},{"hour":5,"minute":5,"digital":"5:05","speech":"It’s five oh five.","audioKey":"t_05_05","hourAngle":152.5,"minuteAngle":30},{"hour":5,"minute":10,"digital":"5:10","speech":"It’s five ten.","audioKey":"t_05_10","hourAngle":155.0,"minuteAngle":60},{"hour":5,"minute":15,"digital":"5:15","speech":"It’s five fifteen.","audioKey":"t_05_15","hourAngle":157.5,"minuteAngle":90},{"hour":5,"minute":20,"digital":"5:20","speech":"It’s five twenty.","audioKey":"t_05_20","hourAngle":160.0,"minuteAngle":120},{"hour":5,"minute":25,"digital":"5:25","speech":"It’s five twenty-five.","audioKey":"t_05_25","hourAngle":162.5,"minuteAngle":150},{"hour":5,"minute":30,"digital":"5:30","speech":"It’s five thirty.","audioKey":"t_05_30","hourAngle":165.0,"minuteAngle":180},{"hour":5,"minute":35,"digital":"5:35","speech":"It’s five thirty-five.","audioKey":"t_05_35","hourAngle":167.5,"minuteAngle":210},{"hour":5,"minute":40,"digital":"5:40","speech":"It’s five forty.","audioKey":"t_05_40","hourAngle":170.0,"minuteAngle":240},{"hour":5,"minute":45,"digital":"5:45","speech":"It’s five forty-five.","audioKey":"t_05_45","hourAngle":172.5,"minuteAngle":270},{"hour":5,"minute":50,"digital":"5:50","speech":"It’s five fifty.","audioKey":"t_05_50","hourAngle":175.0,"minuteAngle":300},{"hour":5,"minute":55,"digital":"5:55","speech":"It’s five fifty-five.","audioKey":"t_05_55","hourAngle":177.5,"minuteAngle":330},{"hour":6,"minute":0,"digital":"6:00","speech":"It’s six o’clock.","audioKey":"t_06_00","hourAngle":180.0,"minuteAngle":0},{"hour":6,"minute":5,"digital":"6:05","speech":"It’s six oh five.","audioKey":"t_06_05","hourAngle":182.5,"minuteAngle":30},{"hour":6,"minute":10,"digital":"6:10","speech":"It’s six ten.","audioKey":"t_06_10","hourAngle":185.0,"minuteAngle":60},{"hour":6,"minute":15,"digital":"6:15","speech":"It’s six fifteen.","audioKey":"t_06_15","hourAngle":187.5,"minuteAngle":90},{"hour":6,"minute":20,"digital":"6:20","speech":"It’s six twenty.","audioKey":"t_06_20","hourAngle":190.0,"minuteAngle":120},{"hour":6,"minute":25,"digital":"6:25","speech":"It’s six twenty-five.","audioKey":"t_06_25","hourAngle":192.5,"minuteAngle":150},{"hour":6,"minute":30,"digital":"6:30","speech":"It’s six thirty.","audioKey":"t_06_30","hourAngle":195.0,"minuteAngle":180},{"hour":6,"minute":35,"digital":"6:35","speech":"It’s six thirty-five.","audioKey":"t_06_35","hourAngle":197.5,"minuteAngle":210},{"hour":6,"minute":40,"digital":"6:40","speech":"It’s six forty.","audioKey":"t_06_40","hourAngle":200.0,"minuteAngle":240},{"hour":6,"minute":45,"digital":"6:45","speech":"It’s six forty-five.","audioKey":"t_06_45","hourAngle":202.5,"minuteAngle":270},{"hour":6,"minute":50,"digital":"6:50","speech":"It’s six fifty.","audioKey":"t_06_50","hourAngle":205.0,"minuteAngle":300},{"hour":6,"minute":55,"digital":"6:55","speech":"It’s six fifty-five.","audioKey":"t_06_55","hourAngle":207.5,"minuteAngle":330},{"hour":7,"minute":0,"digital":"7:00","speech":"It’s seven o’clock.","audioKey":"t_07_00","hourAngle":210.0,"minuteAngle":0},{"hour":7,"minute":5,"digital":"7:05","speech":"It’s seven oh five.","audioKey":"t_07_05","hourAngle":212.5,"minuteAngle":30},{"hour":7,"minute":10,"digital":"7:10","speech":"It’s seven ten.","audioKey":"t_07_10","hourAngle":215.0,"minuteAngle":60},{"hour":7,"minute":15,"digital":"7:15","speech":"It’s seven fifteen.","audioKey":"t_07_15","hourAngle":217.5,"minuteAngle":90},{"hour":7,"minute":20,"digital":"7:20","speech":"It’s seven twenty.","audioKey":"t_07_20","hourAngle":220.0,"minuteAngle":120},{"hour":7,"minute":25,"digital":"7:25","speech":"It’s seven twenty-five.","audioKey":"t_07_25","hourAngle":222.5,"minuteAngle":150},{"hour":7,"minute":30,"digital":"7:30","speech":"It’s seven thirty.","audioKey":"t_07_30","hourAngle":225.0,"minuteAngle":180},{"hour":7,"minute":35,"digital":"7:35","speech":"It’s seven thirty-five.","audioKey":"t_07_35","hourAngle":227.5,"minuteAngle":210},{"hour":7,"minute":40,"digital":"7:40","speech":"It’s seven forty.","audioKey":"t_07_40","hourAngle":230.0,"minuteAngle":240},{"hour":7,"minute":45,"digital":"7:45","speech":"It’s seven forty-five.","audioKey":"t_07_45","hourAngle":232.5,"minuteAngle":270},{"hour":7,"minute":50,"digital":"7:50","speech":"It’s seven fifty.","audioKey":"t_07_50","hourAngle":235.0,"minuteAngle":300},{"hour":7,"minute":55,"digital":"7:55","speech":"It’s seven fifty-five.","audioKey":"t_07_55","hourAngle":237.5,"minuteAngle":330},{"hour":8,"minute":0,"digital":"8:00","speech":"It’s eight o’clock.","audioKey":"t_08_00","hourAngle":240.0,"minuteAngle":0},{"hour":8,"minute":5,"digital":"8:05","speech":"It’s eight oh five.","audioKey":"t_08_05","hourAngle":242.5,"minuteAngle":30},{"hour":8,"minute":10,"digital":"8:10","speech":"It’s eight ten.","audioKey":"t_08_10","hourAngle":245.0,"minuteAngle":60},{"hour":8,"minute":15,"digital":"8:15","speech":"It’s eight fifteen.","audioKey":"t_08_15","hourAngle":247.5,"minuteAngle":90},{"hour":8,"minute":20,"digital":"8:20","speech":"It’s eight twenty.","audioKey":"t_08_20","hourAngle":250.0,"minuteAngle":120},{"hour":8,"minute":25,"digital":"8:25","speech":"It’s eight twenty-five.","audioKey":"t_08_25","hourAngle":252.5,"minuteAngle":150},{"hour":8,"minute":30,"digital":"8:30","speech":"It’s eight thirty.","audioKey":"t_08_30","hourAngle":255.0,"minuteAngle":180},{"hour":8,"minute":35,"digital":"8:35","speech":"It’s eight thirty-five.","audioKey":"t_08_35","hourAngle":257.5,"minuteAngle":210},{"hour":8,"minute":40,"digital":"8:40","speech":"It’s eight forty.","audioKey":"t_08_40","hourAngle":260.0,"minuteAngle":240},{"hour":8,"minute":45,"digital":"8:45","speech":"It’s eight forty-five.","audioKey":"t_08_45","hourAngle":262.5,"minuteAngle":270},{"hour":8,"minute":50,"digital":"8:50","speech":"It’s eight fifty.","audioKey":"t_08_50","hourAngle":265.0,"minuteAngle":300},{"hour":8,"minute":55,"digital":"8:55","speech":"It’s eight fifty-five.","audioKey":"t_08_55","hourAngle":267.5,"minuteAngle":330},{"hour":9,"minute":0,"digital":"9:00","speech":"It’s nine o’clock.","audioKey":"t_09_00","hourAngle":270.0,"minuteAngle":0},{"hour":9,"minute":5,"digital":"9:05","speech":"It’s nine oh five.","audioKey":"t_09_05","hourAngle":272.5,"minuteAngle":30},{"hour":9,"minute":10,"digital":"9:10","speech":"It’s nine ten.","audioKey":"t_09_10","hourAngle":275.0,"minuteAngle":60},{"hour":9,"minute":15,"digital":"9:15","speech":"It’s nine fifteen.","audioKey":"t_09_15","hourAngle":277.5,"minuteAngle":90},{"hour":9,"minute":20,"digital":"9:20","speech":"It’s nine twenty.","audioKey":"t_09_20","hourAngle":280.0,"minuteAngle":120},{"hour":9,"minute":25,"digital":"9:25","speech":"It’s nine twenty-five.","audioKey":"t_09_25","hourAngle":282.5,"minuteAngle":150},{"hour":9,"minute":30,"digital":"9:30","speech":"It’s nine thirty.","audioKey":"t_09_30","hourAngle":285.0,"minuteAngle":180},{"hour":9,"minute":35,"digital":"9:35","speech":"It’s nine thirty-five.","audioKey":"t_09_35","hourAngle":287.5,"minuteAngle":210},{"hour":9,"minute":40,"digital":"9:40","speech":"It’s nine forty.","audioKey":"t_09_40","hourAngle":290.0,"minuteAngle":240},{"hour":9,"minute":45,"digital":"9:45","speech":"It’s nine forty-five.","audioKey":"t_09_45","hourAngle":292.5,"minuteAngle":270},{"hour":9,"minute":50,"digital":"9:50","speech":"It’s nine fifty.","audioKey":"t_09_50","hourAngle":295.0,"minuteAngle":300},{"hour":9,"minute":55,"digital":"9:55","speech":"It’s nine fifty-five.","audioKey":"t_09_55","hourAngle":297.5,"minuteAngle":330},{"hour":10,"minute":0,"digital":"10:00","speech":"It’s ten o’clock.","audioKey":"t_10_00","hourAngle":300.0,"minuteAngle":0},{"hour":10,"minute":5,"digital":"10:05","speech":"It’s ten oh five.","audioKey":"t_10_05","hourAngle":302.5,"minuteAngle":30},{"hour":10,"minute":10,"digital":"10:10","speech":"It’s ten ten.","audioKey":"t_10_10","hourAngle":305.0,"minuteAngle":60},{"hour":10,"minute":15,"digital":"10:15","speech":"It’s ten fifteen.","audioKey":"t_10_15","hourAngle":307.5,"minuteAngle":90},{"hour":10,"minute":20,"digital":"10:20","speech":"It’s ten twenty.","audioKey":"t_10_20","hourAngle":310.0,"minuteAngle":120},{"hour":10,"minute":25,"digital":"10:25","speech":"It’s ten twenty-five.","audioKey":"t_10_25","hourAngle":312.5,"minuteAngle":150},{"hour":10,"minute":30,"digital":"10:30","speech":"It’s ten thirty.","audioKey":"t_10_30","hourAngle":315.0,"minuteAngle":180},{"hour":10,"minute":35,"digital":"10:35","speech":"It’s ten thirty-five.","audioKey":"t_10_35","hourAngle":317.5,"minuteAngle":210},{"hour":10,"minute":40,"digital":"10:40","speech":"It’s ten forty.","audioKey":"t_10_40","hourAngle":320.0,"minuteAngle":240},{"hour":10,"minute":45,"digital":"10:45","speech":"It’s ten forty-five.","audioKey":"t_10_45","hourAngle":322.5,"minuteAngle":270},{"hour":10,"minute":50,"digital":"10:50","speech":"It’s ten fifty.","audioKey":"t_10_50","hourAngle":325.0,"minuteAngle":300},{"hour":10,"minute":55,"digital":"10:55","speech":"It’s ten fifty-five.","audioKey":"t_10_55","hourAngle":327.5,"minuteAngle":330},{"hour":11,"minute":0,"digital":"11:00","speech":"It’s eleven o’clock.","audioKey":"t_11_00","hourAngle":330.0,"minuteAngle":0},{"hour":11,"minute":5,"digital":"11:05","speech":"It’s eleven oh five.","audioKey":"t_11_05","hourAngle":332.5,"minuteAngle":30},{"hour":11,"minute":10,"digital":"11:10","speech":"It’s eleven ten.","audioKey":"t_11_10","hourAngle":335.0,"minuteAngle":60},{"hour":11,"minute":15,"digital":"11:15","speech":"It’s eleven fifteen.","audioKey":"t_11_15","hourAngle":337.5,"minuteAngle":90},{"hour":11,"minute":20,"digital":"11:20","speech":"It’s eleven twenty.","audioKey":"t_11_20","hourAngle":340.0,"minuteAngle":120},{"hour":11,"minute":25,"digital":"11:25","speech":"It’s eleven twenty-five.","audioKey":"t_11_25","hourAngle":342.5,"minuteAngle":150},{"hour":11,"minute":30,"digital":"11:30","speech":"It’s eleven thirty.","audioKey":"t_11_30","hourAngle":345.0,"minuteAngle":180},{"hour":11,"minute":35,"digital":"11:35","speech":"It’s eleven thirty-five.","audioKey":"t_11_35","hourAngle":347.5,"minuteAngle":210},{"hour":11,"minute":40,"digital":"11:40","speech":"It’s eleven forty.","audioKey":"t_11_40","hourAngle":350.0,"minuteAngle":240},{"hour":11,"minute":45,"digital":"11:45","speech":"It’s eleven forty-five.","audioKey":"t_11_45","hourAngle":352.5,"minuteAngle":270},{"hour":11,"minute":50,"digital":"11:50","speech":"It’s eleven fifty.","audioKey":"t_11_50","hourAngle":355.0,"minuteAngle":300},{"hour":11,"minute":55,"digital":"11:55","speech":"It’s eleven fifty-five.","audioKey":"t_11_55","hourAngle":357.5,"minuteAngle":330},{"hour":12,"minute":0,"digital":"12:00","speech":"It’s twelve o’clock.","audioKey":"t_12_00","hourAngle":0.0,"minuteAngle":0},{"hour":12,"minute":5,"digital":"12:05","speech":"It’s twelve oh five.","audioKey":"t_12_05","hourAngle":2.5,"minuteAngle":30},{"hour":12,"minute":10,"digital":"12:10","speech":"It’s twelve ten.","audioKey":"t_12_10","hourAngle":5.0,"minuteAngle":60},{"hour":12,"minute":15,"digital":"12:15","speech":"It’s twelve fifteen.","audioKey":"t_12_15","hourAngle":7.5,"minuteAngle":90},{"hour":12,"minute":20,"digital":"12:20","speech":"It’s twelve twenty.","audioKey":"t_12_20","hourAngle":10.0,"minuteAngle":120},{"hour":12,"minute":25,"digital":"12:25","speech":"It’s twelve twenty-five.","audioKey":"t_12_25","hourAngle":12.5,"minuteAngle":150},{"hour":12,"minute":30,"digital":"12:30","speech":"It’s twelve thirty.","audioKey":"t_12_30","hourAngle":15.0,"minuteAngle":180},{"hour":12,"minute":35,"digital":"12:35","speech":"It’s twelve thirty-five.","audioKey":"t_12_35","hourAngle":17.5,"minuteAngle":210},{"hour":12,"minute":40,"digital":"12:40","speech":"It’s twelve forty.","audioKey":"t_12_40","hourAngle":20.0,"minuteAngle":240},{"hour":12,"minute":45,"digital":"12:45","speech":"It’s twelve forty-five.","audioKey":"t_12_45","hourAngle":22.5,"minuteAngle":270},{"hour":12,"minute":50,"digital":"12:50","speech":"It’s twelve fifty.","audioKey":"t_12_50","hourAngle":25.0,"minuteAngle":300},{"hour":12,"minute":55,"digital":"12:55","speech":"It’s twelve fifty-five.","audioKey":"t_12_55","hourAngle":27.5,"minuteAngle":330}];
+const TIME_BY_KEY = new Map(MASTER_TIMES.map(t=>[`${t.hour}_${t.minute}`,Object.freeze(t)]));
+function getTime(hour,minute){ return TIME_BY_KEY.get(`${hour}_${minute}`); }
+const ALL_TIMES = HOUR_ORDER.flatMap(hour=>MINUTES.map(minute=>getTime(hour,minute)));
+const AUDIO_CLIPS = {"welcome":"audio/welcome.wav","question":"audio/question.wav","listen_carefully":"audio/listen_carefully.wav","your_turn":"audio/your_turn.wav","ready":"audio/ready.wav","go":"audio/go.wav","correct":"audio/correct.wav","great_job":"audio/great_job.wav","excellent":"audio/excellent.wav","fantastic":"audio/fantastic.wav","try_again":"audio/try_again.wav","next_clock":"audio/next_clock.wav","time_challenge":"audio/time_challenge.wav","quick_question":"audio/quick_question.wav","countdown":"audio/countdown.wav","you_did_it":"audio/you_did_it.wav","great_work":"audio/great_work.wav","time_master":"audio/time_master.wav","t_01_00":"audio/t_01_00.wav","t_01_05":"audio/t_01_05.wav","t_01_10":"audio/t_01_10.wav","t_01_15":"audio/t_01_15.wav","t_01_20":"audio/t_01_20.wav","t_01_25":"audio/t_01_25.wav","t_01_30":"audio/t_01_30.wav","t_01_35":"audio/t_01_35.wav","t_01_40":"audio/t_01_40.wav","t_01_45":"audio/t_01_45.wav","t_01_50":"audio/t_01_50.wav","t_01_55":"audio/t_01_55.wav","t_02_00":"audio/t_02_00.wav","t_02_05":"audio/t_02_05.wav","t_02_10":"audio/t_02_10.wav","t_02_15":"audio/t_02_15.wav","t_02_20":"audio/t_02_20.wav","t_02_25":"audio/t_02_25.wav","t_02_30":"audio/t_02_30.wav","t_02_35":"audio/t_02_35.wav","t_02_40":"audio/t_02_40.wav","t_02_45":"audio/t_02_45.wav","t_02_50":"audio/t_02_50.wav","t_02_55":"audio/t_02_55.wav","t_03_00":"audio/t_03_00.wav","t_03_05":"audio/t_03_05.wav","t_03_10":"audio/t_03_10.wav","t_03_15":"audio/t_03_15.wav","t_03_20":"audio/t_03_20.wav","t_03_25":"audio/t_03_25.wav","t_03_30":"audio/t_03_30.wav","t_03_35":"audio/t_03_35.wav","t_03_40":"audio/t_03_40.wav","t_03_45":"audio/t_03_45.wav","t_03_50":"audio/t_03_50.wav","t_03_55":"audio/t_03_55.wav","t_04_00":"audio/t_04_00.wav","t_04_05":"audio/t_04_05.wav","t_04_10":"audio/t_04_10.wav","t_04_15":"audio/t_04_15.wav","t_04_20":"audio/t_04_20.wav","t_04_25":"audio/t_04_25.wav","t_04_30":"audio/t_04_30.wav","t_04_35":"audio/t_04_35.wav","t_04_40":"audio/t_04_40.wav","t_04_45":"audio/t_04_45.wav","t_04_50":"audio/t_04_50.wav","t_04_55":"audio/t_04_55.wav","t_05_00":"audio/t_05_00.wav","t_05_05":"audio/t_05_05.wav","t_05_10":"audio/t_05_10.wav","t_05_15":"audio/t_05_15.wav","t_05_20":"audio/t_05_20.wav","t_05_25":"audio/t_05_25.wav","t_05_30":"audio/t_05_30.wav","t_05_35":"audio/t_05_35.wav","t_05_40":"audio/t_05_40.wav","t_05_45":"audio/t_05_45.wav","t_05_50":"audio/t_05_50.wav","t_05_55":"audio/t_05_55.wav","t_06_00":"audio/t_06_00.wav","t_06_05":"audio/t_06_05.wav","t_06_10":"audio/t_06_10.wav","t_06_15":"audio/t_06_15.wav","t_06_20":"audio/t_06_20.wav","t_06_25":"audio/t_06_25.wav","t_06_30":"audio/t_06_30.wav","t_06_35":"audio/t_06_35.wav","t_06_40":"audio/t_06_40.wav","t_06_45":"audio/t_06_45.wav","t_06_50":"audio/t_06_50.wav","t_06_55":"audio/t_06_55.wav","t_07_00":"audio/t_07_00.wav","t_07_05":"audio/t_07_05.wav","t_07_10":"audio/t_07_10.wav","t_07_15":"audio/t_07_15.wav","t_07_20":"audio/t_07_20.wav","t_07_25":"audio/t_07_25.wav","t_07_30":"audio/t_07_30.wav","t_07_35":"audio/t_07_35.wav","t_07_40":"audio/t_07_40.wav","t_07_45":"audio/t_07_45.wav","t_07_50":"audio/t_07_50.wav","t_07_55":"audio/t_07_55.wav","t_08_00":"audio/t_08_00.wav","t_08_05":"audio/t_08_05.wav","t_08_10":"audio/t_08_10.wav","t_08_15":"audio/t_08_15.wav","t_08_20":"audio/t_08_20.wav","t_08_25":"audio/t_08_25.wav","t_08_30":"audio/t_08_30.wav","t_08_35":"audio/t_08_35.wav","t_08_40":"audio/t_08_40.wav","t_08_45":"audio/t_08_45.wav","t_08_50":"audio/t_08_50.wav","t_08_55":"audio/t_08_55.wav","t_09_00":"audio/t_09_00.wav","t_09_05":"audio/t_09_05.wav","t_09_10":"audio/t_09_10.wav","t_09_15":"audio/t_09_15.wav","t_09_20":"audio/t_09_20.wav","t_09_25":"audio/t_09_25.wav","t_09_30":"audio/t_09_30.wav","t_09_35":"audio/t_09_35.wav","t_09_40":"audio/t_09_40.wav","t_09_45":"audio/t_09_45.wav","t_09_50":"audio/t_09_50.wav","t_09_55":"audio/t_09_55.wav","t_10_00":"audio/t_10_00.wav","t_10_05":"audio/t_10_05.wav","t_10_10":"audio/t_10_10.wav","t_10_15":"audio/t_10_15.wav","t_10_20":"audio/t_10_20.wav","t_10_25":"audio/t_10_25.wav","t_10_30":"audio/t_10_30.wav","t_10_35":"audio/t_10_35.wav","t_10_40":"audio/t_10_40.wav","t_10_45":"audio/t_10_45.wav","t_10_50":"audio/t_10_50.wav","t_10_55":"audio/t_10_55.wav","t_11_00":"audio/t_11_00.wav","t_11_05":"audio/t_11_05.wav","t_11_10":"audio/t_11_10.wav","t_11_15":"audio/t_11_15.wav","t_11_20":"audio/t_11_20.wav","t_11_25":"audio/t_11_25.wav","t_11_30":"audio/t_11_30.wav","t_11_35":"audio/t_11_35.wav","t_11_40":"audio/t_11_40.wav","t_11_45":"audio/t_11_45.wav","t_11_50":"audio/t_11_50.wav","t_11_55":"audio/t_11_55.wav","t_12_00":"audio/t_12_00.wav","t_12_05":"audio/t_12_05.wav","t_12_10":"audio/t_12_10.wav","t_12_15":"audio/t_12_15.wav","t_12_20":"audio/t_12_20.wav","t_12_25":"audio/t_12_25.wav","t_12_30":"audio/t_12_30.wav","t_12_35":"audio/t_12_35.wav","t_12_40":"audio/t_12_40.wav","t_12_45":"audio/t_12_45.wav","t_12_50":"audio/t_12_50.wav","t_12_55":"audio/t_12_55.wav"};
+const audioCache = new Map();
+let currentVoice = null;
+let voiceGeneration = 0;
+
+function getVoiceClip(key){
+  if(!AUDIO_CLIPS[key]) return null;
+  if(!audioCache.has(key)){
+    const a = new Audio(AUDIO_CLIPS[key]);
+    a.preload = 'auto';
+    audioCache.set(key,a);
+  }
+  return audioCache.get(key);
+}
+function cancelVoice(){
+  voiceGeneration++;
+  if(currentVoice){
+    try{ currentVoice.pause(); currentVoice.currentTime=0; }catch(e){}
+    currentVoice.onended=null; currentVoice.onerror=null;
+  }
+  currentVoice=null;
+}
+function playOneClip(key,generation){
+  return new Promise(resolve=>{
+    if(generation!==voiceGeneration){ resolve(false); return; }
+    const a=getVoiceClip(key);
+    if(!a){ resolve(false); return; }
+    currentVoice=a;
+    try{ a.pause(); a.currentTime=0; }catch(e){}
+    let settled=false;
+    const finish=(ok=true)=>{
+      if(settled) return; settled=true;
+      a.onended=null; a.onerror=null;
+      if(currentVoice===a) currentVoice=null;
+      resolve(ok && generation===voiceGeneration);
+    };
+    a.onended=()=>finish(true);
+    a.onerror=()=>finish(false);
+    try{
+      const p=a.play();
+      if(p&&p.catch) p.catch(()=>finish(false));
+    }catch(e){ finish(false); }
+  });
+}
+async function playSequence(keys){
+  cancelVoice();
+  const generation=voiceGeneration;
+  const clean=keys.filter(k=>AUDIO_CLIPS[k]);
+  for(const key of clean){
+    const ok=await playOneClip(key,generation);
+    if(!ok || generation!==voiceGeneration) return false;
+  }
+  return true;
+}
+function playCue(key){ return playSequence([key]); }
+function playTime(time){
+  const key=cueKey(time);
+  if(!AUDIO_CLIPS[key]){ console.error('Missing local time audio:',key,time); return Promise.resolve(false); }
+  return playCue(key);
+}
+
+// Pre-create local audio objects gradually after the page is interactive. No
+// network request is involved; this only warms the browser's local media cache.
+function warmLocalVoice(){
+  const keys=Object.keys(AUDIO_CLIPS); let i=0;
+  const batch=()=>{
+    const stop=Math.min(i+10,keys.length);
+    for(;i<stop;i++) getVoiceClip(keys[i]);
+    if(i<keys.length) setTimeout(batch,25);
+  };
+  batch();
+}
+document.addEventListener('pointerdown',warmLocalVoice,{once:true});
+
+function formatDigital(time){ return time.digital || `${time.hour}:${String(time.minute).padStart(2,'0')}`; }
+function cueKey(time){ return time.audioKey || `t_${String(time.hour).padStart(2,'0')}_${String(time.minute).padStart(2,'0')}`; }
+function phrase(time){
+  if(time.speech) return time.speech;
+  if(time.minute===0) return `It’s ${hourWords[time.hour]} o’clock.`;
+  return `It’s ${hourWords[time.hour]} ${minuteWords[time.minute]}.`;
+}
+function sameTime(a,b){ return a.hour===b.hour && a.minute===b.minute; }
+function cloneTime(t){ return getTime(t.hour,t.minute) || {hour:t.hour,minute:t.minute}; }
+
+
+function runTimeIntegrityCheck(){
+  const errors=[];
+  if(MASTER_TIMES.length!==144) errors.push(`Expected 144 master times, got ${MASTER_TIMES.length}`);
+  const seen=new Set();
+  for(const t of MASTER_TIMES){
+    const k=`${t.hour}_${t.minute}`;
+    if(seen.has(k)) errors.push(`Duplicate time ${k}`); seen.add(k);
+    if(!MINUTES.includes(t.minute)) errors.push(`Bad minute ${k}`);
+    if(formatDigital(t)!==`${t.hour}:${String(t.minute).padStart(2,'0')}`) errors.push(`Digital mismatch ${k}`);
+    if(cueKey(t)!==`t_${String(t.hour).padStart(2,'0')}_${String(t.minute).padStart(2,'0')}`) errors.push(`Audio-key mismatch ${k}`);
+    if(!AUDIO_CLIPS[cueKey(t)]) errors.push(`Missing audio ${cueKey(t)}`);
+    const expectedHour=(t.hour%12)*30+t.minute*.5, expectedMinute=t.minute*6;
+    if(t.hourAngle!==expectedHour || t.minuteAngle!==expectedMinute) errors.push(`Hand-angle mismatch ${k}`);
+  }
+  window.__CLOCK_TIME_AUDIT__={ok:errors.length===0,errors,count:MASTER_TIMES.length};
+  if(errors.length) console.error('Clock time integrity errors',errors);
+  return window.__CLOCK_TIME_AUDIT__;
+}
+runTimeIntegrityCheck();
+const tabs = [...document.querySelectorAll('.tab')];
+const screens = {
+  slides:document.getElementById('screen-slides'), teacher:document.getElementById('screen-teacher'),
+  practice:document.getElementById('screen-practice'), game:document.getElementById('screen-game')
+};
+const unitBadge = document.getElementById('unitBadge');
+const topNextBtn = document.getElementById('topNextBtn');
+let currentScreenName='slides';
+
+function updateTopAction(name){
+  currentScreenName=name;
+  topNextBtn.textContent = name==='slides' ? 'NEXT SLIDE ▶' : name==='game' ? 'NEXT QUESTION ▶' : 'NEXT PRACTICE ▶';
+}
+function showScreen(name){
+  cancelVoice();
+  tabs.forEach(t=>t.classList.toggle('active',t.dataset.screen===name));
+  Object.entries(screens).forEach(([k,v])=>v.classList.toggle('active',k===name));
+  updateTopAction(name);
+  if(name==='slides') unitBadge.textContent=String(slideIndex+1);
+  if(name==='teacher'){
+    unitBadge.textContent='3';
+    renderTeacher(false);
+    teacherHeard.textContent='🔊 Listen to the teacher, then repeat.'; teacherHeard.className='heard';
+    playTime(teacher.time);
+  }
+  if(name==='practice'){
+    unitBadge.textContent='4';
+    renderPractice(false);
+    playCue('question');
+  }
+  if(name==='game'){
+    unitBadge.textContent='5';
+    if(!game.started) startGame(); else playCue('question');
+  }
+}
+tabs.forEach(btn=>btn.addEventListener('click',()=>showScreen(btn.dataset.screen)));
+window.showScreen=showScreen;
+
+topNextBtn.addEventListener('click',()=>{
+  if(currentScreenName==='slides'){ slideIndex=(slideIndex+1)%slides.length; renderSlide(); return; }
+  if(currentScreenName==='teacher'){ nextTeacherPractice(false); return; }
+  if(currentScreenName==='practice'){ nextStudentPractice(false); return; }
+  advanceGameQuestion();
+});
+
+let slideIndex=0;
+const slideImage=document.getElementById('slideImage');
+const slideCaption=document.getElementById('slideCaption');
+const dots=[...document.querySelectorAll('.dot')];
+function renderSlide(){
+  slideImage.src=slides[slideIndex].img;
+  slideCaption.textContent=slides[slideIndex].title;
+  dots.forEach((d,i)=>d.classList.toggle('active',i===slideIndex));
+  unitBadge.textContent=String(slideIndex+1);
+}
+document.getElementById('slidePrev').onclick=()=>{slideIndex=(slideIndex-1+slides.length)%slides.length;renderSlide();};
+document.getElementById('slideNext').onclick=()=>{slideIndex=(slideIndex+1)%slides.length;renderSlide();};
+dots.forEach(d=>d.onclick=()=>{slideIndex=Number(d.dataset.dot);renderSlide();});
+renderSlide(); updateTopAction('slides');
+
+function buildClock(clockEl){
+  if(clockEl.dataset.built) return;
+  const numberRadius=38;
+  for(let n=1;n<=12;n++){
+    const angle=(n*30-90)*Math.PI/180;
+    const el=document.createElement('div'); el.className='num'; el.textContent=n;
+    el.style.left=`${50+Math.cos(angle)*numberRadius}%`; el.style.top=`${50+Math.sin(angle)*numberRadius}%`;
+    clockEl.appendChild(el);
+  }
+  for(let i=0;i<60;i++){
+    const isBig=i%5===0, angleDeg=i*6-90, angle=angleDeg*Math.PI/180, radius=isBig?45:46;
+    const t=document.createElement('div'); t.className='tick'+(isBig?' big':'');
+    t.style.left=`${50+Math.cos(angle)*radius}%`; t.style.top=`${50+Math.sin(angle)*radius}%`;
+    t.style.transform=`translate(-50%,-50%) rotate(${i*6}deg)`; clockEl.appendChild(t);
+  }
+  clockEl.dataset.built='1';
+}
+['clockTeacher','clockPractice','clockGame'].forEach(id=>buildClock(document.getElementById(id)));
+function setClock(clockEl,hourHand,minuteHand,time,animate=true){
+  if(animate){ clockEl.classList.remove('shuffle'); void clockEl.offsetWidth; clockEl.classList.add('shuffle'); }
+  const hourAngle=(time.hourAngle ?? ((time.hour%12)*30+time.minute*0.5));
+  const minuteAngle=(time.minuteAngle ?? time.minute*6);
+  hourHand.style.transform=`rotate(${hourAngle}deg)`;
+  minuteHand.style.transform=`rotate(${minuteAngle}deg)`;
+}
+
+function normalizeSpeech(s){
+  return (s||'').toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9: ]+/g,' ').replace(/\s+/g,' ').trim();
+}
+function speechVariants(time){
+  const h=hourWords[time.hour];
+  const prefixes=['', 'its ', 'it is '];
+  let cores=[];
+  if(time.minute===0){ cores=[`${h} oclock`,`${h} o clock`,`${time.hour} oclock`,`${time.hour}:00`]; }
+  else if(time.minute===5){ cores=[`${h} oh five`,`${h} o five`,`${h} zero five`,`${h} five`,`${time.hour}:05`,`${time.hour} 05`]; }
+  else{
+    const m=minuteWords[time.minute].replace('-',' ');
+    cores=[`${h} ${m}`,`${time.hour}:${String(time.minute).padStart(2,'0')}`,`${time.hour} ${time.minute}`];
+  }
+  return prefixes.flatMap(p=>cores.map(c=>normalizeSpeech(p+c)));
+}
+function speechMatchesTime(text,time){
+  const n=normalizeSpeech(text);
+  return speechVariants(time).some(v=>n===v || n.endsWith(' '+v));
+}
+const SpeechRecognitionAPI=window.SpeechRecognition||window.webkitSpeechRecognition;
+let activeRecognition=null;
+
+async function requestMicrophoneAccess(){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    return {ok:null, reason:'media-api-unavailable'};
+  }
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+    stream.getTracks().forEach(t=>t.stop());
+    return {ok:true};
+  }catch(err){
+    return {ok:false, reason:(err&&err.name)||'permission-error'};
+  }
+}
+function recognitionErrorMessage(code){
+  if(code==='not-allowed'||code==='service-not-allowed') return '❌ Microphone permission is blocked. Allow microphone access in the browser, then try again.';
+  if(code==='audio-capture') return '❌ No working microphone was found.';
+  if(code==='no-speech') return 'I did not hear speech. Please try again and speak clearly.';
+  if(code==='network') return '⚠ The browser speech-recognition service could not connect. Your lesson audio is still fully local.';
+  return '❌ Voice recognition could not start. Please try again.';
+}
+async function startListening({button,heardBox,expected,onCorrect,onWrong}){
+  cancelVoice();
+  if(activeRecognition){ try{activeRecognition.abort();}catch(e){} activeRecognition=null; }
+  if(!SpeechRecognitionAPI){
+    heardBox.textContent='⚠ Speech recognition is not available in this browser. Use current Chrome or Edge.';
+    heardBox.className='heard bad'; return false;
+  }
+  button.disabled=true; button.textContent='🎤 CHECKING MIC...';
+  heardBox.textContent='Checking microphone permission…'; heardBox.className='heard';
+  const access=await requestMicrophoneAccess();
+  if(access.ok===false){
+    heardBox.textContent='❌ Microphone permission is blocked. Click the padlock/site settings and allow Microphone.';
+    heardBox.className='heard bad'; button.disabled=false; button.textContent='🎤 SAY THE TIME'; return false;
+  }
+  return new Promise(resolve=>{
+    const rec=new SpeechRecognitionAPI(); activeRecognition=rec;
+    rec.lang='en-US'; rec.interimResults=false; rec.maxAlternatives=10; rec.continuous=false;
+    button.disabled=false; button.textContent='🎙 LISTENING...';
+    heardBox.textContent=`Listening… Say: “${phrase(expected)}”`; heardBox.className='heard';
+    let gotResult=false;
+    rec.onaudiostart=()=>{heardBox.textContent=`Microphone on. Say: “${phrase(expected)}”`;};
+    rec.onspeechstart=()=>{heardBox.textContent='I can hear you…';};
+    rec.onresult=e=>{
+      gotResult=true;
+      const alternatives=[...e.results[0]].map(a=>a.transcript||'');
+      const ok=alternatives.some(t=>speechMatchesTime(t,expected));
+      const heard=alternatives[0]||'';
+      if(ok){
+        heardBox.textContent=`✅ I heard: “${heard}”`; heardBox.className='heard good';
+        playCue('great_job'); if(onCorrect) onCorrect();
+      }else{
+        heardBox.textContent=`Try again. I heard: “${heard}”`; heardBox.className='heard bad';
+        playCue('try_again'); if(onWrong) onWrong();
+      }
+      resolve(ok);
+    };
+    rec.onerror=e=>{
+      heardBox.textContent=recognitionErrorMessage(e.error); heardBox.className='heard bad';
+      resolve(false);
+    };
+    rec.onend=()=>{
+      if(activeRecognition===rec) activeRecognition=null;
+      button.disabled=false; button.textContent='🎤 SAY THE TIME';
+      if(!gotResult) resolve(false);
+    };
+    try{rec.start();}catch(e){
+      activeRecognition=null; button.disabled=false; button.textContent='🎤 SAY THE TIME';
+      heardBox.textContent='❌ Microphone could not start. Check browser permission and try again.'; heardBox.className='heard bad'; resolve(false);
+    }
+  });
+}
+
+const micTestModal=document.getElementById('micTestModal');
+const micTestBtn=document.getElementById('micTestBtn');
+const micStartTest=document.getElementById('micStartTest');
+const micCloseTest=document.getElementById('micCloseTest');
+const micTestStatus=document.getElementById('micTestStatus');
+micTestBtn.onclick=()=>{
+  micTestModal.classList.add('show');
+  micTestStatus.textContent='Ready. Press START TEST, allow microphone access, then say: “It’s four oh five.”';
+  micTestStatus.className='mic-test-status';
+};
+micCloseTest.onclick=()=>micTestModal.classList.remove('show');
+micTestModal.onclick=e=>{if(e.target===micTestModal)micTestModal.classList.remove('show');};
+micStartTest.onclick=async()=>{
+  if(!SpeechRecognitionAPI){micTestStatus.textContent='⚠ Speech recognition is not available. Please use current Chrome or Edge.';micTestStatus.className='mic-test-status bad';return;}
+  micStartTest.disabled=true; micStartTest.textContent='🎤 CHECKING MIC...'; micTestStatus.textContent='Checking microphone permission…';
+  const access=await requestMicrophoneAccess();
+  if(access.ok===false){micTestStatus.textContent='❌ Microphone permission is blocked. Allow Microphone in browser site settings and try again.';micTestStatus.className='mic-test-status bad';micStartTest.disabled=false;micStartTest.textContent='🎤 START TEST';return;}
+  const expected={hour:4,minute:5};
+  if(activeRecognition){try{activeRecognition.abort();}catch(e){}}
+  const rec=new SpeechRecognitionAPI(); activeRecognition=rec; rec.lang='en-US'; rec.interimResults=false; rec.maxAlternatives=10; rec.continuous=false;
+  micStartTest.disabled=false; micStartTest.textContent='🎙 LISTENING...'; micTestStatus.textContent='Microphone on. Say: “It’s four oh five.”';
+  rec.onresult=e=>{
+    const alts=[...e.results[0]].map(a=>a.transcript||''); const ok=alts.some(t=>speechMatchesTime(t,expected));
+    micTestStatus.textContent=ok?`✅ Microphone works! I heard: “${alts[0]}”`:`Try again. I heard: “${alts[0]}”`;
+    micTestStatus.className=ok?'mic-test-status good':'mic-test-status bad';
+    if(ok){micTestBtn.classList.add('good');micTestBtn.textContent='🎤 MIC OK';playCue('correct');}else playCue('try_again');
+  };
+  rec.onerror=e=>{micTestStatus.textContent=recognitionErrorMessage(e.error);micTestStatus.className='mic-test-status bad';};
+  rec.onend=()=>{if(activeRecognition===rec)activeRecognition=null;micStartTest.disabled=false;micStartTest.textContent='🎤 START TEST';};
+  try{rec.start();}catch(e){activeRecognition=null;micStartTest.disabled=false;micStartTest.textContent='🎤 START TEST';micTestStatus.textContent='❌ Microphone could not start. Check permission and try again.';micTestStatus.className='mic-test-status bad';}
+};
+
+const teacher={index:0,time:cloneTime(ALL_TIMES[0]),hidden:false};
+const teacherAnswer=document.getElementById('teacherAnswer');
+const teacherDigital=document.getElementById('teacherDigital');
+const teacherAnswerLine=document.getElementById('teacherAnswerLine');
+const teacherStep=document.getElementById('teacherStep');
+const teacherHeard=document.getElementById('teacherHeard');
+function renderTeacher(animate=true){
+  teacher.time=cloneTime(ALL_TIMES[teacher.index]);
+  setClock(document.getElementById('clockTeacher'),document.getElementById('hourTeacher'),document.getElementById('minuteTeacher'),teacher.time,animate);
+  teacherDigital.textContent=formatDigital(teacher.time); teacherAnswer.textContent=phrase(teacher.time);
+  teacherAnswerLine.classList.toggle('hidden',teacher.hidden); teacherStep.textContent=String(teacher.index+1);
+}
+function nextTeacherPractice(auto=false){
+  teacher.index=(teacher.index+1)%ALL_TIMES.length; teacher.hidden=false; renderTeacher(true);
+  teacherHeard.textContent=auto?'Correct! Listen to the next time.':'Listen, then repeat.'; teacherHeard.className=auto?'heard good':'heard';
+  playTime(teacher.time);
+}
+document.getElementById('teacherBack').onclick=()=>{teacher.index=(teacher.index-1+ALL_TIMES.length)%ALL_TIMES.length;teacher.hidden=false;renderTeacher();playTime(teacher.time);};
+document.getElementById('teacherNext').onclick=()=>nextTeacherPractice(false);
+document.getElementById('teacherNextBig').onclick=()=>nextTeacherPractice(false);
+document.getElementById('teacherShuffle').onclick=()=>{let n;do{n=Math.floor(Math.random()*ALL_TIMES.length);}while(n===teacher.index);teacher.index=n;teacher.hidden=false;renderTeacher();playTime(teacher.time);};
+document.getElementById('teacherHide').onclick=e=>{teacher.hidden=!teacher.hidden;e.target.textContent=teacher.hidden?'👀 Show Answer':'🙈 Hide Answer';renderTeacher(false);};
+document.getElementById('teacherQuestion').onclick=()=>playCue('question');
+document.getElementById('teacherSpeak').onclick=()=>playTime(teacher.time);
+document.getElementById('teacherHearBig').onclick=()=>playTime(teacher.time);
+document.getElementById('teacherMic').onclick=async()=>{
+  const btn=document.getElementById('teacherMic');
+  btn.disabled=true; btn.textContent='🔊 LISTEN...';
+  await playTime(teacher.time);
+  btn.disabled=false; btn.textContent='🎤 SAY THE TIME';
+  await startListening({button:btn,heardBox:teacherHeard,expected:teacher.time,onCorrect:()=>setTimeout(()=>nextTeacherPractice(true),900)});
+};
+renderTeacher(false);
+
+const PRACTICE_SEQUENCE=[
+  {hour:4,minute:5},{hour:4,minute:20},{hour:4,minute:55},{hour:5,minute:0},
+  {hour:5,minute:15},{hour:6,minute:30},{hour:7,minute:45},{hour:8,minute:10},
+  {hour:9,minute:25},{hour:10,minute:40},{hour:11,minute:50},{hour:12,minute:35},
+  {hour:1,minute:5},{hour:2,minute:20},{hour:3,minute:55},{hour:6,minute:0},
+  {hour:8,minute:15},{hour:10,minute:30},{hour:12,minute:45},{hour:2,minute:10},
+  {hour:3,minute:25},{hour:7,minute:40},{hour:9,minute:50},{hour:11,minute:35}
+];
+const practice={index:0,time:cloneTime(PRACTICE_SEQUENCE[0]),hidden:true};
+const practiceAnswer=document.getElementById('practiceAnswer');
+const practiceDigital=document.getElementById('practiceDigital');
+const practiceAnswerLine=document.getElementById('practiceAnswerLine');
+const practiceStep=document.getElementById('practiceStep');
+const practiceHeard=document.getElementById('practiceHeard');
+function renderPractice(animate=true){
+  practice.time=cloneTime(PRACTICE_SEQUENCE[practice.index]);
+  setClock(document.getElementById('clockPractice'),document.getElementById('hourPractice'),document.getElementById('minutePractice'),practice.time,animate);
+  practiceDigital.textContent=formatDigital(practice.time);practiceAnswer.textContent=phrase(practice.time);
+  practiceAnswerLine.classList.toggle('hidden',practice.hidden);practiceStep.textContent=String(practice.index+1);
+}
+function nextStudentPractice(auto=false){
+  practice.index=(practice.index+1)%PRACTICE_SEQUENCE.length;practice.hidden=true;renderPractice(true);
+  practiceHeard.textContent=auto?'✅ Correct! Here is the next clock.':'New clock. Say the time, then check.';practiceHeard.className=auto?'heard good':'heard';
+  playCue('question');
+}
+document.getElementById('practiceNew').onclick=()=>nextStudentPractice(false);
+document.getElementById('practiceNextBig').onclick=()=>nextStudentPractice(false);
+async function revealAndSpeakPracticeAnswer(){
+  practice.hidden=false;
+  renderPractice(false);
+  practiceHeard.textContent=`Answer: ${phrase(practice.time)}`;
+  practiceHeard.className='heard good';
+  await playTime(practice.time);
+}
+document.getElementById('practiceReveal').onclick=revealAndSpeakPracticeAnswer;
+document.getElementById('practiceAnswerBig').onclick=revealAndSpeakPracticeAnswer;
+document.getElementById('practiceHide').onclick=()=>{practice.hidden=true;renderPractice(false);practiceHeard.textContent='Answer hidden. Listen to the question and answer aloud.';practiceHeard.className='heard';};
+document.getElementById('practiceQuestion').onclick=()=>playCue('question');
+document.getElementById('practiceSpeak').onclick=()=>playTime(practice.time);
+document.getElementById('practiceMic').onclick=()=>startListening({button:document.getElementById('practiceMic'),heardBox:practiceHeard,expected:practice.time,onCorrect:()=>setTimeout(()=>nextStudentPractice(true),1100)});
+renderPractice(false);
+
+const GAME_SEQUENCE=[
+  {hour:4,minute:5},{hour:5,minute:0},{hour:6,minute:25},{hour:7,minute:40},{hour:8,minute:15},
+  {hour:9,minute:55},{hour:10,minute:30},{hour:11,minute:10},{hour:12,minute:45},{hour:3,minute:20}
+];
+const game={started:false,score:0,round:1,time:cloneTime(GAME_SEQUENCE[0]),locked:false,completed:false};
+const choicesEl=document.getElementById('choices');const feedbackEl=document.getElementById('feedback');
+const scoreEl=document.getElementById('score');const roundEl=document.getElementById('round');
+const nextRoundBtn=document.getElementById('nextRoundBtn');const completeModal=document.getElementById('completeModal');
+const completeScore=document.getElementById('completeScore');const completePlayAgain=document.getElementById('completePlayAgain');
+function makeChoiceClass(i){return ['pink','green','blue'][i%3];}
+function nextFive(time,delta){
+  let total=((time.hour%12)*60+time.minute+delta+720)%720;
+  let hour=Math.floor(total/60); if(hour===0)hour=12; return getTime(hour,total%60);
+}
+function choicesForTime(time,roundIndex){
+  const a=cloneTime(time), b=nextFive(time,5), c=getTime(time.hour===12?1:time.hour+1,time.minute);
+  let arr=[a,b,c]; const rot=roundIndex%3; return arr.slice(rot).concat(arr.slice(0,rot));
+}
+function loadRound(animate=true){
+  game.locked=false;feedbackEl.textContent='';feedbackEl.className='feedback';nextRoundBtn.style.display='none';
+  game.time=cloneTime(GAME_SEQUENCE[game.round-1]);
+  setClock(document.getElementById('clockGame'),document.getElementById('hourGame'),document.getElementById('minuteGame'),game.time,animate);
+  choicesEl.innerHTML='';
+  choicesForTime(game.time,game.round-1).forEach((t,i)=>{
+    const btn=document.createElement('button');btn.className='choice '+makeChoiceClass(i);
+    btn.innerHTML=`<span class="choice-digital">${formatDigital(t)}</span><span class="choice-words">${phrase(t)}</span>`;
+    btn.dataset.time=`${t.hour}_${t.minute}`;btn.onclick=()=>chooseAnswer(btn,t);choicesEl.appendChild(btn);
+  });
+  roundEl.textContent=String(game.round);scoreEl.textContent=String(game.score);playCue('question');
+}
+function showGameComplete(){
+  game.completed=true;completeScore.textContent=String(game.score);completeModal.classList.add('show');topNextBtn.textContent='PLAY AGAIN ▶';
+  burstConfetti();setTimeout(burstConfetti,350);setTimeout(burstConfetti,700);playCue('time_master');
+}
+function chooseAnswer(btn,t){
+  if(game.locked)return;
+  if(sameTime(t,game.time)){
+    game.locked=true;game.score++;scoreEl.textContent=String(game.score);btn.classList.add('correct');
+    feedbackEl.textContent='✅ Correct! '+formatDigital(game.time)+' — '+phrase(game.time);feedbackEl.className='feedback good';
+    playSequence(['correct',cueKey(game.time)]);burstConfetti();
+    if(game.round>=GAME_SEQUENCE.length)setTimeout(showGameComplete,1300);else{nextRoundBtn.style.display='inline-block';nextRoundBtn.textContent='Next Clock ▶';}
+  }else{
+    btn.classList.add('wrong');feedbackEl.textContent='❌ Try again!';feedbackEl.className='feedback bad';playCue('try_again');setTimeout(()=>btn.classList.remove('wrong'),700);
+  }
+}
+function startGame(){game.started=true;game.completed=false;game.score=0;game.round=1;game.time=cloneTime(GAME_SEQUENCE[0]);completeModal.classList.remove('show');topNextBtn.textContent='NEXT QUESTION ▶';loadRound(false);}
+window.startGame=startGame;
+function advanceGameQuestion(){if(game.completed||game.round>=GAME_SEQUENCE.length){startGame();return;}game.round++;loadRound(true);}
+nextRoundBtn.onclick=advanceGameQuestion;completePlayAgain.onclick=startGame;
+document.getElementById('gameQuestion').onclick=()=>playCue('question');
+document.getElementById('shuffleGameBtn').onclick=advanceGameQuestion;
+function burstConfetti(){
+  const box=document.getElementById('confetti'),colors=['#2e7cf5','#37c44d','#ffd83d','#ff6b8b','#9c65ff'];
+  for(let i=0;i<36;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=(Math.random()*100)+'vw';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.animationDelay=(Math.random()*.2)+'s';p.style.transform=`rotate(${Math.random()*360}deg)`;box.appendChild(p);setTimeout(()=>p.remove(),1900);}
+}
+
+</script>
+</body>
+</html>
