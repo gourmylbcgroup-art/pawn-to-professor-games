@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Number Rope Battle — Speed Mix</title>
+<style>
+:root{
+  --blue:#1672ff; --blue-dark:#0a4cb8; --red:#ff3446; --red-dark:#c81424;
+  --ink:#16345f; --panel:#ffffffee; --shadow:0 12px 28px rgba(20,46,91,.22);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Trebuchet MS,Arial,sans-serif;background:#8edcff;color:var(--ink)}
+button,input{font:inherit} button{cursor:pointer}
+#game{position:relative;width:100vw;height:100vh;overflow:hidden;background:url('assets/arena.png') center/cover no-repeat}
+#game:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 33%,rgba(255,255,255,.03));z-index:1}
+
+/* top controls */
+.topbar{position:absolute;left:50%;top:1.5%;transform:translateX(-50%);display:flex;gap:8px;align-items:center;z-index:50}
+.pill{border:0;border-radius:999px;background:#fffffff2;box-shadow:0 6px 16px rgba(0,0,0,.14);padding:7px 13px;font-weight:1000;color:#24456f;font-size:clamp(11px,1vw,16px)}
+.iconBtn{width:40px;height:40px;display:grid;place-items:center;padding:0;font-size:19px}
+
+/* team panels */
+.teamPanel{position:absolute;top:2.3%;height:91.5%;width:23.8%;z-index:10;padding:1.1% 1.4% 1.6%;display:flex;flex-direction:column;align-items:stretch}
+.teamPanel.blue{left:1.2%}.teamPanel.red{right:1.2%}
+.teamName{height:9.5%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:clamp(20px,2.1vw,38px);font-weight:1000;text-transform:uppercase;letter-spacing:.035em;text-shadow:0 3px 0 rgba(0,0,0,.13);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}
+.modeRow{height:6%;display:flex;align-items:center;justify-content:space-between;gap:6px;color:#fff;font-weight:900;font-size:clamp(9px,.85vw,14px);padding:0 4px}
+.modeBadge,.qCounter{border-radius:999px;padding:4px 9px;background:rgba(255,255,255,.22);backdrop-filter:blur(2px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+.modeBadge.mix{background:#ffcf36;color:#613900;animation:badgePulse 1s ease-in-out infinite alternate}
+@keyframes badgePulse{to{transform:scale(1.05)}}
+
+.questionBox{margin:2.5% auto 3%;width:74%;height:29%;min-height:132px;border-radius:25px;background:rgba(255,255,255,.95);box-shadow:inset 0 0 0 4px rgba(255,255,255,.7),0 8px 18px rgba(20,51,99,.16);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.blue .questionBox{outline:5px solid rgba(22,114,255,.14)} .red .questionBox{outline:5px solid rgba(255,52,70,.14)}
+.questionLabel{font-size:clamp(9px,.76vw,13px);font-weight:1000;letter-spacing:.14em;opacity:.5;margin-bottom:5px}
+.prompt{max-width:93%;text-align:center;font-weight:1000;line-height:.88;color:#17345f;text-shadow:0 4px 0 #e1eaf7;white-space:nowrap}
+.prompt.digit{font-size:clamp(58px,7.3vw,122px)}
+.prompt.word{font-size:clamp(31px,3.65vw,62px);letter-spacing:.025em}
+.reverseTag{position:absolute;right:8px;top:8px;font-size:clamp(8px,.68vw,12px);font-weight:1000;background:#ffca32;color:#6d3f00;padding:4px 7px;border-radius:999px;transform:rotate(4deg);display:none}
+.questionBox.reverse .reverseTag{display:block}
+
+.answers{display:grid;grid-template-columns:1fr;gap:clamp(7px,1vh,12px);margin:0 1.5%;flex:1;align-content:center}
+.answer{width:100%;min-height:clamp(48px,7.5vh,74px);border:0;border-radius:18px;background:#fff;color:#213f6a;font-weight:1000;font-size:clamp(19px,2vw,34px);box-shadow:0 7px 0 #d8e1ef,0 10px 17px rgba(18,44,82,.12);transition:transform .08s,box-shadow .08s,background .15s,color .15s}
+.answer:active{transform:translateY(5px);box-shadow:0 2px 0 #d8e1ef}
+.blue .answer:hover{background:#edf5ff}.red .answer:hover{background:#fff0f2}
+.answer.correct{background:#dff8e7!important;color:#107039!important;box-shadow:0 7px 0 #86d3a1!important;animation:pop .25s ease-out}
+.answer.wrong{background:#ffe0e4!important;color:#b50b1e!important;box-shadow:0 7px 0 #ef929c!important;animation:shake .34s linear}
+.answer:disabled{cursor:default}
+@keyframes pop{50%{transform:scale(1.045)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}
+
+.feedback{height:7%;display:flex;align-items:center;justify-content:center;font-weight:1000;font-size:clamp(11px,1.05vw,18px);text-align:center;padding:0 4px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.12)}
+.teamStats{height:5.8%;display:flex;justify-content:center;align-items:center;margin-top:auto}
+.scorePill{background:#ffffffef;border-radius:999px;padding:5px 12px;font-weight:1000;box-shadow:0 5px 12px rgba(0,0,0,.12);font-size:clamp(10px,.9vw,15px)}
+
+/* center battle */
+#centerStage{position:absolute;left:25.3%;right:25.3%;top:8%;bottom:4%;z-index:8;pointer-events:none}
+#battleTitle{position:absolute;left:50%;top:2.5%;transform:translateX(-50%);background:#fffffff2;box-shadow:var(--shadow);border-radius:999px;padding:9px 18px;font-weight:1000;font-size:clamp(13px,1.3vw,22px);white-space:nowrap;color:#24466e}
+#battleTitle strong{color:#ef2438}
+#battleZone{position:absolute;left:1%;right:1%;top:27%;height:50%;overflow:visible}
+.midline{position:absolute;left:50%;top:8%;bottom:0;border-left:5px dashed rgba(255,255,255,.92);transform:translateX(-50%);opacity:.82}
+.winLine{position:absolute;top:16%;bottom:12%;width:0;border-left:4px dotted rgba(255,255,255,.72)}
+.winLine.left{left:15%}.winLine.right{right:15%}
+.ropeWrap{position:absolute;left:1%;right:1%;top:50%;height:50px;transform:translateY(-50%)}
+#ropeMover{position:absolute;inset:0;transition:transform .38s cubic-bezier(.18,.82,.24,1.16)}
+.ropeVisual{position:absolute;left:0;right:0;top:16px;height:17px;border-radius:10px;background:repeating-linear-gradient(115deg,#925118 0 5px,#d78d35 5px 10px,#f1b65b 10px 15px,#af661f 15px 20px);box-shadow:inset 0 3px 3px rgba(255,255,255,.4),inset 0 -3px 4px rgba(74,35,7,.3),0 4px 4px rgba(64,39,15,.18)}
+#ribbon{position:absolute;left:50%;top:4px;transform:translateX(-50%);width:26px;height:62px;background:linear-gradient(#ff3c49,#d20a1d);clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);filter:drop-shadow(0 4px 3px rgba(0,0,0,.22))}
+#ribbon:before{content:"";position:absolute;left:-8px;right:-8px;top:5px;height:14px;border-radius:6px;background:#ef1528}
+
+.pullers{position:absolute;top:50%;display:flex;gap:clamp(2px,.35vw,7px);align-items:end;transition:transform .38s cubic-bezier(.18,.82,.24,1.16);transform:translateY(-50%)}
+.pullers.blue{right:54%;flex-direction:row-reverse}.pullers.red{left:54%}
+.kid{width:clamp(31px,2.9vw,55px);height:clamp(60px,7.2vw,112px);position:relative;filter:drop-shadow(0 5px 3px rgba(0,0,0,.18));transform-origin:50% 80%;animation:tugIdle 1.1s ease-in-out infinite alternate}
+.kid:nth-child(2){animation-delay:.18s}.kid:nth-child(3){animation-delay:.36s}
+@keyframes tugIdle{from{transform:rotate(-2deg) translateY(0)}to{transform:rotate(2deg) translateY(-2px)}}
+.blue .kid{--shirt:#1672ff;--dark:#0a4cb8}.red .kid{--shirt:#ff3446;--dark:#bd1020}
+.head{position:absolute;width:52%;aspect-ratio:1;left:25%;top:0;border-radius:50%;background:#ffd3a8;border:2px solid rgba(73,46,25,.12)}
+.hair{position:absolute;left:14%;right:14%;top:-3%;height:36%;border-radius:50% 50% 40% 40%;background:#55301c}.eye{position:absolute;top:46%;width:7%;aspect-ratio:1;border-radius:50%;background:#1c2638}.eye.e1{left:31%}.eye.e2{right:31%}.mouth{position:absolute;left:40%;top:65%;width:20%;height:9%;border-bottom:2px solid #a04e3f;border-radius:0 0 50% 50%}
+.body{position:absolute;left:18%;right:18%;top:35%;height:37%;border-radius:30% 30% 16% 16%;background:linear-gradient(var(--shirt),var(--dark))}.leg{position:absolute;top:68%;width:20%;height:27%;background:#25345a;border-radius:6px}.leg.l1{left:27%;transform:rotate(14deg)}.leg.l2{right:27%;transform:rotate(-14deg)}.shoe{position:absolute;bottom:-3px;width:150%;height:20%;background:#f8f8fc;border-radius:50%}.l1 .shoe{right:-45%}.l2 .shoe{left:-45%}.arm{position:absolute;top:44%;width:46%;height:10%;background:#ffd3a8;border-radius:10px;transform-origin:10% 50%}.blue .arm{right:-23%;transform:rotate(-6deg)}.red .arm{left:-23%;transform:rotate(186deg)}
+.pullReact .kid{animation:pullHard .42s ease-out 1}.slipReact .kid{animation:slip .45s ease-out 1}
+@keyframes pullHard{0%{transform:rotate(0)}42%{transform:rotate(-14deg) translateY(2px) scale(1.045)}100%{transform:rotate(0)}}
+@keyframes slip{0%{transform:rotate(0)}35%{transform:rotate(13deg) translateY(6px)}72%{transform:rotate(-5deg)}100%{transform:rotate(0)}}
+
+#centerStatus{position:absolute;left:50%;top:80%;transform:translate(-50%,-50%) scale(.92);background:#fffffff2;border-radius:20px;padding:9px 16px;box-shadow:var(--shadow);font-weight:1000;font-size:clamp(14px,1.45vw,25px);opacity:0;transition:.16s;white-space:nowrap}
+#centerStatus.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#progress{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);display:flex;gap:5px;align-items:center;background:#ffffffdc;padding:7px 11px;border-radius:999px;box-shadow:0 6px 14px rgba(0,0,0,.13)}
+.dot{width:10px;height:10px;border-radius:50%;background:#d9e0ec}.dot.blue{background:var(--blue)}.dot.red{background:var(--red)}.dot.center{width:4px;height:19px;border-radius:4px;background:#667995;margin:0 2px}
+
+/* overlays */
+#startOverlay,#winOverlay{position:absolute;inset:0;z-index:100;background:rgba(16,40,75,.29);backdrop-filter:blur(4px);display:grid;place-items:center}
+#winOverlay{display:none}.modal{width:min(650px,90vw);background:#fffffff8;border-radius:30px;padding:28px;box-shadow:0 26px 60px rgba(22,41,75,.35);border:5px solid rgba(255,255,255,.76);text-align:center}.modal h1{font-size:clamp(30px,3.8vw,58px);line-height:1;margin:0 0 8px}.modal p{font-size:clamp(14px,1.25vw,20px);font-weight:700;color:#58708f;margin:8px 0 18px}.nameGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 18px}.field{border-radius:17px;padding:10px}.field.blue{background:#e8f2ff}.field.red{background:#ffe9ed}.field label{display:block;font-weight:1000;margin-bottom:6px}.field input{width:100%;border:3px solid rgba(40,68,111,.13);border-radius:13px;padding:10px;text-align:center;font-weight:1000;color:#18345f;background:white;outline:none}.primary,.secondary{border:0;border-radius:17px;padding:13px 24px;font-weight:1000;font-size:clamp(17px,1.5vw,23px)}.primary{background:linear-gradient(#ffd84e,#ff9f18);box-shadow:0 7px 0 #d97b08;color:#563500}.secondary{background:#edf2f8;color:#294b76;box-shadow:0 6px 0 #cbd6e4}.winBtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.smallNote{font-size:12px!important;margin-top:15px!important}.ruleBox{background:#f4f7fb;border-radius:16px;padding:10px 13px;text-align:left;margin:10px 0;font-size:clamp(12px,1.1vw,17px);line-height:1.4;color:#385879;font-weight:800}.ruleBox b{color:#172f56}
+#winnerText{font-size:clamp(30px,3vw,50px);font-weight:1000}
+
+#confetti{position:absolute;inset:0;z-index:130;pointer-events:none;overflow:hidden}.confettiPiece{position:absolute;top:-5%;width:10px;height:17px;animation:fall linear forwards}@keyframes fall{to{transform:translateY(115vh) rotate(760deg)}}
+#chicken{position:absolute;left:-80px;bottom:6%;z-index:45;font-size:48px;filter:drop-shadow(0 4px 2px rgba(0,0,0,.2));pointer-events:none}.run{animation:chickenRun 2.3s linear 1}@keyframes chickenRun{0%{left:-80px;transform:rotate(0)}50%{transform:rotate(8deg)}100%{left:105%;transform:rotate(-5deg)}}
+.flashBlue{animation:flashB .3s ease-out}@keyframes flashB{50%{filter:brightness(1.2) drop-shadow(0 0 16px #4fa0ff)}}
+.flashRed{animation:flashR .3s ease-out}@keyframes flashR{50%{filter:brightness(1.2) drop-shadow(0 0 16px #ff6673)}}
+
+@media (max-aspect-ratio: 4/3){
+  .teamPanel{width:28%}.teamPanel.blue{left:.6%}.teamPanel.red{right:.6%}#centerStage{left:29%;right:29%}.answer{font-size:clamp(16px,2vw,25px)}
+}
+</style>
+</head>
+<body>
+<div id="game">
+  <div class="topbar">
+    <div class="pill">⚡ SPEED MODE</div>
+    <button class="pill iconBtn" id="soundBtn" aria-label="Sound">🔊</button>
+    <button class="pill iconBtn" id="fullBtn" aria-label="Fullscreen">⛶</button>
+  </div>
+
+  <section class="teamPanel blue" id="bluePanel">
+    <div class="teamName" id="blueNameLabel">BLUE TEAM</div>
+    <div class="modeRow"><span class="modeBadge" id="blueMode">NORMAL</span><span class="qCounter" id="blueQ">Q 1</span></div>
+    <div class="questionBox" id="blueQBox">
+      <div class="questionLabel">CHOOSE THE MATCH</div>
+      <div class="prompt digit" id="bluePrompt">7</div>
+      <div class="reverseTag">MIX!</div>
+    </div>
+    <div class="answers" id="blueAnswers"></div>
+    <div class="feedback" id="blueFeedback">READY!</div>
+    <div class="teamStats"><div class="scorePill">✅ Correct: <span id="blueCorrect">0</span></div></div>
+  </section>
+
+  <section class="teamPanel red" id="redPanel">
+    <div class="teamName" id="redNameLabel">RED TEAM</div>
+    <div class="modeRow"><span class="modeBadge" id="redMode">NORMAL</span><span class="qCounter" id="redQ">Q 1</span></div>
+    <div class="questionBox" id="redQBox">
+      <div class="questionLabel">CHOOSE THE MATCH</div>
+      <div class="prompt digit" id="redPrompt">4</div>
+      <div class="reverseTag">MIX!</div>
+    </div>
+    <div class="answers" id="redAnswers"></div>
+    <div class="feedback" id="redFeedback">READY!</div>
+    <div class="teamStats"><div class="scorePill">✅ Correct: <span id="redCorrect">0</span></div></div>
+  </section>
+
+  <main id="centerStage">
+    <div id="battleTitle">Answer fast — every <strong>correct</strong> answer pulls!</div>
+    <div id="battleZone">
+      <div class="midline"></div><div class="winLine left"></div><div class="winLine right"></div>
+      <div class="ropeWrap"><div id="ropeMover"><div class="ropeVisual"></div><div id="ribbon"></div></div></div>
+      <div class="pullers blue" id="bluePullers"></div>
+      <div class="pullers red" id="redPullers"></div>
+    </div>
+    <div id="centerStatus">GO!</div>
+    <div id="progress"></div>
+  </main>
+
+  <div id="chicken">🐔</div><div id="confetti"></div>
+
+  <div id="startOverlay">
+    <div class="modal">
+      <div style="font-size:54px">🪢⚡</div>
+      <h1>Number Rope Battle!</h1>
+      <p>Two teams. Two quizzes. Play at the same time!</p>
+      <div class="ruleBox">
+        <b>Questions 1–10:</b> number → word, for example <b>8 → EIGHT</b>.<br>
+        <b>From question 11:</b> the game randomly mixes number → word and word → number.<br>
+        ✅ Correct = pull the rope. &nbsp; ❌ Wrong = no pull; a new question appears.
+      </div>
+      <div class="nameGrid">
+        <div class="field blue"><label>🔵 Blue Team</label><input id="blueNameInput" value="Blue Team" maxlength="14"></div>
+        <div class="field red"><label>🔴 Red Team</label><input id="redNameInput" value="Red Team" maxlength="14"></div>
+      </div>
+      <button class="primary" id="startBtn">START SPEED BATTLE!</button>
+      <p class="smallNote">Numbers 0–10 · 3 choices · each team has its own independent question stream.</p>
+    </div>
+  </div>
+
+  <div id="winOverlay">
+    <div class="modal">
+      <div style="font-size:72px">🏆</div>
+      <div id="winnerText">BLUE TEAM WINS!</div>
+      <p id="winnerSub">Fast reading wins the rope!</p>
+      <div class="winBtns"><button class="primary" id="playAgainBtn">PLAY AGAIN</button><button class="secondary" id="newTeamsBtn">CHANGE TEAMS</button></div>
+    </div>
+  </div>
+</div>
+<script>
+(() => {
+  const WORDS=['ZERO','ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT','NINE','TEN'];
+  const MAX_PULL=5;
+  const MIX_START=11; // first 10 questions are normal; question 11+ can reverse randomly
+  const REVERSE_CHANCE=.50;
+  let position=0, gameOver=false, soundOn=true, teamNames={blue:'Blue Team',red:'Red Team'};
+  const state={
+    blue:{questionNo:1,correct:0,locked:false,lastTarget:null,current:null},
+    red:{questionNo:1,correct:0,locked:false,lastTarget:null,current:null}
+  };
+  const $=s=>document.querySelector(s);
+  const els={
+    blue:{panel:$('#bluePanel'),prompt:$('#bluePrompt'),box:$('#blueQBox'),answers:$('#blueAnswers'),feedback:$('#blueFeedback'),mode:$('#blueMode'),q:$('#blueQ'),correct:$('#blueCorrect')},
+    red:{panel:$('#redPanel'),prompt:$('#redPrompt'),box:$('#redQBox'),answers:$('#redAnswers'),feedback:$('#redFeedback'),mode:$('#redMode'),q:$('#redQ'),correct:$('#redCorrect')}
+  };
+  const ropeMover=$('#ropeMover'), bluePullers=$('#bluePullers'), redPullers=$('#redPullers'), centerStatus=$('#centerStatus');
+
+  function kidHTML(){return `<div class="kid"><div class="head"><div class="hair"></div><i class="eye e1"></i><i class="eye e2"></i><i class="mouth"></i></div><div class="body"></div><div class="arm"></div><div class="leg l1"><i class="shoe"></i></div><div class="leg l2"><i class="shoe"></i></div></div>`}
+  bluePullers.innerHTML=kidHTML()+kidHTML()+kidHTML();
+  redPullers.innerHTML=kidHTML()+kidHTML()+kidHTML();
+
+  function initProgress(){
+    const p=$('#progress'); p.innerHTML='';
+    for(let i=-MAX_PULL;i<=MAX_PULL;i++){
+      if(i===0){const c=document.createElement('span');c.className='dot center';p.appendChild(c)}
+      else{const d=document.createElement('span');d.className='dot';d.dataset.p=i;p.appendChild(d)}
+    }
+    paintProgress();
+  }
+  function paintProgress(){
+    document.querySelectorAll('.dot[data-p]').forEach(d=>{
+      const p=+d.dataset.p; d.className='dot';
+      if(position<0 && p<0 && p>=position)d.classList.add('blue');
+      if(position>0 && p>0 && p<=position)d.classList.add('red');
+    });
+  }
+
+  function randomTarget(team){
+    let n; do{n=Math.floor(Math.random()*11)}while(n===state[team].lastTarget); state[team].lastTarget=n; return n;
+  }
+  function shuffled(arr){
+    const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a;
+  }
+  function choicesFor(target){
+    const pool=shuffled([...Array(11).keys()].filter(x=>x!==target)); return shuffled([target,pool[0],pool[1]]);
+  }
+
+  function makeQuestion(team){
+    if(gameOver)return;
+    const s=state[team], e=els[team]; s.locked=false;
+    const target=randomTarget(team);
+    const reverse=s.questionNo>=MIX_START && Math.random()<REVERSE_CHANCE;
+    s.current={target,reverse};
+    e.q.textContent=`Q ${s.questionNo}`;
+    e.mode.textContent=s.questionNo>=MIX_START?'RANDOM MIX':'NORMAL';
+    e.mode.classList.toggle('mix',s.questionNo>=MIX_START);
+    e.box.classList.toggle('reverse',reverse);
+    e.prompt.className='prompt '+(reverse?'word':'digit');
+    e.prompt.textContent=reverse?WORDS[target]:String(target);
+    e.answers.innerHTML='';
+    choicesFor(target).forEach(v=>{
+      const b=document.createElement('button'); b.className='answer'; b.dataset.value=v;
+      b.textContent=reverse?String(v):WORDS[v];
+      b.addEventListener('click',()=>submit(team,b)); e.answers.appendChild(b);
+    });
+    e.feedback.textContent=s.questionNo===MIX_START?'⚡ MIX MODE STARTS NOW!':'GO!';
+  }
+
+  function submit(team,btn){
+    const s=state[team], e=els[team]; if(gameOver||s.locked)return; s.locked=true;
+    const chosen=+btn.dataset.value, target=s.current.target;
+    e.answers.querySelectorAll('.answer').forEach(b=>b.disabled=true);
+    if(chosen===target){
+      btn.classList.add('correct'); s.correct++; e.correct.textContent=s.correct; e.feedback.textContent='✅ PULL!';
+      pull(team); tone('correct'); speakAnswerAndPull(target);
+      flashPanel(team);
+      s.questionNo++;
+      if(!gameOver)setTimeout(()=>makeQuestion(team),520);
+    }else{
+      btn.classList.add('wrong'); e.feedback.textContent='❌ NO PULL — NEXT!'; tone('wrong');
+      s.questionNo++;
+      if(!gameOver)setTimeout(()=>makeQuestion(team),620);
+    }
+  }
+
+  function pull(team){
+    if(gameOver)return;
+    position += team==='blue' ? -1 : 1;
+    showCenter(team==='blue'?`🔵 ${teamNames.blue} PULLS!`:`🔴 ${teamNames.red} PULLS!`,team);
+    animatePull(team); updateRope();
+    if(Math.random()<.10)runChicken();
+    if(Math.abs(position)>=MAX_PULL){gameOver=true; setTimeout(()=>win(team),520)}
+  }
+
+  function updateRope(){
+    const px=position*29; ropeMover.style.transform=`translateX(${px}px)`;
+    bluePullers.style.transform=`translateY(-50%) translateX(${px}px)`;
+    redPullers.style.transform=`translateY(-50%) translateX(${px}px)`;
+    paintProgress();
+  }
+  function animatePull(team){
+    const winner=team==='blue'?bluePullers:redPullers, loser=team==='blue'?redPullers:bluePullers;
+    winner.classList.remove('pullReact');loser.classList.remove('slipReact');void winner.offsetWidth;
+    winner.classList.add('pullReact');loser.classList.add('slipReact');
+    setTimeout(()=>{winner.classList.remove('pullReact');loser.classList.remove('slipReact')},500);
+  }
+  function flashPanel(team){
+    const p=els[team].panel, cls=team==='blue'?'flashBlue':'flashRed'; p.classList.remove(cls);void p.offsetWidth;p.classList.add(cls);setTimeout(()=>p.classList.remove(cls),350)
+  }
+  function showCenter(msg,team){
+    centerStatus.textContent=msg; centerStatus.style.color=team==='blue'?'#1469e6':'#dc1830'; centerStatus.classList.add('show');
+    setTimeout(()=>centerStatus.classList.remove('show'),650);
+  }
+
+  function win(team){
+    document.querySelectorAll('.answer').forEach(b=>b.disabled=true);
+    const name=teamNames[team]; $('#winnerText').textContent=`${name.toUpperCase()} WINS!`; $('#winnerText').style.color=team==='blue'?'#1672ff':'#e51d34';
+    $('#winnerSub').textContent=`🏆 ${name} pulled the other team across the line!`; $('#winOverlay').style.display='grid'; tone('win'); confetti();
+  }
+
+  function resetBattle(){
+    position=0;gameOver=false;
+    for(const team of ['blue','red']){state[team].questionNo=1;state[team].correct=0;state[team].locked=false;state[team].lastTarget=null;state[team].current=null;els[team].correct.textContent='0';els[team].mode.classList.remove('mix')}
+    ropeMover.style.transform='translateX(0)';bluePullers.style.transform='translateY(-50%)';redPullers.style.transform='translateY(-50%)';paintProgress();$('#winOverlay').style.display='none';
+    makeQuestion('blue');makeQuestion('red');showCenter('⚡ BOTH TEAMS — GO!','blue');
+  }
+
+  function start(){
+    teamNames.blue=$('#blueNameInput').value.trim()||'Blue Team'; teamNames.red=$('#redNameInput').value.trim()||'Red Team';
+    $('#blueNameLabel').textContent=teamNames.blue; $('#redNameLabel').textContent=teamNames.red; $('#startOverlay').style.display='none'; resetBattle(); tone('start');
+  }
+
+  function confetti(){
+    const box=$('#confetti'),colors=['#1672ff','#ff3446','#ffd43f','#35c36b','#8a61ff','#ff8a2b'];box.innerHTML='';
+    for(let i=0;i<90;i++){const c=document.createElement('i');c.className='confettiPiece';c.style.left=Math.random()*100+'%';c.style.background=colors[Math.floor(Math.random()*colors.length)];c.style.animationDelay=(Math.random()*.65)+'s';c.style.animationDuration=(1.7+Math.random()*1.8)+'s';c.style.transform=`rotate(${Math.random()*180}deg)`;box.appendChild(c)} setTimeout(()=>box.innerHTML='',3600)
+  }
+  function runChicken(){const c=$('#chicken');c.classList.remove('run');void c.offsetWidth;c.classList.add('run');setTimeout(()=>c.classList.remove('run'),2400)}
+
+  let audioCtx=null;
+  function tone(type){
+    if(!soundOn)return; audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)(); const ctx=audioCtx,now=ctx.currentTime;
+    const beep=(f,start,dur,kind='sine',gain=.07)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=kind;o.frequency.value=f;g.gain.setValueAtTime(gain,now+start);g.gain.exponentialRampToValueAtTime(.001,now+start+dur);o.connect(g);g.connect(ctx.destination);o.start(now+start);o.stop(now+start+dur)};
+    if(type==='correct'){beep(650,0,.1);beep(880,.09,.14)} if(type==='wrong'){beep(170,0,.14,'sawtooth',.05)} if(type==='start'){beep(440,0,.08);beep(660,.09,.08);beep(880,.18,.13)} if(type==='win'){[523,659,784,1046].forEach((f,i)=>beep(f,i*.12,.28,'triangle',.08))}
+  }
+  /* ===== DEFAULT FEMALE VOICE — optimized for online playback ===== */
+  let ropeFemaleVoice=null, ropeVoiceWarmed=false, ropeVoiceToken=0;
+  const ROPE_FEMALE_HINT=/Samantha|Zira|Jenny|Aria|Ava|Susan|Victoria|Karen|Moira|Fiona|Tessa|Veena|Serena|Hazel|Google US English|English United States/i;
+  function chooseRopeFemaleVoice(){
+    if(!('speechSynthesis' in window))return null;
+    const voices=speechSynthesis.getVoices()||[];const en=voices.filter(v=>/^en([-_]|$)/i.test(v.lang||''));const female=en.filter(v=>ROPE_FEMALE_HINT.test(v.name||''));
+    ropeFemaleVoice=female.find(v=>v.localService)||female.find(v=>/^en[-_]US/i.test(v.lang||''))||female[0]||en.find(v=>v.localService)||en[0]||voices[0]||null;return ropeFemaleVoice;
+  }
+  function prepareRopeFemaleVoice(){if(!('speechSynthesis' in window))return;chooseRopeFemaleVoice();const r=()=>chooseRopeFemaleVoice();if(typeof speechSynthesis.addEventListener==='function')speechSynthesis.addEventListener('voiceschanged',r);else speechSynthesis.onvoiceschanged=r;}
+  function warmRopeFemaleVoice(){if(ropeVoiceWarmed||!('speechSynthesis' in window))return;chooseRopeFemaleVoice();try{speechSynthesis.resume();const u=new SpeechSynthesisUtterance(' ');u.lang='en-US';u.volume=0;if(ropeFemaleVoice)u.voice=ropeFemaleVoice;speechSynthesis.speak(u);ropeVoiceWarmed=true;}catch(e){}}
+  function stopRopeVoice(){ropeVoiceToken++;if('speechSynthesis' in window&&(speechSynthesis.speaking||speechSynthesis.pending)){try{speechSynthesis.cancel();}catch(e){}}}
+  function speakAnswerAndPull(value){
+    if(!soundOn||!('speechSynthesis' in window))return Promise.resolve();
+    stopRopeVoice();chooseRopeFemaleVoice();const token=++ropeVoiceToken;
+    const spoken=((WORDS[value]||String(value)).toLowerCase()+'. Pull!');
+    return new Promise(resolve=>{const u=new SpeechSynthesisUtterance(spoken);u.lang='en-US';u.rate=.9;u.pitch=1.04;u.volume=1;if(ropeFemaleVoice)u.voice=ropeFemaleVoice;let done=false;const f=()=>{if(done)return;done=true;resolve();};u.onend=f;u.onerror=f;if(token!==ropeVoiceToken)return f();try{speechSynthesis.resume();speechSynthesis.speak(u);}catch(e){f();}});
+  }
+  prepareRopeFemaleVoice();
+  document.addEventListener('pointerdown',warmRopeFemaleVoice,{once:true,capture:true});
+
+  $('#startBtn').addEventListener('click',()=>{warmRopeFemaleVoice();start();});
+  $('#playAgainBtn').addEventListener('click',resetBattle);
+  $('#newTeamsBtn').addEventListener('click',()=>{$('#winOverlay').style.display='none';$('#startOverlay').style.display='grid'});
+  $('#soundBtn').addEventListener('click',()=>{soundOn=!soundOn;$('#soundBtn').textContent=soundOn?'🔊':'🔇';if(!soundOn)stopRopeVoice();else warmRopeFemaleVoice();});
+  $('#fullBtn').addEventListener('click',()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()});
+  initProgress();
+})();
+</script>
+</body>
+</html>
