@@ -1,0 +1,16 @@
+WORLD FOOD TRAVEL V5 — POSITIVE WRONG-ANSWER RULE
+
+Changed carefully from V4:
+- Wrong answer no longer moves the player backward.
+- Wrong answer voice is now: “Oh no! Travel delay!”
+- “Don’t worry. Stay here!” is NOT used.
+- Correct hidden card is shown briefly after a wrong answer.
+- 35% chance of a Rescue Challenge after a wrong answer.
+- Rescue Challenge shows two large picture choices.
+- Correct rescue: “Great! Keep traveling!” and the same player continues.
+- Wrong rescue: “Good try! Next traveler!” and the turn passes.
+- If no rescue appears, “Good try! Next traveler!” and the turn passes.
+- Speed Challenge remains removed.
+- Existing Passport Bonus, Jet Boost and Food & Country Challenge remain.
+- Passport Bonus verified/fixed to exactly +1 extra space.
+- All voice audio is local; no online TTS.
