@@ -1,0 +1,12 @@
+WHERE ARE YOU? — V7 RANDOM DICE / CLEAR TOKEN LANDING
+
+Changes:
+1. Dice final result is randomized from 1 to 6 using Web Crypto when available.
+2. The exact same final dice result cannot appear twice in a row (classroom variety mode).
+3. Dice animation timing varies slightly so rolls feel less repetitive.
+4. The rolled number briefly appears on screen before the token moves.
+5. Tokens land clearly inside the destination square, near its lower-center area.
+6. When players share a square, their tokens spread across that tile instead of overlapping.
+
+All existing board artwork, snakes, ladders, location questions, sounds, player count,
+and win rules remain unchanged.

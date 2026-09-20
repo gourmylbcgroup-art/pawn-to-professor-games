@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="theme-color" content="#153b59">
+  <title>Where Are You? — Touch ESL Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <main id="gameFrame" aria-label="Where Are You touch-screen board game">
+    <img id="boardImage" src="assets/board_4k.jpg" alt="Where Are You board">
+    <div id="landingHighlight" aria-hidden="true"></div>
+    <div id="tokensLayer"></div>
+
+    <div id="teacherTools">
+      <button id="soundButton" class="toolButton" title="Sound on/off" aria-label="Sound on or off">🔊</button>
+      <button id="fullButton" class="toolButton" title="Full screen" aria-label="Full screen">⛶</button>
+      <button id="restartButton" class="toolButton" title="Restart game" aria-label="Restart game">↻</button>
+    </div>
+
+    <div id="hud" class="floatingDicePanel">
+      <div id="turnBadge">PLAYER 1</div>
+      <div class="diceRow">
+        <div id="diceFace" aria-live="polite">⚀</div>
+        <button id="rollButton" class="bigButton">ROLL</button>
+      </div>
+      <div id="rollResult" class="rollResult" aria-live="polite">ROLL THE DICE</div>
+      <div id="goldenStatus" class="goldenStatus hidden">✨ GOLDEN DICE — EXTRA TURN! ✨</div>
+    </div>
+
+    <div id="specialToast"></div>
+    <div id="confetti"></div>
+
+    <!-- Setup -->
+    <section id="setupOverlay" class="overlay">
+      <div class="modal">
+        <h1>WHERE ARE YOU?</h1>
+        <p>Choose the number of players.</p>
+        <div class="playerChoices">
+          <button class="playerChoice selected" data-players="2">2</button>
+          <button class="playerChoice" data-players="3">3</button>
+          <button class="playerChoice" data-players="4">4</button>
+        </div>
+        <div class="actionRow">
+          <button id="startButton" class="modalButton green">▶ START GAME</button>
+        </div>
+        <p class="smallNote">Touch-screen ready • Sound ON • Full-screen recommended</p>
+      </div>
+    </section>
+
+    <!-- ESL question after every move -->
+    <section id="questionOverlay" class="overlay questionOverlayStyle hidden">
+      <div class="modal">
+        <h2>Where are you?</h2>
+        <button id="questionSpeaker" class="speaker">🔊 Hear it again</button>
+        <div id="sentenceFrame">I'm at the ______.</div>
+        <div id="answerReveal" class="hiddenText">I'm at the hospital.</div>
+        <div class="actionRow">
+          <button id="checkAnswer" class="modalButton orange">✓ CHECK ANSWER</button>
+          <button id="nextPlayer" class="modalButton green hidden">NEXT PLAYER ▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Winner -->
+    <section id="winOverlay" class="overlay hidden">
+      <div class="modal">
+        <h1>🎉 GREAT JOB! 🎉</h1>
+        <h2 id="winnerText">PLAYER 1 WINS!</h2>
+        <div class="actionRow">
+          <button id="playAgainButton" class="modalButton green">↻ PLAY AGAIN</button>
+          <button id="newGameButton" class="modalButton">NEW GAME</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="config.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
