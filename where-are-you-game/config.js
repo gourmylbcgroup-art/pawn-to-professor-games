@@ -1,5 +1,4 @@
 window.GAME_CONFIG = {
-  // Replace these WAV files with your own sounds if you want.
   sounds: {
     dice: "sounds/Dice.mp3",
     ladder: "sounds/ladder_climb.wav",
@@ -8,9 +7,6 @@ window.GAME_CONFIG = {
     win: "sounds/celebration.wav"
   },
 
-  // Optional recorded voice files.
-  // Leave useRecordedVoices false to use the computer/browser English voice.
-  // If you set it to true, add the files listed below in the /sounds folder.
   useRecordedVoices: true,
   voices: {
     whereAreYou: "sounds/where_are_you.mp3",
@@ -30,8 +26,6 @@ window.GAME_CONFIG = {
     }
   },
 
-  // Special moves use path square numbers (START = 0, FINISH = 49).
-  // These match the snakes/ladders approximately on the supplied artwork.
   ladders: {
     2: 17,
     16: 23,
@@ -46,9 +40,10 @@ window.GAME_CONFIG = {
     14: 5
   },
 
-  // Speed in milliseconds.
+  // Timing tuned for classroom readability.
   stepDelay: 430,
   diceAnimationMs: 900,
+  rollReadMs: 1800,
   specialMoveMs: 1250,
-  landingPauseMs: 6000
+  landingPauseMs: 3000
 };

@@ -1,4 +1,3 @@
-
 (() => {
   "use strict";
   const C = window.GAME_CONFIG;
@@ -7,23 +6,35 @@
   const X = [9.2, 17.6, 26.6, 35.8, 44.9, 54.3, 63.9, 73.2, 82.5, 91.2];
   const Y = [21.9, 37.1, 52.4, 67.8, 83.0];
 
+  // New board labels: top-left is CAFE and top-right is FINISH.
   const LABELS = [
-    ["finish","hospital","school","supermarket","bank","park","store","night market","tea shop","cafe"],
-    ["library","cafe","tea shop","night market","store","park","bank","night market","school","hospital"],
+    ["cafe","hospital","school","supermarket","bank","park","store","night market","tea shop","finish"],
+    ["library","cafe","tea shop","night market","store","park","bank","supermarket","school","hospital"],
     ["hospital","school","supermarket","bank","park","store","night market","tea shop","cafe","library"],
-    ["library","cafe","tea shop","night market","store","park","bank","night market","school","hospital"],
+    ["library","cafe","tea shop","night market","store","park","bank","supermarket","school","hospital"],
     ["start","hospital","school","supermarket","bank","park","store","night market","tea shop","library"]
   ];
 
-  // Start bottom-left and finish top-left. The final row is traversed right-to-left.
-  // The picture is an AI-style reference without printed square numbers, so the
-  // path is defined here and can be changed easily if the teacher wants.
+  // Start bottom-left and finish top-right.
   const PATH = [];
-  for (let c=0;c<10;c++) PATH.push({r:4,c});           // 0..9
-  for (let c=9;c>=0;c--) PATH.push({r:3,c});           // 10..19
-  for (let c=0;c<10;c++) PATH.push({r:2,c});           // 20..29
-  for (let c=9;c>=0;c--) PATH.push({r:1,c});           // 30..39
-  for (let c=9;c>=0;c--) PATH.push({r:0,c});           // 40..49 -> FINISH
+  for (let c=0;c<10;c++) PATH.push({r:4,c});
+  for (let c=9;c>=0;c--) PATH.push({r:3,c});
+  for (let c=0;c<10;c++) PATH.push({r:2,c});
+  for (let c=9;c>=0;c--) PATH.push({r:1,c});
+  for (let c=0;c<10;c++) PATH.push({r:0,c});
+
+  const FLASHCARDS = {
+    "hospital": "assets/flashcards/hospital.png",
+    "school": "assets/flashcards/school.png",
+    "supermarket": "assets/flashcards/supermarket.png",
+    "bank": "assets/flashcards/bank.png",
+    "park": "assets/flashcards/park.png",
+    "store": "assets/flashcards/store.png",
+    "night market": "assets/flashcards/night_market.png",
+    "tea shop": "assets/flashcards/tea_shop.png",
+    "cafe": "assets/flashcards/cafe.png",
+    "library": "assets/flashcards/library.png"
+  };
 
   const $ = s => document.querySelector(s);
   const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -76,8 +87,6 @@
     } catch (_) {}
   }
 
-  function cap(s) { return s.replace(/\b\w/g, m => m.toUpperCase()); }
-
   function getSquareLabel(pos) {
     const p = PATH[Math.max(0, Math.min(PATH.length-1, pos))];
     return LABELS[p.r][p.c];
@@ -105,9 +114,6 @@
   }
 
   function offsetFor(index, n) {
-    // Keep tokens clearly INSIDE the destination square, near its lower edge.
-    // Shared squares spread the tokens across the same tile so it is obvious
-    // that every player really landed on that square.
     const sets = {
       1: [[0, 3.7]],
       2: [[-1.55, 3.7], [1.55, 3.7]],
@@ -143,8 +149,6 @@
   }
 
   function randomInt(min, max) {
-    // Prefer the browser's cryptographic random generator when available.
-    // Rejection sampling avoids modulo bias, so every die face has the same chance.
     const range = max - min + 1;
     if (window.crypto && window.crypto.getRandomValues) {
       const limit = Math.floor(0x100000000 / range) * range;
@@ -165,11 +169,7 @@
   }
 
   function refillDiceBag() {
-    // Classroom-random mode: every group of six rolls contains 1,2,3,4,5,6
-    // exactly once, but in a freshly randomized order. This prevents a short
-    // game from feeling "stuck" on one number while keeping the order unknown.
     diceBag = shuffle([1, 2, 3, 4, 5, 6]);
-    // Also prevent a duplicate at the boundary between two shuffled bags.
     if (lastDiceRoll !== null && diceBag[0] === lastDiceRoll) {
       const swapIndex = diceBag.findIndex((v, i) => i > 0 && v !== lastDiceRoll);
       if (swapIndex > 0) [diceBag[0], diceBag[swapIndex]] = [diceBag[swapIndex], diceBag[0]];
@@ -184,8 +184,6 @@
   }
 
   function nextGoldenRoll() {
-    // One Golden Dice in each randomized group of eight turns.
-    // This keeps it special but guarantees students will see it during play.
     if (!goldenBag.length) goldenBag = shuffle([true, false, false, false, false, false, false, false]);
     return goldenBag.shift();
   }
@@ -232,10 +230,8 @@
     die.textContent = diceChars[roll];
     die.classList.remove("rolling");
     showRollResult(roll, isGolden);
-    showToast(isGolden
-      ? `✨ GOLDEN DICE! ${roll} — EXTRA TURN! ✨`
-      : `🎲 YOU ROLLED ${roll}!`);
-    await sleep(isGolden ? 900 : 650);
+    showToast(isGolden ? `✨ GOLDEN DICE! ${roll} — EXTRA TURN! ✨` : `🎲 YOU ROLLED ${roll}!`);
+    await sleep(C.rollReadMs || 1800);
     hideToast();
     return roll;
   }
@@ -289,7 +285,6 @@
   }
   function hideToast() { $("#specialToast").classList.remove("show"); }
 
-
   function showLandingFocus() {
     const player = players[current];
     const p = PATH[player.pos];
@@ -311,7 +306,7 @@
 
   async function landingPause() {
     showLandingFocus();
-    await sleep(C.landingPauseMs || 6000);
+    await sleep(C.landingPauseMs || 3000);
   }
 
   async function takeTurn() {
@@ -320,11 +315,10 @@
     $("#rollButton").disabled = true;
     $("#hud").classList.add("busy");
     const roll = await animateDice();
-    await sleep(200);
+    await sleep(180);
     await moveBy(roll);
 
     if (players[current].pos >= PATH.length-1) {
-      $("#hud").classList.remove("busy");
       $("#hud").classList.remove("busy");
       await win(current);
       busy = false;
@@ -339,8 +333,6 @@
       return;
     }
 
-    // Give students time to SEE the building before the question appears.
-    // The final square is highlighted and the token is enlarged for 6 seconds.
     await landingPause();
 
     $("#hud").classList.remove("busy");
@@ -348,8 +340,23 @@
     busy = false;
   }
 
+  function updateQuestionFlashcard(label) {
+    const img = $("#flashcardImage");
+    const src = FLASHCARDS[label];
+    if (src) {
+      img.src = src;
+      img.alt = `${label} flashcard`;
+      img.classList.remove("hidden");
+    } else {
+      img.src = "";
+      img.alt = "";
+      img.classList.add("hidden");
+    }
+  }
+
   function showQuestion() {
     const label = getSquareLabel(players[current].pos);
+    updateQuestionFlashcard(label);
     $("#questionOverlay").classList.remove("hidden");
     $("#answerReveal").textContent = `I'm at the ${label}.`;
     $("#answerReveal").classList.add("hiddenText");
@@ -458,7 +465,6 @@
     } catch (_) {}
   }
 
-  // Setup controls
   document.querySelectorAll(".playerChoice").forEach(btn => {
     btn.addEventListener("click", () => {
       selectedCount = Number(btn.dataset.players);
@@ -482,7 +488,6 @@
   });
   $("#newGameButton").addEventListener("click", resetToSetup);
 
-  // Prevent accidental context menu / double-tap zoom-like behavior.
   document.addEventListener("contextmenu", e => e.preventDefault());
   let lastTouchEnd = 0;
   document.addEventListener("touchend", e => {
@@ -491,6 +496,5 @@
     lastTouchEnd = now;
   }, {passive:false});
 
-  // Initial state
   $("#rollButton").disabled = true;
 })();
