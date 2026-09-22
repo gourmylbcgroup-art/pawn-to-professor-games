@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f6b73c" />
+  <title>Three Meals in Yunlin – Food Adventure Race</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-kicker">Grade 5 EFL • Yunlin</span>
+        <h1>Three Meals in Yunlin <span>Food Adventure Race</span></h1>
+      </div>
+      <div class="top-actions">
+        <span id="levelBadge" class="level-badge">Level 1 • Week 4</span>
+        <button id="helpBtn" class="icon-btn" type="button" title="Game rules">?</button>
+        <button id="fullscreenBtn" class="icon-btn" type="button" title="Fullscreen">⛶</button>
+        <button id="resetBtn" class="icon-btn danger" type="button" title="Reset game">↻</button>
+      </div>
+    </header>
+
+    <main class="game-layout">
+      <section class="board-card" aria-label="Three Meals in Yunlin board">
+        <div id="boardWrap" class="board-wrap">
+          <img class="board-image" src="assets/board.webp" alt="Three Meals in Yunlin board game" draggable="false" />
+          <div id="tokenLayer" class="token-layer" aria-live="polite"></div>
+          <div id="boardStatus" class="board-status">Choose a level and start the race!</div>
+        </div>
+      </section>
+
+      <aside class="control-panel">
+        <section class="turn-card">
+          <div class="eyebrow">CURRENT PLAYER</div>
+          <div class="current-player-row">
+            <img id="currentToken" class="current-token" src="assets/tokens/token-red.webp" alt="Current puppet token" />
+            <div>
+              <h2 id="currentPlayerName">Player 1</h2>
+              <p id="turnInstruction">Roll the die to begin.</p>
+            </div>
+          </div>
+
+          <div class="dice-zone">
+            <div id="dice" class="dice" aria-label="Dice result"><span>?</span></div>
+            <button id="rollBtn" class="primary-btn" type="button">🎲 Roll</button>
+          </div>
+
+          <div class="status-strip">
+            <div><span class="label">Streak</span><strong id="streakValue">0 / 3</strong></div>
+            <div><span class="label">Power-up</span><strong id="powerValue">None</strong></div>
+          </div>
+        </section>
+
+        <section class="players-card">
+          <div class="section-head">
+            <h3>Race</h3>
+            <span id="turnCounter">Turn 1</span>
+          </div>
+          <div id="playersList" class="players-list"></div>
+        </section>
+
+        <section class="teacher-card">
+          <div class="section-head"><h3>Teacher controls</h3></div>
+          <label class="toggle-row">
+            <input id="surpriseToggle" type="checkbox" checked />
+            <span>🎁 Surprise power-ups</span>
+          </label>
+          <label class="toggle-row">
+            <input id="funnyToggle" type="checkbox" checked />
+            <span>🎭 Funny speaking challenges</span>
+          </label>
+          <label class="toggle-row">
+            <input id="soundToggle" type="checkbox" checked />
+            <span>🔊 Sound effects</span>
+          </label>
+          <button id="cardsBtn" class="secondary-btn" type="button">🃏 View card deck</button>
+          <p class="teacher-note">Teacher judges speaking. No microphone or speech recognition is used. Sounds are generated locally in the browser — no audio streaming or downloads.</p>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Setup -->
+  <div id="setupModal" class="modal open" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+    <div class="modal-backdrop"></div>
+    <div class="setup-panel modal-panel">
+      <div class="setup-title">
+        <span class="mini-sign">FOOD ADVENTURE RACE</span>
+        <h2 id="setupTitle">Choose the learning level</h2>
+        <p>Same board. Same core rules. The English gets harder in Week 5.</p>
+      </div>
+
+      <div class="level-grid">
+        <button class="level-option selected" data-level="1" type="button">
+          <span class="level-number">LEVEL 1</span>
+          <strong>Week 4 • Food Sentences</strong>
+          <small>Recognize meals and foods. Say: “I eat ___ for ___.” and Yunlin sentences.</small>
+        </button>
+        <button class="level-option" data-level="2" type="button">
+          <span class="level-number">LEVEL 2</span>
+          <strong>Week 5 • Mini Dialogues</strong>
+          <small>Ask and answer: “What would you like…?” → “I would like some ___.”</small>
+        </button>
+      </div>
+
+      <div class="player-setup">
+        <h3>Four players / teams</h3>
+        <div class="name-grid">
+          <label><img src="assets/tokens/token-red.webp" alt="Red puppet"><input class="player-name-input" value="Red Team" maxlength="18"></label>
+          <label><img src="assets/tokens/token-blue.webp" alt="Blue puppet"><input class="player-name-input" value="Blue Team" maxlength="18"></label>
+          <label><img src="assets/tokens/token-pink.webp" alt="Pink puppet"><input class="player-name-input" value="Pink Team" maxlength="18"></label>
+          <label><img src="assets/tokens/token-green.webp" alt="Green puppet"><input class="player-name-input" value="Green Team" maxlength="18"></label>
+        </div>
+      </div>
+
+      <div class="setup-actions">
+        <button id="resumeBtn" class="secondary-btn hidden" type="button">Resume saved game</button>
+        <button id="startBtn" class="primary-btn large" type="button">Start Adventure →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Challenge card -->
+  <div id="challengeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="challengeTitle">
+    <div class="modal-backdrop"></div>
+    <div class="challenge-panel modal-panel">
+      <div class="challenge-top">
+        <div>
+          <span id="challengeKicker" class="mini-sign">DRAW A CARD</span>
+          <h2 id="challengeTitle">Say the sentence</h2>
+          <p id="challengePrompt">Complete the card aloud.</p>
+        </div>
+        <div id="funnyBadge" class="funny-badge hidden"></div>
+      </div>
+
+      <div id="cardStage" class="card-stage"></div>
+      <div id="supportStage" class="support-stage hidden"></div>
+
+      <div class="challenge-actions">
+        <button id="supportBtn" class="secondary-btn" type="button">💡 Show support</button>
+        <button id="helpAnswerBtn" class="warning-btn" type="button">Need help</button>
+        <button id="correctBtn" class="success-btn" type="button">✓ Correct</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event / surprise -->
+  <div id="eventModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="eventTitle">
+    <div class="modal-backdrop"></div>
+    <div class="event-panel modal-panel">
+      <div id="eventIcon" class="event-icon">⭐</div>
+      <h2 id="eventTitle">Great job!</h2>
+      <p id="eventText"></p>
+      <button id="eventBtn" class="primary-btn large" type="button">Continue</button>
+    </div>
+  </div>
+
+  <!-- Rules -->
+  <div id="rulesModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
+    <div class="modal-backdrop close-modal"></div>
+    <div class="rules-panel modal-panel">
+      <button class="modal-close close-modal" type="button">×</button>
+      <span class="mini-sign">CORE RULES</span>
+      <h2 id="rulesTitle">Roll → Move → Draw → Speak</h2>
+      <ol class="rules-list">
+        <li><b>Roll</b> the die and move your puppet token.</li>
+        <li>On a normal space, <b>draw a flashcard</b> and complete the English challenge.</li>
+        <li><b>Correct:</b> stay on the space. <b>Need help:</b> teacher supports; repeat, then the turn ends. Never move backwards.</li>
+        <li><b>Breakfast / Lunch / Dinner:</b> complete the meal challenge correctly → play again.</li>
+        <li><b>REST:</b> stomach is full → miss 1 turn.</li>
+        <li><b>Night Market:</b> say the Night Market sentence → miss 1 turn because it is late.</li>
+        <li>Every <b>3 correct answers in a row</b> earns a Yunlin Star Boost (+1 space).</li>
+        <li>First puppet to <b>FINISH</b> wins. Exact roll is not required.</li>
+      </ol>
+      <div class="level-rule-box"><b>Level 1 • Week 4:</b> one card → one food/meal sentence.</div>
+      <div class="level-rule-box"><b>Level 2 • Week 5:</b> one card → a short question-and-answer dialogue, with Week 4 review.</div>
+    </div>
+  </div>
+
+  <!-- Deck library -->
+  <div id="deckModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="deckTitle">
+    <div class="modal-backdrop close-deck"></div>
+    <div class="deck-panel modal-panel">
+      <button class="modal-close close-deck" type="button">×</button>
+      <span class="mini-sign">FLASHCARD DECK</span>
+      <h2 id="deckTitle">Cards used by the game</h2>
+      <div id="deckGrid" class="deck-grid"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script src="game.js"></script>
+</body>
+</html>
