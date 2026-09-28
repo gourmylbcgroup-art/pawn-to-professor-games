@@ -384,12 +384,23 @@
     try{ audio.currentTime = 0; }catch(e){}
     return new Promise(resolve=>{
       let resolved=false;
-      const finish=val=>{ if(resolved) return; resolved=true; audio.onended=null; audio.onerror=null; resolve(val); };
+      let safetyTimer=null;
+      const finish=val=>{
+        if(resolved) return;
+        resolved=true;
+        if(safetyTimer) clearTimeout(safetyTimer);
+        audio.onended=null;
+        audio.onerror=null;
+        resolve(val);
+      };
       audio.onended=()=>finish(true);
       audio.onerror=()=>finish(false);
-      const p = audio.play();
-      if(p && typeof p.catch==='function') p.catch(()=>finish(false));
-      if(!wait){ setTimeout(()=>finish(true), 250); }
+      try{
+        const playPromise = audio.play();
+        if(playPromise && typeof playPromise.catch==='function') playPromise.catch(()=>finish(false));
+      }catch(e){ finish(false); }
+      // Never allow an audio clip to freeze the game flow.
+      safetyTimer=setTimeout(()=>finish(false), wait ? 5000 : 350);
     });
   }
 
@@ -459,11 +470,38 @@
       b.addEventListener('click',()=>revealCard(i,b)); cardsEl.appendChild(b);
     });
   }
+  function tokenOffset(i){
+    // One shared offset formula for every render/move. This is especially
+    // important in 2-player mode so neither token can visually sit on top
+    // of the other or appear not to move.
+    return (i-(players.length-1)/2)*1.6;
+  }
+  function getPlayerTokenEl(i){
+    return document.getElementById(`player-token-${i}`) || $(`.token[data-player="${i}"]`);
+  }
+  function renderTokenPosition(i){
+    const p=players[i];
+    if(!p) return false;
+    const el=getPlayerTokenEl(i);
+    if(!el){ console.error('Token not found for player',i); return false; }
+    applyPos(el,p.position,tokenOffset(i));
+    // Keep the active player's token above other tokens if they are close.
+    el.style.zIndex=(i===currentPlayer?'3':'1');
+    return true;
+  }
+  function syncAllTokenPositions(){
+    players.forEach((_,i)=>renderTokenPosition(i));
+  }
   function buildTokens(){
     tokensEl.innerHTML='';
     players.forEach((p,i)=>{
-      const el=document.createElement('div');el.className='token';el.dataset.player=i;el.innerHTML=`<img src="${p.token.img}" alt="Player ${i+1} ${p.token.name}">`;
-      applyPos(el,0,(i-(players.length-1)/2)*1.35);tokensEl.appendChild(el);
+      const el=document.createElement('div');
+      el.className='token';
+      el.id=`player-token-${i}`;
+      el.dataset.player=String(i);
+      el.innerHTML=`<img src="${p.token.img}" alt="Player ${i+1} ${p.token.name}">`;
+      tokensEl.appendChild(el);
+      renderTokenPosition(i);
     });
   }
   function setCardsDisabled(disabled){$$('.memory-card').forEach(c=>c.disabled=disabled)}
@@ -476,6 +514,7 @@
   async function updateTurn(){
     if(winnerState) return;
     $$('.token').forEach((el,i)=>el.classList.toggle('active',i===currentPlayer));
+    syncAllTokenPositions();
     const p=players[currentPlayer];
     turnBadge.querySelector('img').src=p.token.img;
     turnBadge.querySelector('span').textContent=`PLAYER ${currentPlayer+1}`;
@@ -536,9 +575,23 @@
     if(correct){
       turnCorrectCount += 1;
       p.correctStreak = (p.correctStreak || 0) + 1;
-      await playVoice('correct',{wait:true});
-      await wait(220); stamp.className=''; await closeReveal(smallCard);
-      await movePlayer(currentPlayer,nextSquare);
+
+      // IMPORTANT: normal movement must never depend on voice/audio playback.
+      // Give the visual CORRECT feedback, close the card, then always move +1.
+      playVoice('correct',{wait:false});
+      await wait(260);
+      stamp.className='';
+      await closeReveal(smallCard);
+
+      const normalDestination=Math.min(24,p.position+1);
+      const didMove=await movePlayer(currentPlayer,normalDestination);
+      // Defensive fallback: a correct answer must always advance exactly
+      // one normal space, including Player 2 in 2-player mode.
+      if(!didMove && players[currentPlayer].position<24){
+        players[currentPlayer].position=normalDestination;
+        syncAllTokenPositions();
+        await wait(120);
+      }
       if(players[currentPlayer].position>=24){ showWinner(); return; }
 
       // Fair Classroom Mode: only one movement bonus can be earned in a turn.
@@ -683,7 +736,34 @@
     return await result;
   }
   async function movePlayer(i,newPos){
-    const p=players[i];p.position=newPos;const el=$(`.token[data-player="${i}"]`);sfx('move');applyPos(el,newPos,(i-(players.length-1)/2)*1.1);el.classList.add('land');await wait(520);el.classList.remove('land');
+    const p=players[i];
+    if(!p){ console.error('Player not found',i); return false; }
+    const start=p.position;
+    const target=Math.max(0,Math.min(24,Number(newPos)||0));
+    const el=getPlayerTokenEl(i);
+    if(!el){
+      console.error('Token not found for player',i);
+      // Rebuild the token layer instead of silently losing a move.
+      buildTokens();
+    }
+
+    // Update the game state first, then redraw from that state. This makes
+    // movement identical for Player 1, Player 2, Player 3 and Player 4.
+    p.position=target;
+    sfx('move');
+    renderTokenPosition(i);
+    const liveEl=getPlayerTokenEl(i);
+    if(liveEl) liveEl.classList.add('land');
+    await wait(560);
+
+    // Safety redraw: if a browser skipped a CSS transition or DOM update,
+    // force all token positions to match the authoritative player state.
+    syncAllTokenPositions();
+    if(liveEl) liveEl.classList.remove('land');
+
+    // Return whether a real board move occurred; useful for debugging and
+    // prevents a silent "correct but no movement" state.
+    return target!==start;
   }
   async function bonusMove(playerIndex,steps,title,subtitle,icon,voiceKey=null){
     await showEvent(title, subtitle, icon, 1300);

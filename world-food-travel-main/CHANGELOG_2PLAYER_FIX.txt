@@ -1,0 +1,10 @@
+WORLD FOOD TRAVEL — 2-PLAYER TOKEN MOVEMENT FIX
+
+- Player 1 and Player 2 now use the exact same token rendering/movement path.
+- Tokens receive stable unique DOM IDs.
+- All token positions are re-synchronized from game state after every move.
+- One consistent player offset is used at setup and during movement.
+- Active token is placed above nearby tokens so movement is visible.
+- Correct-answer movement has a defensive redraw fallback.
+- Previous Fair Classroom Mode rules remain unchanged.
+- Wrong answers still do not reveal the correct card.

@@ -10,3 +10,11 @@ Balance changes:
 - Three consecutive correct answers trigger Jet Boost only if no other movement bonus was already earned that turn.
 - A Food Challenge and Passport Bonus cannot both trigger from the same correct answer.
 - Existing rule preserved: a wrong answer does not reveal the correct card and does not move the player backward.
+
+FIX — Correct Answer Movement
+- Normal correct answer now ALWAYS moves the active player +1.
+- Movement no longer waits for voice audio to finish.
+- Added audio timeout protection so a failed/stalled clip cannot freeze the game.
+- Hardened token movement logic.
+- Fair Classroom bonus limits remain unchanged.
+- Wrong answers still do not reveal the correct card.
