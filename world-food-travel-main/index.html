@@ -178,11 +178,12 @@
           <div>🧠 Remember where the 8 cards are.</div>
           <div>👆 Touch <b>one</b> of the 8 face-down cards and find the matching picture.</div>
           <div>✅ Correct = <b>+1 space</b> and keep playing.</div>
+          <div>3️⃣ A turn ends automatically after <b>3 correct card finds</b>.</div>
+          <div>⭐ Only <b>1 movement bonus per turn</b>: Passport, Food Bonus, or Jet Boost.</div>
           <div>🛂 <b>Passport Bonus</b> may appear after a correct answer = <b>+1 extra space</b>.</div>
-          <div>✈️ After <b>3 correct answers in a row</b>, you get a <b>Jet Boost</b> = <b>+2 spaces</b>.</div>
+          <div>✈️ <b>3 correct answers in a row</b> can give a <b>Jet Boost</b> = <b>+1 extra space</b> if no movement bonus was already earned that turn.</div>
           <div>🍔 On some food cards, answer the <b>Food & Country Challenge</b> correctly for <b>+1 bonus space</b>.</div>
           <div>❌ Wrong = <b>stay on your square</b> — no moving backward.</div>
-          <div>💡 After a wrong card, the <b>correct card is shown briefly</b>.</div>
           <div>🛟 Sometimes a <b>Rescue Challenge</b> appears. Correct = <b>keep playing</b>; wrong = <b>next traveler</b>.</div>
           <div>🏁 First player to reach <b>24 — FINISH</b> wins!</div>
         </div>
@@ -337,6 +338,7 @@
 
   let audioCtx=null, soundOn=true, gameStarted=false, inputLocked=true, playerCount=0, chooseIndex=0;
   let players=[], currentPlayer=0, deck=[], winnerState=false, currentVoice=null;
+  let turnCorrectCount=0, movementBonusUsedThisTurn=false;
   const voiceCache = {};
 
   function ensureAudio(){
@@ -394,6 +396,18 @@
   function wait(ms){return new Promise(r=>setTimeout(r,ms))}
   function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
   function chance(p){return Math.random()<p}
+  function resetTurnLimits(){
+    turnCorrectCount=0;
+    movementBonusUsedThisTurn=false;
+  }
+  async function advanceToNextPlayer(){
+    if(players[currentPlayer]) players[currentPlayer].correctStreak=0;
+    currentPlayer=(currentPlayer+1)%players.length;
+    resetTurnLimits();
+    showToast(`Player ${currentPlayer+1}'s turn`,950);
+    await wait(300);
+    await updateTurn();
+  }
 
   function routePos(pos){
     if(pos<=0) return {x:50,y:86.5};
@@ -494,6 +508,7 @@
 
   async function startGame(){
     setup.classList.add('hidden'); gameStarted=true; winnerState=false; currentPlayer=0; inputLocked=true;
+    resetTurnLimits();
     buildCards(); buildTokens(); hud.classList.add('show'); targetEl.classList.add('show');
     await wait(180); cardsEl.classList.add('show');
     for(let i=0;i<4;i++){sfx('deal');await wait(90)}
@@ -519,32 +534,51 @@
     sfx(correct?'correct':'wrong');
 
     if(correct){
+      turnCorrectCount += 1;
       p.correctStreak = (p.correctStreak || 0) + 1;
       await playVoice('correct',{wait:true});
       await wait(220); stamp.className=''; await closeReveal(smallCard);
       await movePlayer(currentPlayer,nextSquare);
       if(players[currentPlayer].position>=24){ showWinner(); return; }
 
-      if(foodCountryMap[wanted.id] && chance(0.45)){
-        const bonus = await runFoodCountryChallenge(wanted);
-        if(bonus){
-          await bonusMove(currentPlayer,1,'FOOD BONUS!','Correct country! Move one more space!','🍔','amazing');
+      // Fair Classroom Mode: only one movement bonus can be earned in a turn.
+      // A 3-answer streak gets first priority for the Jet Boost.
+      if(p.correctStreak>=3){
+        p.correctStreak=0;
+        if(!movementBonusUsedThisTurn){
+          movementBonusUsedThisTurn=true;
+          await runJetBoost(currentPlayer);
           if(players[currentPlayer].position>=24){ showWinner(); return; }
-        }else{
-          showToast('Good try! No bonus this time.',1100);
-          await wait(280);
+        }
+      }else if(!movementBonusUsedThisTurn){
+        let foodChallengeShown=false;
+        if(foodCountryMap[wanted.id] && chance(0.30)){
+          foodChallengeShown=true;
+          const bonus = await runFoodCountryChallenge(wanted);
+          if(bonus){
+            movementBonusUsedThisTurn=true;
+            await bonusMove(currentPlayer,1,'FOOD BONUS!','Correct country! Move one more space!','🍔','amazing');
+            if(players[currentPlayer].position>=24){ showWinner(); return; }
+          }else{
+            showToast('Good try! No bonus this time.',1100);
+            await wait(280);
+          }
+        }
+
+        // Do not stack two special events on the same correct answer.
+        if(!foodChallengeShown && !movementBonusUsedThisTurn && chance(0.20)){
+          movementBonusUsedThisTurn=true;
+          await runPassportBonus(currentPlayer);
+          if(players[currentPlayer].position>=24){ showWinner(); return; }
         }
       }
 
-      if(chance(0.28)){
-        await runPassportBonus(currentPlayer);
-        if(players[currentPlayer].position>=24){ showWinner(); return; }
-      }
-
-      if(players[currentPlayer].correctStreak>=3){
-        players[currentPlayer].correctStreak=0;
-        await runJetBoost(currentPlayer);
-        if(players[currentPlayer].position>=24){ showWinner(); return; }
+      // Hard cap: no player can keep a turn for more than 3 correct card finds.
+      if(turnCorrectCount>=3){
+        showToast('3 correct — next traveler!',1100);
+        await wait(320);
+        await advanceToNextPlayer();
+        return;
       }
 
       await updateTurn();
@@ -556,11 +590,9 @@
       await wait(180); stamp.className='';
       await closeReveal(smallCard);
 
-      // Show the correct hidden card briefly so the mistake becomes a learning cue.
-      await showCorrectCardHint(wanted);
 
       // Small random rescue chance. Correct rescue = same player keeps playing.
-      if(chance(0.35)){
+      if(chance(0.30)){
         const rescued = await runRescueChallenge(wanted);
         if(rescued){
           await updateTurn();
@@ -570,10 +602,7 @@
         await playVoice('good_try_next_traveler',{wait:true});
       }
 
-      currentPlayer=(currentPlayer+1)%players.length;
-      showToast(`Player ${currentPlayer+1}'s turn`,950);
-      await wait(300);
-      await updateTurn();
+      await advanceToNextPlayer();
     }
   }
 
@@ -671,9 +700,9 @@
   async function runJetBoost(playerIndex){
     sfx('jet');
     flyPlane();
-    await showEvent('JET BOOST!', 'Three correct in a row — move two spaces!', '✈️', 1500);
-    await playVoice('jet_boost',{wait:true});
-    await movePlayer(playerIndex, Math.min(24, players[playerIndex].position + 2));
+    await showEvent('JET BOOST!', 'Three correct in a row — move one extra space!', '✈️', 1500);
+    await playVoice('amazing',{wait:true});
+    await movePlayer(playerIndex, Math.min(24, players[playerIndex].position + 1));
   }
 
   async function runFoodCountryChallenge(food){
@@ -733,7 +762,7 @@
   function resetToSetup(){
     if(gameStarted && !confirm('Start a new game? Current progress will be lost.')) return;
     stopVoice();
-    winner.classList.add('hidden');rulesModal.classList.add('hidden');challengeModal.classList.add('hidden');players=[];playerCount=0;chooseIndex=0;gameStarted=false;winnerState=false;inputLocked=true;
+    winner.classList.add('hidden');rulesModal.classList.add('hidden');challengeModal.classList.add('hidden');players=[];playerCount=0;chooseIndex=0;gameStarted=false;winnerState=false;inputLocked=true;resetTurnLimits();
     cardsEl.classList.remove('show');cardsEl.innerHTML='';tokensEl.innerHTML='';hud.classList.remove('show');targetEl.classList.remove('show');marker.style.display='none';eventBanner.classList.remove('show');
     $$('.token-choice').forEach(b=>b.classList.remove('used','selected'));$('#tokenSetup').style.display='none';setup.classList.remove('hidden');
   }
@@ -745,7 +774,7 @@
   $('#rulesBtn').addEventListener('click',()=>rulesModal.classList.remove('hidden'));
   $('#closeRules').addEventListener('click',()=>rulesModal.classList.add('hidden'));
   $('#newBtn').addEventListener('click',resetToSetup);
-  $('#playAgain').addEventListener('click',()=>{winner.classList.add('hidden');players.forEach(p=>{p.position=0;p.correctStreak=0});currentPlayer=0;winnerState=false;inputLocked=true;buildCards();buildTokens();cardsEl.classList.add('show');targetEl.classList.add('show');updateTurn()});
+  $('#playAgain').addEventListener('click',()=>{winner.classList.add('hidden');players.forEach(p=>{p.position=0;p.correctStreak=0});currentPlayer=0;winnerState=false;inputLocked=true;resetTurnLimits();buildCards();buildTokens();cardsEl.classList.add('show');targetEl.classList.add('show');updateTurn()});
   $('#fullBtn').addEventListener('click',async()=>{try{if(!document.fullscreenElement)await stage.requestFullscreen();else await document.exitFullscreen()}catch(e){showToast('Full screen not available')}});
 
   [...vocab.map(v=>v.img),'assets/cards/card-back.png',...tokenDefs.map(t=>t.img),...Object.values(voiceFiles)].forEach(src=>{

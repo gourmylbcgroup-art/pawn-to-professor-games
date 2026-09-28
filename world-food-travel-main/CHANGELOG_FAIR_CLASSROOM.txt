@@ -1,0 +1,12 @@
+FAIR CLASSROOM MODE
+
+Balance changes:
+- Maximum 3 correct card finds per turn.
+- Maximum 1 movement bonus per turn (Passport, Food Bonus, or Jet Boost).
+- Passport Bonus chance reduced from 28% to 20%.
+- Food & Country Challenge chance reduced from 45% to 30%.
+- Rescue Challenge chance reduced from 35% to 30%.
+- Jet Boost changed from +2 spaces to +1 space.
+- Three consecutive correct answers trigger Jet Boost only if no other movement bonus was already earned that turn.
+- A Food Challenge and Passport Bonus cannot both trigger from the same correct answer.
+- Existing rule preserved: a wrong answer does not reveal the correct card and does not move the player backward.
