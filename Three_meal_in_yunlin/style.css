@@ -54,13 +54,19 @@ button{cursor:pointer}
 .dice{height:68px;border-radius:16px;border:3px solid #5f3a25;background:#fff;display:grid;place-items:center;box-shadow:inset 0 -5px #ece3d6,0 4px 0 #a87951;font-size:2.2rem;font-weight:1000}
 .dice.rolling{animation:diceRoll .55s ease-in-out}
 @keyframes diceRoll{0%{transform:rotate(0) scale(1)}25%{transform:rotate(18deg) scale(1.12)}50%{transform:rotate(-15deg) scale(.95)}75%{transform:rotate(8deg) scale(1.08)}100%{transform:rotate(0) scale(1)}}
-.primary-btn,.secondary-btn,.success-btn,.warning-btn{border:0;border-radius:14px;padding:12px 15px;font-weight:1000;letter-spacing:.01em;box-shadow:0 4px 0 rgba(65,38,17,.22);transition:transform .1s,filter .1s}
+
+.dice.result-pop{animation:diceResultPop 2s ease-in-out;position:relative;z-index:8;transform-origin:center;box-shadow:inset 0 -5px #ece3d6,0 8px 18px rgba(0,0,0,.22)}
+.dice.result-pop span{display:inline-block;animation:diceNumberPop 2s ease-in-out;font-size:1.18em}
+@keyframes diceResultPop{0%{transform:scale(1)}12%{transform:scale(1.42)}25%{transform:scale(1.28)}82%{transform:scale(1.28)}100%{transform:scale(1)}}
+@keyframes diceNumberPop{0%{transform:scale(1)}12%{transform:scale(1.28)}25%{transform:scale(1.12)}82%{transform:scale(1.12)}100%{transform:scale(1)}}
+.primary-btn,.secondary-btn,.success-btn,.warning-btn,.wrong-btn{border:0;border-radius:14px;padding:12px 15px;font-weight:1000;letter-spacing:.01em;box-shadow:0 4px 0 rgba(65,38,17,.22);transition:transform .1s,filter .1s}
 .primary-btn{background:linear-gradient(#ffd652,#ffaf18);color:#4d2b12;border:2px solid #ad6514}
 .secondary-btn{background:#fff8e8;color:#5c3c23;border:2px solid #cda46d}
 .success-btn{background:linear-gradient(#5ed878,#2da855);color:white;border:2px solid #197b3a}
 .warning-btn{background:linear-gradient(#ffd879,#efad2e);color:#5e3a13;border:2px solid #b27316}
-.primary-btn:hover,.secondary-btn:hover,.success-btn:hover,.warning-btn:hover{filter:brightness(1.04)}
-.primary-btn:active,.secondary-btn:active,.success-btn:active,.warning-btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(65,38,17,.22)}
+.wrong-btn{background:linear-gradient(#f46b6b,#d83d3d);color:#fff;border:2px solid #a72626}
+.primary-btn:hover,.secondary-btn:hover,.success-btn:hover,.warning-btn:hover,.wrong-btn:hover{filter:brightness(1.04)}
+.primary-btn:active,.secondary-btn:active,.success-btn:active,.warning-btn:active,.wrong-btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(65,38,17,.22)}
 .primary-btn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.3)}
 .primary-btn.large{padding:14px 24px;font-size:1.06rem}
 .status-strip{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
@@ -99,6 +105,11 @@ button{cursor:pointer}
 .level-option strong{display:block;font-size:1.2rem;margin-bottom:5px}
 .level-option small{display:block;font-size:.86rem;line-height:1.3}
 .player-setup h3{margin:0 0 9px;text-align:center}
+
+.player-count-grid{display:flex;gap:10px;justify-content:center;margin:0 0 12px;flex-wrap:wrap}
+.player-count-option{border:2px solid #c99959;background:#fff8e8;color:#5c3c23;border-radius:12px;padding:9px 16px;font-weight:1000;box-shadow:0 3px 0 #d8b077}
+.player-count-option.selected{background:linear-gradient(#ffd652,#ffaf18);border-color:#ad6514;color:#4d2b12;box-shadow:0 3px 0 #a45d12,0 0 0 3px rgba(255,188,35,.22)}
+.player-name-label.player-disabled{display:none}
 .name-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .name-grid label{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:center;background:#fff;border:2px solid #e1c18f;padding:7px;border-radius:14px}
 .name-grid img{width:46px;height:46px;border-radius:50%;object-fit:cover}

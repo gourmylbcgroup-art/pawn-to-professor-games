@@ -106,12 +106,17 @@
       </div>
 
       <div class="player-setup">
-        <h3>Four players / teams</h3>
+        <h3>Choose players / teams</h3>
+        <div class="player-count-grid" aria-label="Choose number of players">
+          <button class="player-count-option" data-count="2" type="button">2 Players</button>
+          <button class="player-count-option" data-count="3" type="button">3 Players</button>
+          <button class="player-count-option selected" data-count="4" type="button">4 Players</button>
+        </div>
         <div class="name-grid">
-          <label><img src="assets/tokens/token-red.webp" alt="Red puppet"><input class="player-name-input" value="Red Team" maxlength="18"></label>
-          <label><img src="assets/tokens/token-blue.webp" alt="Blue puppet"><input class="player-name-input" value="Blue Team" maxlength="18"></label>
-          <label><img src="assets/tokens/token-pink.webp" alt="Pink puppet"><input class="player-name-input" value="Pink Team" maxlength="18"></label>
-          <label><img src="assets/tokens/token-green.webp" alt="Green puppet"><input class="player-name-input" value="Green Team" maxlength="18"></label>
+          <label class="player-name-label"><img src="assets/tokens/token-red.webp" alt="Red puppet"><input class="player-name-input" value="Red Team" maxlength="18"></label>
+          <label class="player-name-label"><img src="assets/tokens/token-blue.webp" alt="Blue puppet"><input class="player-name-input" value="Blue Team" maxlength="18"></label>
+          <label class="player-name-label"><img src="assets/tokens/token-pink.webp" alt="Pink puppet"><input class="player-name-input" value="Pink Team" maxlength="18"></label>
+          <label class="player-name-label"><img src="assets/tokens/token-green.webp" alt="Green puppet"><input class="player-name-input" value="Green Team" maxlength="18"></label>
         </div>
       </div>
 
@@ -142,6 +147,7 @@
         <button id="supportBtn" class="secondary-btn" type="button">💡 Show support</button>
         <button id="helpAnswerBtn" class="warning-btn" type="button">Need help</button>
         <button id="correctBtn" class="success-btn" type="button">✓ Correct</button>
+        <button id="wrongBtn" class="wrong-btn" type="button">✗ Wrong</button>
       </div>
     </div>
   </div>
@@ -167,12 +173,13 @@
       <ol class="rules-list">
         <li><b>Roll</b> the die and move your puppet token.</li>
         <li>On a normal space, <b>draw a flashcard</b> and complete the English challenge.</li>
-        <li><b>Correct:</b> stay on the space. <b>Need help:</b> teacher supports; repeat, then the turn ends. Never move backwards.</li>
-        <li><b>Breakfast / Lunch / Dinner:</b> complete the meal challenge correctly → play again.</li>
+        <li><b>Correct:</b> the same player gets <b>one</b> immediate bonus roll. Bonus rolls cannot chain.</li>
+        <li><b>Wrong:</b> that player misses their next scheduled turn.</li>
+        <li><b>Need help:</b> teacher supports; student repeats; then the turn ends.</li>
         <li><b>REST:</b> stomach is full → miss 1 turn.</li>
         <li><b>Night Market:</b> say the Night Market sentence → miss 1 turn because it is late.</li>
         <li>Every <b>3 correct answers in a row</b> earns a Yunlin Star Boost (+1 space).</li>
-        <li>First puppet to <b>FINISH</b> wins. Exact roll is not required.</li>
+        <li>Reach <b>FINISH with the exact dice roll</b>. Then complete the <b>Final Meal Challenge</b> to win.</li>
       </ol>
       <div class="level-rule-box"><b>Level 1 • Week 4:</b> one card → one food/meal sentence.</div>
       <div class="level-rule-box"><b>Level 2 • Week 5:</b> one card → a short question-and-answer dialogue, with Week 4 review.</div>
