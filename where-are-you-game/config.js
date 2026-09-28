@@ -27,17 +27,17 @@ window.GAME_CONFIG = {
   },
 
   ladders: {
-    2: 17,
-    16: 23,
-    13: 34,
-    27: 31
+    2: 17,   // left short ladder
+    16: 23,  // center-left ladder
+    6: 25,   // center-right ladder
+    27: 31   // right ladder
   },
   snakes: {
-    20: 1,
-    46: 15,
-    33: 26,
-    28: 8,
-    14: 5
+    20: 1,   // blue snake
+    43: 16,  // green snake
+    33: 26,  // yellow snake
+    29: 8,   // red snake
+    14: 5    // purple snake
   },
 
   // Timing tuned for classroom readability.
