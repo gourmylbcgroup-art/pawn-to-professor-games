@@ -1,11 +1,20 @@
-Grade 3 Week 6 — My Family & Pets Interactive
-FAST SOUND UPDATE
+GRADE 3 — WEEK 6: MY FAMILY & PETS
 
-Sound optimization:
-- Prefers a local English system voice instead of a network-dependent voice.
-- Warms the speech engine on the first user interaction.
-- Reuses the selected voice throughout the lesson.
-- Cancels only active/pending speech to prevent overlapping audio.
-- Keeps the same lesson content, images, navigation and activities.
+Open index.html in a modern browser.
 
-For best classroom performance online, open the page once and click/tap anywhere before using the first Hear button. The warm-up happens automatically on that first interaction.
+Included:
+- 6-section interactive home interface in the same workflow style as the Numbers 1-10 lesson
+- START: family warm-up
+- LEARN: family, pet, HE/SHE/THIS/THAT, and sentence cards
+- PLAY: Ask-Swap-Move class activity
+- PRACTICE: word, pronoun, and near/far mini-checks
+- SPEAK: random sentence prompts with reveal and browser speech
+- FINISH: family-photo prompt and exit checklist
+- SLIDES: all 34 presentation pages
+
+Vocabulary intentionally used:
+mother, father, brother, sister, grandfather, grandmother, uncle, aunt,
+dog, cat, bird, fish, rabbit
+
+
+Sound uses the browser's built-in English speech synthesis when available.

@@ -149,74 +149,12 @@ const FEMALE=new Set(['mother','sister','grandmother','aunt']);
 const ALL=[...FAMILY,...PETS];
 const $=id=>document.getElementById(id);
 let soundOn=true;
-
-/* Fast, classroom-safe speech engine.
-   Prefer a LOCAL English voice so hosted/online use does not wait for a network TTS voice.
-   The voice is warmed on the first user interaction to remove the usual first-play delay. */
-let lessonVoice=null;
-let lessonVoiceWarmed=false;
-const VOICE_HINT=/samantha|victoria|karen|moira|tessa|zira|ava|serena|female|english/i;
-function chooseLessonVoice(){
-  if(!('speechSynthesis' in window)) return null;
-  const voices=speechSynthesis.getVoices()||[];
-  const en=voices.filter(v=>/^en([-_]|$)/i.test(v.lang||''));
-  const local=en.filter(v=>v.localService);
-  lessonVoice=
-    local.find(v=>VOICE_HINT.test(v.name||'')) ||
-    local.find(v=>/^en[-_]US/i.test(v.lang||'')) ||
-    local[0] ||
-    en.find(v=>VOICE_HINT.test(v.name||'')) ||
-    en[0] || voices[0] || null;
-  return lessonVoice;
-}
-function prepareLessonVoice(){
-  if(!('speechSynthesis' in window)) return;
-  chooseLessonVoice();
-  const refresh=()=>chooseLessonVoice();
-  if(typeof speechSynthesis.addEventListener==='function') speechSynthesis.addEventListener('voiceschanged',refresh);
-  else speechSynthesis.onvoiceschanged=refresh;
-}
-function warmLessonVoice(){
-  if(lessonVoiceWarmed||!soundOn||!('speechSynthesis' in window)) return;
-  chooseLessonVoice();
-  try{
-    speechSynthesis.resume();
-    const u=new SpeechSynthesisUtterance(' ');
-    u.lang='en-US';u.rate=.82;u.pitch=1.05;u.volume=0;
-    if(lessonVoice)u.voice=lessonVoice;
-    speechSynthesis.speak(u);
-    lessonVoiceWarmed=true;
-  }catch(e){}
-}
-function stopSpeech(){
-  if(!('speechSynthesis' in window)) return;
-  try{if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();}catch(e){}
-}
-function speak(t,rate=.82,pitch=1.05){
-  if(!soundOn||!t||!('speechSynthesis' in window))return Promise.resolve();
-  chooseLessonVoice();
-  stopSpeech();
-  try{speechSynthesis.resume();}catch(e){}
-  return new Promise(resolve=>{
-    const u=new SpeechSynthesisUtterance(String(t));
-    u.lang='en-US';u.rate=rate;u.pitch=pitch;u.volume=1;
-    if(lessonVoice)u.voice=lessonVoice;
-    let done=false;
-    const finish=()=>{if(done)return;done=true;resolve();};
-    u.onend=finish;u.onerror=finish;
-    try{speechSynthesis.speak(u);}catch(e){finish();}
-  });
-}
-prepareLessonVoice();
-// Warm only after a real user gesture (required by some browsers).
-document.addEventListener('pointerdown',warmLessonVoice,{once:true,capture:true});
-document.addEventListener('keydown',warmLessonVoice,{once:true,capture:true});
-
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});if(id==='learn') renderLearn();if(id==='practice')renderQuiz();if(id==='speak')newSpeak();if(id==='slides')renderSlides();}
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));$('homeBtn').onclick=()=>go('home');
-$('soundBtn').onclick=()=>{soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊':'🔇';if(!soundOn)stopSpeech();else warmLessonVoice();};
+$('soundBtn').onclick=()=>{soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊':'🔇';if(!soundOn&&('speechSynthesis' in window))speechSynthesis.cancel();};
 $('motionBtn').onclick=()=>{document.body.classList.toggle('calm');$('motionBtn').textContent=document.body.classList.contains('calm')?'🌿':'✨';};
 $('fullBtn').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.();};
+function speak(t){if(!soundOn||!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.78;u.pitch=1.05;speechSynthesis.speak(u);}
 function ptxt(name){return `assets/flashcards/picture_text/${name}.webp`}function ponly(name){return `assets/flashcards/picture_only/${name}.webp`}
 function sentenceFor(name){if(FAMILY.includes(name))return `This is my ${name}.`;return `This is a ${name}.`;}
 /* Start */
