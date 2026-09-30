@@ -1,0 +1,33 @@
+Grade 4 Unit 1 — 100-User Optimization
+
+Goal:
+Reduce initial bandwidth and unnecessary startup work when many students open the lesson simultaneously.
+
+Changes:
+1. Embedded Snakes & Ladders game no longer loads on the Home screen.
+   It loads only when GAMES is opened.
+
+2. The 10 large flashcard PNG files were converted to high-quality WebP.
+   Flashcards before: 15.4 MB
+   Flashcards after:  1.1 MB
+
+3. Hidden START / LEARN / PLAY / PRACTICE / SPEAK / FINISH content is not rendered at startup.
+   Each section renders only when opened.
+
+4. The Home menu image and game board use asynchronous image decoding.
+   The Home menu remains high priority for a fast first screen.
+
+5. WAV game effects were converted to compact MP3 where possible.
+   WAV before: 0.44 MB
+   MP3 after:  0.06 MB
+
+6. Unused board_original.png was kept.
+
+7. Lesson structure, text, game rules, navigation and visual design were preserved.
+
+Total unpacked size:
+Original:  22.1 MB
+Optimized: 7.3 MB
+
+This substantially reduces the bandwidth spike when many devices open the same lesson at once.
+Actual classroom performance still depends on school Wi-Fi, browser/device speed and CDN/hosting behavior.

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Where Are You? — My Community Interactive EFL Lesson</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <button class="home-icon" data-go="home" title="Home">🏠</button>
+    <div class="brand">Where Are You? <span>My Community</span></div>
+    <nav class="navchips" aria-label="Lesson sections">
+      <button class="chip c1" data-go="start">1 START</button>
+      <button class="chip c2" data-go="learn">2 LEARN</button>
+      <button class="chip c3" data-go="play">3 PLAY</button>
+      <button class="chip c4" data-go="practice">4 PRACTICE</button>
+      <button class="chip c5" data-go="speak">5 SPEAK</button>
+      <button class="chip c6" data-go="finish">6 FINISH</button>
+      <button class="chip c7" data-go="games">7 GAMES</button>
+    </nav>
+    <button class="menu-btn" data-go="home">MENU ▾</button>
+    <button class="iconbtn" id="soundBtn" title="Sound on/off">🔊</button>
+    <button class="iconbtn" id="motionBtn" title="Calm mode">🌿</button>
+  </header>
+
+  <main>
+    <section class="screen active" id="home">
+      <div class="home-shell" aria-label="Where Are You lesson home menu">
+        <img src="assets/menu.webp" alt="Where Are You My Community interactive lesson menu" fetchpriority="high" decoding="async" />
+        <button class="hotspot hs1" data-go="start" data-label="START" aria-label="Open start warm-up"></button>
+        <button class="hotspot hs2" data-go="learn" data-label="LEARN" aria-label="Open presentation"></button>
+        <button class="hotspot hs3" data-go="play" data-label="PLAY" aria-label="Open find the place game"></button>
+        <button class="hotspot hs4" data-go="practice" data-label="PRACTICE" aria-label="Open community mission"></button>
+        <button class="hotspot hs5" data-go="speak" data-label="SPEAK" aria-label="Open speaking practice"></button>
+        <button class="hotspot hs6" data-go="finish" data-label="FINISH" aria-label="Open wrap-up challenge"></button>
+        <button class="hotspot game-hotspot" data-go="games" data-label="OPEN GAME" aria-label="Open Where Are You game"></button>
+      </div>
+      <div class="home-under">
+        <div class="home-note"><b>Grade 4 · 40 min</b> · 10 community places · one sentence frame · no timer</div>
+        <button class="btn blue" id="homePresentationMap">🗺️ Presentation Map</button>
+        <button class="btn purple" data-go="games">🎲 Open Snakes & Ladders</button>
+      </div>
+    </section>
+
+    <section class="screen" id="start">
+      <div class="section-title"><div class="numBadge c1">1</div><div><h1>START — Welcome to My Community</h1><p>5 minutes · look → point → say · fast visual warm-up</p></div></div>
+      <div class="board">
+        <div class="progressline"><i id="warmProgress"></i></div>
+        <div class="stage">
+          <div class="warm-card-wrap">
+            <img id="warmCard" class="place-card large-card" alt="Community place card" />
+            <div class="word-mask hidden" id="warmMask">?</div>
+          </div>
+          <h2 id="warmWord">hospital</h2>
+          <div class="feedback" id="warmFeedback">Look. Point. Say the word together.</div>
+          <div class="controls">
+            <button class="btn blue" id="warmHear">🔊 Hear word</button>
+            <button class="btn orange" id="warmToggle">Hide word</button>
+            <button class="btn green" id="warmNext">Next place ➜</button>
+            <button class="btn gray" id="warmReset">Reset</button>
+          </div>
+        </div>
+        <div class="grid3 section-cards">
+          <div class="practice-card"><h3>Point to it</h3><p>Teacher: “Point to the hospital.” Students point to the correct card.</p></div>
+          <div class="practice-card"><h3>This or that</h3><p>Teacher: “Hospital or park?” Students point and say one word.</p></div>
+          <div class="practice-card"><h3>Preview the frame</h3><p>Show: “Where are you?” → “I am at the ______.” Full sentence is optional here.</p></div>
+        </div>
+      </div>
+      <div class="language-bar"><span>hospital</span><span>park</span><span>library</span><span>bank</span><span>school</span><span>supermarket</span><span>store</span><span>night market</span><span>tea shop</span><span>café</span></div>
+    </section>
+
+    <section class="screen" id="learn">
+      <div class="section-title"><div class="numBadge c2">2</div><div><h1>LEARN — Places & Language</h1><p>24 short touchscreen slides · picture first · model → repeat → check</p></div></div>
+      <div class="board learn-board">
+        <div class="learn-toolbar">
+          <button class="btn small blue" id="learnMapBtn">🗺️ Presentation Map</button>
+          <span class="slide-counter" id="slideCounter">Slide 1 / 24</span>
+          <button class="btn small gray" id="pictureOnlyBtn">Picture + Word</button>
+        </div>
+        <div class="progressline"><i id="slideProgress"></i></div>
+        <div class="stage slide-stage" id="slideStage"></div>
+        <div class="controls slide-controls">
+          <button class="btn gray" id="prevSlide">← Previous</button>
+          <button class="btn blue" id="hearSlide">🔊 Hear</button>
+          <button class="btn green" id="nextSlide">Next ➜</button>
+        </div>
+      </div>
+      <div class="language-bar"><span>Q: Where are you?</span><span>A: I am at the ______.</span></div>
+    </section>
+
+    <section class="screen" id="play">
+      <div class="section-title"><div class="numBadge c3">3</div><div><h1>PLAY — Find the Place</h1><p>6 picture-choice rounds from the lesson plan · tap A, B, or C</p></div></div>
+      <div class="board">
+        <div class="scoreline"><span id="quizRound">Round 1 / 6</span><span id="quizStars">Stars: 0</span></div>
+        <div class="progressline"><i id="quizProgress"></i></div>
+        <div class="stage quiz-stage">
+          <div class="clue-pill" id="quizClue">I am sick.</div>
+          <div class="quiz-visual"><img id="quizImage" class="place-card quiz-card" alt="Quiz place" /></div>
+          <div class="answers three" id="quizAnswers"></div>
+          <div class="feedback" id="quizFeedback"></div>
+          <div class="controls"><button class="btn blue" id="quizHear">🔊 Hear clue</button><button class="btn green hidden" id="quizNext">Next ➜</button></div>
+        </div>
+      </div>
+      <div class="language-bar"><span>Look at the clue.</span><span>Choose the place.</span><span>Say the word.</span></div>
+    </section>
+
+    <section class="screen" id="practice">
+      <div class="section-title"><div class="numBadge c4">4</div><div><h1>PRACTICE — Community Mission</h1><p>6 rounds · park → library → hospital → tea shop → night market → café</p></div></div>
+      <div class="board">
+        <div class="mission-track" id="missionTrack"></div>
+        <div class="stage mission-stage">
+          <div class="role-badges"><span>Student A: ASK</span><span>Student B: ANSWER</span></div>
+          <div class="mission-content">
+            <div class="mission-card-wrap"><img id="missionImage" class="place-card mission-card" alt="Mission place" /></div>
+            <div class="mission-dialogue">
+              <div class="speech q">Where are you?</div>
+              <div class="speech a" id="missionAnswer">I am at the ______.</div>
+              <div class="feedback" id="missionFeedback">Ask first. Then show the answer if support is needed.</div>
+            </div>
+          </div>
+          <div class="controls">
+            <button class="btn blue" id="missionHearQ">🔊 Question</button>
+            <button class="btn orange" id="missionShow">Show answer</button>
+            <button class="btn purple" id="missionHearA">🔊 Answer</button>
+            <button class="btn green" id="missionDone">✓ Complete round</button>
+          </div>
+        </div>
+      </div>
+      <div class="language-bar"><span>Student A: Where are you?</span><span>Student B: I am at the ______.</span><span>Switch roles each round.</span></div>
+    </section>
+
+    <section class="screen" id="speak">
+      <div class="section-title"><div class="numBadge c5">5</div><div><h1>SPEAK — Where Are You?</h1><p>random place · picture support · full sentence before the next turn</p></div></div>
+      <div class="board">
+        <div class="scoreline"><span id="speakRound">Card 1 / 10</span><span id="speakStars">Spoken: 0</span></div>
+        <div class="progressline"><i id="speakProgress"></i></div>
+        <div class="stage speak-stage">
+          <div class="speak-card-wrap">
+            <img id="speakImage" class="place-card speak-card" alt="Speaking place" />
+            <div class="challenge-mask" id="speakMask">Picture challenge</div>
+          </div>
+          <div class="speech-pair">
+            <div class="speech q">Where are you?</div>
+            <div class="speech a" id="speakModel">I am at the ______.</div>
+          </div>
+          <div class="feedback" id="speakFeedback">Try from the picture first. Tap “Show model” only if needed.</div>
+          <div class="controls">
+            <button class="btn blue" id="speakQuestion">🔊 Question</button>
+            <button class="btn orange" id="speakShow">Show model</button>
+            <button class="btn purple" id="speakHear">🔊 Hear model</button>
+            <button class="btn green" id="speakDone">✓ I said it</button>
+          </div>
+        </div>
+      </div>
+      <div class="language-bar"><span>Where are you?</span><span>I am at the hospital.</span><span>I am at the night market.</span><span>I am at the café.</span></div>
+    </section>
+
+    <section class="screen" id="finish">
+      <div class="section-title"><div class="numBadge c6">6</div><div><h1>FINISH — Mystery Place Challenge</h1><p>individual exit check · draw → identify → answer → record</p></div></div>
+      <div class="board">
+        <div class="scoreline"><span id="exitRound">Card 1 / 10</span><span id="exitStars">Stars: 0</span></div>
+        <div class="progressline"><i id="exitProgress"></i></div>
+        <div class="stage exit-stage" id="exitStage">
+          <div class="mystery-bag" id="mysteryBag">🎒<span>MYSTERY BAG</span></div>
+          <div class="exit-card-wrap hidden" id="exitCardWrap"><img id="exitImage" class="place-card exit-card" alt="Mystery place" /></div>
+          <div class="speech-pair hidden" id="exitDialogue"><div class="speech q">Where are you?</div><div class="speech a" id="exitAnswer">I am at the ______.</div></div>
+          <div class="feedback" id="exitFeedback">Tap the bag to draw a card.</div>
+          <div class="controls">
+            <button class="btn blue" id="drawCard">Draw a card</button>
+            <button class="btn orange hidden" id="exitShow">Show answer</button>
+            <button class="btn purple hidden" id="exitHear">🔊 Hear answer</button>
+            <button class="btn green hidden" id="exitGood">⭐ Correct / I said it</button>
+            <button class="btn gray hidden" id="exitRetry">Retry</button>
+          </div>
+        </div>
+      </div>
+      <div class="language-bar"><span>Identify the picture.</span><span>Name the place.</span><span>Answer: “I am at the ______.”</span></div>
+    </section>
+
+    <section class="screen" id="games">
+      <div class="section-title"><div class="numBadge c7">7</div><div><h1>GAMES — Where Are You?</h1><p>Snakes & Ladders speaking game · corrected snake and ladder map</p></div></div>
+      <div class="board games-board">
+        <div class="game-toolbar">
+          <button class="btn blue" id="gameFull">⛶ Full screen</button>
+          <button class="btn purple" id="showHowTo">📘 How to Play</button>
+          <button class="btn orange" id="showTeacherGuide">👩‍🏫 Teacher Guide</button>
+          <a class="btn green linkbtn" href="games/where-are-you-game/index.html" target="_blank" rel="noopener">↗ Open in new tab</a>
+        </div>
+        <div class="game-frame-wrap" id="gameFrameWrap"><iframe id="gameFrame" data-src="games/where-are-you-game/index.html" src="about:blank" loading="lazy" title="Where Are You Snakes and Ladders game" allow="fullscreen; autoplay"></iframe></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal hidden" id="modal">
+  <div class="modal-panel">
+    <button class="modal-close" id="modalClose">✕</button>
+    <img id="modalImage" alt="Lesson guide" />
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
