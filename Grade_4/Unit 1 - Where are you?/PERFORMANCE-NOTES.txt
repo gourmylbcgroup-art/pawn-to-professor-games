@@ -1,0 +1,27 @@
+Where Are You? Game — 100-User Optimization
+
+Goal:
+Reduce bandwidth spikes when many students open the game at the same time.
+
+Changes:
+- Large PNG/JPG assets converted to high-quality WebP where useful.
+- WAV audio converted to compact MP3 where possible.
+- Audio uses preload="none".
+- Images use asynchronous decoding.
+- Embedded iframes use lazy loading.
+- Only clearly unreferenced source/original heavy files were removed.
+- Game logic, rules, navigation and visual design were preserved.
+
+Image conversion:
+Before: 18.5 MB
+After:  1.7 MB
+
+Audio conversion:
+Before: 0.4 MB
+After:  0.1 MB
+
+Total unpacked size:
+Original:  20.7 MB
+Optimized: 3.5 MB
+
+Actual classroom performance still depends on school Wi-Fi, device speed and hosting/CDN behavior.

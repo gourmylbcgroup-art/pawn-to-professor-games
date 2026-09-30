@@ -1,0 +1,10 @@
+WHERE ARE YOU? — V8 VISIBLE ROLL + GOLDEN DICE
+
+1. Keeps all V7 token-position and randomness improvements.
+2. Dice uses a randomized shuffle bag: 1–6 each appear once per six-roll cycle.
+3. Bag order is random and a number cannot repeat across a cycle boundary.
+4. The final roll is shown persistently as ROLLED: N under the dice.
+5. Golden Dice appears exactly once in each randomly ordered group of 8 turns.
+6. Golden Dice is clearly gold and displays GOLDEN DICE — EXTRA TURN.
+7. A Golden Dice gives that player one extra turn after answering the location question.
+8. Existing snakes, ladders, voices, board art, token landing behavior, and questions are preserved.
