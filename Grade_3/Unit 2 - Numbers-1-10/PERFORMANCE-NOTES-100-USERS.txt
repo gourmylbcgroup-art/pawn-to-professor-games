@@ -1,0 +1,17 @@
+Numbers 1–10 — 100-User Classroom Optimization
+
+Goal:
+Reduce bandwidth and startup work when many students open the interactive lesson at the same time.
+
+Changes:
+- Converted the two largest PNG assets to high-quality WebP.
+- Main lesson media already used compact WebP + MP3, so those were preserved.
+- Audio preload changed from metadata to none where applicable.
+- Images use asynchronous decoding.
+- Home/menu image remains high-priority for a fast first screen.
+- Existing games remain separate links, so they do not download until a student opens a game.
+- Lesson content, voices, navigation, sentence patterns and game logic were preserved.
+
+Unpacked size:
+Original: 7.2 MB
+Optimized: 3.4 MB

@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>How Old Am I? — Merged Interactive EFL Lesson</title>
+<style>
+  :root{
+    --ink:#10245e; --cream:#fff7e8; --paper:#fffdf8; --wood1:#e8a85e; --wood2:#a95f2e;
+    --blue:#1687ed; --red:#f33c45; --green:#14b56b; --orange:#ff9b13; --purple:#8b4ce8; --pink:#f43a88;
+    --shadow:0 16px 30px rgba(65,36,12,.22),0 3px 0 rgba(82,41,14,.2);
+    --soft:0 10px 20px rgba(16,36,94,.13);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%;font-family:Nunito,"Trebuchet MS",Arial,sans-serif;background:#eed3a7;color:var(--ink)}
+  body{background:
+    radial-gradient(circle at 15% 12%,rgba(255,255,255,.72),transparent 24%),
+    radial-gradient(circle at 88% 8%,rgba(124,206,166,.26),transparent 21%),
+    repeating-linear-gradient(90deg,rgba(117,61,20,.08) 0 2px,transparent 2px 105px),
+    linear-gradient(180deg,#f4d9ae 0,#e1a15b 100%);}
+  button{font:inherit}
+  .app{min-height:100vh;display:flex;flex-direction:column}
+  .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(255,250,240,.96);backdrop-filter:blur(4px);border-bottom:2px solid rgba(99,56,24,.14);box-shadow:0 6px 18px rgba(45,29,12,.12)}
+  .brand{font-weight:1000;letter-spacing:.2px;white-space:nowrap;font-size:clamp(17px,2vw,25px)}
+  .navchips{display:flex;gap:6px;overflow:auto;flex:1;padding:2px}
+  .chip{border:none;border-radius:999px;padding:8px 12px;font-weight:1000;color:#fff;box-shadow:inset 0 -3px rgba(0,0,0,.16),0 4px 8px rgba(0,0,0,.12);cursor:pointer;white-space:nowrap;transition:.16s transform,.16s filter}
+  .chip:hover,.chip:focus-visible{transform:translateY(-1px);filter:brightness(1.05)}
+  .chip.done::after{content:" ✓"}
+  .c1{background:var(--red)} .c2{background:var(--blue)} .c3{background:var(--green)} .c4{background:var(--purple)} .c5{background:var(--orange)} .c6{background:var(--pink)} .c7{background:linear-gradient(#24b8c6,#087e91)}
+  .iconbtn{border:2px solid #ded7ca;background:white;border-radius:14px;padding:8px 10px;cursor:pointer;font-weight:900;min-width:44px;box-shadow:0 4px 8px rgba(0,0,0,.08)}
+  .screen{display:none;width:min(1540px,96vw);margin:18px auto 28px;animation:enter .22s ease}
+  .screen.active{display:block}
+  @keyframes enter{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:none}}
+  body.calm *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .home-shell{position:relative;border-radius:28px;overflow:hidden;border:8px solid rgba(101,55,22,.42);box-shadow:0 24px 45px rgba(68,38,15,.28);background:#dca36c;aspect-ratio:1672/941}
+  .home-shell img{width:100%;height:100%;object-fit:cover;display:block;user-select:none;-webkit-user-drag:none}
+  .hotspot{position:absolute;border:none;border-radius:24px;background:transparent;cursor:pointer;outline:0}
+  .hotspot::after{content:attr(data-label);position:absolute;left:50%;bottom:5%;transform:translateX(-50%);padding:7px 18px;border-radius:999px;background:rgba(255,255,255,.94);color:var(--ink);font-weight:1000;letter-spacing:.5px;box-shadow:0 6px 14px rgba(0,0,0,.2);opacity:0;transition:.16s opacity,.16s transform;white-space:nowrap}
+  .hotspot:hover,.hotspot:focus-visible{box-shadow:inset 0 0 0 6px rgba(255,255,255,.9),0 0 0 7px rgba(16,36,94,.2)}
+  .hotspot:hover::after,.hotspot:focus-visible::after{opacity:1;transform:translate(-50%,-3px)}
+  .hs1{left:11.7%;top:30.2%;width:25.2%;height:30%}.hs2{left:37.4%;top:30.2%;width:23.5%;height:30%}.hs3{left:61.2%;top:30.2%;width:25%;height:30%}
+  .hs4{left:11.6%;top:61.3%;width:25.3%;height:33.4%}.hs5{left:37.5%;top:61.3%;width:23.6%;height:33.4%}.hs6{left:61.2%;top:61.3%;width:25%;height:33.4%}
+  .home-under{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:14px}
+  .lab-launch{border:0;border-radius:20px;background:linear-gradient(#7047d9,#5123bd);color:white;padding:14px 22px;font-weight:1000;font-size:18px;box-shadow:inset 0 -5px rgba(0,0,0,.18),var(--soft);cursor:pointer}
+  .home-note{background:rgba(255,255,255,.87);border:2px solid rgba(75,45,20,.12);padding:12px 16px;border-radius:16px;font-weight:800}
+  .section-title{display:flex;align-items:center;gap:14px;margin:8px 0 14px}
+  .numBadge{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;color:white;font-size:35px;font-weight:1000;box-shadow:inset 0 -8px rgba(0,0,0,.16),inset 0 5px rgba(255,255,255,.28),0 7px 14px rgba(0,0,0,.2)}
+  .section-title h1{margin:0;font-size:clamp(28px,3.2vw,48px);line-height:1}.section-title p{margin:5px 0 0;font-weight:800;color:#4a5682}
+  .board{background:linear-gradient(180deg,#fffaf0,#f7ead7);border:4px solid #e0b57e;border-radius:30px;padding:clamp(16px,2vw,28px);box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .board::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 10% 0,rgba(255,255,255,.9),transparent 27%);pointer-events:none}
+  .stage{position:relative;background:#fff;border:3px solid #ead8bb;border-radius:26px;padding:24px;box-shadow:var(--soft);min-height:280px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden}
+  .stage h2{margin:0 0 8px;font-size:clamp(24px,3vw,40px)}
+  .hint{font-weight:800;color:#53618e;margin:4px 0 14px}
+  .big-seq{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:12px 0 20px}
+  .numberCube{width:clamp(72px,8vw,116px);aspect-ratio:1;border-radius:20px;display:grid;place-items:center;color:#fff;font-size:clamp(40px,5vw,72px);font-weight:1000;text-shadow:0 3px 0 rgba(0,0,0,.15);box-shadow:inset 0 -10px rgba(0,0,0,.17),inset 0 6px rgba(255,255,255,.27),0 12px 18px rgba(24,47,84,.2);background:linear-gradient(145deg,#2c9cff,#0765cf)}
+  .numberCube:nth-child(3n+2){background:linear-gradient(145deg,#ff5b62,#d81934)} .numberCube:nth-child(3n+3){background:linear-gradient(145deg,#20c979,#0a9150)}
+  .controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+  .btn{border:0;border-radius:18px;padding:12px 20px;color:#fff;font-weight:1000;font-size:17px;cursor:pointer;box-shadow:inset 0 -5px rgba(0,0,0,.18),0 7px 14px rgba(0,0,0,.14);min-width:140px}
+  .btn:active{transform:translateY(2px);box-shadow:inset 0 -2px rgba(0,0,0,.18),0 3px 8px rgba(0,0,0,.12)}
+  .blue{background:linear-gradient(#24a5ff,#0872d5)}.green{background:linear-gradient(#25cf7f,#0aa45e)}.orange{background:linear-gradient(#ffb52a,#f08800)}.purple{background:linear-gradient(#a061f0,#7135d3)}.pink{background:linear-gradient(#ff5da1,#e72778)}.red{background:linear-gradient(#ff6268,#dc2634)}.gray{background:linear-gradient(#7d89a9,#5d6988)}
+  .small{min-width:0;padding:9px 13px;font-size:14px;border-radius:14px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .practice-card{background:white;border:3px solid #e9dcc6;border-radius:22px;padding:17px;box-shadow:var(--soft)}
+  .practice-card h3{margin:0 0 7px;font-size:20px}.practice-card p{margin:0 0 12px;color:#5b678b;font-weight:700}
+  .teacher{margin-top:16px;background:#eef6ff;border:2px solid #c8e0fa;border-radius:18px;padding:13px 16px}
+  .teacher summary{cursor:pointer;font-weight:1000}.teacher p{font-weight:700;line-height:1.5}
+  .language-bar{position:sticky;bottom:8px;z-index:20;margin:18px auto 0;width:min(1200px,96%);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:10px;border-radius:18px;background:rgba(16,36,94,.93);color:white;box-shadow:0 10px 24px rgba(16,36,94,.24)}
+  .language-bar span{background:rgba(255,255,255,.11);padding:8px 12px;border-radius:12px;font-weight:900}
+  .tabs{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.tab{border:2px solid #d7dce9;background:white;color:var(--ink);font-weight:1000;border-radius:999px;padding:10px 18px;cursor:pointer}.tab.active{color:white;background:var(--blue);border-color:var(--blue)}
+  .model-card{width:min(700px,100%);background:linear-gradient(145deg,#fff,#f8f1e3);border:4px solid #d9b67c;border-radius:26px;padding:24px;box-shadow:var(--shadow)}
+  .model-visual{font-size:clamp(64px,9vw,120px);line-height:1;margin:8px 0}.model-q{font-weight:1000;font-size:clamp(22px,2.6vw,34px);margin:10px 0}.model-a{font-weight:1000;font-size:clamp(22px,2.6vw,34px);color:#0e8f55;margin:8px 0}
+  .answers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:min(760px,100%);margin-top:16px}.answer{border:3px solid #dce2ef;background:white;border-radius:18px;padding:14px 10px;font-weight:1000;font-size:20px;color:var(--ink);cursor:pointer;box-shadow:0 5px 9px rgba(20,38,75,.08)}.answer:hover,.answer:focus-visible{border-color:#4ca9ff;transform:translateY(-1px)}.answer.correct{background:#e8fff1;border-color:#28b96f}.answer.wrong{background:#fff3f3;border-color:#ff7e86}
+  .feedback{min-height:34px;margin-top:12px;font-size:20px;font-weight:1000}.ok{color:#07914f}.try{color:#be5b00}
+  .progressline{height:12px;background:#e8e2d8;border-radius:99px;overflow:hidden;margin:8px 0 18px}.progressline>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#1a90f2,#18b96e);border-radius:inherit;transition:.2s width}
+  .bingo-wrap{display:grid;grid-template-columns:minmax(330px,650px) minmax(260px,1fr);gap:20px;align-items:start}.bingo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;background:#117be0;padding:14px;border-radius:25px;box-shadow:var(--soft)}.bingo-cell{aspect-ratio:1;border:0;border-radius:18px;background:white;color:var(--ink);font-weight:1000;font-size:clamp(34px,5vw,64px);cursor:pointer;box-shadow:inset 0 -7px rgba(0,0,0,.08),0 5px 9px rgba(0,0,0,.15)}.bingo-cell.marked{background:linear-gradient(#2bd482,#0da45e);color:white}.bingo-side{background:white;border:3px solid #ead8bb;border-radius:24px;padding:20px;box-shadow:var(--soft)}.called{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.called span{width:46px;height:46px;display:grid;place-items:center;border-radius:13px;background:#eef4ff;border:2px solid #cbdcf6;font-weight:1000;font-size:20px}.call-num{width:132px;height:132px;margin:10px auto;border-radius:24px;display:grid;place-items:center;background:linear-gradient(#ff5a65,#d92036);color:#fff;font-weight:1000;font-size:72px;box-shadow:inset 0 -10px rgba(0,0,0,.18),0 12px 18px rgba(0,0,0,.2)}
+  .animals{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;max-width:800px;margin:18px auto}.animal{width:74px;height:74px;border-radius:22px;display:grid;place-items:center;font-size:48px;background:linear-gradient(145deg,#fff,#f1e4ca);border:3px solid #dbc39e;box-shadow:inset 0 -6px rgba(0,0,0,.05),0 6px 11px rgba(0,0,0,.11)}
+  .identity{display:grid;grid-template-columns:180px 1fr;gap:22px;align-items:center;width:min(760px,100%);background:linear-gradient(145deg,#fff,#f6ecdb);border:4px solid #d9b67c;border-radius:28px;padding:22px;box-shadow:var(--shadow)}.avatar{width:160px;height:160px;border-radius:30px;background:linear-gradient(145deg,#50b5ff,#086ecd);display:grid;place-items:center;color:white;font-size:82px;font-weight:1000;box-shadow:inset 0 -10px rgba(0,0,0,.16)}.idinfo h2{font-size:38px;margin:0 0 10px}.idrow{font-size:24px;font-weight:1000;margin:8px 0}.fake{font-size:13px;color:#6e7593;font-weight:900;text-transform:uppercase;letter-spacing:.8px}
+  .wordbank{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0}.word{border:2px solid #cbd8ee;background:#fff;border-radius:13px;padding:9px 12px;font-weight:1000;cursor:pointer}.sentence-box{min-height:58px;width:min(720px,100%);border:3px dashed #a7b6d1;border-radius:16px;padding:11px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;background:#f8fbff}
+  .lab-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.pack{border:3px solid #e4d7c2;border-radius:23px;background:white;padding:18px;box-shadow:var(--soft);cursor:pointer;text-align:left}.pack:hover{transform:translateY(-2px)}.pack .packicon{font-size:45px}.pack h3{margin:7px 0 5px;font-size:19px}.pack p{margin:0;color:#5f6988;font-weight:700}.pack .count{display:inline-block;margin-top:10px;padding:5px 9px;border-radius:999px;background:#eef3ff;font-weight:900}
+  .question-card{width:min(850px,100%);background:white;border:3px solid #e5d7c0;border-radius:26px;padding:24px;box-shadow:var(--soft);text-align:center}.question-card h2{font-size:clamp(25px,3vw,39px);margin:0 0 8px}.question-card .visual{font-size:clamp(54px,8vw,100px);margin:12px 0}.scorebox{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.scorepill{padding:8px 13px;background:#eef5ff;border:2px solid #cde0f5;border-radius:999px;font-weight:1000}
+  .finish-stars{font-size:58px;letter-spacing:5px}.result{font-size:28px;font-weight:1000;margin:10px 0}
+  .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+  @media(max-width:900px){.grid2,.grid3,.grid4,.lab-grid,.bingo-wrap{grid-template-columns:1fr}.topbar{flex-wrap:wrap}.brand{width:100%;text-align:center}.navchips{order:3;width:100%}.answers{grid-template-columns:repeat(2,1fr)}.identity{grid-template-columns:1fr;text-align:center}.avatar{margin:auto}.home-shell{border-width:4px;border-radius:18px}.hotspot::after{font-size:12px;padding:5px 10px}.language-bar{position:static}}
+
+/* ===== MERGED V5 PRACTICE LAYER — base HTML5 layout intentionally preserved ===== */
+.merged-home-launch{border:0;border-radius:20px;background:linear-gradient(#ffb52a,#ef8400);color:#fff;padding:14px 22px;font-weight:1000;font-size:18px;box-shadow:inset 0 -5px rgba(0,0,0,.18),var(--soft);cursor:pointer}
+.merged-ribbon{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:-2px 0 14px;padding:10px 12px;border-radius:18px;background:rgba(255,255,255,.82);border:2px solid rgba(16,36,94,.09);box-shadow:0 7px 16px rgba(16,36,94,.09)}
+.merged-ribbon .merge-label{font-weight:1000;color:#46537b;margin-right:auto}.mergebtn{border:0;border-radius:15px;padding:10px 14px;font-weight:1000;color:#fff;cursor:pointer;box-shadow:inset 0 -4px rgba(0,0,0,.16),0 5px 10px rgba(0,0,0,.12)}
+.mergebtn.primary{background:linear-gradient(#9e66f2,#7134d2)}.mergebtn.learn{background:linear-gradient(#27a8ff,#0872d5)}.mergebtn.pic{background:linear-gradient(#25cf7f,#079f59)}.mergebtn.gold{background:linear-gradient(#ffbd35,#ef8800)}
+.merge-overlay{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(12,23,55,.68);backdrop-filter:blur(3px)}.merge-overlay.open{display:flex}
+.merge-modal{position:relative;width:min(1180px,96vw);max-height:94vh;overflow:auto;border-radius:28px;background:linear-gradient(180deg,#fffdf8,#f8ead5);border:5px solid #e3b778;box-shadow:0 28px 70px rgba(0,0,0,.35);padding:22px}
+.merge-close{position:sticky;top:0;float:right;z-index:10;border:0;width:44px;height:44px;border-radius:50%;background:#fff;color:#1a2b61;font-size:24px;font-weight:1000;cursor:pointer;box-shadow:0 5px 12px rgba(0,0,0,.15)}
+.merge-modal h2{clear:both;text-align:center;margin:4px 48px 6px;font-size:clamp(26px,3vw,42px)}.merge-sub{text-align:center;color:#566487;font-weight:800;margin:0 auto 16px;max-width:900px}
+.merge-hub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.merge-card{border:3px solid #ead8bb;border-radius:22px;background:white;padding:15px;text-align:left;cursor:pointer;box-shadow:0 7px 14px rgba(16,36,94,.1);color:var(--ink)}.merge-card:hover{transform:translateY(-2px);border-color:#66adf0}.merge-card b{display:block;font-size:20px;margin-bottom:5px}.merge-card span{color:#617096;font-weight:750;line-height:1.35}.merge-num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#7c4ae0;color:white;margin-right:8px;box-shadow:inset 0 -4px rgba(0,0,0,.16)}
+.merge-tools{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin:14px 0}.merge-pill{border:0;border-radius:999px;padding:10px 16px;color:#fff;font-weight:1000;cursor:pointer;box-shadow:inset 0 -4px rgba(0,0,0,.16),0 5px 10px rgba(0,0,0,.12)}
+.merge-stage{background:white;border:3px solid #ead8bb;border-radius:24px;padding:20px;text-align:center;box-shadow:0 10px 18px rgba(16,36,94,.1);min-height:330px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.merge-progress{height:11px;background:#e5ded2;border-radius:99px;overflow:hidden;margin:8px 0 15px}.merge-progress i{display:block;height:100%;background:linear-gradient(90deg,#198feF,#17b86b);width:0}.merge-meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:1000;color:#556383;margin:0 3px 8px}
+.merge-q{font-size:clamp(24px,3vw,38px);font-weight:1000;margin:7px 0 13px}.merge-visual{max-width:900px;width:100%;margin:5px auto 14px;font-size:clamp(35px,6vw,76px);font-weight:1000;color:#173466}.merge-answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;width:min(820px,100%);margin:10px auto}.merge-answer{border:3px solid #dbe2ef;background:#fff;border-radius:18px;padding:15px 12px;font-weight:1000;font-size:clamp(18px,2vw,24px);color:var(--ink);cursor:pointer;box-shadow:0 5px 10px rgba(0,0,0,.08)}.merge-answer:hover{border-color:#4ca9ff}.merge-answer.correct{background:#e8fff1;border-color:#24b86b}.merge-answer.wrong{background:#fff0f1;border-color:#ef6a74}.merge-feedback{min-height:34px;font-size:20px;font-weight:1000;margin:10px 0}.merge-frame{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:13px;padding:10px;border-radius:16px;background:#12265e;color:white}.merge-frame span{background:rgba(255,255,255,.1);border-radius:10px;padding:7px 10px;font-weight:900}.merge-nav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.picture-grid{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;max-width:720px;margin:auto}.picture-grid img{width:64px;height:64px;object-fit:contain;background:#fffaf0;border-radius:13px;border:2px solid white;box-shadow:0 4px 9px rgba(0,0,0,.12)}.picture-grid.candles img{width:44px;height:76px}.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}.compare-box{border:3px solid #e2d5be;border-radius:18px;padding:12px;background:#fffaf2}.compare-box b{display:block;font-size:20px;margin-bottom:8px}
+.code-phone{display:inline-block;background:linear-gradient(160deg,#28303c,#080b10);padding:12px;border-radius:26px;border:4px solid #05070b;box-shadow:0 9px 19px rgba(0,0,0,.28)}.code-screen{background:linear-gradient(#f8fbff,#e6f0ff);border-radius:17px;padding:16px 20px;color:#173466}.code-digits{display:flex;gap:10px;justify-content:center}.code-digits span{min-width:54px;padding:10px;border-radius:12px;background:linear-gradient(#5ab5ff,#1677d9);color:white;font-size:29px;font-weight:1000;border:2px solid white;box-shadow:0 4px 8px rgba(0,0,0,.15)}
+.spell-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.spell-card{border:3px solid #ead8bb;border-radius:20px;background:linear-gradient(145deg,#fffdf9,#fff0d8);padding:13px 8px;text-align:center;box-shadow:0 7px 14px rgba(0,0,0,.12);cursor:pointer}.spell-n{width:58px;height:58px;border-radius:15px;display:grid;place-items:center;margin:0 auto 8px;background:linear-gradient(#2c9cff,#0765cf);color:white;font-size:34px;font-weight:1000;box-shadow:inset 0 -7px rgba(0,0,0,.17),0 6px 10px rgba(0,0,0,.14)}.spell-w{font-size:21px;font-weight:1000}.spell-letters{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;margin:8px 0}.spell-letters i{font-style:normal;background:#edf5ff;border:2px solid white;border-radius:7px;padding:4px 6px;font-weight:1000;color:#184476}.spell-card button{border:0;border-radius:999px;padding:7px 10px;background:#7b43dd;color:white;font-weight:1000;cursor:pointer}
+.reveal-card{width:min(760px,100%);border:4px solid #e3c28f;border-radius:24px;background:linear-gradient(145deg,#fff,#fff2db);padding:22px;box-shadow:0 10px 18px rgba(0,0,0,.12)}.reveal-answer{display:none;margin:15px 0 0;padding:15px;border-radius:16px;background:#e8fff1;border:2px solid #84d9ad;font-weight:1000;font-size:24px}.reveal-answer.show{display:block}
+.merge-global-sections{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.merge-global-sections button{min-height:125px;border:0;border-radius:22px;padding:15px;color:white;font-weight:1000;font-size:20px;cursor:pointer;box-shadow:inset 0 -7px rgba(0,0,0,.15),0 8px 15px rgba(0,0,0,.14)}
+@media(max-width:850px){.merge-hub,.merge-global-sections,.compare-grid{grid-template-columns:1fr}.spell-grid{grid-template-columns:repeat(2,1fr)}.merge-answers{grid-template-columns:1fr}.picture-grid img{width:50px;height:50px}.picture-grid.candles img{height:60px;width:38px}.merge-modal{padding:14px}.merge-ribbon .merge-label{width:100%}}
+
+/* ===== GAMES LINK PAGE — launcher only; existing lesson content unchanged ===== */
+.games-launch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;max-width:1040px;margin:10px auto}
+.game-launch-card{background:white;border:4px solid #e6d3b4;border-radius:28px;padding:26px;text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px}
+.game-launch-icon{font-size:76px;line-height:1;margin-bottom:12px}
+.game-launch-card h2{margin:0 0 10px;font-size:clamp(25px,3vw,38px)}
+.game-launch-card p{margin:0 0 20px;color:#586487;font-weight:800;line-height:1.45}
+.game-launch-link{display:inline-block;text-decoration:none;border-radius:18px;padding:14px 22px;color:white;font-weight:1000;font-size:18px;box-shadow:inset 0 -5px rgba(0,0,0,.18),0 7px 14px rgba(0,0,0,.14)}
+.game-launch-link.rope{background:linear-gradient(#24a5ff,#0872d5)}
+.game-launch-link.phone{background:linear-gradient(#25cf7f,#0aa45e)}
+.game-launch-link:active{transform:translateY(2px)}
+@media(max-width:850px){.games-launch-grid{grid-template-columns:1fr}.game-launch-card{min-height:230px}}
+
+</style>
+</head>
+<body class="calm">
+<div class="app">
+  <header class="topbar">
+    <button class="iconbtn" id="homeBtn" title="Home">🏠</button>
+    <div class="brand">How Old Am I? <span style="color:#2387df">Numbers 1–10</span></div>
+    <nav class="navchips" aria-label="Lesson sections">
+      <button class="chip c1" data-go="start">1 START</button>
+      <button class="chip c2" data-go="learn">2 LEARN</button>
+      <button class="chip c3" data-go="play">3 PLAY</button>
+      <button class="chip c4" data-go="practice">4 PRACTICE</button>
+      <button class="chip c5" data-go="speak">5 SPEAK</button>
+      <button class="chip c6" data-go="finish">6 FINISH</button>
+      <button class="chip c7" data-go="games">7 GAMES</button>
+    </nav>
+    <button class="iconbtn" id="soundBtn" title="Sound on/off">🔊</button>
+    <button class="iconbtn" id="motionBtn" title="Calm mode">🌿</button>
+  </header>
+
+  <main>
+    <section class="screen active" id="home">
+      <div class="home-shell" aria-label="Interactive home menu">
+        <img src="assets/main/img_001_28fcbc2df100.webp" alt="Warm classroom menu for the How Old Am I numbers lesson" / decoding="async">
+        <button class="hotspot hs1" data-go="start" data-label="START" aria-label="Start warm-up"></button>
+        <button class="hotspot hs2" data-go="learn" data-label="LEARN" aria-label="Learn language models"></button>
+        <button class="hotspot hs3" data-go="play" data-label="PLAY" aria-label="Play number bingo"></button>
+        <button class="hotspot hs4" data-go="speak" data-label="SPEAK" aria-label="Speak age and code"></button>
+        <button class="hotspot hs5" data-go="practice" data-label="PRACTICE" aria-label="Practice counting"></button>
+        <button class="hotspot hs6" data-go="finish" data-label="FINISH" aria-label="Finish exit check"></button>
+      </div>
+      <div class="home-under">
+        <button class="lab-launch" data-go="lab">⭐ EXTRA PRACTICE LAB — 7 packs × 7 questions</button>
+        <button class="merged-home-launch" id="mergedLibraryBtn">✨ MERGED V5 PRACTICE LIBRARY</button>
+        <div class="home-note">No timer • one task at a time • retry is always allowed • fake codes only</div>
+      </div>
+    </section>
+
+    <section class="screen" id="start">
+      <div class="section-title"><div class="numBadge c1">1</div><div><h1>START — Number Flash</h1><p>5 minutes • fast review in short chunks • no counting from 1</p></div></div>
+      <div class="board">
+        <div class="progressline"><i id="flashProgress"></i></div>
+        <div class="stage">
+          <div class="hint" id="flashRoutine">Round 1: Read together.</div>
+          <div class="big-seq" id="flashSeq"></div>
+          <div class="feedback" id="flashFeedback">Teacher points → class reads.</div>
+          <div class="controls">
+            <button class="btn blue" id="hearFlash">🔊 Hear</button>
+            <button class="btn green" id="nextFlash">Next flash ➜</button>
+            <button class="btn gray" id="resetFlash">Reset</button>
+          </div>
+        </div>
+        <div class="grid3" style="margin-top:18px">
+          <div class="practice-card"><h3>Practice A — Find It</h3><p>Hear or read a number. Tap the matching number. 7 calm rounds.</p><button class="btn small red openPack" data-pack="tap">Open 7 questions</button></div>
+          <div class="practice-card"><h3>Practice B — Number Words</h3><p>Match “one, two, three…” to the correct digit. 7 rounds.</p><button class="btn small blue openPack" data-pack="words">Open 7 questions</button></div>
+          <div class="practice-card"><h3>Practice C — Pattern</h3><p>Find the missing number in simple 1–10 patterns. 7 rounds.</p><button class="btn small green openPack" data-pack="pattern">Open 7 questions</button></div>
+        </div>
+        <details class="teacher"><summary>Teacher script</summary><p>1) “Look.” 2) Point to each number. Students read together. 3) Repeat in pairs. 4) Optional whisper round. Keep the pace predictable. If a student needs more time, repeat the same flash before moving on.</p></details>
+      </div>
+      <div class="language-bar"><span>one • two • three • four • five</span><span>six • seven • eight • nine • ten</span></div>
+    </section>
+
+    <section class="screen" id="learn">
+      <div class="section-title"><div class="numBadge c2">2</div><div><h1>LEARN — Age + Quantity + Safe Code</h1><p>10 minutes • one model at a time • model → repeat → mini-check</p></div></div>
+      <div class="board">
+        <div class="tabs">
+          <button class="tab active" data-learn="age">🎂 AGE</button><button class="tab" data-learn="quantity">🐶 QUANTITY</button><button class="tab" data-learn="code">🔐 SAFE CODE</button>
+        </div>
+        <div class="progressline"><i id="learnProgress"></i></div>
+        <div class="stage">
+          <div class="model-card" id="modelCard"></div>
+          <div class="controls"><button class="btn blue" id="hearModel">🔊 Hear model</button><button class="btn green" id="nextModel">Next model ➜</button></div>
+          <div style="height:1px;background:#eee;width:min(760px,100%);margin:22px 0 8px"></div>
+          <h2 style="margin-bottom:0">Mini-check</h2>
+          <div class="hint" id="learnQuestion"></div>
+          <div class="answers" id="learnAnswers"></div>
+          <div class="feedback" id="learnFeedback"></div>
+        </div>
+        <div class="grid3" style="margin-top:18px">
+          <div class="practice-card"><h3>Age Practice</h3><p>7 extra age questions with the same sentence frame.</p><button class="btn small orange openPack" data-pack="age">Practice age</button></div>
+          <div class="practice-card"><h3>Quantity Practice</h3><p>7 extra counting questions using clear animal groups.</p><button class="btn small purple openPack" data-pack="quantity">Practice quantity</button></div>
+          <div class="practice-card"><h3>Safe Code Practice</h3><p>7 fake code questions. No real phone or personal numbers.</p><button class="btn small blue openPack" data-pack="code">Practice codes</button></div>
+        </div>
+      </div>
+      <div class="language-bar"><span>Q: How old are you?</span><span>A: I am ___ years old.</span><span>Q: How many ___?</span><span>A: There are ___ ___.</span><span>My code is ___-___-___.</span></div>
+    </section>
+
+    <section class="screen" id="play">
+      <div class="section-title"><div class="numBadge c3">3</div><div><h1>PLAY — Number Bingo</h1><p>10 minutes • predictable call list • no timer • quiet pointing is okay</p></div></div>
+      <div class="board">
+        <div class="bingo-wrap">
+          <div><div class="bingo-grid" id="bingoGrid"></div></div>
+          <aside class="bingo-side">
+            <h2 style="text-align:center;margin:0">Teacher Caller</h2>
+            <div class="call-num" id="callNumber">?</div>
+            <div class="controls"><button class="btn green" id="nextCall">Call next</button><button class="btn blue" id="repeatCall">🔊 Repeat</button><button class="btn gray" id="resetBingo">Reset</button></div>
+            <div class="feedback" id="bingoFeedback" style="text-align:center">Tap a square only after it is called.</div>
+            <h3>Called numbers</h3><div class="called" id="calledNums"></div>
+          </aside>
+        </div>
+        <details class="teacher"><summary>Teacher script</summary><p>“Listen. Find the number. Cover it.” Students may repeat one word only, such as “Four.” A student who does not want to speak may point. When a row, column, or diagonal is covered, say “Bingo!”</p></details>
+      </div>
+      <div class="language-bar"><span>Listen → Find → Cover</span><span>Optional speaking: “Four.”</span><span>Bingo!</span></div>
+    </section>
+
+    <section class="screen" id="practice">
+      <div class="section-title"><div class="numBadge c4">4</div><div><h1>PRACTICE — Animal Counting Hunt</h1><p>10 minutes • count → choose → say the full sentence</p></div></div>
+      <div class="board">
+        <div class="progressline"><i id="countProgress"></i></div>
+        <div class="stage">
+          <div class="hint" id="countRound"></div>
+          <h2 id="countQuestion">How many?</h2>
+          <div class="animals" id="animals"></div>
+          <div class="answers" id="countAnswers"></div>
+          <div class="feedback" id="countFeedback"></div>
+          <div class="model-a" id="countSentence" style="min-height:45px"></div>
+          <div class="controls"><button class="btn blue" id="hearCountSentence">🔊 Hear sentence</button><button class="btn green" id="nextCount">Next ➜</button></div>
+        </div>
+        <div class="grid3" style="margin-top:18px">
+          <div class="practice-card"><h3>Level 1 — Point + Number</h3><p>Students may point and say only the number first.</p></div>
+          <div class="practice-card"><h3>Level 2 — Full Sentence</h3><p>“There are five dogs.” Sentence frame stays visible.</p></div>
+          <div class="practice-card"><h3>Level 3 — Ask + Answer</h3><p>Student A: “How many dogs?” Student B answers.</p></div>
+        </div>
+        <div class="controls"><button class="btn purple openPack" data-pack="quantity">Do 7 more counting questions</button><button class="btn orange openPack" data-pack="mixed">Mixed practice</button></div>
+      </div>
+      <div class="language-bar"><span>Q: How many ___?</span><span>A: There are ___ ___.</span></div>
+    </section>
+
+    <section class="screen" id="speak">
+      <div class="section-title"><div class="numBadge c5">5</div><div><h1>SPEAK — Fake Identity Cards</h1><p>5 minutes • age + fake code • safe speaking practice</p></div></div>
+      <div class="board">
+        <div class="progressline"><i id="speakProgress"></i></div>
+        <div class="stage">
+          <div class="fake">Practice identity — not real personal information</div>
+          <div class="identity" id="identityCard"></div>
+          <div class="question-card" style="margin-top:18px;padding:16px">
+            <div class="model-q">Say 2 sentences:</div>
+            <div class="sentence-box" id="speakReveal"><span style="color:#7e89a7;font-weight:900">Tap “Show model” if you need help.</span></div>
+            <div class="controls"><button class="btn blue" id="showSpeak">Show model</button><button class="btn purple" id="hearSpeak">🔊 Hear model</button><button class="btn green" id="didSpeak">✓ I said it</button></div>
+            <div class="feedback" id="speakFeedback"></div>
+          </div>
+          <div class="controls"><button class="btn orange" id="nextIdentity">Next identity ➜</button></div>
+        </div>
+        <div class="grid2" style="margin-top:18px">
+          <div class="practice-card"><h3>More Practice — Build an age sentence</h3><p>Use word tiles and then check your sentence.</p><button class="btn small orange openPack" data-pack="age">Open age pack</button></div>
+          <div class="practice-card"><h3>More Practice — Decode a safe code</h3><p>Listen/read a fake code and choose the correct digits.</p><button class="btn small blue openPack" data-pack="code">Open code pack</button></div>
+        </div>
+      </div>
+      <div class="language-bar"><span>I am ___ years old.</span><span>My code is ___-___-___.</span></div>
+    </section>
+
+    <section class="screen" id="finish">
+      <div class="section-title"><div class="numBadge c6">6</div><div><h1>FINISH — Exit Challenge</h1><p>5 minutes • 9 calm questions • listen, count, read, speak</p></div></div>
+      <div class="board">
+        <div class="scorebox"><div class="scorepill" id="exitStep">Question 1 / 9</div><div class="scorepill" id="exitScore">Stars: 0</div></div>
+        <div class="progressline"><i id="exitProgress"></i></div>
+        <div class="stage" id="exitStage">
+          <div class="question-card" id="exitCard"></div>
+          <div class="feedback" id="exitFeedback"></div>
+          <div class="controls"><button class="btn green" id="exitNext" style="display:none">Next ➜</button><button class="btn gray" id="restartExit" style="display:none">Try again</button></div>
+        </div>
+      </div>
+      <div class="language-bar"><span>Great work. One question at a time.</span><span>Retry is always okay.</span></div>
+    </section>
+
+    <section class="screen" id="games">
+      <div class="section-title"><div class="numBadge c7">7</div><div><h1>GAMES</h1><p>Choose one number game.</p></div></div>
+      <div class="board">
+        <div class="games-launch-grid">
+          <article class="game-launch-card">
+            <div class="game-launch-icon">🪢</div>
+            <h2>Number Rope Battle</h2>
+            <p>Two-team speed number challenge.</p>
+            <a class="game-launch-link rope" href="games/number_rope_battle_v2/index.html">OPEN GAME 1</a>
+          </article>
+          <article class="game-launch-card">
+            <div class="game-launch-icon">📱</div>
+            <h2>Call My Parent</h2>
+            <p>Touchscreen phone number practice.</p>
+            <a class="game-launch-link phone" href="games/Call_My_Parent_Touchscreen_Game.html">OPEN GAME 2</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="lab">
+      <div class="section-title"><div class="numBadge" style="background:linear-gradient(#9c68ef,#6231c8)">★</div><div><h1>EXTRA PRACTICE LAB</h1><p>49 extra questions • 7 focused packs • each pack has exactly 7 calm exercises</p></div></div>
+      <div class="board">
+        <div id="packMenu" class="lab-grid"></div>
+        <div id="packRunner" style="display:none">
+          <div class="scorebox"><div class="scorepill" id="packTitle"></div><div class="scorepill" id="packStep"></div><div class="scorepill" id="packScore"></div></div>
+          <div class="progressline"><i id="packProgress"></i></div>
+          <div class="stage"><div class="question-card" id="packCard"></div><div class="feedback" id="packFeedback"></div><div class="controls"><button class="btn green" id="packNext" style="display:none">Next ➜</button><button class="btn gray" id="backPacks">Back to packs</button></div></div>
+        </div>
+      </div>
+      <div class="language-bar"><span>7 questions per pack</span><span>No timer</span><span>Wrong answer = hint + retry</span></div>
+    </section>
+  </main>
+</div>
+
+
+  <div class="merge-overlay" id="mergeOverlay" aria-hidden="true">
+    <div class="merge-modal" role="dialog" aria-modal="true" aria-label="Merged practice activity">
+      <button class="merge-close" id="mergeClose" aria-label="Close">×</button>
+      <div id="mergeContent"></div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  const words={1:'one',2:'two',3:'three',4:'four',5:'five',6:'six',7:'seven',8:'eight',9:'nine',10:'ten'};
+  let soundOn=true;
+  const state={done:new Set(JSON.parse(localStorage.getItem('hoa_done')||'[]'))};
+  const saveDone=()=>localStorage.setItem('hoa_done',JSON.stringify([...state.done]));
+  function markDone(id){if(['start','learn','play','practice','speak','finish'].includes(id)){state.done.add(id);saveDone();renderDone();}}
+  function renderDone(){ $$('.chip').forEach(b=>b.classList.toggle('done',state.done.has(b.dataset.go))); }
+  /* ===== MISS FANG EMBEDDED VOICE — GLOBAL LESSON ENGINE ===== */
+  const MISS_FANG_GLOBAL_AUDIO = {"almost":"assets/main/audio_001_05c255d50a41.mp3","are_you_ready":"assets/main/audio_002_7b7f1cd87878.mp3","eight":"assets/main/audio_003_d9e5f8195a0b.mp3","excellent":"assets/main/audio_004_2055a95a4072.mp3","excellent_work":"assets/main/audio_005_7b07c8e190bf.mp3","five":"assets/main/audio_006_780a8f349af6.mp3","four":"assets/main/audio_007_a649594ee188.mp3","great_job":"assets/main/audio_008_f5d7da685e2b.mp3","how_many_do_you_see":"assets/main/audio_009_1df98b46a3a6.mp3","how_old_are_you":"assets/main/audio_010_ac6aa8c00c07.mp3","i_am":"assets/main/audio_011_8d65833f20e3.mp3","i_am_eight_years_old":"assets/main/audio_012_08290b9805e0.mp3","i_see":"assets/main/audio_013_d992116bcbad.mp3","i_see_five":"assets/main/audio_014_4dd6499958e9.mp3","lets_play_a_game":"assets/main/audio_015_426ad27fec57.mp3","lets_practice_together":"assets/main/audio_016_80a046f8fe57.mp3","lets_start":"assets/main/audio_017_bdf82b7f244a.mp3","listen_and_repeat":"assets/main/audio_018_6684df2a22c8.mp3","listen_carefully":"assets/main/audio_019_2582b1ac6b68.mp3","look_at_screen":"assets/main/audio_020_4edf999c2706.mp3","nine":"assets/main/audio_021_b2b407f46001.mp3","now_press_button":"assets/main/audio_022_bbd4b402efc2.mp3","now_say_number":"assets/main/audio_023_0bee89ffb410.mp3","one":"assets/main/audio_024_28af60dba4ef.mp3","press_call":"assets/main/audio_025_e6c8d71590eb.mp3","pull":"assets/main/audio_026_4b5d342f5abf.mp3","say_it_again":"assets/main/audio_027_6f0889d1f685.mp3","seven":"assets/main/audio_028_cdcf05ffcbce.mp3","six":"assets/main/audio_029_e04746906974.mp3","tap_correct_answer":"assets/main/audio_030_5e625f4ad28b.mp3","team_one_ready":"assets/main/audio_031_1cdeb486498b.mp3","team_two_ready":"assets/main/audio_032_09c6870c1d43.mp3","ten":"assets/main/audio_033_882430d4ca7b.mp3","three":"assets/main/audio_034_8e5afae157be.mp3","three_two_one_go":"assets/main/audio_035_51206abc9e19.mp3","try_again":"assets/main/audio_036_a81733fad94d.mp3","two":"assets/main/audio_037_940e291a03e5.mp3","very_good":"assets/main/audio_038_9c322f119309.mp3","well_done":"assets/main/audio_039_a69c01520bd5.mp3","what_number_is_this":"assets/main/audio_040_6b9048a45e2c.mp3","years_old":"assets/main/audio_041_1a68d9a458fe.mp3","you_can_do_it":"assets/main/audio_042_858b7bcaea6d.mp3","zero":"assets/main/audio_043_6a1983d29043.mp3","age_0":"assets/main/audio_044_aa8ca6eef606.mp3","ageq_0":"assets/main/audio_045_6b02bacedcb8.mp3","see_0":"assets/main/audio_046_174511afa516.mp3","countq_0":"assets/main/audio_047_faa7ed2dbc88.mp3","age_1":"assets/main/audio_048_47a41a2775c7.mp3","ageq_1":"assets/main/audio_049_ee4107285caf.mp3","see_1":"assets/main/audio_050_2d9fabba33b5.mp3","countq_1":"assets/main/audio_051_218edf72b878.mp3","age_2":"assets/main/audio_052_681bc744006c.mp3","ageq_2":"assets/main/audio_053_97fd36bdd2dd.mp3","see_2":"assets/main/audio_054_0c164cd19e28.mp3","countq_2":"assets/main/audio_055_3da2c383e9dd.mp3","age_3":"assets/main/audio_056_51ed2d11dcec.mp3","ageq_3":"assets/main/audio_057_636925126a07.mp3","see_3":"assets/main/audio_058_6066ce89add5.mp3","countq_3":"assets/main/audio_059_15b5cccf7b52.mp3","age_4":"assets/main/audio_060_29f9347d8c06.mp3","ageq_4":"assets/main/audio_061_4d97961a127f.mp3","see_4":"assets/main/audio_062_6e81476802ff.mp3","countq_4":"assets/main/audio_063_cc7f30765a7b.mp3","age_5":"assets/main/audio_064_7a4207a25711.mp3","ageq_5":"assets/main/audio_065_003c55388a65.mp3","see_5":"assets/main/audio_066_8582e7140e5d.mp3","countq_5":"assets/main/audio_067_74fab434d97c.mp3","age_6":"assets/main/audio_068_ecc91b311f21.mp3","ageq_6":"assets/main/audio_069_300fe843939e.mp3","see_6":"assets/main/audio_070_2d4a113325bc.mp3","countq_6":"assets/main/audio_071_d2e55c476aa4.mp3","age_7":"assets/main/audio_072_577658e72bcf.mp3","ageq_7":"assets/main/audio_073_01bed68d0c7e.mp3","see_7":"assets/main/audio_074_fde904dfdadf.mp3","countq_7":"assets/main/audio_075_590f98a198f4.mp3","age_8":"assets/main/audio_076_b77e72d31747.mp3","ageq_8":"assets/main/audio_077_4089c405d30a.mp3","see_8":"assets/main/audio_078_d92ae44e22ae.mp3","countq_8":"assets/main/audio_079_753664e04b14.mp3","age_9":"assets/main/audio_080_7dc2ebebca9e.mp3","ageq_9":"assets/main/audio_081_1249448a4a92.mp3","see_9":"assets/main/audio_082_9837840309aa.mp3","countq_9":"assets/main/audio_083_8b5f3dd9d62a.mp3","age_10":"assets/main/audio_084_298ac429544e.mp3","ageq_10":"assets/main/audio_085_83ea16084eef.mp3","see_10":"assets/main/audio_086_1cf4311b3295.mp3","countq_10":"assets/main/audio_087_a1b7fff9bfb5.mp3"};
+  const mfCache = new Map();
+  let mfActive = null;
+  let mfRun = 0;
+  const MF_NUM_KEYS = {'0':'zero','zero':'zero','1':'one','one':'one','2':'two','two':'two','3':'three','three':'three','4':'four','four':'four','5':'five','five':'five','6':'six','six':'six','7':'seven','seven':'seven','8':'eight','eight':'eight','9':'nine','nine':'nine','10':'ten','ten':'ten'};
+  const MF_EXACT = {
+    'are you ready':'are_you_ready','lets start':'lets_start','listen carefully':'listen_carefully','look at the screen':'look_at_screen','tap the correct answer':'tap_correct_answer','very good':'very_good','excellent':'excellent','great job':'great_job','well done':'well_done','try again':'try_again','almost':'almost','you can do it':'you_can_do_it','lets practice together':'lets_practice_together','what number is this':'what_number_is_this','how old are you':'how_old_are_you','i am eight years old':'i_am_eight_years_old','how many do you see':'how_many_do_you_see','i see five':'i_see_five','now say the number':'now_say_number','listen and repeat':'listen_and_repeat','say it again':'say_it_again','now press the button':'now_press_button','press call':'press_call','lets play a game':'lets_play_a_game','team one are you ready':'team_one_ready','team two are you ready':'team_two_ready','three two one go':'three_two_one_go','pull':'pull','excellent work':'excellent_work','bingo great job':'great_job','bingo great listening':'great_job'
+  };
+  function mfNorm(t){return String(t??'').toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();}
+  function mfPreload(){const keys=[...Object.values(MF_NUM_KEYS),'great_job','how_old_are_you','how_many_do_you_see','listen_and_repeat',...Array.from({length:11},(_,i)=>'age_'+i),...Array.from({length:11},(_,i)=>'ageq_'+i),...Array.from({length:11},(_,i)=>'see_'+i),...Array.from({length:11},(_,i)=>'countq_'+i)];/* Audio cache is lazy: clips are instantiated on first use. */}
+  function stopMissFangVoice(){mfRun++;if(mfActive){try{mfActive.pause();mfActive.currentTime=0;}catch(e){}mfActive.onended=null;mfActive.onerror=null;mfActive=null;}}
+  function mfExtractNumbers(norm){const out=[];for(const tok of norm.split(' '))if(MF_NUM_KEYS[tok])out.push(MF_NUM_KEYS[tok]);return out;}
+  function mfResolve(text){
+    const n=mfNorm(text); if(!n)return [];
+    if(MF_EXACT[n])return [MF_EXACT[n]];
+    if(MF_NUM_KEYS[n])return [MF_NUM_KEYS[n]];
+    // Full age sentences are pre-combined into ONE MP3 to remove online gaps.
+    let age=n.match(/i am\s+(zero|one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+years? old/);
+    if(age){
+      const nk=MF_NUM_KEYS[age[1]]||MF_NUM_KEYS[String(Number(age[1]))];
+      const nv=({'zero':0,'one':1,'two':2,'three':3,'four':4,'five':5,'six':6,'seven':7,'eight':8,'nine':9,'ten':10})[nk];
+      if(Number.isInteger(nv)) return [n.includes('how old are you')?'ageq_'+nv:'age_'+nv];
+    }
+    // Quantity audio uses Miss Fang's smooth “I see N” recording. The on-screen sentence remains unchanged.
+    let qty=n.match(/(?:there are|i see)\s+(zero|one|two|three|four|five|six|seven|eight|nine|ten|\d+)/);
+    if(qty){
+      const nk=MF_NUM_KEYS[qty[1]]||MF_NUM_KEYS[String(Number(qty[1]))];
+      const nv=({'zero':0,'one':1,'two':2,'three':3,'four':4,'five':5,'six':6,'seven':7,'eight':8,'nine':9,'ten':10})[nk];
+      if(Number.isInteger(nv)) return [n.includes('how many')?'countq_'+nv:'see_'+nv];
+    }
+    if(n.startsWith('how many'))return ['how_many_do_you_see'];
+    if(n.includes('how old are you'))return ['how_old_are_you'];
+    if(n.includes('what number'))return ['what_number_is_this'];
+    if(n.includes('listen')&&n.includes('repeat'))return ['listen_and_repeat'];
+    if(n.includes('try again'))return ['try_again'];
+    if(n.includes('great job')||n.includes('correct')||n.includes('bingo'))return ['great_job'];
+    if(n.includes('well done'))return ['well_done'];
+    if(n.includes('excellent'))return ['excellent'];
+    // Codes and number sequences: speak only the actual numbers with Miss Fang's trusted clips.
+    const nums=mfExtractNumbers(n);if(nums.length)return nums;
+    // Never fall back to the computer/system voice.
+    return [];
+  }
+  function mfPlayKey(key,runId){return new Promise(resolve=>{if(runId!==mfRun||!soundOn)return resolve();const src=MISS_FANG_GLOBAL_AUDIO[key];if(!src)return resolve();const a=mfCache.get(key)||new Audio(src);a.src=src;a.preload='none';mfCache.set(key,a);mfActive=a;try{a.currentTime=0;}catch(e){}a.volume=1;let done=false;const finish=()=>{if(done)return;done=true;if(mfActive===a)mfActive=null;a.onended=null;a.onerror=null;resolve();};a.onended=finish;a.onerror=finish;const p=a.play();if(p&&p.catch)p.catch(finish);});}
+
+  /* ===== HYBRID VOICE ROUTER — Miss Fang + low-lag local female TTS ===== */
+  let defaultFemaleVoice = null;
+  let defaultFemaleReady = false;
+  let defaultFemaleWarmed = false;
+  let defaultFemaleToken = 0;
+  const FEMALE_VOICE_HINT = /Samantha|Zira|Jenny|Aria|Ava|Susan|Victoria|Karen|Moira|Fiona|Tessa|Veena|Serena|Hazel|Google US English|English United States/i;
+  function chooseDefaultFemaleVoice(){
+    if(!('speechSynthesis' in window)) return null;
+    const voices=speechSynthesis.getVoices()||[];
+    const en=voices.filter(v=>/^en([-_]|$)/i.test(v.lang||''));
+    const female=en.filter(v=>FEMALE_VOICE_HINT.test(v.name||''));
+    defaultFemaleVoice=female.find(v=>v.localService)||female.find(v=>/^en[-_]US/i.test(v.lang||''))||female[0]||en.find(v=>v.localService)||en[0]||voices[0]||null;
+    defaultFemaleReady=!!defaultFemaleVoice;
+    return defaultFemaleVoice;
+  }
+  function prepareDefaultFemaleVoice(){
+    if(!('speechSynthesis' in window)) return;
+    chooseDefaultFemaleVoice();
+    const refresh=()=>chooseDefaultFemaleVoice();
+    if(typeof speechSynthesis.addEventListener==='function') speechSynthesis.addEventListener('voiceschanged',refresh);
+    else speechSynthesis.onvoiceschanged=refresh;
+  }
+  function warmDefaultFemaleVoice(){
+    if(defaultFemaleWarmed||!('speechSynthesis' in window)) return;
+    chooseDefaultFemaleVoice();
+    try{speechSynthesis.resume();const u=new SpeechSynthesisUtterance(' ');u.lang='en-US';u.volume=0;if(defaultFemaleVoice)u.voice=defaultFemaleVoice;speechSynthesis.speak(u);defaultFemaleWarmed=true;}catch(e){}
+  }
+  function stopDefaultFemaleVoice(){
+    defaultFemaleToken++;
+    if('speechSynthesis' in window && (speechSynthesis.speaking||speechSynthesis.pending)) { try{speechSynthesis.cancel();}catch(e){} }
+  }
+  function speakDefaultFemale(text,rate=.88,pitch=1.04){
+    if(!soundOn||!text||!('speechSynthesis' in window)) return Promise.resolve();
+    stopMissFangVoice();
+    stopDefaultFemaleVoice();
+    const token=++defaultFemaleToken;
+    chooseDefaultFemaleVoice();
+    try{speechSynthesis.resume();}catch(e){}
+    return new Promise(resolve=>{
+      const u=new SpeechSynthesisUtterance(String(text));
+      u.lang='en-US';u.rate=rate;u.pitch=pitch;u.volume=1;
+      if(defaultFemaleVoice)u.voice=defaultFemaleVoice;
+      let done=false;const finish=()=>{if(done)return;done=true;resolve();};
+      u.onend=finish;u.onerror=finish;
+      if(token!==defaultFemaleToken)return finish();
+      try{speechSynthesis.speak(u);}catch(e){finish();}
+    });
+  }
+  function currentLessonVoiceSection(){const a=document.querySelector('.screen.active');return a?a.id:'home';}
+  function playMissFangSequence(seq){
+    if(!soundOn||!seq||!seq.length)return Promise.resolve();
+    stopDefaultFemaleVoice();stopMissFangVoice();const runId=mfRun;
+    return (async()=>{for(const key of seq){if(runId!==mfRun||!soundOn)break;await mfPlayKey(key,runId);if(runId!==mfRun||!soundOn)break;}})();
+  }
+  function stopAllLessonVoices(){stopMissFangVoice();stopDefaultFemaleVoice();}
+  async function speak(text,rate=.88,pitch=1.04){
+    if(!soundOn)return;
+    const section=currentLessonVoiceSection();
+    const seq=mfResolve(text);
+    if(section==='start'||section==='play') return seq.length?playMissFangSequence(seq):Promise.resolve();
+    if(section==='learn'||section==='practice'||section==='speak'||section==='lab') return speakDefaultFemale(text,rate,pitch);
+    if(section==='finish') return seq.length?playMissFangSequence(seq):speakDefaultFemale(text,rate,pitch);
+    return speakDefaultFemale(text,rate,pitch);
+  }
+  prepareDefaultFemaleVoice();
+  document.addEventListener('pointerdown',warmDefaultFemaleVoice,{once:true,capture:true});
+
+  // Performance optimization: audio is loaded on demand instead of preloading all clips.
+
+  function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+  function choiceArray(correct,n=4,min=1,max=10){const s=new Set([correct]);while(s.size<n){s.add(Math.floor(Math.random()*(max-min+1))+min)}return shuffle([...s]);}
+  function go(id){ $$('.screen').forEach(s=>s.classList.toggle('active',s.id===id)); window.scrollTo({top:0,behavior:document.body.classList.contains('calm')?'auto':'smooth'}); if(id!=='home'&&id!=='lab') markDone(id); if(id==='lab') renderPackMenu(); }
+  $$('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+  $('#homeBtn').addEventListener('click',()=>go('home'));
+  $('#soundBtn').addEventListener('click',()=>{soundOn=!soundOn;$('#soundBtn').textContent=soundOn?'🔊':'🔇';if(!soundOn)stopAllLessonVoices();else warmDefaultFemaleVoice();});
+  $('#motionBtn').addEventListener('click',()=>{document.body.classList.toggle('calm');$('#motionBtn').textContent=document.body.classList.contains('calm')?'🌿':'✨';});
+  renderDone();
+
+  // START — flash practice
+  const flashSeqs=[[1,2,3],[4,5,6],[7,8,9],[2,4,6],[3,6,9],[5,8,10],[1,4,7],[10,8,6],[2,5,9],[9,5,1],[3,7,10],[6,4,2]];
+  const routines=['Read together.','Read in pairs.','Whisper round.','Point, then read.','Team challenge — calm and clear.','Teacher points in a new order.'];
+  let flashI=0;
+  function renderFlash(){const seq=flashSeqs[flashI];$('#flashSeq').innerHTML=seq.map(n=>`<div class="numberCube">${n}</div>`).join('');$('#flashRoutine').textContent=`Round ${flashI+1} / ${flashSeqs.length}: ${routines[flashI%routines.length]}`;$('#flashFeedback').textContent='Look → point → read.';$('#flashProgress').style.width=`${(flashI+1)/flashSeqs.length*100}%`;}
+  $('#hearFlash').addEventListener('click',()=>speak(flashSeqs[flashI].map(n=>words[n]).join(', ')));
+  $('#nextFlash').addEventListener('click',()=>{flashI=(flashI+1)%flashSeqs.length;renderFlash();});
+  $('#resetFlash').addEventListener('click',()=>{flashI=0;renderFlash();}); renderFlash();
+
+  // LEARN
+  const learn={
+    age:[
+      {v:8,visual:'🎂 8',q:'How old are you?',a:'I am eight years old.'},{v:6,visual:'🎈 6',q:'How old are you?',a:'I am six years old.'},{v:10,visual:'🎂 10',q:'How old are you?',a:'I am ten years old.'},{v:7,visual:'🎁 7',q:'How old are you?',a:'I am seven years old.'},{v:9,visual:'🎉 9',q:'How old are you?',a:'I am nine years old.'}
+    ],
+    quantity:[
+      {v:5,animal:'dogs',emoji:'🐶',q:'How many dogs?',a:'There are five dogs.'},{v:3,animal:'cats',emoji:'🐱',q:'How many cats?',a:'There are three cats.'},{v:7,animal:'rabbits',emoji:'🐰',q:'How many rabbits?',a:'There are seven rabbits.'},{v:2,animal:'birds',emoji:'🐦',q:'How many birds?',a:'There are two birds.'},{v:8,animal:'fish',emoji:'🐟',q:'How many fish?',a:'There are eight fish.'}
+    ],
+    code:[
+      {code:[1,4,6],q:'What is the safe code?',a:'My code is one-four-six.'},{code:[2,5,7],q:'What is the safe code?',a:'My code is two-five-seven.'},{code:[3,6,8],q:'What is the safe code?',a:'My code is three-six-eight.'},{code:[4,7,9],q:'What is the safe code?',a:'My code is four-seven-nine.'},{code:[2,8,5],q:'What is the safe code?',a:'My code is two-eight-five.'}
+    ]
+  };
+  let learnMode='age', learnI=0, learnAnswered=false;
+  function learnCurrent(){return learn[learnMode][learnI%learn[learnMode].length]}
+  function renderLearn(){learnAnswered=false;const x=learnCurrent();let html='';let correct,question,choices=[];
+    if(learnMode==='age'){html=`<div class="fake">MODEL — AGE</div><div class="model-visual">${x.visual}</div><div class="model-q">Q: ${x.q}</div><div class="model-a">A: ${x.a}</div>`;correct=x.v;question=`Tap the correct number for age ${words[x.v]}.`;choices=choiceArray(correct);}
+    if(learnMode==='quantity'){html=`<div class="fake">MODEL — QUANTITY</div><div class="model-visual">${x.emoji} × ${x.v}</div><div class="model-q">Q: ${x.q}</div><div class="model-a">A: ${x.a}</div>`;correct=x.v;question=`How many ${x.animal}?`;choices=choiceArray(correct);}
+    if(learnMode==='code'){const d=x.code.join('-');html=`<div class="fake">MODEL — FAKE CODE ONLY</div><div class="model-visual">🔐</div><div class="model-q" style="font-size:42px">${d}</div><div class="model-a">${x.a}</div>`;correct=d;question='Tap the matching fake code.';const options=[d,shuffle(x.code).join('-'),[x.code[1],x.code[0],x.code[2]].join('-'),[x.code[2],x.code[1],x.code[0]].join('-')];choices=[...new Set(options)];while(choices.length<4){choices.push([1+Math.floor(Math.random()*9),1+Math.floor(Math.random()*9),1+Math.floor(Math.random()*9)].join('-'))}choices=shuffle(choices.slice(0,4));}
+    $('#modelCard').innerHTML=html;$('#learnQuestion').textContent=question;$('#learnFeedback').textContent='';$('#learnAnswers').innerHTML='';
+    choices.forEach(c=>{const b=document.createElement('button');b.className='answer';b.textContent=c;b.addEventListener('click',()=>{if(learnAnswered)return;if(String(c)===String(correct)){learnAnswered=true;b.classList.add('correct');$('#learnFeedback').innerHTML='<span class="ok">✓ Correct. Say the model once.</span>';speak(learnCurrent().a);}else{b.classList.add('wrong');$('#learnFeedback').innerHTML='<span class="try">Try again — look at the model.</span>';setTimeout(()=>b.classList.remove('wrong'),500);}});$('#learnAnswers').appendChild(b);});
+    $('#learnProgress').style.width=`${(learnI%5+1)/5*100}%`;
+  }
+  $$('.tab').forEach(t=>t.addEventListener('click',()=>{learnMode=t.dataset.learn;learnI=0;$$('.tab').forEach(x=>x.classList.toggle('active',x===t));renderLearn();}));
+  $('#hearModel').addEventListener('click',()=>speak(learnCurrent().a));$('#nextModel').addEventListener('click',()=>{learnI=(learnI+1)%5;renderLearn();});renderLearn();
+
+  // BINGO
+  const callList=[4,9,2,7,1,10,5,8,3,6];let boardNums=[],called=[],callIndex=0;
+  function newBingo(){boardNums=shuffle([1,2,3,4,5,6,7,8,9,10]).slice(0,9);called=[];callIndex=0;$('#callNumber').textContent='?';$('#calledNums').innerHTML='';$('#bingoFeedback').textContent='Tap a square only after it is called.';renderBingo();}
+  function renderBingo(){const g=$('#bingoGrid');g.innerHTML='';boardNums.forEach(n=>{const b=document.createElement('button');b.className='bingo-cell';b.textContent=n;b.dataset.n=n;b.addEventListener('click',()=>{if(!called.includes(n)){ $('#bingoFeedback').innerHTML='<span class="try">Wait — this number has not been called yet.</span>';return;}b.classList.toggle('marked');checkBingo();});g.appendChild(b);});}
+  function checkBingo(){const cells=$$('.bingo-cell');const m=cells.map(c=>c.classList.contains('marked'));const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];if(lines.some(L=>L.every(i=>m[i]))){$('#bingoFeedback').innerHTML='<span class="ok">⭐ BINGO! Great listening.</span>';speak('Bingo! Great job!');markDone('play');}}
+  $('#nextCall').addEventListener('click',()=>{if(callIndex>=callList.length){$('#bingoFeedback').textContent='All numbers were called. Reset for a new board.';return;}const n=callList[callIndex++];called.push(n);$('#callNumber').textContent=n;$('#calledNums').innerHTML=called.map(x=>`<span>${x}</span>`).join('');speak(words[n]);});
+  $('#repeatCall').addEventListener('click',()=>{if(called.length)speak(words[called.at(-1)]);});$('#resetBingo').addEventListener('click',newBingo);newBingo();
+
+  // COUNTING HUNT
+  const hunts=[
+    ['cats','🐱',2],['dogs','🐶',5],['rabbits','🐰',7],['birds','🐦',3],['fish','🐟',8],['ducks','🦆',10],['turtles','🐢',4],['frogs','🐸',6],['bees','🐝',9],['pandas','🐼',3],['foxes','🦊',5],['chicks','🐥',7],['penguins','🐧',4],['monkeys','🐵',6]
+  ];let huntI=0,huntAnswered=false;
+  function renderHunt(){huntAnswered=false;const [name,em,n]=hunts[huntI];$('#countRound').textContent=`Counting card ${huntI+1} / ${hunts.length}`;$('#countQuestion').textContent=`How many ${name}?`;$('#animals').innerHTML=Array.from({length:n},()=>`<div class="animal">${em}</div>`).join('');$('#countSentence').textContent='';$('#countFeedback').textContent='';$('#countAnswers').innerHTML='';choiceArray(n).forEach(c=>{const b=document.createElement('button');b.className='answer';b.textContent=c;b.addEventListener('click',()=>{if(huntAnswered)return;if(c===n){huntAnswered=true;b.classList.add('correct');$('#countFeedback').innerHTML='<span class="ok">✓ Correct. Now say the full sentence.</span>';$('#countSentence').textContent=`There are ${words[n]} ${name}.`;speak(`There are ${words[n]} ${name}.`);}else{$('#countFeedback').innerHTML='<span class="try">Try again — touch each animal as you count.</span>';b.classList.add('wrong');setTimeout(()=>b.classList.remove('wrong'),500);}});$('#countAnswers').appendChild(b);});$('#countProgress').style.width=`${(huntI+1)/hunts.length*100}%`;}
+  $('#nextCount').addEventListener('click',()=>{huntI=(huntI+1)%hunts.length;renderHunt();});$('#hearCountSentence').addEventListener('click',()=>{const [name,,n]=hunts[huntI];speak(`There are ${words[n]} ${name}.`);});renderHunt();
+
+  // SPEAK
+  const ids=[['Amy',8,[1,4,6]],['Ben',9,[2,5,7]],['Cathy',7,[3,6,8]],['David',10,[4,7,9]],['Ella',6,[2,8,5]],['Finn',5,[7,1,3]],['Grace',9,[5,2,6]],['Hugo',8,[8,4,1]]];let idI=0;
+  function idSentences(){const [name,age,code]=ids[idI];return [`I am ${words[age]} years old.`,`My code is ${code.map(n=>words[n]).join('-')}.`];}
+  function renderId(){const [name,age,code]=ids[idI];$('#identityCard').innerHTML=`<div class="avatar">${name[0]}</div><div class="idinfo"><h2>${name}</h2><div class="idrow">🎂 Age: ${age}</div><div class="idrow">🔐 Fake code: ${code.join('-')}</div><div class="fake">Practice information only</div></div>`;$('#speakReveal').innerHTML='<span style="color:#7e89a7;font-weight:900">Tap “Show model” if you need help.</span>';$('#speakFeedback').textContent='';$('#speakProgress').style.width=`${(idI+1)/ids.length*100}%`;}
+  $('#showSpeak').addEventListener('click',()=>{$('#speakReveal').innerHTML=idSentences().map(s=>`<span class="word">${s}</span>`).join('');});$('#hearSpeak').addEventListener('click',()=>speak(idSentences().join(' ')));$('#didSpeak').addEventListener('click',()=>{$('#speakFeedback').innerHTML='<span class="ok">⭐ Done. Clear and calm speaking.</span>';});$('#nextIdentity').addEventListener('click',()=>{idI=(idI+1)%ids.length;renderId();});renderId();
+
+  // Practice packs: exactly 7 questions each
+  const packDefs={
+    tap:{title:'Number Tap',icon:'🔢',desc:'Read or hear a number and tap the digit.',make:()=>[
+      {prompt:'Tap seven.',spoken:'seven',ans:'7',choices:['7','3','9','5']},{prompt:'Tap two.',spoken:'two',ans:'2',choices:['6','2','4','8']},{prompt:'Tap ten.',spoken:'ten',ans:'10',choices:['1','9','10','6']},{prompt:'Tap four.',spoken:'four',ans:'4',choices:['3','8','4','7']},{prompt:'Tap one.',spoken:'one',ans:'1',choices:['5','1','6','9']},{prompt:'Tap nine.',spoken:'nine',ans:'9',choices:['9','4','2','7']},{prompt:'Tap six.',spoken:'six',ans:'6',choices:['3','10','6','5']}
+    ]},
+    words:{title:'Number Words',icon:'🔤',desc:'Match an English number word to the digit.',make:()=>[1,3,5,7,8,9,10].map(n=>({prompt:`Which digit means “${words[n]}”?`,ans:String(n),choices:choiceArray(n).map(String)}))},
+    pattern:{title:'Missing Number',icon:'🧩',desc:'Complete a simple 1–10 pattern.',make:()=>[
+      {prompt:'2, 4, __, 8',ans:'6',choices:['5','6','7','9']},{prompt:'1, 3, 5, __',ans:'7',choices:['6','7','8','9']},{prompt:'10, 8, __, 4',ans:'6',choices:['5','6','7','3']},{prompt:'3, 4, __, 6',ans:'5',choices:['4','5','7','8']},{prompt:'2, __, 6, 8',ans:'4',choices:['3','4','5','7']},{prompt:'9, 7, __, 3',ans:'5',choices:['4','5','6','2']},{prompt:'1, 4, 7, __',ans:'10',choices:['8','9','10','6']}
+    ]},
+    age:{title:'Age Practice',icon:'🎂',desc:'Choose the correct age sentence.',make:()=>[
+      ['Lina',8],['Noah',6],['Mia',9],['Leo',7],['Zoe',10],['Kai',5],['Ivy',4]
+    ].map(([name,n])=>({visual:`${name} • Age ${n}`,prompt:`Which sentence is correct for ${name}?`,ans:`I am ${words[n]} years old.`,choices:shuffle([`I am ${words[n]} years old.`,`I am ${words[Math.max(1,n-1)]} years old.`,`There are ${words[n]} years old.`,`My code is ${words[n]}.`])}))},
+    quantity:{title:'Quantity Practice',icon:'🐾',desc:'Count animals and choose the number.',make:()=>[
+      ['🐶','dogs',4],['🐱','cats',6],['🐰','rabbits',3],['🐦','birds',8],['🐟','fish',5],['🦆','ducks',9],['🐢','turtles',7]
+    ].map(([em,name,n])=>({visual:Array.from({length:n},()=>em).join(' '),prompt:`How many ${name}?`,ans:String(n),choices:choiceArray(n).map(String),after:`There are ${words[n]} ${name}.`}))},
+    code:{title:'Safe Code Practice',icon:'🔐',desc:'Match a fake spoken code to the digits.',make:()=>[
+      [1,4,6],[2,5,7],[3,6,8],[4,7,9],[2,8,5],[7,1,3],[8,4,1]
+    ].map(code=>{const ans=code.join('-');const wrong1=[code[1],code[0],code[2]].join('-'),wrong2=[code[2],code[1],code[0]].join('-'),wrong3=[code[0],code[2],code[1]].join('-');return{prompt:'Listen or read: '+code.map(n=>words[n]).join(' - '),spoken:code.map(n=>words[n]).join(', '),ans,choices:shuffle([...new Set([ans,wrong1,wrong2,wrong3])]),after:`My code is ${code.map(n=>words[n]).join('-')}.`}})},
+    mixed:{title:'Mixed Challenge',icon:'⭐',desc:'A little of everything: number, age, quantity, code.',make:()=>[
+      {prompt:'Which digit means “eight”?',ans:'8',choices:['3','6','8','10']},
+      {visual:'🐰 🐰 🐰 🐰 🐰',prompt:'How many rabbits?',ans:'5',choices:['4','5','6','7'],after:'There are five rabbits.'},
+      {visual:'Maya • Age 7',prompt:'Choose the correct sentence.',ans:'I am seven years old.',choices:['I am seven years old.','There are seven years old.','I am six years old.','My code is seven.']},
+      {prompt:'Choose the code: two - five - seven.',spoken:'two, five, seven',ans:'2-5-7',choices:['2-7-5','5-2-7','2-5-7','7-5-2']},
+      {prompt:'3, 6, __',ans:'9',choices:['7','8','9','10']},
+      {visual:'🐟 🐟 🐟 🐟 🐟 🐟 🐟 🐟',prompt:'How many fish?',ans:'8',choices:['6','7','8','9'],after:'There are eight fish.'},
+      {prompt:'Tap ten.',spoken:'ten',ans:'10',choices:['1','6','9','10']}
+    ]}
+  };
+  const packOrder=['tap','words','pattern','age','quantity','code','mixed'];
+  let packKey=null,packQs=[],packI=0,packScore=0,packLocked=false;
+  function renderPackMenu(){const m=$('#packMenu');m.innerHTML='';packOrder.forEach(k=>{const p=packDefs[k];const b=document.createElement('button');b.className='pack';b.innerHTML=`<div class="packicon">${p.icon}</div><h3>${p.title}</h3><p>${p.desc}</p><span class="count">7 questions</span>`;b.addEventListener('click',()=>startPack(k));m.appendChild(b);});$('#packMenu').style.display='grid';$('#packRunner').style.display='none';}
+  function startPack(k){packKey=k;packQs=packDefs[k].make();packI=0;packScore=0;$('#packMenu').style.display='none';$('#packRunner').style.display='block';renderPackQ();}
+  function renderPackQ(){packLocked=false;const q=packQs[packI];$('#packTitle').textContent=`${packDefs[packKey].icon} ${packDefs[packKey].title}`;$('#packStep').textContent=`Question ${packI+1} / 7`;$('#packScore').textContent=`Stars: ${packScore}`;$('#packProgress').style.width=`${(packI+1)/7*100}%`;$('#packFeedback').textContent='';$('#packNext').style.display='none';const c=$('#packCard');c.innerHTML=`<h2>${q.prompt}</h2>${q.visual?`<div class="visual">${q.visual}</div>`:''}${q.spoken?`<button class="btn small blue" id="packListen">🔊 Hear</button>`:''}<div class="answers" id="packAns" style="margin-inline:auto"></div>`;if(q.spoken)$('#packListen').addEventListener('click',()=>speak(q.spoken));const A=$('#packAns');q.choices.forEach(ch=>{const b=document.createElement('button');b.className='answer';b.textContent=ch;b.addEventListener('click',()=>{if(packLocked)return;if(String(ch)===String(q.ans)){packLocked=true;packScore++;b.classList.add('correct');$('#packFeedback').innerHTML=`<span class="ok">✓ Correct.${q.after?' '+q.after:''}</span>`;if(q.after)speak(q.after);$('#packScore').textContent=`Stars: ${packScore}`;$('#packNext').style.display='inline-block';}else{b.classList.add('wrong');$('#packFeedback').innerHTML='<span class="try">Try again — use the sentence frame or count slowly.</span>';setTimeout(()=>b.classList.remove('wrong'),500);}});A.appendChild(b);});}
+  $('#packNext').addEventListener('click',()=>{if(packI<6){packI++;renderPackQ();}else{$('#packCard').innerHTML=`<div class="finish-stars">⭐ ⭐ ⭐</div><h2>Pack complete!</h2><div class="result">${packScore} / 7 correct on first successful choice</div><p class="hint">You can repeat this pack as many times as you like.</p>`;$('#packFeedback').textContent='';$('#packNext').style.display='none';}});$('#backPacks').addEventListener('click',renderPackMenu);
+  $$('.openPack').forEach(b=>b.addEventListener('click',()=>{go('lab');startPack(b.dataset.pack);}));renderPackMenu();
+
+  // EXIT CHALLENGE
+  const exitQs=[
+    {type:'listen',prompt:'Tap the number you hear.',spoken:'four',ans:'4',choices:['4','7','9','2']},
+    {type:'listen',prompt:'Tap the number you hear.',spoken:'nine',ans:'9',choices:['6','8','9','10']},
+    {type:'listen',prompt:'Tap the number you hear.',spoken:'two',ans:'2',choices:['1','2','5','7']},
+    {type:'count',visual:'🐶 🐶 🐶 🐶 🐶',prompt:'How many dogs?',ans:'5',choices:['4','5','6','8']},
+    {type:'count',visual:'🐦 🐦 🐦',prompt:'How many birds?',ans:'3',choices:['2','3','4','5']},
+    {type:'count',visual:'🐢 🐢 🐢 🐢 🐢 🐢 🐢',prompt:'How many turtles?',ans:'7',choices:['6','7','8','9']},
+    {type:'age',visual:'Ari • Age 8',prompt:'Choose the correct sentence.',ans:'I am eight years old.',choices:['I am eight years old.','I am seven years old.','There are eight years old.','My code is eight.']},
+    {type:'age',visual:'Kim • Age 10',prompt:'Choose the correct sentence.',ans:'I am ten years old.',choices:['I am nine years old.','I am ten years old.','There are ten years old.','I ten years old.']},
+    {type:'code',prompt:'Choose the fake code you hear.',spoken:'three, six, eight',ans:'3-6-8',choices:['3-8-6','6-3-8','3-6-8','8-6-3']}
+  ];let exitI=0,exitScore=0,exitLocked=false;
+  function renderExit(){exitLocked=false;const q=exitQs[exitI];$('#exitStep').textContent=`Question ${exitI+1} / ${exitQs.length}`;$('#exitScore').textContent=`Stars: ${exitScore}`;$('#exitProgress').style.width=`${(exitI+1)/exitQs.length*100}%`;$('#exitFeedback').textContent='';$('#exitNext').style.display='none';$('#restartExit').style.display='none';const c=$('#exitCard');c.innerHTML=`<h2>${q.prompt}</h2>${q.visual?`<div class="visual">${q.visual}</div>`:''}${q.spoken?`<button class="btn blue" id="exitListen">🔊 Hear</button>`:''}<div class="answers" id="exitAns" style="margin-inline:auto"></div>`;if(q.spoken)$('#exitListen').addEventListener('click',()=>speak(q.spoken));q.choices.forEach(ch=>{const b=document.createElement('button');b.className='answer';b.textContent=ch;b.addEventListener('click',()=>{if(exitLocked)return;if(String(ch)===String(q.ans)){exitLocked=true;exitScore++;b.classList.add('correct');$('#exitFeedback').innerHTML='<span class="ok">✓ Good. Next when ready.</span>';$('#exitScore').textContent=`Stars: ${exitScore}`;$('#exitNext').style.display='inline-block';}else{b.classList.add('wrong');$('#exitFeedback').innerHTML='<span class="try">Try again. No penalty.</span>';setTimeout(()=>b.classList.remove('wrong'),500);}});$('#exitAns').appendChild(b);});}
+  $('#exitNext').addEventListener('click',()=>{if(exitI<exitQs.length-1){exitI++;renderExit();}else{markDone('finish');$('#exitProgress').style.width='100%';$('#exitCard').innerHTML=`<div class="finish-stars">⭐ ⭐ ⭐</div><h2>Lesson Complete!</h2><div class="result">${exitScore} / ${exitQs.length} stars</div><p class="hint">You practiced numbers, age, quantity and a fake code.</p><div class="controls"><button class="btn purple" onclick="document.querySelector('[data-go=lab]').click()">Extra Practice Lab</button><button class="btn blue" onclick="document.getElementById('homeBtn').click()">Home</button></div>`;$('#exitFeedback').innerHTML='<span class="ok">You can do it!</span>';$('#exitNext').style.display='none';$('#restartExit').style.display='inline-block';}});
+  $('#restartExit').addEventListener('click',()=>{exitI=0;exitScore=0;renderExit();});renderExit();
+
+
+  // ===== MERGED V5 CONTENT + BASE HTML5 LAYOUT =====
+  const mrgAnimalAsset={cats:'assets/main/img_002_97fdb5f90c3d.webp',dogs:'assets/main/img_003_243ef109b441.webp',fish:'assets/main/img_004_3709d8cfd42d.webp',rabbits:'assets/main/img_005_a93f5e4310bd.webp',birds:'assets/main/img_006_15e0d415102d.webp',turtles:'assets/main/img_007_ec612bd8687d.webp',duck:'assets/main/img_006_15e0d415102d.webp'};
+  const mrgObjectAsset={1:'assets/main/img_008_e331dced0e16.webp',2:'assets/main/img_009_eb1c088f5d56.webp',3:'assets/main/img_010_864fb3bd6c0b.webp',4:'assets/main/img_011_38ee4c5a7ca2.webp',5:'assets/main/img_012_80e29478a5a6.webp',6:'assets/main/img_006_15e0d415102d.webp',7:'assets/main/img_013_2bad20b54db9.webp',8:'assets/main/img_010_864fb3bd6c0b.webp',9:'assets/main/img_004_3709d8cfd42d.webp',10:'assets/main/img_003_243ef109b441.webp'};
+  const mrgNames=['cats','dogs','rabbits','birds','fish','turtles'];
+  const mrgFixedAnimals={cats:3,dogs:5,fish:7,rabbits:2,birds:9,turtles:10};
+  const mrgOverlay=$('#mergeOverlay'),mrgContent=$('#mergeContent');
+  let mrgState={section:'start',mode:'',round:0,score:0,questions:[],locked:false,back:null};
+  function mrgOpen(content){mrgContent.innerHTML=content;mrgOverlay.classList.add('open');mrgOverlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+  function mrgClose(){mrgOverlay.classList.remove('open');mrgOverlay.setAttribute('aria-hidden','true');document.body.style.overflow='';stopMissFangVoice();}
+  $('#mergeClose').addEventListener('click',mrgClose);mrgOverlay.addEventListener('click',e=>{if(e.target===mrgOverlay)mrgClose()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mrgOverlay.classList.contains('open'))mrgClose()});
+  function mrgWord(n){return words[n]||String(n)}
+  function mrgPictures(count,kind='object',name=''){let src;if(kind==='animal')src=mrgAnimalAsset[name]||mrgAnimalAsset.cats;else src=mrgObjectAsset[count]||mrgObjectAsset[1];let cls=src.includes('candle')?' candles':'';return `<div class="picture-grid${cls}">${Array.from({length:count},()=>`<img src="${src}" alt="counting picture" decoding="async">`).join('')}</div>`}
+  function mrgAnimalPictures(name,count){let src=mrgAnimalAsset[name]||mrgAnimalAsset.cats;return `<div class="picture-grid">${Array.from({length:count},()=>`<img src="${src}" alt="${name}" decoding="async">`).join('')}</div>`}
+  function mrgPhone(seq){return `<div class="code-phone"><div class="code-screen"><div style="font-weight:1000;margin-bottom:8px">🔐 SAFE PRACTICE CODE</div><div class="code-digits">${seq.map(n=>`<span>${n}</span>`).join('')}</div></div></div>`}
+  function mrgChoices(correct,count=4){let vals=[1,2,3,4,5,6,7,8,9,10].filter(x=>x!==correct);return shuffle([correct,...shuffle(vals).slice(0,count-1)])}
+  function mrgHeader(title,sub='7 calm rounds • no timer • retry is always allowed'){return `<h2>${title}</h2><p class="merge-sub">${sub}</p>`}
+  const mrgSets={
+    start:[['Hear & Tap','Listen to a number and tap it.'],['Digit → Word','Choose the English number word.'],['Word → Digit','Read the word and choose the digit.'],['Missing Number','Find the missing number in a short sequence.'],['Put in Order','Choose the sequence from smallest to biggest.'],['Build the Sentence','Choose the correct age or quantity sentence.'],['Mixed Language Quiz','Numbers + sentence frames in one review.']],
+    learn:[['Age: Choose','Picture-supported age practice.'],['Age: Build','Build “I am ___ years old.”'],['Quantity: Count','Count clear animal pictures.'],['Quantity: Compare','Which group has more?'],['Safe Code: Tap','Match a fake 3-digit code.'],['Safe Code: Listen','Hear a fake code and choose it.'],['Mixed Meaning Quiz','Age + quantity + fake code.']],
+    play:[['Classic Bingo','Return to the main Bingo board.'],['Random Caller','Seven predictable number calls.'],['Before / After','What comes before or after?'],['6 or 9?','Visual discrimination practice.'],['Listen & Cover','Hear a number and tap it.'],['Memory Numbers','Remember short number sequences.'],['Student Caller','Seven cards for a student caller.']],
+    practice:[['Find & Reveal','Find the animal group with the target number.'],['Count the Animals','Seven picture counting questions.'],['Match Number to Animal','Match a number with a group.'],['How Many? Speaking','Say the full quantity sentence.'],['More or Less?','Compare two animal groups.'],['Animal Addition','Combine two small groups.'],['Pair Challenge','Seven partner ask-and-answer prompts.']],
+    speak:[['Age Speaking','Say one age sentence.'],['Quantity Speaking','Ask and answer “How many?”'],['Safe Code Speaking','Read a fake code clearly.'],['Build Age Sentence','Choose the correct sentence.'],['Build Quantity Sentence','Choose the correct quantity sentence.'],['Listen & Repeat Code','Hear and repeat fake digits.'],['Mixed Role-Play','Age + quantity + code speaking.']],
+    finish:[['Number Flash','Fast sequence recognition.'],['Count & Combine','Seven simple additions to 10.'],['Missing Number','Seven sequence gaps.'],['Age Check','Seven age questions.'],['Safe Code Challenge','Seven fake 3-digit codes.'],['Quick Quiz','Seven mixed multiple-choice questions.'],['Final Challenge','One complete seven-round review.']]
+  };
+  const mrgTitles={start:'START — V5 Goal + Language Practice',learn:'LEARN — Picture-First Practice',play:'PLAY — Bingo Practice+',practice:'PRACTICE — Animal Counting+',speak:'SPEAK — Sentence Practice+',finish:'FINISH — Wrap-Up Practice+'};
+  function mrgHub(section){mrgState.section=section;let cards=mrgSets[section];mrgOpen(`${mrgHeader(mrgTitles[section],'Merged from the corrected V5 lesson • 7 activities • keep the HTML5 lesson layout')}<div class="merge-hub">${cards.map((x,i)=>`<button class="merge-card" data-mrg-run="${section}|${i}"><b><span class="merge-num">${i+1}</span>${x[0]}</b><span>${x[1]}</span></button>`).join('')}</div><div class="merge-nav"><button class="btn small gray" data-mrg-global>All merged sections</button>${section==='start'?'<button class="btn small blue" data-mrg-spell>🔤 Learn spelling 1–10</button>':''}${section==='learn'?'<button class="btn small green" data-mrg-frames>🖼️ Picture sentence frames</button>':''}</div>`);mrgWireHub()}
+  function mrgWireHub(){mrgContent.querySelectorAll('[data-mrg-run]').forEach(b=>b.addEventListener('click',()=>{let [s,i]=b.dataset.mrgRun.split('|');mrgRun(s,+i)}));let g=mrgContent.querySelector('[data-mrg-global]');if(g)g.addEventListener('click',mrgGlobal);let sp=mrgContent.querySelector('[data-mrg-spell]');if(sp)sp.addEventListener('click',mrgSpelling);let fr=mrgContent.querySelector('[data-mrg-frames]');if(fr)fr.addEventListener('click',mrgFrames)}
+  function mrgGlobal(){const cols=[['start','1 START','#ef3d49'],['learn','2 LEARN','#1788e9'],['play','3 PLAY','#16ae68'],['practice','4 PRACTICE','#8b4ce8'],['speak','5 SPEAK','#f09a13'],['finish','6 FINISH','#f43a88']];mrgOpen(`${mrgHeader('✨ Merged V5 + HTML5 Practice Library','Choose a lesson section. The original HTML5 layout stays unchanged underneath.')}<div class="merge-global-sections">${cols.map(([s,t,c])=>`<button style="background:${c}" data-section="${s}">${t}<br><small>7 extra activities</small></button>`).join('')}</div><div class="merge-nav"><button class="btn small blue" data-mrg-spell>🔤 Number spelling 1–10</button><button class="btn small green" data-mrg-frames>🖼️ Picture sentence frames</button></div>`);mrgContent.querySelectorAll('[data-section]').forEach(b=>b.addEventListener('click',()=>mrgHub(b.dataset.section)));mrgContent.querySelector('[data-mrg-spell]').addEventListener('click',mrgSpelling);mrgContent.querySelector('[data-mrg-frames]').addEventListener('click',mrgFrames)}
+  $('#mergedLibraryBtn').addEventListener('click',mrgGlobal);
+
+  function mrgSpelling(){const cards=Array.from({length:10},(_,i)=>{let n=i+1,w=mrgWord(n);return `<div class="spell-card" data-spell="${n}"><div class="spell-n">${n}</div><div class="spell-w">${w.toUpperCase()}</div><div class="spell-letters">${[...w.toUpperCase()].map(ch=>`<i>${ch}</i>`).join('')}</div><button data-spell-btn="${n}">🔊 SAY + SPELL</button></div>`}).join('');mrgOpen(`${mrgHeader('🔤 Learn the Number Words — 1 to 10','LOOK → SAY → SPELL • picture-supported • tap any card to hear it')}<div class="spell-grid">${cards}</div><div class="merge-frame"><span>1 one</span><span>2 two</span><span>3 three</span><span>4 four</span><span>5 five</span><span>6 six</span><span>7 seven</span><span>8 eight</span><span>9 nine</span><span>10 ten</span></div><div class="merge-nav"><button class="btn small purple" data-back>Back to START practice</button></div>`);mrgContent.querySelectorAll('[data-spell]').forEach(c=>c.addEventListener('click',e=>{if(e.target.tagName==='BUTTON')return;let n=+c.dataset.spell;speak(`${mrgWord(n)}. ${[...mrgWord(n).toUpperCase()].join('. ')}. ${mrgWord(n)}.`)}));mrgContent.querySelectorAll('[data-spell-btn]').forEach(b=>b.addEventListener('click',()=>{let n=+b.dataset.spellBtn;speak(`${mrgWord(n)}. ${[...mrgWord(n).toUpperCase()].join('. ')}. ${mrgWord(n)}.`)}));mrgContent.querySelector('[data-back]').addEventListener('click',()=>mrgHub('start'))}
+  function mrgFrames(){mrgOpen(`${mrgHeader('🖼️ Key Sentence Frames — Learn with Pictures','PICTURE → LISTEN → REPEAT → PRACTICE')}<div class="grid3"><div class="practice-card" style="text-align:center"><h3>🎂 AGE</h3>${mrgPictures(5)}<p style="font-size:20px;font-weight:1000">Q: How old are you?</p><p style="font-size:23px;font-weight:1000;color:#0b9354">A: I am five years old.</p><button class="btn small blue" data-hear="How old are you? I am five years old.">🔊 Listen</button></div><div class="practice-card" style="text-align:center"><h3>🐱 QUANTITY</h3>${mrgAnimalPictures('cats',3)}<p style="font-size:20px;font-weight:1000">Q: How many cats?</p><p style="font-size:23px;font-weight:1000;color:#0b9354">A: There are three cats.</p><button class="btn small blue" data-hear="How many cats? There are three cats.">🔊 Listen</button></div><div class="practice-card" style="text-align:center"><h3>🔐 SAFE CODE</h3>${mrgPhone([4,7,2])}<p style="font-size:20px;font-weight:1000">My code is …</p><p style="font-size:23px;font-weight:1000;color:#0b9354">My code is four-seven-two.</p><button class="btn small blue" data-hear="My code is four seven two.">🔊 Listen</button></div></div><div class="merge-nav"><button class="btn purple" data-practice>Start 7 picture questions</button><button class="btn gray" data-back>Back to LEARN practice</button></div>`);mrgContent.querySelectorAll('[data-hear]').forEach(b=>b.addEventListener('click',()=>speak(b.dataset.hear)));mrgContent.querySelector('[data-practice]').addEventListener('click',()=>mrgRun('learn',6));mrgContent.querySelector('[data-back]').addEventListener('click',()=>mrgHub('learn'))}
+
+  function mrgQ(prompt,answer,choices,visual='',spoken='',after=''){return{prompt,answer:String(answer),choices:choices.map(String),visual,spoken,after}}
+  function mrgGenerate(section,index){let q=[];
+    if(section==='start'){
+      if(index===0)[7,2,10,4,1,9,5].forEach(n=>q.push(mrgQ('Listen. Tap the number.',n,mrgChoices(n),mrgPictures(n),' '+mrgWord(n),`${n} = ${mrgWord(n)}`)));
+      if(index===1)[3,8,1,6,10,4,9].forEach(n=>q.push(mrgQ(`Which word means ${n}?`,mrgWord(n),shuffle([mrgWord(n),...shuffle([1,2,3,4,5,6,7,8,9,10].filter(x=>x!==n)).slice(0,3).map(mrgWord)]),mrgPictures(n))));
+      if(index===2)[5,2,7,10,1,8,6].forEach(n=>q.push(mrgQ(`Which digit means “${mrgWord(n)}”?`,n,mrgChoices(n),`<div class="numberCube" style="margin:auto">${n}</div>`)));
+      if(index===3){[[1,2,3,4],[4,5,6,7],[7,8,9,10],[2,3,4,5],[5,6,7,8],[3,4,5,6],[6,7,8,9]].forEach((a,i)=>{let h=i%4,ans=a[h],shown=a.map((x,j)=>j===h?'__':x).join(' • ');q.push(mrgQ('What number is missing?',ans,mrgChoices(ans),`<div>${shown}</div>`))})}
+      if(index===4){[[3,1,2],[6,4,5],[9,7,8],[5,3,4],[8,6,7],[10,8,9],[4,2,3]].forEach(arr=>{let sorted=[...arr].sort((a,b)=>a-b).join(' – ');let opts=shuffle([sorted,[...arr].join(' – '),[...arr].reverse().join(' – '),[arr[1],arr[2],arr[0]].join(' – ')]);q.push(mrgQ('Which sequence is smallest → biggest?',sorted,opts,`<div>${arr.join('  •  ')}</div>`))})}
+      if(index===5){let data=[['age',8],['qty',3,'cats'],['age',5],['qty',5,'dogs'],['age',10],['qty',2,'rabbits'],['age',7]];data.forEach(d=>{if(d[0]==='age'){let n=d[1],ans=`I am ${mrgWord(n)} years old.`;q.push(mrgQ('Choose the correct age sentence.',ans,shuffle([ans,`There are ${mrgWord(n)} years old.`,`I am ${mrgWord(Math.max(1,n-1))} years old.`,`My code is ${n}.`]),mrgPictures(n)))}else{let n=d[1],name=d[2],ans=`There are ${mrgWord(n)} ${name}.`;q.push(mrgQ(`How many ${name}?`,ans,shuffle([ans,`I am ${mrgWord(n)} years old.`,`There are ${mrgWord(Math.max(1,n-1))} ${name}.`,`My code is ${n}.`]),mrgAnimalPictures(name,n)))}})}
+      if(index===6){q=[mrgQ('Which digit means “seven”?',7,[7,2,9,5],mrgPictures(7)),mrgQ('What comes after 8?',9,[7,9,10,6],'<div>8 → ?</div>'),mrgQ('Choose the age sentence.','I am five years old.',['I am five years old.','There are five cats.','My code is five.'],mrgPictures(5)),mrgQ('How many dogs?',5,[4,5,6,7],mrgAnimalPictures('dogs',5)),mrgQ('Which code matches four-seven-two?','4-7-2',['4-7-2','7-4-2','4-2-7'],mrgPhone([4,7,2]),'four seven two'),mrgQ('What is missing? 3 • 6 • __',9,[7,8,9,10],'<div>3 • 6 • __</div>'),mrgQ('Which word means 10?','ten',['ten','two','nine','one'],mrgPictures(10))]}
+    }
+    if(section==='learn'){
+      if(index===0)[5,8,10,3,7,2,9].forEach(n=>{let ans=`I am ${mrgWord(n)} years old.`;q.push(mrgQ('How old are you?',ans,shuffle([ans,`I am ${mrgWord(Math.max(1,n-1))} years old.`,`There are ${mrgWord(n)}.`,`My code is ${n}.`]),mrgPictures(n),'',ans))});
+      if(index===1)[8,5,10,7,6,9,4].forEach(n=>{let ans=`I am ${mrgWord(n)} years old.`;q.push(mrgQ('Build the age sentence.',ans,shuffle([ans,`I ${mrgWord(n)} years old.`,`There are ${mrgWord(n)} years old.`,`I am ${mrgWord(n)}.`]),mrgPictures(n))) });
+      if(index===2){let data=[['cats',3],['dogs',5],['fish',7],['rabbits',2],['birds',9],['turtles',10],['dogs',4]];data.forEach(([name,n])=>q.push(mrgQ(`How many ${name}?`,n,mrgChoices(n),mrgAnimalPictures(name,n),'',`There are ${mrgWord(n)} ${name}.`)))}
+      if(index===3){let pairs=[[['cats',3],['dogs',5]],[['rabbits',2],['fish',7]],[['birds',9],['cats',3]],[['dogs',4],['turtles',6]],[['fish',5],['rabbits',8]],[['cats',10],['birds',7]],[['dogs',6],['fish',9]]];pairs.forEach(([a,b])=>{let ans=a[1]>b[1]?'A':'B';q.push(mrgQ('Which group has MORE?',ans,['A','B'],`<div class="compare-grid"><div class="compare-box"><b>A</b>${mrgAnimalPictures(a[0],a[1])}</div><div class="compare-box"><b>B</b>${mrgAnimalPictures(b[0],b[1])}</div></div>`))})}
+      if(index===4){[[4,7,2],[8,1,5],[3,9,6],[7,5,1],[6,3,8],[9,4,2],[2,8,5]].forEach(seq=>{let ans=seq.join('-');q.push(mrgQ('Tap the matching fake code.',ans,shuffle([ans,[seq[1],seq[0],seq[2]].join('-'),[seq[0],seq[2],seq[1]].join('-'),[seq[2],seq[1],seq[0]].join('-')]),mrgPhone(seq)))})}
+      if(index===5){[[4,7,2],[8,1,5],[3,9,6],[7,5,1],[6,3,8],[9,4,2],[2,8,5]].forEach(seq=>{let ans=seq.join('-');q.push(mrgQ('Listen. Which fake code?',ans,shuffle([ans,[seq[1],seq[0],seq[2]].join('-'),[seq[0],seq[2],seq[1]].join('-')]),mrgPhone(seq),seq.map(mrgWord).join(' ')))})}
+      if(index===6){q=[mrgQ('How old are you?','I am eight years old.',['I am eight years old.','There are eight cats.','My code is 8.'],mrgPictures(8)),mrgQ('How many cats?','There are three cats.',['There are three cats.','I am three years old.','My code is 3.'],mrgAnimalPictures('cats',3)),mrgQ('Listen to the fake code.','4-7-2',['4-7-2','7-4-2','4-2-7'],mrgPhone([4,7,2]),'four seven two'),mrgQ('How old are you?','I am ten years old.',['I am ten years old.','There are ten dogs.','My code is 10.'],mrgPictures(10)),mrgQ('How many rabbits?','There are two rabbits.',['There are two rabbits.','I am two years old.','My code is 2.'],mrgAnimalPictures('rabbits',2)),mrgQ('Listen to the fake code.','9-1-6',['9-1-6','1-9-6','9-6-1'],mrgPhone([9,1,6]),'nine one six'),mrgQ('How many turtles?','There are ten turtles.',['There are ten turtles.','I am ten years old.','My code is 10.'],mrgAnimalPictures('turtles',10))]}
+    }
+    if(section==='play'){
+      if(index===0)return {action:'bingo'};
+      if(index===1)[4,9,2,7,1,10,5].forEach(n=>q.push({reveal:true,prompt:'Student caller: say this number clearly.',visual:`<div class="numberCube" style="margin:auto">${n}</div>`,answer:mrgWord(n),spoken:mrgWord(n)}));
+      if(index===2){[[6,7,'after'],[4,3,'before'],[9,10,'after'],[2,1,'before'],[5,6,'after'],[8,7,'before'],[3,4,'after']].forEach(([base,ans,dir])=>q.push(mrgQ(`What comes ${dir} ${base}?`,ans,mrgChoices(ans),`<div>${base}</div>`)))}
+      if(index===3)[6,9,6,9,9,6,9].forEach(n=>q.push(mrgQ('Is it 6 or 9?',n,[6,9],`<div class="numberCube" style="margin:auto">${n}</div>`,n===6?'six':'nine')));
+      if(index===4)[7,2,10,4,1,9,5].forEach(n=>q.push(mrgQ('Listen and cover the number.',n,mrgChoices(n),mrgPictures(n),' '+mrgWord(n))));
+      if(index===5){[[2,7],[4,1,6],[9,3],[5,8,2],[1,10],[7,4,9],[6,2,5]].forEach(seq=>{let ans=seq.join('-');let wrong=shuffle([[...seq].reverse().join('-'),shuffle(seq).join('-'),seq.map(x=>x===10?9:Math.min(10,x+1)).join('-')]);q.push({...mrgQ('Remember the number sequence.',ans,shuffle([ans,...wrong]).slice(0,4),`<div class="reveal-card"><div class="merge-q">${ans}</div><button class="btn small blue" data-memory-hide>Hide sequence</button></div>`),memory:true})})}
+      if(index===6)[3,8,1,10,6,4,9].forEach(n=>q.push({reveal:true,prompt:'Student caller: say the number. Class points to it.',visual:`<div class="numberCube" style="margin:auto">${n}</div>`,answer:mrgWord(n),spoken:mrgWord(n)}));
+    }
+    if(section==='practice'){
+      let animalData=[['cats',3],['dogs',5],['fish',7],['rabbits',2],['birds',9],['turtles',10],['dogs',4]];
+      if(index===0){[3,5,7,2,9,10,4].forEach(n=>{let correct=animalData.find(x=>x[1]===n)||['dogs',n];let others=shuffle(animalData.filter(x=>x[1]!==n)).slice(0,3);let choices=shuffle([correct,...others]).map(x=>`${x[0]} — ${x[1]}`);q.push(mrgQ(`Which group shows ${mrgWord(n)}?`,`${correct[0]} — ${correct[1]}`,choices,mrgPictures(n)))})}
+      if(index===1)animalData.forEach(([name,n])=>q.push(mrgQ(`How many ${name}?`,n,mrgChoices(n),mrgAnimalPictures(name,n),'',`There are ${mrgWord(n)} ${name}.`)));
+      if(index===2)animalData.forEach(([name,n])=>q.push(mrgQ(`Match ${n} to the animal group.`,`${name} — ${n}`,shuffle([`${name} — ${n}`,...shuffle(animalData.filter(x=>x[0]!==name)).slice(0,3).map(x=>`${x[0]} — ${x[1]}`)]),mrgPictures(n))));
+      if(index===3)animalData.forEach(([name,n])=>q.push({reveal:true,prompt:`How many ${name}? Say the full sentence.`,visual:mrgAnimalPictures(name,n),answer:`There are ${mrgWord(n)} ${name}.`,spoken:`There are ${mrgWord(n)} ${name}.`}));
+      if(index===4){let pairs=[[['cats',3],['dogs',5]],[['rabbits',7],['fish',4]],[['birds',9],['turtles',6]],[['dogs',2],['cats',8]],[['fish',5],['rabbits',3]],[['turtles',10],['birds',7]],[['cats',4],['dogs',6]]];pairs.forEach(([a,b])=>{let ans=a[1]>b[1]?'A':'B';q.push(mrgQ('Which group has MORE?',ans,['A','B'],`<div class="compare-grid"><div class="compare-box"><b>A</b>${mrgAnimalPictures(a[0],a[1])}</div><div class="compare-box"><b>B</b>${mrgAnimalPictures(b[0],b[1])}</div></div>`))})}
+      if(index===5){[[2,3,5],[4,2,6],[1,6,7],[3,1,4],[5,3,8],[6,4,10],[2,7,9]].forEach(([a,b,c])=>q.push(mrgQ(`${a} + ${b} = ?`,c,mrgChoices(c),`<div>${mrgAnimalPictures('cats',a)}<div style="font-size:40px">+</div>${mrgAnimalPictures('dogs',b)}</div>`,'',`${mrgWord(a)} and ${mrgWord(b)} is ${mrgWord(c)}.`)))}
+      if(index===6)animalData.forEach(([name,n])=>q.push({reveal:true,prompt:`Student A: “How many ${name}?” Student B: answer.`,visual:mrgAnimalPictures(name,n),answer:`There are ${mrgWord(n)} ${name}.`,spoken:`How many ${name}? There are ${mrgWord(n)} ${name}.`}));
+    }
+    if(section==='speak'){
+      if(index===0)[8,6,10,7,9,5,4].forEach(n=>q.push({reveal:true,prompt:'Answer: “How old are you?”',visual:mrgPictures(n),answer:`I am ${mrgWord(n)} years old.`,spoken:`I am ${mrgWord(n)} years old.`}));
+      if(index===1){let d=[['dogs',5],['cats',3],['rabbits',7],['birds',2],['fish',8],['turtles',4],['dogs',6]];d.forEach(([name,n])=>q.push({reveal:true,prompt:`Ask and answer: “How many ${name}?”`,visual:mrgAnimalPictures(name,n),answer:`There are ${mrgWord(n)} ${name}.`,spoken:`How many ${name}? There are ${mrgWord(n)} ${name}.`}))}
+      if(index===2)[[1,4,6],[2,5,7],[3,6,8],[4,7,9],[2,8,5],[7,1,3],[8,4,1]].forEach(seq=>q.push({reveal:true,prompt:'Read the fake code clearly.',visual:mrgPhone(seq),answer:`My code is ${seq.map(mrgWord).join('-')}.`,spoken:`My code is ${seq.map(mrgWord).join(' ')}.`}));
+      if(index===3)[8,5,10,7,6,9,4].forEach(n=>{let ans=`I am ${mrgWord(n)} years old.`;q.push(mrgQ('Choose the sentence you should say.',ans,shuffle([ans,`I ${mrgWord(n)} years old.`,`There are ${mrgWord(n)} years old.`,`My code is ${n}.`]),mrgPictures(n)))});
+      if(index===4){let d=[['cats',3],['dogs',5],['fish',7],['rabbits',2],['birds',9],['turtles',10],['dogs',4]];d.forEach(([name,n])=>{let ans=`There are ${mrgWord(n)} ${name}.`;q.push(mrgQ('Choose the quantity sentence.',ans,shuffle([ans,`I am ${mrgWord(n)} years old.`,`There are ${mrgWord(Math.max(1,n-1))} ${name}.`,`My code is ${n}.`]),mrgAnimalPictures(name,n)))})}
+      if(index===5)[[4,7,2],[8,1,5],[3,9,6],[7,5,1],[6,3,8],[9,4,2],[2,8,5]].forEach(seq=>q.push({reveal:true,prompt:'Listen, then repeat the fake code.',visual:mrgPhone(seq),answer:seq.map(mrgWord).join(' — '),spoken:seq.map(mrgWord).join(' ')}));
+      if(index===6){q=[{reveal:true,prompt:'Role-play: “How old are you?”',visual:mrgPictures(8),answer:'I am eight years old.',spoken:'How old are you? I am eight years old.'},{reveal:true,prompt:'Role-play: “How many cats?”',visual:mrgAnimalPictures('cats',3),answer:'There are three cats.',spoken:'How many cats? There are three cats.'},{reveal:true,prompt:'Read the fake code.',visual:mrgPhone([4,7,2]),answer:'My code is four-seven-two.',spoken:'My code is four seven two.'},{reveal:true,prompt:'Role-play: “How old are you?”',visual:mrgPictures(10),answer:'I am ten years old.',spoken:'How old are you? I am ten years old.'},{reveal:true,prompt:'Role-play: “How many rabbits?”',visual:mrgAnimalPictures('rabbits',2),answer:'There are two rabbits.',spoken:'How many rabbits? There are two rabbits.'},{reveal:true,prompt:'Read the fake code.',visual:mrgPhone([9,1,6]),answer:'My code is nine-one-six.',spoken:'My code is nine one six.'},{reveal:true,prompt:'Role-play: “How many turtles?”',visual:mrgAnimalPictures('turtles',10),answer:'There are ten turtles.',spoken:'How many turtles? There are ten turtles.'}]}
+    }
+    if(section==='finish'){
+      if(index===0){[['1 • 2 • 3',3],['4 • 5 • 6',6],['7 • 8 • 9',9],['8 • 9 • 10',10],['2 • 3 • 4',4],['5 • 6 • 7',7],['3 • 4 • 5',5]].forEach(([s,a])=>q.push(mrgQ('What is the last number?',a,mrgChoices(a),`<div>${s}</div>`)))}
+      if(index===1){[[2,3,5],[4,2,6],[1,6,7],[3,1,4],[5,3,8],[6,4,10],[2,7,9]].forEach(([a,b,c])=>q.push(mrgQ(`${a} + ${b} = ?`,c,mrgChoices(c),`<div>${a} + ${b} = ?</div>`)))}
+      if(index===2){[[1,2,3,4],[4,5,6,7],[7,8,9,10],[2,3,4,5],[5,6,7,8],[3,4,5,6],[6,7,8,9]].forEach((a,i)=>{let h=i%4,ans=a[h];q.push(mrgQ('What number is missing?',ans,mrgChoices(ans),`<div>${a.map((x,j)=>j===h?'__':x).join(' • ')}</div>`))})}
+      if(index===3)[1,3,5,7,8,9,10].forEach(n=>{let ans=`I am ${mrgWord(n)} years old.`;q.push(mrgQ('How old are you?',ans,shuffle([ans,`I am ${mrgWord(Math.max(1,n-1))} years old.`,`There are ${mrgWord(n)}.`,`My code is ${n}.`]),mrgPictures(n)))});
+      if(index===4)[[1,4,6],[2,5,7],[3,6,8],[4,7,9],[2,8,5],[7,1,3],[8,4,1]].forEach(seq=>{let ans=seq.join('-');q.push(mrgQ('Listen. Choose the fake code.',ans,shuffle([ans,[seq[1],seq[0],seq[2]].join('-'),[seq[0],seq[2],seq[1]].join('-')]),mrgPhone(seq),seq.map(mrgWord).join(' ')))});
+      if(index===5){q=[mrgQ('Which digit means “seven”?',7,[7,2,9],mrgPictures(7)),mrgQ('How old are you?','I am five years old.',['I am five years old.','There are five cats.','My code is five.'],mrgPictures(5)),mrgQ('How many dogs?',5,[4,5,6],mrgAnimalPictures('dogs',5)),mrgQ('Listen to the fake code.','4-7-2',['4-7-2','7-2-4','2-4-7'],mrgPhone([4,7,2]),'four seven two'),mrgQ('What comes after 8?',9,[7,9,10],'<div>8 → ?</div>'),mrgQ('How many rabbits?','There are two rabbits.',['There are two rabbits.','There are three rabbits.','I am two years old.'],mrgAnimalPictures('rabbits',2)),mrgQ('2 + 3 = ?',5,[4,5,6],'<div>2 + 3 = ?</div>')]}
+      if(index===6){q=[mrgQ('Listen. Tap eight.',8,[8,3,6,10],mrgPictures(8),'eight'),mrgQ('Which word means 4?','four',['four','five','nine','one'],mrgPictures(4)),mrgQ('How old are you?','I am seven years old.',['I am seven years old.','There are seven cats.','My code is seven.'],mrgPictures(7)),mrgQ('How many fish?',8,[6,7,8,9],mrgAnimalPictures('fish',8)),mrgQ('What is missing? 2 • 4 • __ • 8',6,[5,6,7,9],'<div>2 • 4 • __ • 8</div>'),mrgQ('Listen to the fake code.','3-6-8',['3-6-8','6-3-8','3-8-6'],mrgPhone([3,6,8]),'three six eight'),mrgQ('5 + 3 = ?',8,[7,8,9,10],'<div>5 + 3 = ?</div>')]}
+    }
+    return q;
+  }
+  function mrgRun(section,index){let gen=mrgGenerate(section,index);if(gen&&gen.action==='bingo'){mrgClose();go('play');setTimeout(()=>$('#nextCall').focus(),200);return}mrgState={section,mode:mrgSets[section][index][0],round:0,score:0,questions:gen,locked:false,back:()=>mrgHub(section)};mrgRenderQuestion()}
+  function mrgRenderQuestion(){let S=mrgState,q=S.questions[S.round];if(!q)return mrgComplete();S.locked=false;let progress=(S.round+1)/S.questions.length*100;let listen=q.spoken?`<button class="btn small blue" data-listen>🔊 Hear</button>`:'';let center=q.visual?`<div class="merge-visual">${q.visual}</div>`:'';let body='';if(q.reveal){body=`<div class="reveal-card"><div class="merge-q">${q.prompt}</div>${center}${listen}<div class="reveal-answer" id="mrgReveal">${q.answer}</div><div class="merge-nav"><button class="btn green" data-reveal>Show answer</button><button class="btn purple" data-said>✓ I said it / Next</button></div></div>`}else{body=`<div class="merge-q">${q.prompt}</div>${center}${listen}<div class="merge-answers">${q.choices.map((x,i)=>`<button class="merge-answer" data-choice="${i}">${x}</button>`).join('')}</div><div class="merge-feedback" id="mrgFeedback"></div><div class="merge-nav"><button class="btn purple" id="mrgNext" style="display:none">Next ➜</button></div>`}mrgOpen(`${mrgHeader(S.mode)}<div class="merge-meta"><span>Round ${S.round+1} / ${S.questions.length}</span><span>Stars: ${S.score}</span></div><div class="merge-progress"><i style="width:${progress}%"></i></div><div class="merge-stage">${body}</div><div class="merge-frame"><span>I am ___ years old.</span><span>There are ___ ___.</span><span>My code is ___-___-___.</span></div><div class="merge-nav"><button class="btn small gray" data-backhub>← Activity menu</button></div>`);
+    let back=mrgContent.querySelector('[data-backhub]');if(back)back.addEventListener('click',S.back);let l=mrgContent.querySelector('[data-listen]');if(l)l.addEventListener('click',()=>speak(q.spoken));if(q.spoken&&q.prompt.toLowerCase().includes('listen'))setTimeout(()=>speak(q.spoken),220);
+    if(q.memory){let card=mrgContent.querySelector('.reveal-card');let seq=card&&card.querySelector('.merge-q');let hideBtn=mrgContent.querySelector('[data-memory-hide]');let hide=()=>{if(seq)seq.textContent='?  ?  ?';if(hideBtn)hideBtn.style.display='none'};if(hideBtn)hideBtn.addEventListener('click',hide);setTimeout(hide,1800);}
+    if(q.reveal){let r=mrgContent.querySelector('[data-reveal]');if(r)r.addEventListener('click',()=>{mrgContent.querySelector('#mrgReveal').classList.add('show');if(q.spoken)speak(q.spoken)});mrgContent.querySelector('[data-said]').addEventListener('click',()=>{S.score++;S.round++;mrgRenderQuestion()});}
+    else{mrgContent.querySelectorAll('[data-choice]').forEach((b,i)=>b.addEventListener('click',()=>mrgAnswer(b,q.choices[i],q)));let n=mrgContent.querySelector('#mrgNext');if(n)n.addEventListener('click',()=>{S.round++;mrgRenderQuestion()});}
+  }
+  function mrgAnswer(btn,val,q){if(mrgState.locked)return;if(String(val)===String(q.answer)){mrgState.locked=true;mrgState.score++;btn.classList.add('correct');let f=mrgContent.querySelector('#mrgFeedback');if(f)f.innerHTML=`<span class="ok">✓ Correct.${q.after?' '+q.after:''}</span>`;if(q.after)speak(q.after);let n=mrgContent.querySelector('#mrgNext');if(n)n.style.display='inline-block'}else{btn.classList.add('wrong');let f=mrgContent.querySelector('#mrgFeedback');if(f)f.innerHTML='<span class="try">Try again — look, count, or use the sentence frame.</span>';setTimeout(()=>btn.classList.remove('wrong'),500)}}
+  function mrgComplete(){let S=mrgState;mrgOpen(`${mrgHeader('⭐ Activity complete!','You can repeat it, choose another activity, or return to the main lesson.')}<div class="merge-stage"><div class="finish-stars">⭐ ⭐ ⭐</div><h2>${S.mode}</h2><div class="result">${S.score} / ${S.questions.length} stars</div><p class="hint">Retry is always allowed. Keep the pace calm and predictable.</p><div class="merge-nav"><button class="btn purple" data-repeat>Repeat activity</button><button class="btn blue" data-menu>Choose another</button><button class="btn green" data-return>Return to lesson</button></div></div>`);mrgContent.querySelector('[data-repeat]').addEventListener('click',()=>{S.round=0;S.score=0;mrgRenderQuestion()});mrgContent.querySelector('[data-menu]').addEventListener('click',S.back);mrgContent.querySelector('[data-return]').addEventListener('click',mrgClose)}
+
+  // Add small merged-practice ribbons without changing the original section layouts.
+  const mrgRibbonCfg={start:['Merged V5 practice added','🔤 Learn spelling','mrgSpelling','⭐ 7 extra practices'],learn:['Picture-first V5 practice added','🖼️ Sentence frames','mrgFrames','⭐ 7 extra practices'],play:['V5 Bingo practice added','','','⭐ 7 extra practices'],practice:['V5 animal practice added','','','⭐ 7 extra practices'],speak:['V5 speaking practice added','','','⭐ 7 extra practices'],finish:['V5 wrap-up practice added','','','⭐ 7 extra practices']};
+  Object.keys(mrgRibbonCfg).forEach(id=>{let sec=$('#'+id),title=sec&&sec.querySelector('.section-title');if(!title)return;let [label,special,fn,practice]=mrgRibbonCfg[id];let div=document.createElement('div');div.className='merged-ribbon';div.innerHTML=`<span class="merge-label">✨ ${label}</span>${special?`<button class="mergebtn ${id==='learn'?'pic':'learn'}" data-special="${fn}">${special}</button>`:''}<button class="mergebtn primary" data-hub="${id}">${practice}</button>`;title.insertAdjacentElement('afterend',div);div.querySelector('[data-hub]').addEventListener('click',()=>mrgHub(id));let sb=div.querySelector('[data-special]');if(sb)sb.addEventListener('click',()=>fn==='mrgSpelling'?mrgSpelling():mrgFrames())});
+
+})();
+</script>
+</body>
+</html>

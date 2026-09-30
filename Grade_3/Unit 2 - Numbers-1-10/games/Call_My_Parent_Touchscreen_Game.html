@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Call My Parent! — Number Practice</title>
+<style>
+  :root{--blue:#169cff;--blue2:#0476e7;--navy:#073778;--green:#18c957;--green2:#06a13f;--red:#ff5a55;--cream:#fff9e7;--ink:#12315f;}
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none;}
+  html,body{margin:0;height:100%;font-family:ui-rounded, "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;background:#dff4ff;overflow:hidden;}
+  button{font:inherit;}
+  .app{height:100%;width:100%;position:relative;display:grid;place-items:center;background:linear-gradient(180deg,#93ddff 0%,#eaf8ff 58%,#ffe8bd 100%);}
+
+  /* SPLASH */
+  #splash{position:absolute;inset:0;display:grid;place-items:center;background:#cfefff;z-index:20;transition:.55s ease;}
+  #splash.hide{opacity:0;pointer-events:none;transform:scale(1.03);}
+  .splash-card{position:relative;height:min(94vh,920px);aspect-ratio:2/3;border-radius:42px;overflow:hidden;box-shadow:0 28px 70px #164f7a55, inset 0 0 0 5px #ffffffaa;background:#fff;}
+  .splash-card img{width:100%;height:100%;object-fit:cover;display:block;}
+  .start{position:absolute;left:50%;bottom:7.2%;transform:translateX(-50%);min-width:52%;border:0;border-radius:999px;padding:18px 28px;background:linear-gradient(#2ee56e,#08a845);color:#fff;font-size:clamp(20px,3vw,34px);font-weight:1000;letter-spacing:.3px;box-shadow:0 8px 0 #087a34,0 13px 24px #063d2a55,inset 0 3px 0 #ffffff55;cursor:pointer;text-shadow:0 2px 0 #087b39;}
+  .start:active{transform:translate(-50%,6px);box-shadow:0 2px 0 #087a34,0 7px 14px #063d2a44;}
+
+  /* GAME BACKDROP */
+  .cloud{position:absolute;background:#fff;border-radius:999px;opacity:.8;filter:drop-shadow(0 7px 12px #6aa6c022);}
+  .cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%;}
+  .c1{width:150px;height:44px;left:5%;top:11%;} .c1:before{width:70px;height:70px;left:18px;bottom:0} .c1:after{width:85px;height:85px;right:14px;bottom:0}
+  .c2{width:125px;height:37px;right:5%;top:18%;transform:scale(.85)} .c2:before{width:60px;height:60px;left:15px;bottom:0} .c2:after{width:70px;height:70px;right:14px;bottom:0}
+  .floor{position:absolute;left:0;right:0;bottom:0;height:18%;background:linear-gradient(#92d96e,#5fc55d 48%,#e5c58e 49%,#c99d62 100%);opacity:.9;}
+
+  /* PHONE */
+  .phone{position:relative;width:min(94vw,610px);height:min(96vh,970px);border-radius:54px;padding:14px;background:linear-gradient(145deg,#17212a,#05080b 55%,#24323b);box-shadow:0 28px 70px #123b5c55, inset 0 0 0 2px #a7b6c3,inset 0 0 0 6px #111;z-index:3;}
+  .screen{height:100%;border-radius:42px;overflow:hidden;position:relative;background:linear-gradient(180deg,#1eb3ff 0%,#90ddff 32%,#f8fdff 100%);box-shadow:inset 0 0 0 2px #ffffff66;display:flex;flex-direction:column;}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:42%;height:30px;background:#07090b;border-radius:0 0 22px 22px;z-index:5;}
+  .status{height:42px;display:flex;align-items:center;justify-content:space-between;padding:8px 24px 0;color:#fff;font-weight:900;text-shadow:0 2px 2px #0865a5aa;font-size:16px;position:relative;z-index:2;}
+  .status .right{letter-spacing:3px;font-size:14px;}
+  .hero{padding:4px 18px 8px;text-align:center;position:relative;}
+  .title{font-size:clamp(31px,5.8vw,48px);font-weight:1000;line-height:.95;color:#fff;text-shadow:0 4px 0 #074dbe,0 7px 12px #043b8355;}
+  .title span{color:#ffd32d;text-shadow:0 4px 0 #cc7d00,0 7px 12px #7f470055;display:inline-block;}
+  .subtitle{font-size:clamp(15px,2.4vw,20px);color:#103879;font-weight:900;margin-top:7px;}
+  .dog{position:absolute;right:14px;bottom:-4px;font-size:45px;filter:drop-shadow(0 4px 2px #4b6c8033);transform:rotate(3deg);}
+
+  .panel{margin:3px 16px 0;background:#ffffffeb;border:3px solid #8fe0ff;border-radius:28px;padding:13px 14px 14px;box-shadow:0 10px 24px #0c72a72a,inset 0 3px 0 #fff;position:relative;}
+  .format-hint{font-size:13px;font-weight:900;color:#4c76a2;text-align:left;margin:0 4px 6px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+  .private{font-size:11px;color:#6d8cac;font-weight:800;white-space:nowrap;}
+  .display-row{display:flex;gap:10px;align-items:center;}
+  .flag{width:48px;height:32px;border-radius:8px;background:linear-gradient(#ee3f3f,#ee3f3f);position:relative;box-shadow:inset 0 0 0 2px #ffffff88,0 3px 8px #0002;flex:0 0 auto;}
+  .flag:before{content:"✹";position:absolute;left:0;top:0;width:21px;height:18px;background:#173b9c;color:white;font-size:12px;display:grid;place-items:center;border-radius:7px 0 0 0;}
+  #numberDisplay{flex:1;min-height:58px;border:0;border-radius:18px;background:#eef7ff;color:#17365f;display:flex;align-items:center;justify-content:center;padding:6px 12px;font-size:clamp(26px,5vw,42px);letter-spacing:2px;font-weight:1000;box-shadow:inset 0 3px 8px #0f6ba11f;white-space:nowrap;}
+  #counter{min-width:52px;text-align:center;font-size:15px;font-weight:1000;color:#0d68ab;background:#e5f7ff;border-radius:15px;padding:11px 7px;}
+
+  .coach{margin:8px 18px 6px;min-height:48px;border-radius:20px;padding:9px 14px;background:#fff6b5;color:#17407a;box-shadow:0 7px 16px #3868861c;border:2px solid #ffe46b;font-weight:1000;text-align:center;font-size:clamp(14px,2.4vw,18px);display:flex;align-items:center;justify-content:center;}
+
+  .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:2px 18px 10px;flex:1;min-height:0;}
+  .key{border:0;border-radius:23px;background:linear-gradient(180deg,#31b8ff 0%,#0b8ef7 55%,#0472db 100%);color:white;box-shadow:0 6px 0 #075bab,0 9px 16px #0b5b8d2e,inset 0 3px 0 #ffffff80;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:63px;cursor:pointer;transition:transform .08s ease,filter .12s ease;position:relative;overflow:hidden;}
+  .key:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,#ffffff25,transparent 42%);}
+  .key:active,.key.pressed{transform:translateY(5px) scale(.97);box-shadow:0 1px 0 #075bab,0 3px 9px #0b5b8d22;filter:brightness(1.08);}
+  .digit{font-size:clamp(27px,5.3vw,42px);font-weight:1000;line-height:.9;text-shadow:0 2px 0 #0759aa;z-index:1;}
+  .word{font-size:clamp(12px,2.2vw,17px);font-weight:900;line-height:1;margin-top:6px;z-index:1;}
+  .utility{background:linear-gradient(#ff7770,#ff4c49 58%,#ea3537);box-shadow:0 6px 0 #ba2c2f,0 9px 16px #802b2b2b,inset 0 3px 0 #ffffff80;}
+  .practice{background:linear-gradient(#ffcc48,#ffac1a 58%,#f38c00);box-shadow:0 6px 0 #c57400,0 9px 16px #7d4a0028,inset 0 3px 0 #ffffff80;color:#fff;}
+  .call{background:linear-gradient(#44e97b,#15c85a 58%,#08a642);box-shadow:0 6px 0 #087b36,0 9px 16px #0f6f352e,inset 0 3px 0 #ffffff80;}
+  .key[disabled]{filter:grayscale(.45) brightness(.92);opacity:.62;cursor:not-allowed;transform:none!important;}
+  .icon{font-size:clamp(24px,4vw,36px);font-weight:1000;line-height:1;z-index:1;}
+  .practice .word,.call .word,.utility .word{font-size:clamp(11px,2vw,15px);}
+
+  .footer{padding:4px 16px 12px;display:flex;gap:8px;align-items:center;justify-content:center;color:#174276;font-weight:900;font-size:12px;}
+  .tinybtn{border:0;border-radius:999px;padding:7px 12px;background:#ffffffa8;color:#245486;font-weight:900;box-shadow:0 3px 8px #17427622;cursor:pointer;}
+
+  /* ZOOM NUMBER */
+  #zoomDigit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.4);width:min(48vw,260px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 25%,#6ed0ff,#087fe8 65%,#0756b6);border:8px solid #fff;color:#fff;display:grid;place-items:center;font-size:clamp(100px,24vw,190px);font-weight:1000;text-shadow:0 6px 0 #0752ad;box-shadow:0 18px 45px #063b7380,inset 0 5px 0 #ffffff66;opacity:0;pointer-events:none;z-index:30;}
+  #zoomDigit.show{animation:pop .68s ease both;}
+  @keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.35) rotate(-8deg)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.08) rotate(3deg)}65%{opacity:1;transform:translate(-50%,-50%) scale(.98)}100%{opacity:0;transform:translate(-50%,-50%) scale(.72)}}
+
+  /* PRACTICE / CALL OVERLAYS */
+  .modal{position:absolute;inset:0;background:#07345b88;backdrop-filter:blur(4px);display:grid;place-items:center;padding:24px;z-index:25;opacity:0;pointer-events:none;transition:.2s;}
+  .modal.show{opacity:1;pointer-events:auto;}
+  .bubble{width:min(92%,480px);background:#fff;border-radius:34px;padding:24px 20px;text-align:center;box-shadow:0 24px 60px #08253e66;border:4px solid #a7e8ff;}
+  .bubble h2{margin:0;color:#0b4c95;font-size:clamp(27px,5vw,42px);}
+  .bubble p{color:#244f7b;font-weight:900;font-size:clamp(16px,2.8vw,21px);line-height:1.35;}
+  #practiceNumber{font-size:clamp(30px,6vw,50px);font-weight:1000;color:#0a74d8;letter-spacing:2px;margin:15px 0;}
+  .modal-btn{border:0;border-radius:999px;padding:14px 24px;background:linear-gradient(#39dd76,#0db54b);color:#fff;font-weight:1000;font-size:19px;box-shadow:0 6px 0 #0a8138;cursor:pointer;}
+  .modal-btn:active{transform:translateY(4px);box-shadow:0 2px 0 #0a8138;}
+  .ringing{animation:ring .18s linear infinite alternate;}
+  @keyframes ring{from{transform:rotate(-1deg)}to{transform:rotate(1deg)}}
+  .parent{font-size:82px;line-height:1;margin:2px 0 5px;}
+  .stars{font-size:38px;letter-spacing:9px;animation:star 1s ease infinite alternate;}
+  @keyframes star{to{transform:scale(1.08)}}
+
+  .confetti{position:absolute;width:10px;height:16px;border-radius:3px;z-index:40;pointer-events:none;animation:fall 1.7s ease-out forwards;}
+  @keyframes fall{0%{opacity:1;transform:translate(var(--x0),-20px) rotate(0deg)}100%{opacity:0;transform:translate(var(--x1),105vh) rotate(720deg)}}
+
+  @media (max-height:720px){
+    .phone{height:98vh;width:min(88vw,560px);}
+    .hero{padding-top:0} .title{font-size:31px} .subtitle{font-size:14px} .dog{font-size:34px}
+    .panel{padding:8px 10px;margin-top:0} #numberDisplay{min-height:46px;font-size:26px}
+    .coach{min-height:38px;margin-top:5px;margin-bottom:4px;padding:6px 10px;font-size:14px}
+    .keypad{gap:7px;padding-bottom:7px} .key{min-height:50px;border-radius:18px} .digit{font-size:27px} .word{font-size:12px;margin-top:4px}
+    .footer{padding-bottom:6px}
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="cloud c1"></div><div class="cloud c2"></div><div class="floor"></div>
+
+  <section id="splash" aria-label="Start screen">
+    <div class="splash-card">
+      <img alt="My Family Phone" src="assets/call-parent/img_001_28ff636420ae.webp" decoding="async">
+      <button class="start" id="startBtn">☎ Start the Game!</button>
+    </div>
+  </section>
+
+  <main class="phone" id="phone">
+    <section class="screen">
+      <div class="notch"></div>
+      <div class="status"><span>9:00</span><span class="right">▮▮▮ ))) ▱</span></div>
+      <header class="hero">
+        <div class="title">Call My <span>Parent!</span></div>
+        <div class="subtitle">Listen • Tap • Say • Call</div>
+        <div class="dog">🐶</div>
+      </header>
+
+      <div class="panel">
+        <div class="format-hint"><span>🇹🇼 Taiwan mobile: 09xx xxx xxx</span><span class="private">🔒 not saved</span></div>
+        <div class="display-row">
+          <div class="flag" aria-hidden="true"></div>
+          <div id="numberDisplay" aria-live="polite">_ _ _ _ &nbsp; _ _ _ &nbsp; _ _ _</div>
+          <div id="counter">0/10</div>
+        </div>
+      </div>
+
+      <div class="coach" id="coach">Tap a 10-digit Taiwan mobile number or 110 / 119.</div>
+
+      <section class="keypad" aria-label="Phone keypad">
+        <button class="key num" data-d="1"><span class="digit">1</span><span class="word">one</span></button>
+        <button class="key num" data-d="2"><span class="digit">2</span><span class="word">two</span></button>
+        <button class="key num" data-d="3"><span class="digit">3</span><span class="word">three</span></button>
+        <button class="key num" data-d="4"><span class="digit">4</span><span class="word">four</span></button>
+        <button class="key num" data-d="5"><span class="digit">5</span><span class="word">five</span></button>
+        <button class="key num" data-d="6"><span class="digit">6</span><span class="word">six</span></button>
+        <button class="key num" data-d="7"><span class="digit">7</span><span class="word">seven</span></button>
+        <button class="key num" data-d="8"><span class="digit">8</span><span class="word">eight</span></button>
+        <button class="key num" data-d="9"><span class="digit">9</span><span class="word">nine</span></button>
+        <button class="key utility" id="backBtn"><span class="icon">⌫</span><span class="word">back</span></button>
+        <button class="key num" data-d="0"><span class="digit">0</span><span class="word">zero</span></button>
+        <button class="key practice" id="practiceBtn" disabled><span class="icon">🔊</span><span class="word">Say it!</span></button>
+      </section>
+
+      <div class="footer">
+        <button class="tinybtn" id="clearBtn">Clear</button>
+        <button class="key call" id="callBtn" style="height:48px;min-width:160px;flex-direction:row;gap:8px;padding:0 18px;border-radius:22px" disabled><span class="icon">☎</span><span class="word" style="font-size:19px;margin:0">CALL</span></button>
+        <button class="tinybtn" id="soundBtn">🔊 Sound</button>
+      </div>
+    </section>
+    <div id="zoomDigit">1</div>
+  </main>
+
+  <div class="modal" id="practiceModal">
+    <div class="bubble">
+      <h2>Say the number!</h2>
+      <p>Listen to each digit and repeat it aloud.</p>
+      <div id="practiceNumber"></div>
+      <button class="modal-btn" id="practiceStart">▶ Practice</button>
+    </div>
+  </div>
+
+  <div class="modal" id="callModal">
+    <div class="bubble" id="callBubble">
+      <div class="parent" id="parentAvatar">👩</div>
+      <h2 id="callTitle">Calling…</h2>
+      <p id="callText">Ring… ring…</p>
+      <div class="stars" id="stars" style="display:none">⭐ ✨ ⭐</div>
+      <button class="modal-btn" id="againBtn" style="display:none">↻ Try Again</button>
+    </div>
+  </div>
+</div>
+<script>
+(() => {
+  const words = ['zero','one','two','three','four','five','six','seven','eight','nine'];
+  let digits = [];
+  let practiced = false;
+  let soundOn = true;
+  let audioCtx = null;
+
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+  const display = $('#numberDisplay'), counter=$('#counter'), coach=$('#coach');
+  const practiceBtn=$('#practiceBtn'), callBtn=$('#callBtn'), zoom=$('#zoomDigit');
+
+  function initAudio() {
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+  }
+  function tone(freq=500,dur=.06,type='sine',gain=.05) {
+    if(!soundOn) return;
+    initAudio();
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type=type;o.frequency.value=freq;g.gain.value=gain;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur);
+  }
+  /* ===== MISS FANG EMBEDDED RECORDED VOICE — V2 =====
+     The real MP3 clips are stored directly inside this HTML file.
+     No external audio path, fetch request, browser cache, or speech-synthesis
+     fallback is used. This guarantees that local and GitHub playback use only
+     Miss Fang's recorded voice. */
+  const MISS_FANG_VOICE_DATA = {"zero":"assets/call-parent/audio_001_6a1983d29043.mp3","one":"assets/call-parent/audio_002_28af60dba4ef.mp3","two":"assets/call-parent/audio_003_940e291a03e5.mp3","three":"assets/call-parent/audio_004_8e5afae157be.mp3","four":"assets/call-parent/audio_005_a649594ee188.mp3","five":"assets/call-parent/audio_006_780a8f349af6.mp3","six":"assets/call-parent/audio_007_e04746906974.mp3","seven":"assets/call-parent/audio_008_cdcf05ffcbce.mp3","eight":"assets/call-parent/audio_009_d9e5f8195a0b.mp3","nine":"assets/call-parent/audio_010_b2b407f46001.mp3","police number great now say the number":"assets/call-parent/audio_011_e79456f1d7ff.mp3","fire and ambulance number great now say the number":"assets/call-parent/audio_012_f1690d5e7d14.mp3","great now say the number":"assets/call-parent/audio_013_067545a89028.mp3","call my parent tap a phone number you can also try one one zero or one one nine":"assets/call-parent/audio_014_bd3427271dcc.mp3","listen and repeat the emergency number":"assets/call-parent/audio_015_a16e8b3ac81f.mp3","listen and repeat each number":"assets/call-parent/audio_015_a16e8b3ac81f.mp3","great job now press call":"assets/call-parent/audio_016_a9f81a8f8630.mp3","police station what is the emergency":"assets/call-parent/audio_017_d911b5c2168b.mp3","my candy is missing":"assets/call-parent/audio_018_5f85462b2550.mp3","oh no your candy is missing":"assets/call-parent/audio_019_2275e9467b84.mp3","yes":"assets/call-parent/audio_020_b29cf33baa97.mp3","i am sorry no candy today stay safe":"assets/call-parent/audio_021_efbe2927bc82.mp3","okay bye":"assets/call-parent/audio_022_70457948976f.mp3","119 what is the emergency":"assets/call-parent/audio_023_b7fc48c43062.mp3","my ice cream is melting":"assets/call-parent/audio_024_155023a43c17.mp3","oh no your ice cream is melting":"assets/call-parent/audio_025_627ee93f8027.mp3","sorry you will have to drink your ice cream stay safe":"assets/call-parent/audio_026_2e298b25c2b4.mp3","hello my baby":"assets/call-parent/audio_027_0e525776b796.mp3","you know my number":"assets/call-parent/audio_028_839708a6b86a.mp3","great job":"assets/call-parent/audio_029_355226626d99.mp3","i love you":"assets/call-parent/audio_030_60ec2dfc3412.mp3","ready try again":"assets/call-parent/audio_031_2254f29e262a.mp3","sound on":"assets/call-parent/audio_032_726fce504589.mp3"};
+
+  const missFangAudioCache = new Map();
+  let activeVoiceAudio = null;
+
+  function voiceKey(text) {
+    return String(text).toLowerCase()
+      .replace(/[’']/g,'')
+      .replace(/[^a-z0-9\s]/g,' ')
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+
+  function preloadMissFangVoice() {
+    Object.entries(MISS_FANG_VOICE_DATA).forEach(([key,src]) => {
+      const a = new Audio();
+      a.preload = 'auto';
+      a.src = src;
+      a.load();
+      missFangAudioCache.set(key, a);
+    });
+  }
+
+  /* ===== FEMALE FALLBACK — used only if a Miss Fang recording is missing ===== */
+  let callFemaleVoice=null, callFemaleWarmed=false;
+  const CALL_FEMALE_HINT=/Samantha|Zira|Jenny|Aria|Ava|Susan|Victoria|Karen|Moira|Fiona|Tessa|Veena|Serena|Hazel|Google US English|English United States/i;
+  function chooseCallFemaleVoice(){if(!('speechSynthesis' in window))return null;const voices=speechSynthesis.getVoices()||[];const en=voices.filter(v=>/^en([-_]|$)/i.test(v.lang||''));const female=en.filter(v=>CALL_FEMALE_HINT.test(v.name||''));callFemaleVoice=female.find(v=>v.localService)||female.find(v=>/^en[-_]US/i.test(v.lang||''))||female[0]||en.find(v=>v.localService)||en[0]||voices[0]||null;return callFemaleVoice;}
+  function prepareCallFemaleVoice(){if(!('speechSynthesis' in window))return;chooseCallFemaleVoice();const r=()=>chooseCallFemaleVoice();if(typeof speechSynthesis.addEventListener==='function')speechSynthesis.addEventListener('voiceschanged',r);else speechSynthesis.onvoiceschanged=r;}
+  function warmCallFemaleVoice(){if(callFemaleWarmed||!('speechSynthesis' in window))return;chooseCallFemaleVoice();try{speechSynthesis.resume();const u=new SpeechSynthesisUtterance(' ');u.lang='en-US';u.volume=0;if(callFemaleVoice)u.voice=callFemaleVoice;speechSynthesis.speak(u);callFemaleWarmed=true;}catch(e){}}
+  function speakCallFemale(text,rate=.84,pitch=1.05){if(!soundOn||!('speechSynthesis' in window))return Promise.resolve();chooseCallFemaleVoice();try{speechSynthesis.cancel();speechSynthesis.resume();}catch(e){}return new Promise(resolve=>{const u=new SpeechSynthesisUtterance(String(text));u.lang='en-US';u.rate=rate;u.pitch=pitch;u.volume=1;if(callFemaleVoice)u.voice=callFemaleVoice;let d=false;const f=()=>{if(d)return;d=true;resolve();};u.onend=f;u.onerror=f;try{speechSynthesis.speak(u);}catch(e){f();}});}
+  prepareCallFemaleVoice();
+  document.addEventListener('pointerdown',warmCallFemaleVoice,{once:true,capture:true});
+
+  function stopVoice() {
+    if(activeVoiceAudio) {
+      activeVoiceAudio.pause();
+      try { activeVoiceAudio.currentTime = 0; } catch(e) {}
+      activeVoiceAudio.onended = null;
+      activeVoiceAudio.onerror = null;
+      activeVoiceAudio = null;
+    }
+    /* Explicitly stop any old browser TTS left by another version. */
+    if('speechSynthesis' in window) speechSynthesis.cancel();
+  }
+
+  function speak(text, rate=.82, pitch=1.05) {
+    if(!soundOn) return Promise.resolve();
+    const key = voiceKey(text);
+    const src = MISS_FANG_VOICE_DATA[key];
+    if(!src) {
+      console.warn('Miss Fang recording not mapped; using cached female fallback:', text);
+      return speakCallFemale(text, rate, pitch);
+    }
+
+    stopVoice();
+    const a = missFangAudioCache.get(key) || new Audio(src);
+    a.src = src;
+    a.preload = 'auto';
+    missFangAudioCache.set(key, a);
+    activeVoiceAudio = a;
+    try { a.currentTime = 0; } catch(e) {}
+    a.volume = 1;
+
+    return new Promise(resolve=>{
+      let finished = false;
+      const done = () => {
+        if(finished) return;
+        finished = true;
+        if(activeVoiceAudio === a) activeVoiceAudio = null;
+        a.onended = null;
+        a.onerror = null;
+        resolve();
+      };
+      a.onended = done;
+      a.onerror = (event) => {
+        console.error('Miss Fang audio could not play:', key, event);
+        done();
+      };
+      const playPromise = a.play();
+      if(playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(error=>{
+          console.error('Miss Fang audio play was blocked:', key, error);
+          done();
+        });
+      }
+    });
+  }
+
+  preloadMissFangVoice();
+
+  // Prevent delayed prompts from interrupting practice/call audio.
+  let postEntryPromptTimer = null;
+  function clearPostEntryPrompt(){
+    if(postEntryPromptTimer !== null){
+      clearTimeout(postEntryPromptTimer);
+      postEntryPromptTimer = null;
+    }
+  }
+  function isEmergency() {
+    const n = digits.join('');
+    return n === '110' || n === '119';
+  }
+  function targetLength() {
+    return isEmergency() ? 3 : 10;
+  }
+  function formatNumber(arr, placeholders=true) {
+    const emergency = arr.join('') === '110' || arr.join('') === '119';
+    const maxLen = emergency ? 3 : 10;
+    const a=[...arr]; while(placeholders && a.length<maxLen) a.push('_');
+    if(emergency || maxLen===3) return a.slice(0,3).join(' ');
+    return `${a.slice(0,4).join(' ')} &nbsp; ${a.slice(4,7).join(' ')} &nbsp; ${a.slice(7,10).join(' ')}`;
+  }
+  function update() {
+    display.innerHTML=formatNumber(digits,true);
+    const emergency = isEmergency();
+    const needed = targetLength();
+    counter.textContent= emergency ? `${digits.length}/3` : `${digits.length}/10`;
+    const full=digits.length===needed;
+    practiceBtn.disabled=!full;
+    callBtn.disabled=!(full && practiced);
+    if(digits.length===0) coach.textContent = "Tap a 10-digit Taiwan mobile number or 110 / 119.";
+    else if(emergency && !full) coach.textContent = `${needed-digits.length} more ${needed-digits.length===1?'digit':'digits'} for the emergency number.`;
+    else if(!emergency && !full) coach.textContent = `${needed-digits.length} more ${needed-digits.length===1?'digit':'digits'}.`;
+    else if(emergency && !practiced) coach.textContent = 'Great! Now press “Say it!” and repeat the emergency number.';
+    else if(emergency && practiced) coach.textContent = 'Emergency call ready! Press CALL.';
+    else if(!practiced) coach.textContent='Great! Now press “Say it!” and repeat every digit.';
+    else coach.textContent='Excellent! Now press CALL.';
+  }
+  function showZoom(d) {
+    zoom.textContent=d; zoom.classList.remove('show'); void zoom.offsetWidth; zoom.classList.add('show');
+  }
+  function pressDigit(d, btn) {
+    clearPostEntryPrompt();
+    const current = digits.join('');
+    if((current === '110' || current === '119') && digits.length >= 3) { coach.textContent='That emergency number is ready. Press “Say it!” or Clear.'; tone(220,.09,'square',.035); return; }
+    if(digits.length>=10) { coach.textContent='You already have 10 digits. Press “Say it!”'; tone(220,.09,'square',.035); return; }
+    practiced=false;
+    digits.push(d); btn.classList.add('pressed'); setTimeout(()=>btn.classList.remove('pressed'),160);
+    showZoom(d); tone(620 + Number(d)*28,.05,'sine',.04); speak(words[Number(d)], .88, 1.12); update();
+    // The coach text already tells the learner what to do next.
+    // Do not schedule an extra spoken prompt here: it could interrupt Say it!/Practice,
+    // especially for 110 and 119 when students move quickly.
+  }
+
+  $$('.num').forEach(btn => btn.addEventListener('pointerdown', e => { e.preventDefault(); pressDigit(btn.dataset.d,btn); }));
+  $('#backBtn').addEventListener('click',()=>{ if(digits.length){digits.pop();practiced=false;tone(260,.05);update();} });
+  $('#clearBtn').addEventListener('click',()=>{digits=[];practiced=false;tone(220,.08);update();});
+
+  $('#startBtn').addEventListener('click',()=>{initAudio();warmCallFemaleVoice();tone(700,.06);setTimeout(()=>tone(900,.08),80);$('#splash').classList.add('hide');speak('Call my parent. Tap a phone number. You can also try one one zero or one one nine.');});
+
+  practiceBtn.addEventListener('click',()=>{
+    clearPostEntryPrompt();
+    stopVoice();
+    const needed = targetLength();
+    if(digits.length!==needed) return;
+    $('#practiceNumber').innerHTML=formatNumber(digits,false);
+    $('#practiceModal').classList.add('show');
+    speak(isEmergency() ? 'Listen and repeat the emergency number.' : 'Listen and repeat each number.');
+  });
+  $('#practiceStart').addEventListener('click', async()=>{
+    clearPostEntryPrompt();
+    stopVoice();
+    const b=$('#practiceStart'); b.disabled=true;b.textContent='Listen & repeat…';
+    const emergency = isEmergency();
+    for(let i=0;i<digits.length;i++){
+      const d=digits[i];
+      $('#practiceNumber').innerHTML=digits.map((x,j)=>`<span style="display:inline-block;padding:4px 5px;border-radius:10px;${j===i?'background:#ffe35e;color:#123a77;transform:scale(1.22)':'color:#0a74d8'}">${x}</span>${(!emergency && (j===3||j===6))?' <span style="color:#87a6bf">·</span> ':''}`).join('');
+      showZoom(d); tone(650+Number(d)*22,.045); await speak(words[Number(d)], .78,1.1); await new Promise(r=>setTimeout(r,650));
+    }
+    practiced=true; update();
+    $('#practiceNumber').innerHTML=formatNumber(digits,false);
+    b.textContent='✓ Great job!';
+    await speak('Great job! Now press call.',.84,1.12);
+    setTimeout(()=>{$('#practiceModal').classList.remove('show');b.disabled=false;b.textContent='▶ Practice';},650);
+  });
+
+  function ringSequence() {
+    if(!soundOn) return;
+    initAudio();
+    const now=audioCtx.currentTime;
+    [0,.28,.9,1.18].forEach((t,i)=>{
+      const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=i%2?480:440;g.gain.value=.0001;o.connect(g);g.connect(audioCtx.destination);o.start(now+t);g.gain.setValueAtTime(.0001,now+t);g.gain.exponentialRampToValueAtTime(.08,now+t+.03);g.gain.exponentialRampToValueAtTime(.0001,now+t+.22);o.stop(now+t+.24);
+    });
+  }
+  function confetti() {
+    const colors=['#ff4c62','#ffd32d','#20c9ff','#42df7b','#9b6cff'];
+    for(let i=0;i<55;i++){const el=document.createElement('i');el.className='confetti';el.style.background=colors[i%colors.length];el.style.left=(Math.random()*100)+'vw';el.style.setProperty('--x0',(Math.random()*40-20)+'px');el.style.setProperty('--x1',(Math.random()*220-110)+'px');el.style.animationDelay=(Math.random()*.5)+'s';document.body.appendChild(el);setTimeout(()=>el.remove(),2300);}
+  }
+  callBtn.addEventListener('click', async()=>{
+    clearPostEntryPrompt();
+    stopVoice();
+    const needed = targetLength();
+    if(digits.length!==needed || !practiced) return;
+    const modal=$('#callModal'),bubble=$('#callBubble');
+    const number = digits.join('');
+    const emergency = isEmergency();
+    $('#parentAvatar').textContent = number==='110' ? '👮' : number==='119' ? '🚒' : (Math.random()>.5?'👩':'👨');
+    $('#callTitle').textContent = number==='110' ? 'Calling 110…' : number==='119' ? 'Calling 119…' : 'Calling…';
+    $('#callText').textContent='Ring… ring…';$('#stars').style.display='none';$('#againBtn').style.display='none';
+    modal.classList.add('show');bubble.classList.add('ringing');ringSequence();
+    await new Promise(r=>setTimeout(r,2200)); bubble.classList.remove('ringing');
+    let lines = [];
+    if(number === '110') {
+      $('#callTitle').textContent='Police Station 🚓';
+      lines = [
+        'Police station. What is the emergency?',
+        'My candy is missing!',
+        'Oh no! Your candy is missing?',
+        'Yes!',
+        'I am sorry. No candy today. Stay safe!',
+        'Okay! Bye!'
+      ];
+    } else if(number === '119') {
+      $('#callTitle').textContent='119 Fire & Ambulance 🚑';
+      lines = [
+        '119. What is the emergency?',
+        'My ice cream is melting!',
+        'Oh no! Your ice cream is melting?',
+        'Yes!',
+        'Sorry! You will have to drink your ice cream. Stay safe!',
+        'Okay! Bye!'
+      ];
+    } else {
+      $('#callTitle').textContent='Hello! ❤️';
+      lines = [
+        'Hello, my baby!',
+        'You know my number!',
+        'Great job!',
+        'I love you!'
+      ];
+    }
+    for (let i=0;i<lines.length;i++) {
+      const line = lines[i];
+      $('#callText').textContent = line;
+      await speak(line,.82,1.08);
+      await new Promise(r=>setTimeout(r, i===lines.length-1 ? 850 : 500));
+    }
+    $('#stars').style.display='block';$('#againBtn').style.display='inline-block';confetti();
+  });
+  $('#againBtn').addEventListener('click',()=>{clearPostEntryPrompt();stopVoice();$('#callModal').classList.remove('show');digits=[];practiced=false;update();setTimeout(()=>speak('Ready? Try again!'),250);});
+
+  $('#soundBtn').addEventListener('click',e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'🔊 Sound':'🔇 Sound';if(!soundOn) stopVoice(); if(soundOn){tone(700,.06);speak('Sound on.');} });
+  document.addEventListener('keydown',e=>{if(/^\d$/.test(e.key)){const btn=document.querySelector(`[data-d="${e.key}"]`);pressDigit(e.key,btn);} else if(e.key==='Backspace') $('#backBtn').click(); else if(e.key==='Enter'&&!callBtn.disabled) callBtn.click();});
+  update();
+})();
+</script>
+</body>
+</html>
