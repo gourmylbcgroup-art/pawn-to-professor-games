@@ -14,3 +14,7 @@ Important:
 - No lesson wording, vocabulary, activity sequence, or visual layout was intentionally changed.
 - This reduces first-load bandwidth substantially, which is useful when many students open the app together.
 - Actual 100-user performance still depends on the hosting/CDN and the school Wi-Fi.
+
+
+VOICE UPDATE
+US adult male prerecorded voice sprite: assets/audio/voice-sprite-male-us-v1.mp3. Versioned filename + cache v4 prevents stale audio after deployment.

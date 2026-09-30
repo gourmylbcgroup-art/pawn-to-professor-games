@@ -17,4 +17,8 @@ mother, father, brother, sister, grandfather, grandmother, uncle, aunt,
 dog, cat, bird, fish, rabbit
 
 
-Sound uses the browser's built-in English speech synthesis when available.
+AUDIO
+- Prerecorded General American English adult male voice.
+- All lesson phrases are packed into one optimized audio sprite and decoded once into memory.
+- No per-click network TTS is required for mapped lesson phrases, preventing the online voice lag.
+- Service-worker cache version is bumped so browsers fetch the new male-voice file instead of an older cached voice.
