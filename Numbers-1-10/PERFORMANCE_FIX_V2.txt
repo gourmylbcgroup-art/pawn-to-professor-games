@@ -1,8 +1,0 @@
-PERFORMANCE FIX V2
-
-Major startup optimization:
-- Extracted all embedded Base64 MP3 and image data from the main HTML into separate asset files.
-- Main HTML now loads only the assets needed by the current screen/action.
-- Removed eager creation of the 87 Miss Fang Audio objects at startup; audio is instantiated only when first played.
-- Extracted embedded media from Call My Parent as well.
-- Kept lesson content, voice clips, images, and game links intact.
