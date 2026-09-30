@@ -1,6 +1,10 @@
-ONLINE AUDIO FIX
+ONLINE AUDIO FIX — 2026-09-30
 
-- Recorded question/place voices are preloaded and cached.
-- The same lady recordings are kept, compressed for faster online loading.
-- The embedded board game's recorded voices are also cached.
-- Full answer sentences such as 'I am at the park.' still use browser speech synthesis because this package does not contain recorded lady-voice files for those full sentences.
+- New attached index/menu image installed and hotspots realigned.
+- Recorded lesson MP3 files are fetched immediately and decoded into Web Audio buffers.
+- Speaker taps replay sound from RAM instead of waiting for a new network/decode cycle.
+- A local English speech-synthesis voice is preferred for full-sentence TTS to avoid cloud voices where possible.
+- First pointer/key gesture unlocks Web Audio before classroom use.
+- Service worker caches the lesson shell and all short lesson voice files for repeat visits.
+- Embedded Snakes & Ladders remains lazy-loaded so its large board does not compete with lesson audio at startup.
+- Unused board_original.png removed to reduce package size.

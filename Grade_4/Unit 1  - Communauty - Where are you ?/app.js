@@ -41,42 +41,107 @@
   }
   $$('[data-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
 
+  // Fast online audio engine.
+  // The 11 short recorded lesson sounds are fetched and decoded once at startup,
+  // then played from RAM. After that, a speaker tap does not wait on the network.
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  const audioCtx = AudioCtx ? new AudioCtx() : null;
+  const audioBuffers = new Map();
+  const audioLoads = new Map();
+  const htmlAudioFallback = new Map();
+  let preferredVoice = null;
+
+  function chooseLocalVoice(){
+    if(!('speechSynthesis' in window)) return;
+    const voices = speechSynthesis.getVoices();
+    preferredVoice = voices.find(v => /^en(-|_)/i.test(v.lang||'') && v.localService)
+      || voices.find(v => /^en(-|_)/i.test(v.lang||''))
+      || null;
+  }
+  chooseLocalVoice();
+  if('speechSynthesis' in window) speechSynthesis.addEventListener?.('voiceschanged', chooseLocalVoice);
+
   function browserSpeak(text){
     if(!soundOn || !('speechSynthesis' in window)) return;
+    chooseLocalVoice();
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'en-US'; u.rate = 0.82; u.pitch = 1.05;
+    if(preferredVoice) u.voice = preferredVoice;
     speechSynthesis.speak(u);
   }
-  // Online audio cache: preload each recording once, then reuse it.
-  // This avoids a fresh network request every time a learner taps the speaker.
-  const audioCache = new Map();
-  function getAudio(src){
-    if(!audioCache.has(src)){
+
+  function fallbackAudio(src){
+    if(!htmlAudioFallback.has(src)){
       const a = new Audio(src);
       a.preload = 'auto';
       a.load();
-      audioCache.set(src, a);
+      htmlAudioFallback.set(src,a);
     }
-    return audioCache.get(src);
+    return htmlAudioFallback.get(src);
   }
-  // Warm the short recorded vocabulary/question files in the background.
-  [...places.map(soundSrc), `${gameRoot}sounds/where_are_you.mp3`].forEach(getAudio);
 
-  function playAudio(src, fallback=''){
-    if(!soundOn) return;
-    try{
-      const a = getAudio(src);
-      a.pause();
-      a.currentTime = 0;
-      a.play().catch(() => fallback && browserSpeak(fallback));
-    }
-    catch(_){ if(fallback) browserSpeak(fallback); }
+  function loadBuffer(src){
+    if(!audioCtx) return Promise.reject(new Error('Web Audio unavailable'));
+    if(audioBuffers.has(src)) return Promise.resolve(audioBuffers.get(src));
+    if(audioLoads.has(src)) return audioLoads.get(src);
+    const job = fetch(src, {cache:'force-cache'})
+      .then(r => { if(!r.ok) throw new Error(`Audio HTTP ${r.status}`); return r.arrayBuffer(); })
+      .then(buf => audioCtx.decodeAudioData(buf.slice(0)))
+      .then(decoded => { audioBuffers.set(src,decoded); return decoded; })
+      .finally(() => audioLoads.delete(src));
+    audioLoads.set(src,job);
+    return job;
   }
+
+  const recordedLessonSounds = [...places.map(soundSrc), `${gameRoot}sounds/where_are_you.mp3`];
+  // Start downloading immediately. Total is small, and this removes online click latency.
+  recordedLessonSounds.forEach(src => { loadBuffer(src).catch(() => fallbackAudio(src)); });
+
+  let activeSource = null;
+  async function playAudio(src, fallback=''){
+    if(!soundOn) return;
+    if(audioCtx){
+      try{
+        if(audioCtx.state === 'suspended') await audioCtx.resume();
+        const buffer = await loadBuffer(src);
+        try{ activeSource?.stop(); }catch(_){ }
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioCtx.destination);
+        source.start(0);
+        activeSource = source;
+        source.onended = () => { if(activeSource===source) activeSource=null; };
+        return;
+      }catch(_){ /* fall through */ }
+    }
+    try{
+      const a = fallbackAudio(src);
+      a.pause(); a.currentTime=0;
+      await a.play();
+    }catch(_){ if(fallback) browserSpeak(fallback); }
+  }
+
   function speakPlace(p){ playAudio(soundSrc(p), p.label); }
   function speakQuestion(){ playAudio(`${gameRoot}sounds/where_are_you.mp3`, 'Where are you?'); }
   function speakSentence(p){ browserSpeak(`I am at the ${p.label}.`); }
-  $('#soundBtn').addEventListener('click', () => {soundOn=!soundOn; $('#soundBtn').textContent=soundOn?'🔊':'🔇'; if(!soundOn && 'speechSynthesis' in window) speechSynthesis.cancel();});
+
+  // First user gesture unlocks Web Audio and primes a local speech voice before it is needed.
+  function primeAudioOnce(){
+    if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(()=>{});
+    chooseLocalVoice();
+  }
+  window.addEventListener('pointerdown', primeAudioOnce, {once:true, passive:true});
+  window.addEventListener('keydown', primeAudioOnce, {once:true});
+
+  $('#soundBtn').addEventListener('click', () => {
+    soundOn=!soundOn;
+    $('#soundBtn').textContent=soundOn?'🔊':'🔇';
+    if(!soundOn){
+      try{ activeSource?.stop(); }catch(_){ }
+      if('speechSynthesis' in window) speechSynthesis.cancel();
+    }
+  });
   $('#motionBtn').addEventListener('click', () => {document.body.classList.toggle('calm'); $('#motionBtn').textContent=document.body.classList.contains('calm')?'🍃':'🌿';});
 
   // Modal / guides

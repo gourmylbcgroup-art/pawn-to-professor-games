@@ -52,62 +52,125 @@
   let goldenBag = [];
   let extraTurnPending = false;
 
-  const audio = {};
-  for (const [key, src] of Object.entries(C.sounds)) {
-    audio[key] = new Audio(src);
-    audio[key].preload = "auto";
+  // Fast online audio for the embedded game: fetch + decode once, then play from RAM.
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  const audioCtx = AudioCtx ? new AudioCtx() : null;
+  const buffers = new Map();
+  const loads = new Map();
+  const htmlFallback = new Map();
+  const activeNamed = new Map();
+  let activeVoice = null;
+  let preferredVoice = null;
+
+  function chooseLocalVoice(){
+    if(!('speechSynthesis' in window)) return;
+    const voices = speechSynthesis.getVoices();
+    preferredVoice = voices.find(v => /^en(-|_)/i.test(v.lang||'') && v.localService)
+      || voices.find(v => /^en(-|_)/i.test(v.lang||''))
+      || null;
+  }
+  chooseLocalVoice();
+  if('speechSynthesis' in window) speechSynthesis.addEventListener?.('voiceschanged', chooseLocalVoice);
+
+  function fallbackAudio(src){
+    if(!htmlFallback.has(src)){
+      const a = new Audio(src);
+      a.preload='auto'; a.load();
+      htmlFallback.set(src,a);
+    }
+    return htmlFallback.get(src);
   }
 
-  function playSound(name, restart=true) {
-    if (!soundOn || !audio[name]) return;
-    try {
-      if (restart) audio[name].currentTime = 0;
-      audio[name].play().catch(()=>{});
-    } catch (_) {}
+  function loadBuffer(src){
+    if(!audioCtx) return Promise.reject(new Error('Web Audio unavailable'));
+    if(buffers.has(src)) return Promise.resolve(buffers.get(src));
+    if(loads.has(src)) return loads.get(src);
+    const job = fetch(src,{cache:'force-cache'})
+      .then(r => {if(!r.ok) throw new Error(`Audio HTTP ${r.status}`); return r.arrayBuffer();})
+      .then(ab => audioCtx.decodeAudioData(ab.slice(0)))
+      .then(buf => {buffers.set(src,buf); return buf;})
+      .finally(()=>loads.delete(src));
+    loads.set(src,job);
+    return job;
   }
 
-  // Cache recorded voices for smooth online playback.
-  const voiceAudio = {};
   const voiceFiles = [
     C.voices.whereAreYou,
     C.voices.slideDown,
     C.voices.moveUp,
     ...Object.values(C.voices.answers || {})
   ].filter(Boolean);
-  for (const src of voiceFiles) {
-    if (!voiceAudio[src]) {
-      voiceAudio[src] = new Audio(src);
-      voiceAudio[src].preload = 'auto';
-      voiceAudio[src].load();
+  const allAudioFiles = [...Object.values(C.sounds||{}), ...voiceFiles];
+  [...new Set(allAudioFiles)].forEach(src => loadBuffer(src).catch(()=>fallbackAudio(src)));
+
+  async function playFast(src, key=null, stopPrevious=false){
+    if(!soundOn || !src) return false;
+    if(audioCtx){
+      try{
+        if(audioCtx.state==='suspended') await audioCtx.resume();
+        const buffer=await loadBuffer(src);
+        if(stopPrevious && key && activeNamed.get(key)){
+          try{activeNamed.get(key).stop();}catch(_){ }
+        }
+        const source=audioCtx.createBufferSource();
+        source.buffer=buffer; source.connect(audioCtx.destination); source.start(0);
+        if(key){ activeNamed.set(key,source); source.onended=()=>{if(activeNamed.get(key)===source) activeNamed.delete(key);}; }
+        return true;
+      }catch(_){ }
     }
+    try{
+      const a=fallbackAudio(src); a.pause(); a.currentTime=0; await a.play(); return true;
+    }catch(_){ return false; }
+  }
+
+  function playSound(name, restart=true) {
+    const src=C.sounds?.[name];
+    if(!src) return;
+    playFast(src, `effect:${name}`, !!restart);
   }
 
   function speak(text, filePath=null) {
     if (!soundOn) return;
     if (C.useRecordedVoices && filePath) {
-      try {
-        const a = voiceAudio[filePath] || (voiceAudio[filePath] = new Audio(filePath));
-        a.pause();
-        a.currentTime = 0;
-        a.play().catch(() => browserSpeak(text));
-      } catch (_) {
-        browserSpeak(text);
+      if(activeVoice){ try{activeVoice.stop();}catch(_){ } activeVoice=null; }
+      if(audioCtx){
+        (async()=>{
+          try{
+            if(audioCtx.state==='suspended') await audioCtx.resume();
+            const buffer=await loadBuffer(filePath);
+            const source=audioCtx.createBufferSource();
+            source.buffer=buffer; source.connect(audioCtx.destination); source.start(0);
+            activeVoice=source; source.onended=()=>{if(activeVoice===source) activeVoice=null;};
+          }catch(_){ browserSpeak(text); }
+        })();
+      }else{
+        playFast(filePath,'voice',true).then(ok=>{if(!ok) browserSpeak(text)});
       }
     } else {
       browserSpeak(text);
     }
   }
+
   function browserSpeak(text) {
     if (!("speechSynthesis" in window)) return;
     try {
+      chooseLocalVoice();
       speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
       u.lang = "en-US";
       u.rate = 0.82;
       u.pitch = 1.08;
+      if(preferredVoice) u.voice=preferredVoice;
       speechSynthesis.speak(u);
     } catch (_) {}
   }
+
+  function primeAudioOnce(){
+    if(audioCtx && audioCtx.state==='suspended') audioCtx.resume().catch(()=>{});
+    chooseLocalVoice();
+  }
+  window.addEventListener('pointerdown',primeAudioOnce,{once:true,passive:true});
+  window.addEventListener('keydown',primeAudioOnce,{once:true});
 
   function getSquareLabel(pos) {
     const p = PATH[Math.max(0, Math.min(PATH.length-1, pos))];
@@ -477,7 +540,12 @@
   function toggleSound() {
     soundOn = !soundOn;
     $("#soundButton").textContent = soundOn ? "🔊" : "🔇";
-    if (!soundOn && "speechSynthesis" in window) speechSynthesis.cancel();
+    if (!soundOn) {
+      if ("speechSynthesis" in window) speechSynthesis.cancel();
+      if (activeVoice) { try { activeVoice.stop(); } catch (_) {} activeVoice = null; }
+      for (const source of activeNamed.values()) { try { source.stop(); } catch (_) {} }
+      activeNamed.clear();
+    }
   }
 
   async function toggleFullscreen() {
