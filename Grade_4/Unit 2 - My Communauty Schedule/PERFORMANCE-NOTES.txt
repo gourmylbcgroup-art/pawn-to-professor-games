@@ -1,35 +1,11 @@
-Grade 4 Unit 2 Interactive — 100-User Optimization
+Grade 4 — My Community Schedule
+Online / 100-user optimization notes
 
-Goal:
-Reduce first-load bandwidth and avoid unnecessary work when many students open the lesson at the same time.
-
-What changed:
-1. Embedded Clock Challenge no longer loads on the Home screen.
-   It loads only when the GAMES section is opened.
-
-2. Clock Challenge slide PNGs were converted to high-quality WebP.
-   Original PNG total: about 14.0 MB
-   Optimized WebP total: about 1.2 MB
-
-3. Clock Challenge voice/audio files were converted from WAV to MP3.
-   Original WAV total: about 11.3 MB
-   Optimized MP3 total: about 2.9 MB
-   Audio is still loaded on demand.
-
-4. Audio elements now use preload='none' instead of preload='auto'.
-
-5. Hidden lesson sections no longer render their image-heavy content at startup.
-   START, LEARN, PRACTICE and SPEAK initialize only when opened.
-
-6. Community images and game thumbnails use lazy loading / asynchronous decoding.
-
-7. The Home image remains eager/high-priority so the first screen appears quickly.
-
-8. The lesson content, sentence patterns, activities, navigation and visual design are preserved.
-
-Package size:
-Original ZIP contents: about 26.3 MB
-Optimized contents: about 5.1 MB
-
-This is a strong reduction for a classroom where many devices open the same lesson together.
-Actual performance still depends on school Wi-Fi, browser/device speed and hosting/CDN behavior.
+- Home dashboard replaced with the supplied image and encoded as efficient WebP.
+- Dashboard keeps its supplied aspect ratio so no buttons or edge artwork are cropped.
+- Six transparent dashboard click targets were realigned to the new image.
+- Panel 4 opens PRACTICE; panel 5 opens SPEAK.
+- Clock Challenge remains lazy-loaded: its iframe is not downloaded until opened.
+- Community images remain lazy-loaded where appropriate.
+- Clock voice audio remains on-demand at 64 kbps mono; the page does not preload all 144 time clips.
+- All site/game references remain relative so the package can be deployed inside a subfolder.
