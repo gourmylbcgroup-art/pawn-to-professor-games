@@ -1,0 +1,32 @@
+Grade 6 Unit 1 — Around the World
+100-User Classroom Optimization
+
+Goal:
+Reduce startup bandwidth and unnecessary loading when many students open the lesson at the same time.
+
+Changes:
+1. Large PNG/JPG assets converted to high-quality WebP where this meaningfully reduced size.
+   Image data before conversion: 4.0 MB
+   Image data after conversion:  0.4 MB
+
+2. WAV audio converted to compact MP3 where possible.
+   WAV before: 0.0 MB
+   MP3 after:  0.0 MB
+
+3. Audio uses preload="none" so sounds are fetched only when needed.
+
+4. Images use asynchronous decoding.
+
+5. Embedded local iframes use lazy loading / deferred loading where safe.
+
+6. Only clearly unreferenced heavy source/original files were removed.
+   Removed files: 0
+
+7. Lesson content, countries, sentence patterns, navigation, activities and visual design were preserved.
+
+Total unpacked size:
+Original:  4.1 MB
+Optimized: 0.5 MB
+
+This package is better suited to a larger classroom / around 100 simultaneous users.
+Actual performance still depends on school Wi-Fi, browser/device speed and hosting/CDN behavior.

@@ -1,0 +1,30 @@
+Grade 6 Unit 1 — Secret Person Sound Fix
+
+Problem fixed:
+The Hear Model voice used a hard-coded example:
+  "Is he/she from Asia? Yes..."
+  "Is he/she from Europe? No..."
+
+That could contradict the actual secret person (for example, Kofi is from Africa).
+
+Fix:
+- Hear Model now uses the CURRENT secret person's real continent for the YES example.
+- It automatically chooses a different continent for the NO example.
+- Tapping an individual person card now uses that person's real continent in the model question.
+
+Voice quality:
+UNCHANGED.
+- No audio files were compressed or converted.
+- No TTS rate was changed.
+- No TTS pitch was changed.
+- The same browser speech-synthesis voice is used.
+- Only the words sent to the voice were corrected.
+
+Examples:
+Kofi:
+  "Is he from Africa? Yes, he is."
+  followed by a truthful No example.
+
+Emma:
+  "Is she from Europe? Yes, she is."
+  followed by a truthful No example.
