@@ -1,0 +1,16 @@
+My Family & Pets — 100-user classroom optimized build
+
+What changed (lesson/design unchanged):
+- Home screen now uses compact 480px WebP thumbnails instead of six full presentation slides.
+- Hidden screens no longer download their images during initial page load.
+- START / LEARN / PRACTICE / SPEAK / FINISH / PRESENTATION images load only when that section is opened.
+- Dynamic lesson images use asynchronous decoding where appropriate.
+- Presentation preloads only the next slide during browser idle time.
+- Next-slide preloading is disabled on Save-Data / 2G connections.
+- Removed the unused 1-byte temp file and macOS metadata is not included in the optimized ZIP.
+
+Important:
+- All original full-quality lesson assets remain in the package.
+- No lesson wording, vocabulary, activity sequence, or visual layout was intentionally changed.
+- This reduces first-load bandwidth substantially, which is useful when many students open the app together.
+- Actual 100-user performance still depends on the hosting/CDN and the school Wi-Fi.
