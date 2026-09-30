@@ -50,6 +50,8 @@ body.calm *{animation:none!important;transition:none!important}
 @media(max-width:960px){.home-grid{grid-template-columns:1fr 1fr}.flash-layout,.play-grid,.quiz-wrap,.speak-main,.finish-grid,.slide-view{grid-template-columns:1fr}.slide-side{max-height:280px}.thumb-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){.home-grid{grid-template-columns:1fr}.topbar{align-items:flex-start}.brand{display:none}.thumb-grid{grid-template-columns:repeat(2,1fr)}.answers{grid-template-columns:1fr}.home-img{height:170px}}
 </style>
+
+<link rel="preload" href="assets/audio/voice-sprite.mp3" as="audio" type="audio/mpeg">
 </head>
 <body class="calm">
 <div class="app">
@@ -153,10 +155,69 @@ let soundOn=true;
 function hydrateScreen(id){const screen=$(id);if(!screen)return;screen.querySelectorAll('img[data-src]').forEach(img=>{if(!img.src){img.src=img.dataset.src;img.removeAttribute('data-src');}});}
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');hydrateScreen(id);window.scrollTo({top:0,behavior:'smooth'});if(id==='start')renderStart();if(id==='learn')renderLearn();if(id==='practice')renderQuiz();if(id==='speak')newSpeak();if(id==='slides')renderSlides();}
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));$('homeBtn').onclick=()=>go('home');
-$('soundBtn').onclick=()=>{soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊':'🔇';if(!soundOn&&('speechSynthesis' in window))speechSynthesis.cancel();};
+$('soundBtn').onclick=()=>{soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊':'🔇';if(!soundOn)stopVoice();};
 $('motionBtn').onclick=()=>{document.body.classList.toggle('calm');$('motionBtn').textContent=document.body.classList.contains('calm')?'🌿':'✨';};
 $('fullBtn').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.();};
-function speak(t){if(!soundOn||!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.78;u.pitch=1.05;speechSynthesis.speak(u);}
+// Instant prerecorded voice sprite for online use.
+// One small file is fetched and decoded once; every Hear button then plays from RAM.
+const VOICE_SPRITE_URL='assets/audio/voice-sprite.mp3';
+const VOICE_SPRITE_MAP={"mother":[0.045,0.9572],"father":[1.1221,1.0277],"brother":[2.2698,0.9243],"sister":[3.314,1.0094],"grandfather":[4.4434,1.2651],"grandmother":[5.8284,1.2061],"uncle":[7.1545,0.9341],"aunt":[8.2086,0.887],"dog":[9.2156,0.9034],"cat":[10.2389,0.916],"bird":[11.2749,0.9109],"fish":[12.3058,0.8955],"rabbit":[13.3212,1.033],"he":[14.4742,0.8303],"she":[15.4245,0.8762],"this":[16.4207,0.8996],"that":[17.4402,0.9111],"Who is he? He is my _____.":[18.4713,2.5492],"Who is she? She is my _____.":[21.1405,2.6411],"This is my _____. This is a _____.":[23.9016,2.9923],"What is this? This is a _____.":[27.0139,2.7408],"What is that? That is a _____.":[29.8746,2.775],"This is my mother.":[32.7697,1.4809],"This is my father.":[34.3705,1.561],"This is my brother.":[36.0515,1.4929],"This is my sister.":[37.6643,1.5427],"This is my grandfather.":[39.3269,1.8335],"This is my grandmother.":[41.2805,1.7745],"This is my uncle.":[43.175,1.4766],"This is my aunt.":[44.7715,1.4154],"This is a dog.":[46.3068,1.416],"This is a cat.":[47.8429,1.3702],"This is a bird.":[49.333,1.4227],"This is a fish.":[50.8756,1.3494],"This is a rabbit.":[52.345,1.4462],"Correct":[53.9112,1.0866],"The answer is THIS":[55.1177,1.6208],"The answer is THAT":[56.8585,1.6398],"The answer is HE":[58.6182,1.4538],"The answer is SHE":[60.192,1.4997],"The answer is mother":[61.8117,1.6558],"The answer is father":[63.5874,1.7544],"The answer is brother":[65.4617,1.6783],"The answer is sister":[67.26,1.736],"The answer is grandfather":[69.116,2.0192],"The answer is grandmother":[71.2551,1.9537],"The answer is uncle":[73.3288,1.6607],"The answer is aunt":[75.1094,1.6243],"The answer is dog":[76.8537,1.6557],"The answer is cat":[78.6293,1.6428],"The answer is bird":[80.3922,1.6601],"The answer is fish":[82.1722,1.6222],"The answer is rabbit":[83.9144,1.7028],"He is my father.":[85.7372,1.4897],"He is my brother.":[87.3469,1.4215],"He is my grandfather.":[88.8884,1.7625],"He is my uncle.":[90.7709,1.4054],"She is my mother.":[92.2962,1.4554],"She is my sister.":[93.8716,1.5173],"She is my grandmother.":[95.5088,1.7492],"She is my aunt.":[97.378,1.3901],"That is a dog.":[98.8881,1.4341],"That is a cat.":[100.4422,1.388],"That is a bird.":[101.9502,1.4408],"That is a fish.":[103.5109,1.3672],"That is a rabbit.":[104.998,1.4639],"Title":[106.582,1.0056],"Meet My Family":[107.7075,1.4773],"Mother":[109.3048,0.9572],"Father":[110.3819,1.0277],"Brother":[111.5296,0.9243],"Sister":[112.5738,1.0094],"Family Review":[113.7032,1.5036],"Point and Tap":[115.3268,1.6104],"Who Is It?":[117.0571,1.0975],"Mother + Father sentences":[118.2746,2.3516],"Brother + Sister sentences":[120.7462,2.3607],"Family sentence review":[123.2269,2.0822],"Ask-Swap-Move overview":[125.4291,2.8962],"How to Play":[128.4452,1.3513],"Ask-Swap-Move model":[129.9165,2.6769],"Family recall":[132.7133,1.4345],"Grandparents":[134.2678,1.4223],"Uncle + Aunt":[135.8101,1.4587],"Big Family Review":[137.3888,1.8049],"Who are they?":[139.3137,1.1309],"Meet My Pets":[140.5645,1.4385],"More Pets":[142.123,1.2492],"My Pets review":[143.4922,1.6017],"What is this?":[145.2138,1.328],"Two Sentences":[146.6618,1.5668],"Examples":[148.3486,1.3243],"Family or Pet?":[149.7928,1.4897],"Let’s Speak":[151.4025,1.3112],"Ask-Swap-Move pets":[152.8337,2.708],"Family / Pet swap":[155.6616,1.9747],"My Family Photo":[157.7563,1.6494],"Model Presentation":[159.5256,1.8261],"Your Turn":[161.4717,1.1508],"Great Job":[162.7424,1.2711]};
+let voiceCtx=null,voiceBuffer=null,voiceSource=null,voiceReady=false;
+let voiceLoadPromise=null;
+
+function voiceKey(t){return String(t??'').trim().replace(/\s+/g,' ');}
+function ensureVoiceContext(){
+  if(!voiceCtx){const C=window.AudioContext||window.webkitAudioContext;if(C)voiceCtx=new C();}
+  return voiceCtx;
+}
+async function loadVoiceSprite(){
+  if(voiceBuffer)return voiceBuffer;
+  if(voiceLoadPromise)return voiceLoadPromise;
+  voiceLoadPromise=(async()=>{
+    try{
+      const r=await fetch(VOICE_SPRITE_URL,{cache:'force-cache'});
+      if(!r.ok)throw new Error('voice '+r.status);
+      const ab=await r.arrayBuffer();
+      const ctx=ensureVoiceContext();
+      if(!ctx)throw new Error('No AudioContext');
+      voiceBuffer=await ctx.decodeAudioData(ab.slice(0));
+      voiceReady=true;
+      document.documentElement.dataset.voiceReady='1';
+      return voiceBuffer;
+    }catch(e){console.warn('Prerecorded voice unavailable; using local speech fallback.',e);return null;}
+  })();
+  return voiceLoadPromise;
+}
+function stopVoice(){
+  if(voiceSource){try{voiceSource.stop();}catch(e){} voiceSource=null;}
+  if('speechSynthesis' in window)try{speechSynthesis.cancel();}catch(e){}
+}
+function localSpeechFallback(t){
+  if(!('speechSynthesis' in window))return;
+  try{
+    const voices=speechSynthesis.getVoices()||[];
+    const local=voices.find(v=>v.localService&&/^en-US/i.test(v.lang||''))||voices.find(v=>v.localService&&/^en/i.test(v.lang||''))||voices.find(v=>/^en/i.test(v.lang||''));
+    const u=new SpeechSynthesisUtterance(String(t));
+    if(local)u.voice=local;u.lang=(local&&local.lang)||'en-US';u.rate=.78;u.pitch=1.05;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+async function speak(t){
+  if(!soundOn||!t)return;
+  const key=voiceKey(t),seg=VOICE_SPRITE_MAP[key];
+  if(!seg){localSpeechFallback(t);return;}
+  const ctx=ensureVoiceContext();
+  if(ctx&&ctx.state==='suspended')try{await ctx.resume();}catch(e){}
+  const buf=voiceBuffer||await loadVoiceSprite();
+  if(!buf){localSpeechFallback(t);return;}
+  stopVoice();
+  const src=ctx.createBufferSource();src.buffer=buf;src.connect(ctx.destination);voiceSource=src;
+  src.onended=()=>{if(voiceSource===src)voiceSource=null;};
+  src.start(0,seg[0],Math.min(seg[1],buf.duration-seg[0]));
+}
+// Start downloading/decoding before the teacher reaches the first Hear button.
+loadVoiceSprite();
+['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,()=>{const c=ensureVoiceContext();if(c&&c.state==='suspended')c.resume().catch(()=>{});loadVoiceSprite();},{once:true,passive:true}));
 function ptxt(name){return `assets/flashcards/picture_text/${name}.webp`}function ponly(name){return `assets/flashcards/picture_only/${name}.webp`}
 function sentenceFor(name){if(FAMILY.includes(name))return `This is my ${name}.`;return `This is a ${name}.`;}
 function idlePreload(url){if(!url)return;const conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(conn?.saveData||/2g/.test(conn?.effectiveType||''))return;const run=()=>{const img=new Image();img.decoding='async';img.src=url;};if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:1500});else setTimeout(run,900);}
@@ -189,5 +250,7 @@ let slideI=1;const slideNames=['Title','Meet My Family','Mother','Father','Broth
 function renderSlides(){let list=$('slideList');list.innerHTML=slideNames.map((n,i)=>`<button class="${i+1===slideI?'active':''}" onclick="setSlide(${i+1})">${i+1}. ${n}</button>`).join('');$('slideImg').src=`assets/slides/slide_${String(slideI).padStart(2,'0')}.webp`;$('slideCount').textContent=`Slide ${slideI} / 34 — ${slideNames[slideI-1]}`;const next=slideI===34?1:slideI+1;idlePreload(`assets/slides/slide_${String(next).padStart(2,'0')}.webp`);}
 window.setSlide=n=>{slideI=n;renderSlides()};$('slidePrev').onclick=()=>{slideI=slideI===1?34:slideI-1;renderSlides()};$('slideNext').onclick=()=>{slideI=slideI===34?1:slideI+1;renderSlides()};$('slideHear').onclick=()=>speak(slideNames[slideI-1]);
 
+
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 </script>
 </body></html>
