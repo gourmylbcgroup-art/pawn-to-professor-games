@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>My Community Schedule — Grade 4</title>
+<style>
+:root{
+ --ink:#15344f;--paper:#fffdf8;--cream:#fff6de;--wood:#b86d34;--wood2:#7f441f;
+ --red:#ef4552;--blue:#1b88ee;--green:#19ae69;--purple:#8b4be6;--orange:#f39b16;--pink:#ef468d;--cyan:#1697a6;
+ --line:#ead8bd;--shadow:0 18px 34px rgba(73,40,16,.22),0 3px 0 rgba(86,47,20,.13);
+ --soft:0 10px 22px rgba(18,57,91,.12)
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;font-family:Nunito,"Trebuchet MS",Arial,sans-serif;color:var(--ink)}
+body{
+ background:
+  radial-gradient(circle at 15% 10%,rgba(255,255,255,.82),transparent 26%),
+  repeating-linear-gradient(90deg,rgba(102,54,22,.05) 0 2px,transparent 2px 115px),
+  linear-gradient(#f4dfbf,#dfa466)
+}
+button{font:inherit}
+.topbar{
+ position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:10px;padding:9px 13px;
+ background:rgba(255,252,245,.97);border-bottom:2px solid rgba(111,62,25,.13);box-shadow:0 6px 17px rgba(56,32,15,.11)
+}
+.brand{font-weight:1000;font-size:clamp(15px,2vw,23px);white-space:nowrap}.brand span{color:#16867f}
+.navchips{display:flex;gap:6px;overflow:auto;flex:1;padding:2px}
+.chip{
+ border:0;border-radius:999px;padding:8px 12px;color:white;font-weight:1000;cursor:pointer;white-space:nowrap;
+ box-shadow:inset 0 -3px rgba(0,0,0,.15),0 4px 9px rgba(0,0,0,.10)
+}
+.c1{background:var(--red)}.c2{background:var(--blue)}.c3{background:var(--green)}
+.c4{background:var(--purple)}.c5{background:var(--orange)}.c6{background:var(--pink)}.c7{background:var(--cyan)}
+.iconbtn{border:2px solid #dfd8ce;background:white;border-radius:14px;padding:8px 10px;cursor:pointer;font-weight:900;min-width:44px}
+.screen{display:none;width:min(1520px,96vw);margin:18px auto 28px;animation:enter .18s ease}
+.screen.active{display:block}@keyframes enter{from{opacity:.45;transform:translateY(7px)}to{opacity:1;transform:none}}
+.home-shell{
+ position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:28px;border:8px solid rgba(104,58,25,.43);
+ box-shadow:0 25px 48px rgba(66,36,13,.28);background:#dca36c
+}
+.home-shell img{width:100%;height:100%;object-fit:cover;display:block;user-select:none}
+.hotspot{position:absolute;border:0;border-radius:25px;background:transparent;cursor:pointer}
+.hotspot:hover{box-shadow:inset 0 0 0 5px rgba(255,255,255,.92),0 0 0 7px rgba(24,61,91,.18)}
+/* precise clickable areas on the generated six-panel dashboard */
+.hs-start{left:4.4%;top:14.1%;width:29.4%;height:34.2%}
+.hs-learn{left:35.1%;top:14.1%;width:29.4%;height:34.2%}
+.hs-play{left:65.8%;top:14.1%;width:29.4%;height:34.2%}
+.hs-speak{left:4.4%;top:51.3%;width:29.4%;height:34.5%}
+.hs-practice{left:35.1%;top:51.3%;width:29.4%;height:34.5%}
+.hs-finish{left:65.8%;top:51.3%;width:29.4%;height:34.5%}
+.home-under{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:14px}
+.note{background:rgba(255,255,255,.91);border:2px solid rgba(81,49,22,.12);padding:11px 15px;border-radius:16px;font-weight:900}
+.section-title{display:flex;align-items:center;gap:14px;margin:8px 0 14px}
+.numBadge{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;color:white;font-size:34px;font-weight:1000;box-shadow:inset 0 -8px rgba(0,0,0,.14),inset 0 5px rgba(255,255,255,.22),0 7px 14px rgba(0,0,0,.16)}
+.section-title h1{margin:0;font-size:clamp(29px,3.2vw,48px);line-height:1}
+.section-title p{margin:5px 0 0;font-weight:800;color:#526178}
+.board{background:linear-gradient(180deg,#fffaf0,#f7ead7);border:4px solid #deb27a;border-radius:30px;padding:clamp(15px,2vw,28px);box-shadow:var(--shadow);overflow:hidden}
+.btn{border:0;border-radius:17px;padding:11px 18px;color:white;font-weight:1000;cursor:pointer;box-shadow:inset 0 -4px rgba(0,0,0,.16),0 6px 12px rgba(0,0,0,.12)}
+.btn.blue{background:var(--blue)}.btn.green{background:var(--green)}.btn.orange{background:var(--orange)}
+.btn.purple{background:var(--purple)}.btn.gray{background:#68788c}.btn.cyan{background:var(--cyan)}.btn.pink{background:var(--pink)}
+.controls{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.tabs{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:15px}
+.tab{border:2px solid #d5dce7;background:white;color:var(--ink);font-weight:1000;border-radius:999px;padding:10px 17px;cursor:pointer}
+.tab.active{background:#168d88;border-color:#168d88;color:white}
+.lesson-stage{position:relative;background:white;border:3px solid var(--line);border-radius:27px;padding:18px;box-shadow:var(--soft);min-height:560px}
+.presentation{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:17px}
+.slide{
+ min-height:520px;border-radius:25px;overflow:hidden;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;
+ background:linear-gradient(180deg,#dff6ff,#f8fcff 58%,#e7f8dc);border:4px solid #d9e8ec;text-align:center
+}
+.slide.town-bg{background:url("assets/ui/community-town.webp") center/cover no-repeat}
+.slide:after{content:"";position:absolute;inset:auto 0 0;height:80px;background:linear-gradient(transparent,rgba(255,255,255,.5));pointer-events:none}
+.slide h2{position:relative;z-index:2;margin:0 0 13px;font-size:clamp(34px,4vw,58px);text-shadow:0 3px white}
+.slide .sub{position:relative;z-index:2;font-weight:1000;font-size:clamp(17px,2vw,26px);color:#4e6176}
+.sidepanel{background:white;border:3px solid var(--line);border-radius:22px;padding:15px;text-align:left}
+.sidepanel h3{margin:0 0 9px}.progress{font-size:22px;font-weight:1000;color:#168d88;margin:8px 0}.sidepanel p{font-weight:800;color:#596a80;line-height:1.42}
+.card-row,.place-grid,.time-grid{position:relative;z-index:2;display:grid;gap:12px;width:min(1050px,100%)}
+.place-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+.time-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+.community-card{background:white;border:3px solid #d9e5e9;border-radius:19px;padding:7px;box-shadow:0 10px 18px rgba(16,58,90,.12);overflow:hidden}
+.community-card img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:13px}
+.community-card b{display:block;padding:7px 4px 3px;font-size:clamp(12px,1.3vw,18px)}
+.big-card{position:relative;z-index:2;width:min(350px,68vw);background:white;border:5px solid #d9e4e8;border-radius:25px;padding:9px;box-shadow:0 16px 28px rgba(16,58,90,.18)}
+.big-card img{width:100%;border-radius:17px;display:block}
+.clock-card{background:#fff;border:4px solid #cee0e8;border-radius:23px;padding:12px;box-shadow:0 10px 19px rgba(16,58,90,.11)}
+.clock-face{
+ width:min(170px,23vw);aspect-ratio:1;border-radius:50%;margin:auto;background:white;border:7px solid #193d58;position:relative;
+ box-shadow:inset 0 0 0 4px #e7f0f4,0 8px 14px rgba(12,46,72,.15)
+}
+.clock-face .dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#193d58;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5}
+.hand{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:10px;background:#193d58}
+.hand.hour{width:8px;height:31%;}.hand.minute{width:5px;height:39%;background:#e95045}
+.digital{font-size:clamp(23px,2.8vw,38px);font-weight:1000;margin-top:9px;color:#133b58}
+.answer-panel{position:relative;z-index:2;margin-top:16px;background:white;border:4px solid #d8e7eb;border-radius:20px;padding:13px 20px;font-size:clamp(22px,2.7vw,38px);font-weight:1000;box-shadow:var(--soft)}
+.answer-panel.hidden-answer{filter:blur(9px);user-select:none}
+.qa{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:15px;width:min(900px,100%)}
+.qa-box{background:white;border:4px solid #d8e7eb;border-radius:22px;padding:20px;box-shadow:var(--soft)}
+.qa-box .q{font-size:clamp(21px,2.3vw,32px);font-weight:1000;color:#0f6fa7}.qa-box .a{font-size:clamp(23px,2.6vw,36px);font-weight:1000;margin-top:11px}
+.plus{font-size:48px;font-weight:1000;color:#e19a20;align-self:center}
+.combo{position:relative;z-index:2;display:flex;gap:19px;align-items:center;justify-content:center;flex-wrap:wrap}
+.frame-list{position:relative;z-index:2;display:grid;gap:15px;width:min(900px,100%)}
+.frame{background:white;border:4px solid #d8e7eb;border-radius:21px;padding:18px;font-size:clamp(22px,2.5vw,34px);font-weight:1000;text-align:left;box-shadow:var(--soft)}
+.frame span{color:#158d88}
+.mission{position:relative;z-index:2;background:rgba(255,255,255,.94);border:4px solid #ddc089;border-radius:25px;padding:25px;width:min(920px,100%);box-shadow:var(--shadow)}
+.mission h3{font-size:clamp(29px,3.4vw,48px);margin:0 0 12px}.mission ol{text-align:left;font-size:clamp(18px,1.8vw,24px);font-weight:900;line-height:1.5}
+.learn-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:13px}
+.learn-card{background:white;border:3px solid var(--line);border-radius:21px;padding:8px;box-shadow:var(--soft);cursor:pointer}
+.learn-card img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:14px;display:block}.learn-card b{display:block;text-align:center;padding:7px}
+.time-learn{background:white;border:3px solid var(--line);border-radius:21px;padding:13px;box-shadow:var(--soft);cursor:pointer;text-align:center}
+.game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.activity{background:white;border:3px solid var(--line);border-radius:23px;padding:18px;box-shadow:var(--soft)}
+.activity h3{margin:0 0 7px;font-size:22px}.activity p{margin:0 0 14px;color:#5d6c81;font-weight:800;line-height:1.45}
+.quizbox{max-width:950px;margin:18px auto 0;background:white;border:3px solid var(--line);border-radius:25px;padding:22px;box-shadow:var(--soft);text-align:center}
+.quizbox h2{font-size:clamp(25px,3vw,39px);margin:0 0 12px}
+.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.choice{border:3px solid #dce3e9;background:white;border-radius:18px;padding:13px;font-weight:1000;font-size:18px;cursor:pointer;min-height:66px}
+.choice img{max-width:150px;width:100%;border-radius:12px}.choice.correct{background:#eafff1;border-color:#2bb96e}.choice.wrong{background:#fff0f0;border-color:#eb7378}
+.feedback{min-height:32px;font-size:20px;font-weight:1000;margin-top:12px}
+.speak-wrap{display:grid;grid-template-columns:minmax(260px,430px) 1fr;gap:25px;align-items:center;max-width:1000px;margin:auto}
+.speak-wrap img{width:100%;border-radius:22px;border:4px solid #dce6e9;box-shadow:var(--soft)}
+.speak-side{text-align:left}.speak-side .prompt{font-size:clamp(28px,3.2vw,45px);font-weight:1000}.speak-side .model{margin-top:14px;font-size:clamp(22px,2.5vw,35px);font-weight:1000;color:#147f79}
+.word-bank{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px}.word{background:#edf5f7;border:2px solid #d6e2e6;border-radius:14px;padding:9px 12px;font-weight:1000}
+.exit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.exit{background:white;border:3px solid var(--line);border-radius:23px;padding:20px;text-align:center;box-shadow:var(--soft)}
+.exit .big{font-size:55px}.exit h3{margin:7px 0}.exit p{font-weight:800;color:#5d6b7e}
+.game-shell{background:#163245;border:4px solid #deb27a;border-radius:28px;overflow:hidden;box-shadow:var(--shadow)}
+.game-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;background:#fff7e7}.game-toolbar strong{font-size:18px}
+.game-frame{width:100%;height:77vh;border:0;background:#fff}
+.langbar{position:sticky;bottom:8px;z-index:25;margin:16px auto 0;width:min(1200px,96%);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:10px;border-radius:18px;background:rgba(21,52,79,.95);color:white;box-shadow:0 10px 24px rgba(17,47,72,.23)}
+.langbar span{background:rgba(255,255,255,.1);padding:8px 12px;border-radius:12px;font-weight:900}
+@media(max-width:1000px){.presentation{grid-template-columns:1fr}.sidepanel{display:none}.place-grid,.learn-grid{grid-template-columns:repeat(3,1fr)}.game-grid,.exit-grid{grid-template-columns:1fr}.speak-wrap{grid-template-columns:1fr}.qa{grid-template-columns:1fr}}
+@media(max-width:650px){.brand{font-size:14px}.screen{width:98vw}.section-title h1{font-size:30px}.place-grid,.learn-grid,.time-grid{grid-template-columns:repeat(2,1fr)}.choices{grid-template-columns:1fr}.topbar{padding:7px}.slide{padding:15px;min-height:500px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+ <button class="iconbtn" id="homeBtn" title="Home">🏠</button>
+ <div class="brand">My Community Schedule <span>Grade 4</span></div>
+ <div class="navchips">
+  <button class="chip c1" data-go="start">1 START</button>
+  <button class="chip c2" data-go="learn">2 LEARN</button>
+  <button class="chip c3" data-go="play">3 PLAY</button>
+  <button class="chip c4" data-go="practice">4 PRACTICE</button>
+  <button class="chip c5" data-go="speak">5 SPEAK</button>
+  <button class="chip c6" data-go="finish">6 FINISH</button>
+  <button class="chip c7" data-go="games">7 GAMES</button>
+ </div>
+ <button class="iconbtn" id="fullBtn" title="Fullscreen">⛶</button>
+</div>
+
+<section class="screen active" id="home">
+ <div class="home-shell">
+  <img src="assets/ui/community-dashboard.webp" alt="My Community Schedule interactive home" loading="eager" decoding="async" fetchpriority="high">
+  <button class="hotspot hs-start" data-go="start" aria-label="Start"></button>
+  <button class="hotspot hs-learn" data-go="learn" aria-label="Learn"></button>
+  <button class="hotspot hs-play" data-go="play" aria-label="Play"></button>
+  <button class="hotspot hs-speak" data-go="speak" aria-label="Speak"></button>
+  <button class="hotspot hs-practice" data-go="practice" aria-label="Practice"></button>
+  <button class="hotspot hs-finish" data-go="finish" aria-label="Finish"></button>
+ </div>
+ <div class="home-under">
+  <button class="btn cyan" data-go="games">🕒 OPEN CLOCK CHALLENGE</button>
+  <div class="note">Same interactive flow as How Old Am I • Week 3 + Week 4</div>
+ </div>
+</section>
+
+<section class="screen" id="start">
+ <div class="section-title"><div class="numBadge c1">1</div><div><h1>START — Interactive Presentation</h1><p>Week 3 introduction → Week 4 consolidation</p></div></div>
+ <div class="board">
+  <div class="tabs">
+   <button class="tab active" id="week3Tab">WEEK 3</button>
+   <button class="tab" id="week4Tab">WEEK 4</button>
+  </div>
+  <div class="presentation">
+   <div class="lesson-stage"><div id="slideMount"></div></div>
+   <aside class="sidepanel">
+    <h3 id="slideWeek">Week 3</h3>
+    <div class="progress" id="slideProgress">1 / 15</div>
+    <p id="slideTeacher">Use the visual first. Keep English short and let students point before speaking.</p>
+    <div class="controls"><button class="btn gray" id="prevSlide">←</button><button class="btn blue" id="nextSlide">NEXT →</button></div>
+   </aside>
+  </div>
+  <div class="controls"><button class="btn gray" id="prevSlide2">← Previous</button><button class="btn blue" id="nextSlide2">Next →</button></div>
+ </div>
+ <div class="langbar"><span>What time is it?</span><span>It’s ___ o’clock.</span><span>Where are you?</span><span>I am at the ___.</span><span>I go to the ___ at ___.</span></div>
+</section>
+
+<section class="screen" id="learn">
+ <div class="section-title"><div class="numBadge c2">2</div><div><h1>LEARN — Places + Time</h1><p>Exact community flashcards + the official Week 3/4 time set</p></div></div>
+ <div class="board">
+  <div class="tabs"><button class="tab active" data-learn="places">COMMUNITY PLACES</button><button class="tab" data-learn="times">TIME CARDS</button><button class="tab" data-learn="frames">SENTENCE FRAMES</button></div>
+  <div id="learnMount"></div>
+ </div>
+</section>
+
+<section class="screen" id="play">
+ <div class="section-title"><div class="numBadge c3">3</div><div><h1>PLAY — Touchscreen Checks</h1><p>Short, visual, fast: find the place, show the time, match the clue</p></div></div>
+ <div class="board">
+  <div class="game-grid">
+   <div class="activity"><h3>🏘️ Find the Place</h3><p>Read or listen to the clue and touch the correct community card.</p><button class="btn green" onclick="startPlay('place')">PLAY</button></div>
+   <div class="activity"><h3>🕒 Show Me the Time</h3><p>Read the sentence and touch the correct digital/clock card.</p><button class="btn blue" onclick="startPlay('time')">PLAY</button></div>
+   <div class="activity"><h3>🔗 Mixed Challenge</h3><p>Mix place and time questions, like the lesson exit check.</p><button class="btn orange" onclick="startPlay('mixed')">PLAY</button></div>
+  </div>
+  <div id="playMount"></div>
+ </div>
+</section>
+
+<section class="screen" id="practice">
+ <div class="section-title"><div class="numBadge c4">4</div><div><h1>PRACTICE — Community Schedule</h1><p>Week 3 Missing Information → Week 4 Schedule Match-Up</p></div></div>
+ <div class="board">
+  <div class="tabs"><button class="tab active" data-practice="week3">WEEK 3 · MISSION</button><button class="tab" data-practice="week4">WEEK 4 · MATCH-UP</button></div>
+  <div id="practiceMount"></div>
+ </div>
+ <div class="langbar"><span>Where are you?</span><span>I am at the ___.</span><span>What time is it?</span><span>It’s ___ o’clock.</span></div>
+</section>
+
+<section class="screen" id="speak">
+ <div class="section-title"><div class="numBadge c5">5</div><div><h1>SPEAK — Say It Before You See It</h1><p>One visual prompt • answer hidden • reveal after speaking</p></div></div>
+ <div class="board">
+  <div id="speakMount"></div>
+  <div class="controls"><button class="btn orange" id="nextSpeak">NEXT PROMPT</button><button class="btn cyan" id="revealSpeak">REVEAL MODEL</button></div>
+ </div>
+ <div class="langbar"><span>Where are you?</span><span>What time is it?</span><span>I go to the ___ at ___.</span></div>
+</section>
+
+<section class="screen" id="finish">
+ <div class="section-title"><div class="numBadge c6">6</div><div><h1>FINISH — Exit Challenge</h1><p>Show the time • name the place • say the full routine</p></div></div>
+ <div class="board">
+  <div class="exit-grid">
+   <div class="exit"><div class="big">🕒</div><h3>Show the Time</h3><p>Teacher says a time. Student points to / chooses the correct time.</p><button class="btn pink" onclick="exitTime()">START</button></div>
+   <div class="exit"><div class="big">🏘️</div><h3>Name the Place</h3><p>Show a community card. Student answers “I am at the ___.”</p><button class="btn pink" onclick="exitPlace()">START</button></div>
+   <div class="exit"><div class="big">🗓️</div><h3>Full Routine</h3><p>Place + time. Student says “I go to the ___ at ___.”</p><button class="btn pink" onclick="exitRoutine()">START</button></div>
+  </div>
+  <div id="exitMount"></div>
+  <div class="controls"><button class="btn cyan" data-go="games">READY → CLOCK CHALLENGE</button></div>
+ </div>
+</section>
+
+<section class="screen" id="games">
+ <div class="section-title"><div class="numBadge c7">7</div><div><h1>GAMES — Clock Challenge</h1><p>The attached Grade 4 Clock Challenge is embedded here unchanged</p></div></div>
+ <div class="game-shell">
+  <div class="game-toolbar"><strong>🕒 Clock Challenge — Grade 4</strong><div><button class="btn gray" id="reloadGame">Reload</button><button class="btn cyan" id="openGame">Open Full Page</button></div></div>
+  <iframe id="gameFrame" class="game-frame" data-src="games/clock-challenge/index.html" title="Clock Challenge" loading="lazy" allow="autoplay; fullscreen"></iframe>
+ </div>
+</section>
+
+<script>
+const places = [{"slug": "hospital", "label": "Hospital", "src": "assets/community/hospital.webp"}, {"slug": "park", "label": "Park", "src": "assets/community/park.webp"}, {"slug": "library", "label": "Library", "src": "assets/community/library.webp"}, {"slug": "bank", "label": "Bank", "src": "assets/community/bank.webp"}, {"slug": "school", "label": "School", "src": "assets/community/school.webp"}, {"slug": "supermarket", "label": "Supermarket", "src": "assets/community/supermarket.webp"}, {"slug": "store", "label": "Store", "src": "assets/community/store.webp"}, {"slug": "night-market", "label": "Night Market", "src": "assets/community/night-market.webp"}, {"slug": "tea-shop", "label": "Tea Shop", "src": "assets/community/tea-shop.webp"}, {"slug": "cafe", "label": "Café", "src": "assets/community/cafe.webp"}];
+const timeTargets = [{"time": "08:00", "words": "eight o'clock", "hour": 8, "minute": 0}, {"time": "09:00", "words": "nine o'clock", "hour": 9, "minute": 0}, {"time": "10:00", "words": "ten o'clock", "hour": 10, "minute": 0}, {"time": "12:00", "words": "twelve o'clock", "hour": 12, "minute": 0}, {"time": "13:00", "words": "one o'clock", "hour": 1, "minute": 0}, {"time": "15:00", "words": "three o'clock", "hour": 3, "minute": 0}, {"time": "17:00", "words": "five o'clock", "hour": 5, "minute": 0}, {"time": "18:00", "words": "six o'clock", "hour": 6, "minute": 0}, {"time": "19:00", "words": "seven o'clock", "hour": 7, "minute": 0}, {"time": "20:00", "words": "eight o'clock", "hour": 8, "minute": 0}];
+const slides = [{"week": 3, "kind": "hero", "title": "My Community Schedule", "sub": "Where are you?  •  What time is it?"}, {"week": 3, "kind": "clock_intro", "title": "What Time Is It?", "sub": "Look at the clock."}, {"week": 3, "kind": "clock", "title": "08:00", "time": "08:00", "answer": "It’s eight o’clock."}, {"week": 3, "kind": "clock_set", "title": "Time Review", "times": ["08:00", "10:00", "15:00", "17:00", "20:00"]}, {"week": 3, "kind": "town", "title": "Welcome to My Community", "sub": "Look around the town."}, {"week": 3, "kind": "place_set", "title": "Community Places", "places": ["hospital", "park", "library", "bank", "school"]}, {"week": 3, "kind": "place_set", "title": "More Community Places", "places": ["supermarket", "store", "night-market", "tea-shop", "cafe"]}, {"week": 3, "kind": "place_model", "title": "Where are you?", "place": "park", "answer": "I am at the park."}, {"week": 3, "kind": "place_practice", "title": "Your Turn", "places": ["library", "bank", "tea-shop"]}, {"week": 3, "kind": "routine", "title": "Time + Place", "place": "school", "time": "08:00", "answer": "I go to the school at 08:00."}, {"week": 3, "kind": "routine_pair", "title": "Time + Place", "pairs": [["library", "10:00"], ["supermarket", "15:00"]]}, {"week": 3, "kind": "routine_pair", "title": "Time + Place", "pairs": [["park", "17:00"], ["night-market", "20:00"]]}, {"week": 3, "kind": "frames", "title": "Three Sentence Tools"}, {"week": 3, "kind": "challenge", "title": "Quick Practice", "place": "park", "time": "17:00"}, {"week": 3, "kind": "mission", "title": "Missing Information Mission", "sub": "Ask. Answer. Complete the schedule."}, {"week": 4, "kind": "town", "title": "Welcome Back to the Community", "sub": "Let’s review the places."}, {"week": 4, "kind": "place_set", "title": "Where Are You? Review", "places": ["school", "park", "library", "hospital", "bank"]}, {"week": 4, "kind": "place_set", "title": "More Places", "places": ["supermarket", "store", "night-market", "tea-shop", "cafe"]}, {"week": 4, "kind": "clock_set", "title": "Time Review", "times": ["08:00", "10:00", "15:00", "17:00", "20:00"]}, {"week": 4, "kind": "clock_set", "title": "More Times", "times": ["09:00", "12:00", "13:00", "18:00", "19:00"]}, {"week": 4, "kind": "two_questions", "title": "Two Questions"}, {"week": 4, "kind": "two_model", "title": "Model", "place": "school", "time": "08:00", "a1": "I am at the school.", "a2": "It’s eight o’clock."}, {"week": 4, "kind": "two_model", "title": "Model", "place": "park", "time": "17:00", "a1": "I am at the park.", "a2": "It’s five o’clock."}, {"week": 4, "kind": "two_model", "title": "Model", "place": "library", "time": "15:00", "a1": "I am at the library.", "a2": "It’s three o’clock."}, {"week": 4, "kind": "two_model", "title": "Model", "place": "cafe", "time": "20:00", "a1": "I am at the café.", "a2": "It’s eight o’clock."}, {"week": 4, "kind": "challenge", "title": "Your Turn", "place": "tea-shop", "time": "19:00"}, {"week": 4, "kind": "challenge", "title": "Your Turn", "place": "supermarket", "time": "12:00"}, {"week": 4, "kind": "matchup", "title": "Schedule Match-Up", "sub": "TIME CARD + LOCATION CARD → FIND YOUR PARTNER"}, {"week": 4, "kind": "routine", "title": "Final Challenge", "place": "park", "time": "17:00", "answer": "I go to the park at 17:00."}, {"week": 4, "kind": "game_ready", "title": "Show Me the Time!", "sub": "Ready for the Clock Challenge?"}];
+const playQuestions = [{"type": "place", "prompt": "Touch the library.", "answer": "library", "choices": ["library", "bank", "school"]}, {"type": "place", "prompt": "Touch the night market.", "answer": "night-market", "choices": ["store", "night-market", "tea-shop"]}, {"type": "time", "prompt": "It’s fifteen o’clock.", "answer": "15:00", "choices": ["10:00", "15:00", "20:00"]}, {"type": "time", "prompt": "It’s twenty o’clock.", "answer": "20:00", "choices": ["17:00", "20:00", "12:00"]}, {"type": "place", "prompt": "Where are you? I am at the café.", "answer": "cafe", "choices": ["cafe", "hospital", "park"]}, {"type": "time", "prompt": "What time is it? It’s ten o’clock.", "answer": "10:00", "choices": ["09:00", "10:00", "13:00"]}, {"type": "place", "prompt": "Touch the supermarket.", "answer": "supermarket", "choices": ["supermarket", "school", "store"]}];
+const practiceQuestions = [{"place": "school", "time": "08:00", "mode": "both"}, {"place": "library", "time": "10:00", "mode": "both"}, {"place": "supermarket", "time": "15:00", "mode": "both"}, {"place": "park", "time": "17:00", "mode": "both"}, {"place": "night-market", "time": "20:00", "mode": "both"}, {"place": "bank", "time": "09:00", "mode": "both"}, {"place": "tea-shop", "time": "19:00", "mode": "both"}];
+
+const $=id=>document.getElementById(id);
+const placeMap=Object.fromEntries(places.map(x=>[x.slug,x]));
+const initializedScreens = new Set();
+function ensureGameLoaded(){
+ const frame=$('gameFrame');
+ if(frame && frame.dataset.loaded!=='true'){
+   frame.src=frame.dataset.src || 'games/clock-challenge/index.html';
+   frame.dataset.loaded='true';
+ }
+}
+function ensureScreenInitialized(id){
+ if(initializedScreens.has(id)) return;
+ if(id==='start') renderSlide();
+ if(id==='learn') renderLearn();
+ if(id==='practice') renderPractice();
+ if(id==='speak') renderSpeak();
+ if(id==='games') ensureGameLoaded();
+ initializedScreens.add(id);
+}
+function go(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ $(id).classList.add('active');
+ ensureScreenInitialized(id);
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+$('homeBtn').onclick=()=>go('home');
+$('fullBtn').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
+
+function clockHTML(time,big=false){
+ const t=timeTargets.find(x=>x.time===time)||timeTargets[0];
+ const h=t.hour%12,m=t.minute;
+ const hourDeg=(h*30)+(m*.5), minDeg=m*6;
+ return `<div class="clock-card"><div class="clock-face" style="${big?'width:min(270px,55vw)':''}">
+   <div class="hand hour" style="transform:translateX(-50%) rotate(${hourDeg}deg)"></div>
+   <div class="hand minute" style="transform:translateX(-50%) rotate(${minDeg}deg)"></div><div class="dot"></div></div>
+   <div class="digital">${t.time}</div></div>`;
+}
+function communityCard(slug,label=true){
+ const p=placeMap[slug];return `<div class="community-card"><img src="${p.src}" alt="${p.label}" loading="lazy" decoding="async">${label?`<b>${p.label}</b>`:''}</div>`;
+}
+function bigCommunity(slug){
+ const p=placeMap[slug];return `<div class="big-card"><img src="${p.src}" alt="${p.label}" loading="lazy" decoding="async"></div>`;
+}
+
+// PRESENTATION
+let slideIndex=0;
+function slideHTML(s){
+ let inner='',cls='slide';
+ if(s.kind==='hero') inner=`<h2>${s.title}</h2><div class="sub">${s.sub}</div><div class="combo" style="margin-top:28px">${clockHTML('17:00')}<div class="plus">+</div>${bigCommunity('park')}</div>`;
+ if(s.kind==='clock_intro') inner=`<h2>${s.title}</h2><div class="sub">${s.sub}</div><div style="margin-top:24px">${clockHTML('10:00',true)}</div>`;
+ if(s.kind==='clock') inner=`<h2>What time is it?</h2>${clockHTML(s.time,true)}<div class="answer-panel">${s.answer}</div>`;
+ if(s.kind==='clock_set') inner=`<h2>${s.title}</h2><div class="time-grid">${s.times.map(t=>clockHTML(t)).join('')}</div>`;
+ if(s.kind==='town'){cls+=' town-bg';inner=`<div class="mission"><h3>${s.title}</h3><div class="sub">${s.sub}</div></div>`}
+ if(s.kind==='place_set') inner=`<h2>${s.title}</h2><div class="place-grid">${s.places.map(x=>communityCard(x)).join('')}</div>`;
+ if(s.kind==='place_model') inner=`<h2>${s.title}</h2>${bigCommunity(s.place)}<div class="answer-panel">${s.answer}</div>`;
+ if(s.kind==='place_practice') inner=`<h2>${s.title}</h2><div class="sub">Where are you?</div><div class="place-grid" style="grid-template-columns:repeat(3,1fr);max-width:800px;margin-top:20px">${s.places.map(x=>communityCard(x,false)).join('')}</div><div class="answer-panel">I am at the ______.</div>`;
+ if(s.kind==='routine') inner=`<h2>${s.title}</h2><div class="combo">${bigCommunity(s.place)}<div class="plus">+</div>${clockHTML(s.time,true)}</div><div class="answer-panel">${s.answer}</div>`;
+ if(s.kind==='routine_pair') inner=`<h2>${s.title}</h2><div class="qa">${s.pairs.map(([p,t])=>`<div class="qa-box"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${communityCard(p,false)}${clockHTML(t)}</div><div class="a">I go to the ${placeMap[p].label.toLowerCase()} at ${t}.</div></div>`).join('')}</div>`;
+ if(s.kind==='frames') inner=`<h2>${s.title}</h2><div class="frame-list"><div class="frame">What time is it? <span>→ It’s ___ o’clock.</span></div><div class="frame">Where are you? <span>→ I am at the ___.</span></div><div class="frame">I go to the <span>___</span> at <span>___</span>.</div></div>`;
+ if(s.kind==='challenge') inner=`<h2>${s.title}</h2><div class="combo">${bigCommunity(s.place)}<div class="plus">+</div>${clockHTML(s.time,true)}</div><div class="answer-panel">Where are you? &nbsp; • &nbsp; What time is it?</div><div class="answer-panel hidden-answer" onclick="this.classList.remove('hidden-answer')">I am at the ${placeMap[s.place].label.toLowerCase()}. &nbsp; / &nbsp; It’s ${timeTargets.find(x=>x.time===s.time).words}.</div>`;
+ if(s.kind==='mission') inner=`<div class="mission"><h3>${s.title}</h3><div class="sub">${s.sub}</div><ol><li>Partner A has missing information.</li><li>Partner B has the answers.</li><li>Ask “What time is it?” or “Where are you?”</li><li>Speak before you write.</li></ol></div>`;
+ if(s.kind==='two_questions') inner=`<h2>${s.title}</h2><div class="qa"><div class="qa-box"><div class="q">Where are you?</div><div class="a">I am at the ______.</div></div><div class="qa-box"><div class="q">What time is it?</div><div class="a">It’s ______ o’clock.</div></div></div>`;
+ if(s.kind==='two_model') inner=`<h2>${s.title}</h2><div class="combo">${bigCommunity(s.place)}<div class="plus">+</div>${clockHTML(s.time,true)}</div><div class="qa"><div class="qa-box"><div class="q">Where are you?</div><div class="a">${s.a1}</div></div><div class="qa-box"><div class="q">What time is it?</div><div class="a">${s.a2}</div></div></div>`;
+ if(s.kind==='matchup') inner=`<div class="mission"><h3>${s.title}</h3><div class="sub">${s.sub}</div><div class="combo" style="margin:24px 0">${clockHTML('17:00')}<div class="plus">+</div>${bigCommunity('park')}</div><div class="qa"><div class="qa-box"><div class="q">What time is it?</div></div><div class="qa-box"><div class="q">Where are you?</div></div></div></div>`;
+ if(s.kind==='game_ready') inner=`<div class="mission"><h3>${s.title}</h3><div class="sub">${s.sub}</div><div style="font-size:100px;margin:15px">🕒</div><button class="btn cyan" onclick="go('games')">PLAY CLOCK CHALLENGE</button></div>`;
+ return `<div class="${cls}">${inner}</div>`;
+}
+function renderSlide(){
+ const s=slides[slideIndex];$('slideMount').innerHTML=slideHTML(s);
+ const currentWeek=s.week;
+ const weekSlides=slides.map((x,i)=>({x,i})).filter(o=>o.x.week===currentWeek);
+ const pos=weekSlides.findIndex(o=>o.i===slideIndex)+1;
+ $('slideWeek').textContent=`Week ${currentWeek}`;
+ $('slideProgress').textContent=`${pos} / ${weekSlides.length}`;
+ $('week3Tab').classList.toggle('active',currentWeek===3);$('week4Tab').classList.toggle('active',currentWeek===4);
+}
+function nextSlide(){if(slideIndex<slides.length-1){slideIndex++;renderSlide()}}
+function prevSlide(){if(slideIndex>0){slideIndex--;renderSlide()}}
+$('nextSlide').onclick=nextSlide;$('nextSlide2').onclick=nextSlide;$('prevSlide').onclick=prevSlide;$('prevSlide2').onclick=prevSlide;
+$('week3Tab').onclick=()=>{slideIndex=0;renderSlide()};$('week4Tab').onclick=()=>{slideIndex=15;renderSlide()};
+
+// LEARN
+function renderLearn(mode='places'){
+ document.querySelectorAll('[data-learn]').forEach(b=>b.classList.toggle('active',b.dataset.learn===mode));
+ if(mode==='places') $('learnMount').innerHTML=`<div class="learn-grid">${places.map(p=>`<div class="learn-card" onclick="openCard('${p.slug}')"><img src="${p.src}" alt="${p.label}" loading="lazy" decoding="async"><b>${p.label}</b></div>`).join('')}</div>`;
+ if(mode==='times') $('learnMount').innerHTML=`<div class="learn-grid">${timeTargets.map(t=>`<div class="time-learn">${clockHTML(t.time)}<b>${t.words}</b></div>`).join('')}</div>`;
+ if(mode==='frames') $('learnMount').innerHTML=`<div class="frame-list"><div class="frame">What time is it? <span>It’s ___ o’clock.</span></div><div class="frame">Where are you? <span>I am at the ___.</span></div><div class="frame">I go to the <span>___</span> at <span>___</span>.</div></div>`;
+}
+document.querySelectorAll('[data-learn]').forEach(b=>b.onclick=()=>renderLearn(b.dataset.learn));
+function openCard(slug){const p=placeMap[slug];$('learnMount').innerHTML=`<div style="text-align:center">${bigCommunity(slug)}<div class="answer-panel">${p.label}</div><div class="controls"><button class="btn blue" onclick="renderLearn('places')">BACK TO CARDS</button></div></div>`}
+
+// PLAY
+let playPool=[],playIndex=0;
+function startPlay(mode){
+ playPool=playQuestions.filter(q=>mode==='mixed'||q.type===mode);playIndex=0;renderPlay();
+}
+function renderPlay(){
+ const q=playPool[playIndex%playPool.length];
+ let choices=q.choices.map(c=>{
+   if(q.type==='place')return `<button class="choice" data-value="${c}">${communityCard(c,false)}</button>`;
+   return `<button class="choice" data-value="${c}">${clockHTML(c)}</button>`;
+ }).join('');
+ $('playMount').innerHTML=`<div class="quizbox"><h2>${q.prompt}</h2><div class="choices">${choices}</div><div class="feedback" id="playFeedback"></div><div class="controls"><button class="btn green" id="playNext">NEXT</button></div></div>`;
+ document.querySelectorAll('#playMount .choice').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('#playMount .choice').forEach(x=>x.disabled=true);if(btn.dataset.value===q.answer){btn.classList.add('correct');$('playFeedback').textContent='Correct!'}else{btn.classList.add('wrong');$('playFeedback').textContent='Try the next one.'}});
+ $('playNext').onclick=()=>{playIndex=(playIndex+1)%playPool.length;renderPlay()};
+}
+
+// PRACTICE
+let pracIndex=0,pracMode='week3';
+function renderPractice(mode='week3'){
+ pracMode=mode;pracIndex=0;document.querySelectorAll('[data-practice]').forEach(b=>b.classList.toggle('active',b.dataset.practice===mode));
+ if(mode==='week3'){
+   $('practiceMount').innerHTML=`<div class="mission"><h3>Missing Information Mission</h3><ol><li>Look at your place/time clue.</li><li>Ask your partner one question.</li><li>Partner answers in a full sentence.</li><li>Complete the missing box.</li></ol><div class="controls"><button class="btn purple" onclick="renderPracticeQuestion()">START MISSION</button></div></div>`;
+ } else {
+   $('practiceMount').innerHTML=`<div class="mission"><h3>Schedule Match-Up</h3><ol><li>One student gets a TIME card.</li><li>One student gets a PLACE card.</li><li>Ask “What time is it?” and “Where are you?”</li><li>Find your matching partner.</li></ol><div class="controls"><button class="btn purple" onclick="renderPracticeQuestion()">START MATCH-UP</button></div></div>`;
+ }
+}
+function renderPracticeQuestion(){
+ const q=practiceQuestions[pracIndex%practiceQuestions.length];
+ $('practiceMount').innerHTML=`<div class="quizbox"><div class="combo">${bigCommunity(q.place)}<div class="plus">+</div>${clockHTML(q.time,true)}</div><h2>Ask and answer both questions.</h2><div class="qa"><div class="qa-box"><div class="q">Where are you?</div><div class="a hidden-answer" onclick="this.classList.remove('hidden-answer')">I am at the ${placeMap[q.place].label.toLowerCase()}.</div></div><div class="qa-box"><div class="q">What time is it?</div><div class="a hidden-answer" onclick="this.classList.remove('hidden-answer')">It’s ${timeTargets.find(x=>x.time===q.time).words}.</div></div></div><div class="controls"><button class="btn purple" onclick="practiceNext()">NEXT CARD</button></div></div>`;
+}
+function practiceNext(){pracIndex=(pracIndex+1)%practiceQuestions.length;renderPracticeQuestion()}
+document.querySelectorAll('[data-practice]').forEach(b=>b.onclick=()=>renderPractice(b.dataset.practice));
+
+// SPEAK
+let speakIndex=0,speakReveal=false;
+const speakPrompts=[
+ {type:'place',place:'library',prompt:'Where are you?',model:'I am at the library.'},
+ {type:'time',time:'15:00',prompt:'What time is it?',model:"It’s three o’clock."},
+ {type:'routine',place:'park',time:'17:00',prompt:'Say the full routine.',model:'I go to the park at 17:00.'},
+ {type:'place',place:'cafe',prompt:'Where are you?',model:'I am at the café.'},
+ {type:'time',time:'20:00',prompt:'What time is it?',model:"It’s eight o’clock."},
+ {type:'routine',place:'school',time:'08:00',prompt:'Say the full routine.',model:'I go to the school at 08:00.'},
+ {type:'routine',place:'night-market',time:'20:00',prompt:'Say the full routine.',model:'I go to the night market at 20:00.'}
+];
+function renderSpeak(){
+ const p=speakPrompts[speakIndex%speakPrompts.length];
+ let visual=p.type==='place'?bigCommunity(p.place):p.type==='time'?clockHTML(p.time,true):`<div class="combo">${bigCommunity(p.place)}<div class="plus">+</div>${clockHTML(p.time,true)}</div>`;
+ $('speakMount').innerHTML=`<div class="speak-wrap"><div>${visual}</div><div class="speak-side"><div class="prompt">${p.prompt}</div><div class="model">${speakReveal?p.model:'Speak first. The answer is hidden.'}</div></div></div>`;
+}
+$('nextSpeak').onclick=()=>{speakIndex=(speakIndex+1)%speakPrompts.length;speakReveal=false;renderSpeak()};
+$('revealSpeak').onclick=()=>{speakReveal=true;renderSpeak()};
+
+// FINISH
+function exitTime(){
+ const t=timeTargets[Math.floor(Math.random()*timeTargets.length)];
+ $('exitMount').innerHTML=`<div class="quizbox"><h2>What time is it?</h2>${clockHTML(t.time,true)}<div class="answer-panel hidden-answer" onclick="this.classList.remove('hidden-answer')">It’s ${t.words}.</div></div>`;
+}
+function exitPlace(){
+ const p=places[Math.floor(Math.random()*places.length)];
+ $('exitMount').innerHTML=`<div class="quizbox"><h2>Where are you?</h2>${bigCommunity(p.slug)}<div class="answer-panel hidden-answer" onclick="this.classList.remove('hidden-answer')">I am at the ${p.label.toLowerCase()}.</div></div>`;
+}
+function exitRoutine(){
+ const q=practiceQuestions[Math.floor(Math.random()*practiceQuestions.length)];
+ $('exitMount').innerHTML=`<div class="quizbox"><h2>Say the complete sentence.</h2><div class="combo">${bigCommunity(q.place)}<div class="plus">+</div>${clockHTML(q.time,true)}</div><div class="answer-panel hidden-answer" onclick="this.classList.remove('hidden-answer')">I go to the ${placeMap[q.place].label.toLowerCase()} at ${q.time}.</div></div>`;
+}
+
+// GAME
+$('reloadGame').onclick=()=>{const frame=$('gameFrame');frame.src='games/clock-challenge/index.html?reload='+Date.now();frame.dataset.loaded='true';initializedScreens.add('games')};
+$('openGame').onclick=()=>window.open('games/clock-challenge/index.html','_blank');
+
+// initialize — keep first load light; hidden sections initialize only when opened.
+initializedScreens.add('home');
+</script>
+</body>
+</html>
