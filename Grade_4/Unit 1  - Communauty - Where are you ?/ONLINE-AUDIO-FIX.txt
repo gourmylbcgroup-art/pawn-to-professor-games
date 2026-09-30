@@ -1,0 +1,6 @@
+ONLINE AUDIO FIX
+
+- Recorded question/place voices are preloaded and cached.
+- The same lady recordings are kept, compressed for faster online loading.
+- The embedded board game's recorded voices are also cached.
+- Full answer sentences such as 'I am at the park.' still use browser speech synthesis because this package does not contain recorded lady-voice files for those full sentences.

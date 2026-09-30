@@ -66,11 +66,33 @@
     } catch (_) {}
   }
 
+  // Cache recorded voices for smooth online playback.
+  const voiceAudio = {};
+  const voiceFiles = [
+    C.voices.whereAreYou,
+    C.voices.slideDown,
+    C.voices.moveUp,
+    ...Object.values(C.voices.answers || {})
+  ].filter(Boolean);
+  for (const src of voiceFiles) {
+    if (!voiceAudio[src]) {
+      voiceAudio[src] = new Audio(src);
+      voiceAudio[src].preload = 'auto';
+      voiceAudio[src].load();
+    }
+  }
+
   function speak(text, filePath=null) {
     if (!soundOn) return;
     if (C.useRecordedVoices && filePath) {
-      const a = new Audio(filePath);
-      a.play().catch(() => browserSpeak(text));
+      try {
+        const a = voiceAudio[filePath] || (voiceAudio[filePath] = new Audio(filePath));
+        a.pause();
+        a.currentTime = 0;
+        a.play().catch(() => browserSpeak(text));
+      } catch (_) {
+        browserSpeak(text);
+      }
     } else {
       browserSpeak(text);
     }

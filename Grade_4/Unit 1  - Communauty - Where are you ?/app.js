@@ -48,9 +48,29 @@
     u.lang = 'en-US'; u.rate = 0.82; u.pitch = 1.05;
     speechSynthesis.speak(u);
   }
+  // Online audio cache: preload each recording once, then reuse it.
+  // This avoids a fresh network request every time a learner taps the speaker.
+  const audioCache = new Map();
+  function getAudio(src){
+    if(!audioCache.has(src)){
+      const a = new Audio(src);
+      a.preload = 'auto';
+      a.load();
+      audioCache.set(src, a);
+    }
+    return audioCache.get(src);
+  }
+  // Warm the short recorded vocabulary/question files in the background.
+  [...places.map(soundSrc), `${gameRoot}sounds/where_are_you.mp3`].forEach(getAudio);
+
   function playAudio(src, fallback=''){
     if(!soundOn) return;
-    try{ const a = new Audio(src); a.play().catch(() => fallback && browserSpeak(fallback)); }
+    try{
+      const a = getAudio(src);
+      a.pause();
+      a.currentTime = 0;
+      a.play().catch(() => fallback && browserSpeak(fallback));
+    }
     catch(_){ if(fallback) browserSpeak(fallback); }
   }
   function speakPlace(p){ playAudio(soundSrc(p), p.label); }
