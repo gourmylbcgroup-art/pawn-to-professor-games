@@ -1,0 +1,36 @@
+Three Meals in Yunlin — 100-User Online Optimization
+
+PRIMARY GOAL
+Reduce online lag for many simultaneous users while preserving Jia-Jia's voice quality.
+
+VOICE QUALITY
+The original jiajia-voice.mp3 was NOT compressed, converted, resampled, or modified.
+Original file size: 770,084 bytes
+SHA-256 before: 3aa219a057c050e16b5728a70a5d29f12bff5158fc3231f6698cc8c6c3b568ae
+SHA-256 after:  3aa219a057c050e16b5728a70a5d29f12bff5158fc3231f6698cc8c6c3b568ae
+
+ONLINE SOUND-LAG FIX
+- The original 770 KB Jia-Jia MP3 is downloaded once when the GAME page opens.
+- It is stored as a browser Blob URL.
+- Voice cue seeking then happens locally instead of repeatedly seeking through the network.
+- Previous voice is stopped before the next cue begins.
+- One Audio element is reused for all cues.
+- Browser cache is requested with force-cache.
+- If Blob preload fails, the code falls back to the same original MP3 URL.
+
+100-USER LOADING CHANGES
+- The embedded game does NOT load on the lesson Home screen.
+- Game board/cards/tokens/voice load only when GAME is opened.
+- Hidden lesson sections initialize only when opened.
+- Main lesson images use asynchronous decoding.
+- The Home menu image remains high-priority.
+- Duplicate nested game assets were removed.
+- The nested game now shares the lesson root assets.
+
+PACKAGE SIZE
+Before optimization: 12.79 MB unpacked
+After optimization:  9.84 MB unpacked
+
+IMPORTANT
+This significantly reduces likely online audio lag and first-load traffic.
+No web app can guarantee zero lag on every network; school Wi-Fi quality and device performance still matter.
