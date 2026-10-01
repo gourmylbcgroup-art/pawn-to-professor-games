@@ -20,8 +20,83 @@ const items=[
 const slideCues={1:'Famous Food Around the World.',2:'What food do you know? I see...',3:'Meet the countries. Point and say the country.',4:'What is Taiwan famous for?',5:'Taiwan is famous for xiao long bao.',6:'What is Japan famous for? Japan is famous for sushi.',7:'What is the USA famous for? The USA is famous for burgers.',8:'What is Korea famous for? Korea is famous for kimchi.',9:'What is the UK famous for? The UK is famous for Fish and Chips.',10:'Connect the five. Match and say the sentence.',11:'Mission one. Match and say.',12:'Food flash review. Look and say the food.',13:'Country review. Point and say the country.',14:'Ask the question. What is blank famous for?',15:'Say the answer. Blank is famous for blank.',16:'Wrong match. Right or wrong?',17:'Picture only challenge. Say the full sentence.',18:'Reverse challenge. Which country?',19:'New destinations: Spain, South Africa, Argentina.',20:'Secret Match Mission. Find your partner.',21:'New famous foods: paella, bunny chow, empanadas.',22:'Eight-country challenge. Ask and answer with a partner.',23:'Famous Food Detectives. Can you solve the mystery?',24:'Detective mission rules. Look. Think. Match. Say.',25:'Mystery country. Which country? What is it famous for?',26:'Mystery food. Which country is famous for this?',27:'Partial picture. Guess the country and the food.',28:'Wrong pair detective. Right or wrong?',29:'Wrong pair detective. Correct the pair.',30:'Missing food. Choose the correct food.',31:'Missing country. Choose the correct country.',32:'Ready? Start the race.',33:'Fast Eight. Point fast and say the food.',34:'Ask your team. Change speaker each turn.',35:'The Amazing Food Race. Get ready to race around the world.'};
 
 const AudioFX={ctx:null,init(){if(!this.ctx)this.ctx=new (window.AudioContext||window.webkitAudioContext)();if(this.ctx.state==='suspended')this.ctx.resume()},tone(freq=440,dur=.09,type='sine',gain=.045){if(!soundOn)return;this.init();const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(gain,this.ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,this.ctx.currentTime+dur);o.connect(g);g.connect(this.ctx.destination);o.start();o.stop(this.ctx.currentTime+dur)},click(){this.tone(520,.055,'triangle')},good(){this.tone(620,.09);setTimeout(()=>this.tone(820,.11),90)},bad(){this.tone(190,.16,'sawtooth',.025)}};
-function speak(text){if(!soundOn||!('speechSynthesis'in window))return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.84;u.pitch=1;speechSynthesis.speak(u)}
-function warmAudio(){AudioFX.init();if('speechSynthesis'in window){speechSynthesis.getVoices();}}
+
+const PTP_LOCAL_TTS=(()=>{
+ let chosen=null;
+ let ready=false;
+
+ function choose(){
+   if(!('speechSynthesis' in window))return null;
+   const voices=window.speechSynthesis.getVoices()||[];
+
+   // Never deliberately choose a cloud/network voice.
+   const local=voices.filter(v=>v.localService===true);
+   const english=local.filter(v=>/^en(?:-|$)/i.test(v.lang||''));
+   const us=english.filter(v=>/^en-US$/i.test(v.lang||''));
+
+   // Preserve the browser's default voice when it is already local.
+   chosen=
+     us.find(v=>v.default) ||
+     english.find(v=>v.default) ||
+     local.find(v=>v.default) ||
+     us[0] ||
+     english[0] ||
+     local[0] ||
+     null;
+
+   ready=true;
+   return chosen;
+ }
+
+ function warm(){
+   const v=choose();
+   if(v)return v;
+
+   // Chrome/Safari can populate voices asynchronously.
+   if('speechSynthesis' in window){
+     window.speechSynthesis.addEventListener('voiceschanged',choose,{once:true});
+     window.speechSynthesis.getVoices();
+   }
+   return null;
+ }
+
+ function speak(text,{rate=.84,pitch=1,onEnd=null}={}){
+   if(!text||!('speechSynthesis' in window))return false;
+
+   const voice=chosen||choose();
+
+   // Important for online reliability:
+   // if there is no confirmed LOCAL voice, do not fall back to a
+   // network/cloud voice. Visual instructions still remain available.
+   if(!voice||voice.localService!==true)return false;
+
+   window.speechSynthesis.cancel();
+   const u=new SpeechSynthesisUtterance(text);
+   u.voice=voice;
+   u.lang=voice.lang||'en-US';
+   u.rate=rate;
+   u.pitch=pitch;
+   if(onEnd)u.onend=onEnd;
+   window.speechSynthesis.speak(u);
+   return true;
+ }
+
+ function stop(){
+   if('speechSynthesis' in window)window.speechSynthesis.cancel();
+ }
+
+ return {warm,speak,stop,get voice(){return chosen;}};
+})();
+
+function speak(text){
+ if(!soundOn||!text)return;
+ PTP_LOCAL_TTS.stop();
+ PTP_LOCAL_TTS.speak(text,{rate:.84,pitch:1});
+}
+function warmAudio(){
+ AudioFX.init();
+ PTP_LOCAL_TTS.warm();
+}
 
 document.addEventListener('pointerdown',()=>warmAudio(),{once:true});
 function show(id){
@@ -45,7 +120,7 @@ function show(id){
  }
 }
 $$('[data-go]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));
-$('#homeBtn').onclick=()=>show('home');$('#fullBtn').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();$('#soundBtn').onclick=()=>{soundOn=!soundOn;$('#soundBtn').textContent=soundOn?'🔊':'🔇';if(!soundOn&&'speechSynthesis'in window)speechSynthesis.cancel();};$('#reloadGame').onclick=()=>{const f=$('#gameFrame');f.src='game/index.html?'+Date.now()};
+$('#homeBtn').onclick=()=>show('home');$('#fullBtn').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();$('#soundBtn').onclick=()=>{soundOn=!soundOn;$('#soundBtn').textContent=soundOn?'🔊':'🔇';if(!soundOn)PTP_LOCAL_TTS.stop();};$('#reloadGame').onclick=()=>{const f=$('#gameFrame');f.src='game/index.html?'+Date.now()};
 
 function tabs(){['start','learn','play','practice','speak','finish'].forEach(sec=>{const box=document.querySelector(`[data-tabs="${sec}"]`);if(!box)return;box.innerHTML=[4,5,6].map(w=>`<button class="tab ${w===currentWeek?'active':''}" data-week="${w}">Week ${w} · ${weekMeta[w].name}</button>`).join('');box.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{currentWeek=+t.dataset.week;slideIndex=0;quizIndex=0;speakIndex=0;tabs();AudioFX.click();});});}
 function renderStart(){const m=weekMeta[currentWeek];$('#startContent').innerHTML=`<div class="overview-card"><div class="quiz-kicker">WEEK ${currentWeek}</div><h2>${m.name}</h2><p><b>${m.focus}</b></p><ul>${m.goals.map(g=>`<li>${g}</li>`).join('')}</ul><div class="flow-row">${m.flow.map((f,i)=>`<div class="flow-step"><b>${i+1}</b>${f}</div>`).join('')}</div></div><div class="overview-visual"><img src="${m.visual}" alt="Week ${currentWeek}"></div>`;}

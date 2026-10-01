@@ -135,13 +135,90 @@ const JiaVoice=(()=>{
  return {warm,play,stop};
 })();
 
+
+const PTP_LOCAL_TTS=(()=>{
+ let chosen=null;
+ let ready=false;
+
+ function choose(){
+   if(!('speechSynthesis' in window))return null;
+   const voices=window.speechSynthesis.getVoices()||[];
+
+   // Never deliberately choose a cloud/network voice.
+   const local=voices.filter(v=>v.localService===true);
+   const english=local.filter(v=>/^en(?:-|$)/i.test(v.lang||''));
+   const us=english.filter(v=>/^en-US$/i.test(v.lang||''));
+
+   // Preserve the browser's default voice when it is already local.
+   chosen=
+     us.find(v=>v.default) ||
+     english.find(v=>v.default) ||
+     local.find(v=>v.default) ||
+     us[0] ||
+     english[0] ||
+     local[0] ||
+     null;
+
+   ready=true;
+   return chosen;
+ }
+
+ function warm(){
+   const v=choose();
+   if(v)return v;
+
+   // Chrome/Safari can populate voices asynchronously.
+   if('speechSynthesis' in window){
+     window.speechSynthesis.addEventListener('voiceschanged',choose,{once:true});
+     window.speechSynthesis.getVoices();
+   }
+   return null;
+ }
+
+ function speak(text,{rate=.84,pitch=1,onEnd=null}={}){
+   if(!text||!('speechSynthesis' in window))return false;
+
+   const voice=chosen||choose();
+
+   // Important for online reliability:
+   // if there is no confirmed LOCAL voice, do not fall back to a
+   // network/cloud voice. Visual instructions still remain available.
+   if(!voice||voice.localService!==true)return false;
+
+   window.PTP_LOCAL_TTS.stop();
+   const u=new SpeechSynthesisUtterance(text);
+   u.voice=voice;
+   u.lang=voice.lang||'en-US';
+   u.rate=rate;
+   u.pitch=pitch;
+   if(onEnd)u.onend=onEnd;
+   window.speechSynthesis.speak(u);
+   return true;
+ }
+
+ function stop(){
+   if('speechSynthesis' in window)window.PTP_LOCAL_TTS.stop();
+ }
+
+ return {warm,speak,stop,get voice(){return chosen;}};
+})();
+
 function voiceKey(text){const t=(text||'').trim().toLowerCase().replace(/[.!]+$/,'');const m={'correct':'correct','wrong':'wrong','wrong. try again':'wrong_try_again','wrong, try again':'wrong_try_again','your turn':'your_turn','next player':'next_player','airport gate':'airport_gate','choose your route':'choose_route','safe route':'safe_route','fast route':'fast_route','passport challenge':'passport_challenge','detective challenge':'detective_challenge','customs check':'customs_check','finish':'finish','you win':'you_win','what is taiwan famous for?':'q_taiwan','what is japan famous for?':'q_japan','what is korea famous for?':'q_korea','what is the usa famous for?':'q_usa','what is the uk famous for?':'q_uk','what is spain famous for?':'q_spain','what is south africa famous for?':'q_south_africa','what is argentina famous for?':'q_argentina','what is this country famous for?':'q_mystery_country','which country is famous for this food?':'q_mystery_food','is this correct?':'q_right_or_wrong','which food is missing?':'q_missing_food','which country is missing?':'q_missing_country','say the full sentence aloud':'say_full_sentence','taiwan is famous for xiao long bao':'a_taiwan','japan is famous for sushi':'a_japan','korea is famous for kimchi':'a_korea','the usa is famous for burgers':'a_usa','the uk is famous for fish and chips':'a_uk','spain is famous for paella':'a_spain','south africa is famous for bunny chow':'a_south_africa','argentina is famous for empanadas':'a_argentina'};if(m[t])return m[t];if(/^is this correct\?/.test(t))return 'q_right_or_wrong';if(/ is famous for _+/.test(t))return 'q_missing_food';if(/^_+ is famous for /.test(t))return 'q_missing_country';return null}
-function speak(text){if(!state.tts||!text)return;const k=voiceKey(text);if(k&&JiaVoice.play(k))return;if(!('speechSynthesis'in window))return;JiaVoice.stop();speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=.82;u.lang='en-US';speechSynthesis.speak(u)}
+function speak(text){
+ if(!state.tts||!text)return;
+
+ // Recorded Jia-Jia cue always has priority.
+ const k=voiceKey(text);
+ if(k&&JiaVoice.play(k))return;
+
+ // Dynamic/non-recorded text uses only a LOCAL installed voice.
+ // This avoids cloud/network TTS delay when the site is online.
+ JiaVoice.stop();
+ PTP_LOCAL_TTS.stop();
+ PTP_LOCAL_TTS.speak(text,{rate:.82,pitch:1});
+}
 function warmSpeech(){
- if(!('speechSynthesis' in window))return;
- window.speechSynthesis.getVoices();
- // Prime the browser speech engine during the user-initiated Start action.
- const u=new SpeechSynthesisUtterance('');u.volume=0;window.speechSynthesis.speak(u);
+ PTP_LOCAL_TTS.warm();
 }
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1700)}
 
