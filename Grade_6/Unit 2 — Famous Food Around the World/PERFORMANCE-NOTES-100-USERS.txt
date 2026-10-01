@@ -1,0 +1,51 @@
+Grade 6 Unit 2 — Famous Food Around the World
+100-User Online Optimization
+
+PRIMARY GOAL
+Reduce online lag when many students open the lesson/game together, especially Jia-Jia's voice.
+
+JIA-JIA VOICE QUALITY
+UNCHANGED BY RE-ENCODING:
+- 42 original MP3 recordings were NOT transcoded.
+- All originals had the same format: MP3, 44.1 kHz, mono, 64 kbps.
+- They were joined into ONE MP3 sprite using FFmpeg stream copy (-c:a copy).
+- That means the encoded audio frames are reused; there is no quality-lowering re-encode.
+
+ONLINE SOUND-LAG FIX
+Before:
+- 42 separate MP3 files
+- 42 browser Audio objects
+- many independent HTTP requests/seeks
+
+Now:
+- 1 MP3 voice sprite (921.9 KB)
+- 1 fetch request
+- browser cache requested with force-cache
+- file decoded once into an AudioBuffer
+- every voice cue plays locally from that decoded buffer
+- previous voice is stopped before the next starts
+- image preload concurrency is limited so images do not starve audio on school Wi-Fi
+
+100-USER LOADING CHANGES
+- Embedded game does not load on lesson Home; it loads only when GAME is opened.
+- The lesson no longer preloads all 35 presentation slides on Home.
+- Hidden lesson sections render only when opened.
+- Large PNG/JPG images were converted to high-quality WebP where beneficial.
+- Game preloads only board + core country/food visuals, not all detective clues.
+- Image downloads are limited to 4 at a time during game preparation.
+- Images use asynchronous decoding.
+
+SIZE
+Original unpacked package: 93.8 MB
+Optimized unpacked package: 19.9 MB
+
+Image conversion:
+Before converted-image bytes: 85.2 MB
+After WebP bytes: 11.4 MB
+
+Voice source files total: 931.9 KB
+Voice sprite: 921.9 KB
+
+IMPORTANT
+This removes the main code-level causes of online voice delay, but no web package can guarantee zero lag on every network.
+School Wi-Fi congestion and device performance can still affect startup. After the one-time sprite download/decoding, Jia-Jia cue playback is local and should not depend on network timing.

@@ -1,0 +1,174 @@
+{
+  "sprite": "audio/jiajia/jiajia-voice-sprite.mp3",
+  "codec": "MP3, stream-copied from original recordings (no re-encoding)",
+  "cues": {
+    "dice_1": {
+      "start": 0.0,
+      "duration": 1.123265
+    },
+    "dice_2": {
+      "start": 1.123265,
+      "duration": 0.809796
+    },
+    "dice_3": {
+      "start": 1.933061,
+      "duration": 1.358367
+    },
+    "dice_4": {
+      "start": 3.291428,
+      "duration": 1.436735
+    },
+    "dice_5": {
+      "start": 4.728163,
+      "duration": 1.123265
+    },
+    "dice_6": {
+      "start": 5.851428,
+      "duration": 1.854694
+    },
+    "correct": {
+      "start": 7.706122,
+      "duration": 1.828571
+    },
+    "wrong": {
+      "start": 9.534693,
+      "duration": 1.227755
+    },
+    "wrong_try_again": {
+      "start": 10.762448,
+      "duration": 2.925714
+    },
+    "your_turn": {
+      "start": 13.688162,
+      "duration": 1.645714
+    },
+    "next_player": {
+      "start": 15.333876,
+      "duration": 3.030204
+    },
+    "airport_gate": {
+      "start": 18.36408,
+      "duration": 2.847347
+    },
+    "choose_route": {
+      "start": 21.211427,
+      "duration": 2.142041
+    },
+    "safe_route": {
+      "start": 23.353468,
+      "duration": 1.515102
+    },
+    "fast_route": {
+      "start": 24.86857,
+      "duration": 1.462857
+    },
+    "passport_challenge": {
+      "start": 26.331427,
+      "duration": 2.168163
+    },
+    "detective_challenge": {
+      "start": 28.49959,
+      "duration": 1.933061
+    },
+    "customs_check": {
+      "start": 30.432651,
+      "duration": 1.462857
+    },
+    "finish": {
+      "start": 31.895508,
+      "duration": 2.220408
+    },
+    "you_win": {
+      "start": 34.115916,
+      "duration": 1.750204
+    },
+    "q_taiwan": {
+      "start": 35.86612,
+      "duration": 2.873469
+    },
+    "q_japan": {
+      "start": 38.739589,
+      "duration": 3.108571
+    },
+    "q_korea": {
+      "start": 41.84816,
+      "duration": 3.448163
+    },
+    "q_usa": {
+      "start": 45.296323,
+      "duration": 4.519184
+    },
+    "q_uk": {
+      "start": 49.815507,
+      "duration": 3.552653
+    },
+    "q_spain": {
+      "start": 53.36816,
+      "duration": 3.395918
+    },
+    "q_south_africa": {
+      "start": 56.764078,
+      "duration": 3.918367
+    },
+    "q_argentina": {
+      "start": 60.682445,
+      "duration": 4.466939
+    },
+    "q_mystery_country": {
+      "start": 65.149384,
+      "duration": 3.813878
+    },
+    "q_mystery_food": {
+      "start": 68.963262,
+      "duration": 4.04898
+    },
+    "q_right_or_wrong": {
+      "start": 73.012242,
+      "duration": 2.76898
+    },
+    "q_missing_food": {
+      "start": 75.781222,
+      "duration": 2.612245
+    },
+    "q_missing_country": {
+      "start": 78.393467,
+      "duration": 2.298776
+    },
+    "say_full_sentence": {
+      "start": 80.692243,
+      "duration": 3.892245
+    },
+    "a_taiwan": {
+      "start": 84.584488,
+      "duration": 4.022857
+    },
+    "a_japan": {
+      "start": 88.607345,
+      "duration": 3.422041
+    },
+    "a_korea": {
+      "start": 92.029386,
+      "duration": 3.761633
+    },
+    "a_usa": {
+      "start": 95.791019,
+      "duration": 4.649796
+    },
+    "a_uk": {
+      "start": 100.440815,
+      "duration": 4.963265
+    },
+    "a_spain": {
+      "start": 105.40408,
+      "duration": 3.709388
+    },
+    "a_south_africa": {
+      "start": 109.113468,
+      "duration": 4.153469
+    },
+    "a_argentina": {
+      "start": 113.266937,
+      "duration": 4.702041
+    }
+  }
+}

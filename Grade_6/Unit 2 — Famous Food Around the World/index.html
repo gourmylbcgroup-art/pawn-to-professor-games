@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Famous Food Around the World - Grade 6 Interactive Lesson</title>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+ <button class="iconbtn" id="homeBtn" title="Home">🏠</button>
+ <div class="brand"><b>Famous Food Around the World</b><span>Grade 6</span></div>
+ <nav class="navchips">
+  <button class="chip c1" data-go="start">1 START</button>
+  <button class="chip c2" data-go="learn">2 LEARN</button>
+  <button class="chip c3" data-go="play">3 PLAY</button>
+  <button class="chip c4" data-go="practice">4 PRACTICE</button>
+  <button class="chip c5" data-go="speak">5 SPEAK</button>
+  <button class="chip c6" data-go="finish">6 FINISH</button>
+ </nav>
+ <button class="iconbtn" id="soundBtn" title="Sound on/off">🔊</button>
+ <button class="iconbtn" id="fullBtn" title="Fullscreen">⛶</button>
+</header>
+<main>
+<section class="screen active" id="home">
+ <div class="home-shell interface-home-shell">
+  <div class="interface-map">
+   <img class="interface-image" src="assets/custom_interface_home.webp" alt="Famous Food Around the World interactive interface" fetchpriority="high"/ decoding="async">
+   <button class="hotspot hs-start" data-go="start" aria-label="Open Start"></button>
+   <button class="hotspot hs-learn" data-go="learn" aria-label="Open Learn"></button>
+   <button class="hotspot hs-play" data-go="play" aria-label="Open Play"></button>
+   <button class="hotspot hs-practice" data-go="practice" aria-label="Open Practice"></button>
+   <button class="hotspot hs-speak" data-go="speak" aria-label="Open Speak"></button>
+   <button class="hotspot hs-finish" data-go="finish" aria-label="Open Finish"></button>
+  </div>
+ </div>
+ <div class="home-under">
+   <button class="btn teal" data-go="game">🎲 OPEN THE AMAZING FOOD RACE</button>
+   <div class="home-note">Tap any big panel in the picture to travel through the interaction.</div>
+ </div>
+</section>
+
+<section class="screen" id="start">
+ <div class="section-title"><div class="numBadge c1">1</div><div><h1>Start</h1><p>Choose the week. The lesson adapts as support is gradually removed.</p></div></div>
+ <div class="board">
+  <div class="week-tabs" data-tabs="start"></div>
+  <div id="startContent" class="week-overview"></div>
+ </div>
+</section>
+
+<section class="screen" id="learn">
+ <div class="section-title"><div class="numBadge c2">2</div><div><h1>Learn</h1><p>The attached Grade 6 presentation, separated by week.</p></div></div>
+ <div class="board">
+  <div class="week-tabs" data-tabs="learn"></div>
+  <div class="slide-wrap">
+   <div class="slide-frame"><img id="slideImg" alt="Presentation slide" decoding="async"></div>
+   <aside class="sidepanel"><h3 id="slideWeek">Week 4</h3><div class="slide-count" id="slideCount">Slide 1</div><p id="slideCue">Look, listen, and respond.</p><button class="btn teal" id="readSlideBtn">🔊 Read prompt</button><div class="controls"><button class="btn gray" id="prevSlide">◀ Previous</button><button class="btn blue" id="nextSlide">Next ▶</button></div></aside>
+  </div>
+ </div>
+</section>
+
+<section class="screen" id="play">
+ <div class="section-title"><div class="numBadge c3">3</div><div><h1>Play</h1><p>Short auto-graded visual challenges before the main race.</p></div></div>
+ <div class="board">
+  <div class="week-tabs" data-tabs="play"></div>
+  <div class="quizbox">
+   <div class="quiz-kicker" id="quizKicker">Week 4 Challenge</div>
+   <h2 id="quizQuestion">What is Japan famous for?</h2>
+   <button class="voice-pill" id="repeatQuiz">🔊 Repeat question</button>
+   <div class="quiz-visual"><img id="quizImage" alt="Question visual" decoding="async"></div>
+   <div class="answers" id="quizAnswers"></div>
+   <div class="feedback" id="quizFeedback"></div>
+   <button class="btn green" id="nextQuiz">Next challenge</button>
+  </div>
+ </div>
+</section>
+
+<section class="screen" id="practice">
+ <div class="section-title"><div class="numBadge c4">4</div><div><h1>Practice</h1><p>Tap a card to hear the complete model sentence.</p></div></div>
+ <div class="board">
+  <div class="week-tabs" data-tabs="practice"></div>
+  <div class="flash-grid" id="flashGrid"></div>
+ </div>
+</section>
+
+<section class="screen" id="speak">
+ <div class="section-title"><div class="numBadge c5">5</div><div><h1>Speak</h1><p>Different speaker each turn. Say the complete sentence aloud.</p></div></div>
+ <div class="board">
+  <div class="week-tabs" data-tabs="speak"></div>
+  <div class="prompt-card">
+   <img id="speakImage" alt="Speaking prompt" decoding="async">
+   <div class="prompt-text"><div class="speech-step">PARTNER PRACTICE</div><h2 id="speakQuestion">What is Japan famous for?</h2><p id="speakFrame">_____ is famous for _____.</p><div id="speakAnswer" class="answer-reveal hidden"></div><div class="controls"><button class="btn teal" id="hearSpeak">🔊 Hear question</button><button class="btn orange" id="revealSpeak">Reveal answer</button><button class="btn purple" id="nextSpeak">New prompt</button></div></div>
+  </div>
+ </div>
+</section>
+
+<section class="screen" id="finish">
+ <div class="section-title"><div class="numBadge c6">6</div><div><h1>Finish</h1><p>Quick check, then launch the Amazing Food Race.</p></div></div>
+ <div class="board">
+  <div class="week-tabs" data-tabs="finish"></div>
+  <div class="final-grid" id="finishGrid"></div>
+  <div class="race-launch"><img src="assets/cards/race.webp" alt="Amazing Food Race" decoding="async"><div><h2>The Amazing Food Race</h2><p>Use country-flag tokens. The game changes by week: supported passport missions, route choices, then detective challenges and Customs Check.</p><button class="btn teal large" data-go="game">🎲 OPEN THE GAME</button></div></div>
+ </div>
+</section>
+
+<section class="screen" id="game">
+ <div class="section-title"><div class="numBadge c3">🎲</div><div><h1>The Amazing Food Race</h1><p>Embedded locally so the lesson and game can be hosted together.</p></div></div>
+ <div class="game-shell"><div class="game-toolbar"><strong>Grade 6 · Famous Food Around the World</strong><div><button class="btn gray" data-go="home">🏠 Home</button><button class="btn teal" id="reloadGame">↻ Restart game</button></div></div><iframe class="game-frame" id="gameFrame" data-src="game/index.html" src="about:blank" loading="lazy" title="Amazing Food Race"></iframe></div>
+</section>
+</main>
+<div class="language-bar"><span>❓ What is _____ famous for?</span><span>💬 _____ is famous for _____.</span><span>🇬🇧 The UK is famous for Fish and Chips.</span></div>
+<div id="toast" class="toast"></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
