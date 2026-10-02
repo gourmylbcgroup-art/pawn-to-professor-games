@@ -1,0 +1,202 @@
+{
+  "word_happy": {
+    "start": 0.0,
+    "duration": 0.91932,
+    "text": "happy"
+  },
+  "word_good": {
+    "start": 0.974286,
+    "duration": 0.759184,
+    "text": "good"
+  },
+  "word_okay": {
+    "start": 1.788435,
+    "duration": 0.935828,
+    "text": "okay"
+  },
+  "word_tired": {
+    "start": 2.779229,
+    "duration": 0.97483,
+    "text": "tired"
+  },
+  "word_sad": {
+    "start": 3.809025,
+    "duration": 0.889751,
+    "text": "sad"
+  },
+  "word_fine": {
+    "start": 4.753741,
+    "duration": 0.937551,
+    "text": "fine"
+  },
+  "word_sunny": {
+    "start": 5.746259,
+    "duration": 0.853424,
+    "text": "sunny"
+  },
+  "word_rainy": {
+    "start": 6.654649,
+    "duration": 0.863175,
+    "text": "rainy"
+  },
+  "word_cloudy": {
+    "start": 7.572789,
+    "duration": 1.014286,
+    "text": "cloudy"
+  },
+  "word_windy": {
+    "start": 8.642041,
+    "duration": 0.925079,
+    "text": "windy"
+  },
+  "word_hot": {
+    "start": 9.622086,
+    "duration": 0.850476,
+    "text": "hot"
+  },
+  "word_cold": {
+    "start": 10.527528,
+    "duration": 0.993152,
+    "text": "cold"
+  },
+  "sent_happy": {
+    "start": 11.575646,
+    "duration": 1.125397,
+    "text": "I'm happy."
+  },
+  "sent_good": {
+    "start": 12.756009,
+    "duration": 1.007528,
+    "text": "I'm good."
+  },
+  "sent_okay": {
+    "start": 13.818503,
+    "duration": 1.070839,
+    "text": "I'm okay."
+  },
+  "sent_tired": {
+    "start": 14.944308,
+    "duration": 1.180952,
+    "text": "I'm tired."
+  },
+  "sent_sad": {
+    "start": 16.180227,
+    "duration": 1.096463,
+    "text": "I'm sad."
+  },
+  "sent_fine": {
+    "start": 17.331655,
+    "duration": 1.144308,
+    "text": "I'm fine."
+  },
+  "sent_sunny": {
+    "start": 18.53093,
+    "duration": 1.183537,
+    "text": "It's sunny."
+  },
+  "sent_rainy": {
+    "start": 19.769433,
+    "duration": 1.155828,
+    "text": "It's rainy."
+  },
+  "sent_cloudy": {
+    "start": 20.980227,
+    "duration": 1.334966,
+    "text": "It's cloudy."
+  },
+  "sent_windy": {
+    "start": 22.370159,
+    "duration": 1.267982,
+    "text": "It's windy."
+  },
+  "sent_hot": {
+    "start": 23.693107,
+    "duration": 1.193787,
+    "text": "It's hot."
+  },
+  "sent_cold": {
+    "start": 24.941859,
+    "duration": 1.313651,
+    "text": "It's cold."
+  },
+  "q_feeling": {
+    "start": 26.310476,
+    "duration": 1.504807,
+    "text": "How are you today?"
+  },
+  "q_weather": {
+    "start": 27.870249,
+    "duration": 1.395193,
+    "text": "How's the weather?"
+  },
+  "try_again": {
+    "start": 29.320408,
+    "duration": 1.377596,
+    "text": "Try again."
+  },
+  "say_it": {
+    "start": 30.752971,
+    "duration": 0.953968,
+    "text": "Say it."
+  },
+  "find_happy": {
+    "start": 31.761905,
+    "duration": 1.395873,
+    "text": "Find happy."
+  },
+  "find_good": {
+    "start": 33.212744,
+    "duration": 1.242041,
+    "text": "Find good."
+  },
+  "find_okay": {
+    "start": 34.509751,
+    "duration": 1.383356,
+    "text": "Find okay."
+  },
+  "find_tired": {
+    "start": 35.948073,
+    "duration": 1.439637,
+    "text": "Find tired."
+  },
+  "find_sad": {
+    "start": 37.442676,
+    "duration": 1.366803,
+    "text": "Find sad."
+  },
+  "find_fine": {
+    "start": 38.864444,
+    "duration": 1.414376,
+    "text": "Find fine."
+  },
+  "find_sunny": {
+    "start": 40.333787,
+    "duration": 1.330159,
+    "text": "Find sunny."
+  },
+  "find_rainy": {
+    "start": 41.718912,
+    "duration": 1.284036,
+    "text": "Find rainy."
+  },
+  "find_cloudy": {
+    "start": 43.057914,
+    "duration": 1.478866,
+    "text": "Find cloudy."
+  },
+  "find_windy": {
+    "start": 44.591746,
+    "duration": 1.4039,
+    "text": "Find windy."
+  },
+  "find_hot": {
+    "start": 46.050612,
+    "duration": 1.327846,
+    "text": "Find hot."
+  },
+  "find_cold": {
+    "start": 47.433424,
+    "duration": 1.458095,
+    "text": "Find cold."
+  }
+}

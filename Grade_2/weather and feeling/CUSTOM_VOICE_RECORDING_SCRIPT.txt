@@ -1,0 +1,43 @@
+CUSTOM VOICE RECORDING SCRIPT — Feelings & Weather
+Read each numbered line once, naturally. Leave about 0.7–1.0 second of silence between lines.
+
+001. happy
+002. good
+003. okay
+004. tired
+005. sad
+006. fine
+007. sunny
+008. rainy
+009. cloudy
+010. windy
+011. hot
+012. cold
+013. I'm happy.
+014. I'm good.
+015. I'm okay.
+016. I'm tired.
+017. I'm sad.
+018. I'm fine.
+019. It's sunny.
+020. It's rainy.
+021. It's cloudy.
+022. It's windy.
+023. It's hot.
+024. It's cold.
+025. How are you today?
+026. How's the weather?
+027. Try again.
+028. Say it.
+029. Find happy.
+030. Find good.
+031. Find okay.
+032. Find tired.
+033. Find sad.
+034. Find fine.
+035. Find sunny.
+036. Find rainy.
+037. Find cloudy.
+038. Find windy.
+039. Find hot.
+040. Find cold.
