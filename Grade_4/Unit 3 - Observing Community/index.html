@@ -48,7 +48,52 @@ const ACTIONS=[['jumping','He','assets/actions/jumping.webp','He has both feet o
 const SLIDE_AUDIO={1:['park','tea shop','library','store'],2:['park','tea shop','library','store','school'],3:['Where are you?','I am at the park.','I am at the bank.'],4:['Where are you?','I am at the supermarket.','I am at the night market.','I am at the tea shop.','I am at the café.','I am at the library.'],5:['Where is he?','He is at the park.','Where is she?','She is at the school.','He is at the store.'],6:['She is at the tea shop.','He is at the library.','She is at the hospital.'],7:['What are they doing?'],8:['jumping','running','singing','dancing','He is jumping.','He is running.','She is singing.','She is dancing.'],9:['drawing','writing','reading','playing','She is drawing.','He is writing.','He is reading.','He is playing.'],10:['What is she doing?','She is singing.','What is he doing?','He is running.','He is reading.','He is eating.','He is drinking.'],11:['She is drawing.','He is drinking.','She is dancing.','He is jumping.'],12:['What is she doing?','She is reading.','Where is she?','She is at the park.'],13:['She is singing at the park.','He is reading at the library.','He is drinking at the tea shop.','He is playing at the store.'],14:['He is playing at the store.'],15:['He is drinking at the tea shop.'],16:['She is drawing at the school.'],17:['She is singing at the park.'],18:['Ready, set, action!'],19:['Mime Game'],20:['He is dancing at the bank!']};
 let currentWhere,currentGuess,currentCombo,guessMode='picture',slidePages=[],slidePos=0,slideReturn='home';
 const q=s=>document.querySelector(s),qa=s=>[...document.querySelectorAll(s)],rand=a=>a[Math.floor(Math.random()*a.length)],shuffle=a=>[...a].sort(()=>Math.random()-.5);
-function toast(t){const e=q('#toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1100)}function speak(text){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.82;u.pitch=1;speechSynthesis.speak(u)}catch(e){toast(text)}}function openSection(id){qa('.screen').forEach(x=>x.classList.remove('active'));q('#'+id).classList.add('active')}function goHome(){openSection('home')}function setTab(btn,sel){if(!btn)return;qa(sel).forEach(x=>x.classList.remove('on'));btn.classList.add('on')}
+function toast(t){const e=q('#toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1100)}
+// Fast online/offline speech: prefer a LOCAL English voice so playback does not wait for a cloud voice.
+let _ttsVoice=null,_ttsReady=false,_ttsWarm=false;
+function pickTTSVoice(){
+  try{
+    const vs=speechSynthesis.getVoices()||[];
+    if(!vs.length)return null;
+    const localUS=vs.find(v=>v.localService&&/^en-US/i.test(v.lang));
+    const localEN=vs.find(v=>v.localService&&/^en/i.test(v.lang));
+    const anyUS=vs.find(v=>/^en-US/i.test(v.lang));
+    const anyEN=vs.find(v=>/^en/i.test(v.lang));
+    _ttsVoice=localUS||localEN||anyUS||anyEN||vs[0]||null;
+    _ttsReady=!!_ttsVoice;
+    return _ttsVoice;
+  }catch(e){return null}
+}
+function prepareTTS(){
+  if(!('speechSynthesis' in window))return;
+  pickTTSVoice();
+  speechSynthesis.onvoiceschanged=()=>pickTTSVoice();
+}
+function warmTTS(){
+  if(_ttsWarm||!('speechSynthesis' in window))return;
+  _ttsWarm=true;
+  try{
+    const u=new SpeechSynthesisUtterance(' ');
+    const v=_ttsVoice||pickTTSVoice(); if(v)u.voice=v;
+    u.lang=(v&&v.lang)||'en-US';u.rate=.82;u.pitch=1;u.volume=0;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function speak(text){
+  try{
+    if(!('speechSynthesis' in window)){toast(text);return}
+    const v=_ttsVoice||pickTTSVoice();
+    if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    if(v)u.voice=v;
+    u.lang=(v&&v.lang)||'en-US';u.rate=.82;u.pitch=1;
+    speechSynthesis.speak(u);
+  }catch(e){toast(text)}
+}
+prepareTTS();
+window.addEventListener('pointerdown',warmTTS,{once:true,capture:true});
+window.addEventListener('touchstart',warmTTS,{once:true,capture:true,passive:true});
+function openSection(id){qa('.screen').forEach(x=>x.classList.remove('active'));q('#'+id).classList.add('active')}function goHome(){openSection('home')}function setTab(btn,sel){if(!btn)return;qa(sel).forEach(x=>x.classList.remove('on'));btn.classList.add('on')}
 function renderPlaces(){q('#placesGrid').innerHTML=PLACES.map(p=>`<button class="card" onclick="speak('${p.id}')"><img src="${p.img}" alt="${p.label}"><div class="name">${p.label}</div></button>`).join('')}
 function renderActions(mode='learn',btn){setTab(btn,'[data-acttab]');const b=q('#actionsBody');if(mode==='learn'){b.innerHTML=`<div class="panel"><div class="prompt">Action Words</div><div class="subprompt">Tap each large flashcard to hear the action word.</div><div class="cardGrid">${ACTIONS.map(a=>`<button class="card" onclick="speak('${a.word}')"><img src="${a.img}"><div class="name">${a.word}</div></button>`).join('')}</div></div>`;return}if(mode==='patterns'){b.innerHTML=`<div class="panel"><div class="prompt">Sentence Patterns</div><div class="subprompt">Tap a pattern to hear the complete model.</div><div class="patternGrid"><button class="patternCard" onclick="speak('What is he doing? He is jumping.')"><div class="pron">HE</div><div class="q">What is he doing?</div><div class="a">He is ________.</div></button><button class="patternCard" onclick="speak('What is she doing? She is singing.')"><div class="pron">SHE</div><div class="q">What is she doing?</div><div class="a">She is ________.</div></button><button class="patternCard" onclick="speak('What are you doing? I am reading.')"><div class="pron">I</div><div class="q">What are you doing?</div><div class="a">I am ________.</div></button></div></div>`;return}if(mode==='heShe'){b.innerHTML=`<div class="panel"><div class="prompt">What is he / she doing?</div><div class="subprompt">Tap a card to hear a complete sentence.</div><div class="cardGrid">${ACTIONS.map(a=>`<button class="card" onclick="speak('${a.pro} is ${a.word}.')"><img src="${a.img}"><div class="name">${a.word}</div><div class="sentence">${a.pro} is ${a.word}.</div></button>`).join('')}</div></div>`;return}if(mode==='iAm'){b.innerHTML=`<div class="panel"><div class="prompt">What are you doing?</div><div class="sentenceFrame" onclick="speak('What are you doing? I am jumping.')"><small>Tap to hear the model</small>What are you doing? → <strong>I am ________.</strong></div><div class="cardGrid">${ACTIONS.map(a=>`<button class="card" onclick="speak('I am ${a.word}.')"><img src="${a.img}"><div class="name">${a.word}</div><div class="sentence">I am ${a.word}.</div></button>`).join('')}</div></div>`;return}if(mode==='mission'){b.innerHTML=`<div class="panel mission"><div class="prompt">Ask • Swap • Move</div><div class="subprompt">Use the lesson-plan speaking mission with three partners.</div><div class="steps"><div class="step"><div class="n">1</div><b>ASK</b><p>What are you doing?</p></div><div class="step"><div class="n">2</div><b>ANSWER</b><p>I am [action].</p></div><div class="step"><div class="n">3</div><b>SWAP + MOVE</b><p>Swap only after both students speak.</p></div></div><div class="sentenceFrame" onclick="speak('What are you doing? I am reading.')">What are you doing? → <strong>I am ________.</strong></div><div class="tracker"><div class="track">Partner 1</div><div class="track">Partner 2</div><div class="track">Partner 3</div></div><button class="bigSpeak" onclick="speak('What are you doing? I am reading.')">🔊 Hear model exchange</button></div>`}}
 function newWhere(){currentWhere=rand(PLACES);const ref=PLACES.find(p=>p.id==='park');const choices=shuffle([currentWhere,...shuffle(PLACES.filter(p=>p!==currentWhere)).slice(0,3)]);q('#whereBody').innerHTML=`<div class="prompt">Where are you?</div><div class="whereRef"><button class="whereRefPic" onclick="speak('I am at the park.')"><img src="${ref.img}"><div>Park</div></button><div class="whereRefText"><button class="refLine" onclick="speak('Where are you?')">QUESTION: <span>Where are you?</span></button><button class="refLine" onclick="speak('I am at the')">ANSWER FRAME: <span>I am at the ________.</span></button><button class="refLine" onclick="speak('I am at the park.')">EXAMPLE: <span>Park → I am at the park.</span></button></div></div><div class="sentenceFrame" onclick="speak('Where are you? I am at the park.')"><small>Tap to hear the model again</small>Where are you? → <strong>I am at the ________.</strong></div><div class="subprompt"><b>Picture clue:</b> Look at this place, then choose the matching card.</div><div style="display:flex;justify-content:center;margin:10px 0 16px"><div class="choice" style="width:min(320px,70vw);pointer-events:none"><img src="${currentWhere.img}" alt="Picture clue" style="height:24vh"><div class="cap">?</div></div></div><div class="choiceGrid">${choices.map(p=>`<button class="choice" onclick="checkWhere('${p.id}',this)"><img src="${p.img}"><div class="cap">${p.label}</div></button>`).join('')}</div>`;speak('Where are you?')}
