@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Action + Community Challenge</title>
+<style>
+:root {
+  --blue:#1264c5; --sky:#61c4f5; --gold:#ffc936; --ink:#193653; --panel:rgba(255,255,255,.95);
+  --shadow:0 14px 34px rgba(18,75,120,.18); --green:#45be71; --red:#e36c5b;
+}
+* { box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin:0; height:100%; font-family: Arial Rounded MT Bold, "Trebuchet MS", system-ui, sans-serif; overflow:hidden; }
+body {
+  background:
+    linear-gradient(rgba(255,255,255,.10),rgba(255,255,255,.10)),
+    url("assets/community-town.webp") center/cover no-repeat fixed;
+  color:var(--ink);
+}
+button { font:inherit; }
+.app {
+  height:100%;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  gap:10px;
+  padding:12px;
+}
+
+.topbar {
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:10px;
+  align-items:center;
+}
+.team {
+  background:var(--panel);
+  border:4px solid var(--sky);
+  border-radius:22px;
+  padding:10px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:var(--shadow);
+  min-height:78px;
+}
+.team.active { border-color:var(--gold); transform:scale(1.01); }
+.team .name { font-size:clamp(18px,2vw,30px); color:var(--blue); font-weight:900; }
+.team .player { font-size:clamp(13px,1.2vw,18px); opacity:.75; }
+.team .score { font-size:clamp(34px,4vw,58px); color:var(--blue); font-weight:1000; min-width:56px; text-align:center; }
+
+.titlebox {
+  background:var(--panel);
+  border:4px solid var(--sky);
+  border-radius:24px;
+  padding:8px 18px;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+.titlebox h1 { margin:0; color:var(--blue); font-size:clamp(22px,2.4vw,38px); }
+.turnline { margin-top:4px; font-weight:900; font-size:clamp(13px,1.2vw,18px); }
+
+.board {
+  min-height:0;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  align-items:center;
+  justify-items:center;
+}
+.deckWrap {
+  width:min(42vw,420px);
+  height:min(60vh,590px);
+  position:relative;
+  perspective:1200px;
+}
+.shadow1, .shadow2 {
+  position:absolute;
+  inset:10px -10px -10px 10px;
+  background:rgba(21,93,162,.18);
+  border-radius:32px;
+  z-index:0;
+}
+.shadow2 { inset:22px -18px -18px 18px; opacity:.55; transform:rotate(-2deg); }
+.card {
+  position:absolute;
+  inset:0;
+  border:0;
+  padding:0;
+  border-radius:32px;
+  background:transparent;
+  transform-style:preserve-3d;
+  transition:transform .55s cubic-bezier(.2,.8,.2,1), filter .2s ease;
+  z-index:2;
+  cursor:pointer;
+  box-shadow:var(--shadow);
+}
+.card.disabled { cursor:default; }
+.card:active { transform:scale(.985); }
+.card.flipped { transform:rotateY(180deg); }
+.face {
+  position:absolute; inset:0;
+  backface-visibility:hidden;
+  border-radius:32px;
+  overflow:hidden;
+  border:8px solid var(--sky);
+  background:#fff;
+}
+.back {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:radial-gradient(circle at 30% 20%, #ffffff 0, #ecf9ff 45%, #d9f1ff 100%);
+  color:var(--blue);
+  padding:20px;
+  text-align:center;
+}
+.back .big { font-size:clamp(32px,4vw,55px); font-weight:1000; line-height:1.02; }
+.back .tap { margin-top:16px; background:var(--blue); color:#fff; border-radius:999px; padding:12px 22px; font-size:clamp(16px,1.7vw,24px); }
+.back .mini { margin-top:12px; opacity:.72; font-size:clamp(13px,1.2vw,18px); }
+.front { transform:rotateY(180deg); position:relative; }
+.front img { width:100%; height:100%; object-fit:cover; display:block; }
+.hideAnswer .front::after {
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(145deg,#0e63c7,#58c7ef);
+}
+.hideAnswer .front::before {
+  content:"MIMIC!";
+  position:absolute; z-index:4; left:0; right:0; top:42%;
+  text-align:center; color:#fff; font-weight:1000;
+  font-size:clamp(42px,5vw,74px); letter-spacing:2px;
+}
+.controls {
+  background:var(--panel);
+  border:4px solid var(--sky);
+  border-radius:22px;
+  padding:10px 12px;
+  box-shadow:var(--shadow);
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+}
+.status { font-size:clamp(14px,1.4vw,20px); font-weight:900; padding:0 6px; }
+.timer {
+  min-width:106px;
+  text-align:center;
+  background:#0f365c;
+  color:#fff;
+  border-radius:14px;
+  padding:9px 14px;
+  font-weight:1000;
+  font-size:clamp(20px,2vw,30px);
+}
+.btn {
+  border:0;
+  border-radius:16px;
+  padding:12px 18px;
+  cursor:pointer;
+  font-weight:1000;
+  font-size:clamp(14px,1.4vw,20px);
+  box-shadow:0 5px 0 rgba(0,0,0,.12);
+}
+.btn:active { transform:translateY(3px); box-shadow:0 2px 0 rgba(0,0,0,.12); }
+.btn.primary { background:var(--blue); color:#fff; }
+.btn.gold { background:var(--gold); color:#5f4300; }
+.btn.green { background:var(--green); color:#fff; }
+.btn.ghost { background:#fff; color:var(--blue); border:3px solid var(--sky); }
+.btn:disabled { opacity:.42; cursor:not-allowed; transform:none; }
+.crazy {
+  display:none;
+  background:#fff3b8;
+  color:#734b00;
+  border:3px solid var(--gold);
+  border-radius:14px;
+  padding:8px 12px;
+  font-weight:1000;
+}
+.crazy.show { display:block; }
+
+.overlay {
+  position:fixed; inset:0; display:none; z-index:40; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.08);
+  pointer-events:none;
+}
+.overlay.show { display:flex; }
+.overlayText {
+  color:#fff; font-size:min(28vw,260px); font-weight:1000; text-shadow:0 10px 30px rgba(0,0,0,.34);
+  animation:pop .6s both;
+}
+@keyframes pop {
+  0% { transform:scale(.35); opacity:0; }
+  55% { transform:scale(1.16); opacity:1; }
+  100% { transform:scale(1); opacity:1; }
+}
+
+.panel {
+  position:fixed; inset:0; display:none; z-index:50; align-items:center; justify-content:center;
+  background:rgba(15,50,80,.45);
+}
+.panel.show { display:flex; }
+.box {
+  width:min(92vw,680px);
+  background:#fff;
+  border:8px solid var(--sky);
+  border-radius:32px;
+  box-shadow:0 25px 70px rgba(0,0,0,.3);
+  padding:24px;
+  text-align:center;
+}
+.box h2 { margin:0 0 6px; color:var(--blue); font-size:clamp(28px,4vw,48px); }
+.answerLine { font-size:clamp(19px,2.2vw,32px); font-weight:1000; margin:12px 0 18px; }
+.markers { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:15px 0; }
+.mark {
+  border:4px solid #d7e9f8;
+  background:#f7fbff;
+  border-radius:22px;
+  padding:18px;
+  cursor:pointer;
+  font-size:clamp(18px,2vw,28px);
+  font-weight:1000;
+}
+.mark.on { background:#ddf8e6; border-color:var(--green); }
+.bonus { min-height:28px; font-weight:900; color:#8a5c00; }
+.nextBtn { width:100%; margin-top:10px; }
+
+.setup {
+  position:fixed; inset:0; z-index:60; display:flex; align-items:center; justify-content:center;
+  background:rgba(16,64,102,.48);
+}
+.setup .box { width:min(92vw,760px); }
+.grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0 10px;
+}
+.field {
+  background:#f4fbff;
+  border:3px solid #d1ecfb;
+  border-radius:20px;
+  padding:14px;
+  text-align:left;
+}
+.field label {
+  display:block; font-weight:1000; color:var(--blue); margin-bottom:8px;
+}
+.field input, .field select {
+  width:100%;
+  padding:12px;
+  border:3px solid #badcf4;
+  border-radius:14px;
+  font:inherit;
+  font-weight:800;
+  background:#fff;
+}
+.rules {
+  margin-top:8px;
+  background:#fff9e2;
+  border-radius:18px;
+  padding:14px 16px;
+  line-height:1.4;
+  font-weight:800;
+  text-align:left;
+}
+.smallTop {
+  position:fixed; right:12px; top:12px; z-index:20; display:flex; gap:6px;
+}
+.iconBtn {
+  border:0; background:rgba(255,255,255,.92); border-radius:12px; padding:8px 10px; cursor:pointer; box-shadow:var(--shadow); font-size:20px;
+}
+
+@media(max-width:780px) {
+  .app { padding:7px; gap:7px; }
+  .topbar { grid-template-columns:1fr 1fr; }
+  .titlebox { grid-column:1/-1; grid-row:1; }
+  .team { min-height:58px; padding:7px 10px; }
+  .board { gap:8px; }
+  .deckWrap { width:46vw; height:54vh; }
+  .grid { grid-template-columns:1fr; }
+}
+
+.deckBack{
+  background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:cover !important;
+  padding:0 !important;
+}
+.actionBack{
+  background-image:url("assets/ui/action-deck-back.webp") !important;
+  border-color:#3a9fe8 !important;
+}
+.communityBack{
+  background-image:url("assets/ui/community-deck-back.webp") !important;
+  border-color:#f0ba22 !important;
+}
+
+.lessonBack{position:fixed;right:14px;top:14px;z-index:120;border:0;border-radius:14px;padding:10px 14px;background:#fff3a7;color:#1264c5;font-weight:1000;box-shadow:0 4px 0 #d1aa2a;cursor:pointer}</style>
+</head>
+<body><button class="lessonBack" onclick="location.href='../index.html'">🏠 Lesson</button>
+<audio id="challengeMusic" src="assets/audio/guessing-game-fun.mp3" preload="auto"></audio>
+<div class="smallTop">
+  <button class="iconBtn" id="soundBtn" title="Sound">🔊</button>
+  <button class="iconBtn" id="fullBtn" title="Full screen">⛶</button>
+</div>
+
+<div class="app">
+  <div class="topbar">
+    <div class="team" id="teamABox">
+      <div>
+        <div class="name" id="teamAName">Team A</div>
+        <div class="player" id="playerA">Player 1</div>
+      </div>
+      <div class="score" id="scoreA">0</div>
+    </div>
+
+    <div class="titlebox">
+      <h1>Action + Community Challenge!</h1>
+      <div class="turnline" id="turnLine">Team A — Player 1</div>
+    </div>
+
+    <div class="team" id="teamBBox">
+      <div>
+        <div class="name" id="teamBName">Team B</div>
+        <div class="player" id="playerB">Player 1</div>
+      </div>
+      <div class="score" id="scoreB">0</div>
+    </div>
+  </div>
+
+  <div class="board">
+    <div class="deckWrap">
+      <div class="shadow2"></div>
+      <div class="shadow1"></div>
+      <button class="card" id="actionCard" aria-label="Action deck">
+        <div class="face back deckBack actionBack" aria-hidden="true"></div>
+        <div class="face front">
+          <img id="actionImg" alt="Action card">
+        </div>
+      </button>
+    </div>
+
+    <div class="deckWrap">
+      <div class="shadow2"></div>
+      <div class="shadow1"></div>
+      <button class="card" id="placeCard" aria-label="Community deck">
+        <div class="face back deckBack communityBack" aria-hidden="true"></div>
+        <div class="face front">
+          <img id="placeImg" alt="Community card">
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="crazy" id="crazyBadge">😂 CRAZY COMBO! +1 bonus</div>
+    <div class="status" id="status">Tap the ACTION deck.</div>
+    <div class="timer" id="timer">READY</div>
+    <button class="btn primary" id="actBtn" disabled>START ACTING</button>
+    <button class="btn gold" id="answerBtn" disabled>SHOW ANSWER</button>
+    <button class="btn ghost" id="newTurnBtn">NEW CARDS</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"><div class="overlayText" id="overlayText">3</div></div>
+
+<div class="panel" id="scorePanel">
+  <div class="box">
+    <h2>How did the team do?</h2>
+    <div class="answerLine" id="answerLine"></div>
+    <div class="markers">
+      <button class="mark" id="actionMark">✓ Action guessed<br><small>+1 point</small></button>
+      <button class="mark" id="placeMark">✓ Place guessed<br><small>+1 point</small></button>
+    </div>
+    <div class="bonus" id="bonusText"></div>
+    <button class="btn green nextBtn" id="nextBtn">NEXT PLAYER →</button>
+  </div>
+</div>
+
+<div class="setup" id="setup">
+  <div class="box">
+    <h2>Action + Community Challenge!</h2>
+    <div style="font-weight:900; font-size:clamp(16px,2vw,24px);">Using your exact Community cards and Action cards</div>
+    <div class="grid">
+      <div class="field">
+        <label>Team A name</label>
+        <input id="setupA" value="Team A">
+      </div>
+      <div class="field">
+        <label>Team B name</label>
+        <input id="setupB" value="Team B">
+      </div>
+      <div class="field">
+        <label>Players in Team A</label>
+        <select id="playersA"></select>
+      </div>
+      <div class="field">
+        <label>Players in Team B</label>
+        <select id="playersB"></select>
+      </div>
+    </div>
+    <div class="rules">
+      1. Tap <b>Action deck</b>, then tap <b>Community deck</b>.<br>
+      2. The actor looks at the 2 cards for a few seconds.<br>
+      3. Press <b>START ACTING</b> → cards hide → READY, SET, ACTION!<br>
+      4. The student must <b>mimic</b>. No saying the action word or place word.<br>
+      5. Correct action = <b>+1</b>. Correct place = <b>+1</b>.<br>
+      6. Sometimes a random <b>Crazy Combo</b> gives <b>+1 extra</b> if both are guessed.
+    </div>
+    <button class="btn primary nextBtn" id="startBtn">START GAME</button>
+  </div>
+</div>
+
+<script>
+const ACTIONS = [{"name": "jumping", "src": "assets/actions/jumping.webp"}, {"name": "singing", "src": "assets/actions/singing.webp"}, {"name": "running", "src": "assets/actions/running.webp"}, {"name": "drawing", "src": "assets/actions/drawing.webp"}, {"name": "dancing", "src": "assets/actions/dancing.webp"}, {"name": "writing", "src": "assets/actions/writing.webp"}, {"name": "reading", "src": "assets/actions/reading.webp"}, {"name": "playing", "src": "assets/actions/playing.webp"}, {"name": "eating", "src": "assets/actions/eating.webp"}, {"name": "drinking", "src": "assets/actions/drinking.webp"}];
+const PLACES = [{"name": "hospital", "src": "assets/community/hospital.webp"}, {"name": "school", "src": "assets/community/school.webp"}, {"name": "supermarket", "src": "assets/community/supermarket.webp"}, {"name": "bank", "src": "assets/community/bank.webp"}, {"name": "park", "src": "assets/community/park.webp"}, {"name": "store", "src": "assets/community/store.webp"}, {"name": "night market", "src": "assets/community/night-market.webp"}, {"name": "tea shop", "src": "assets/community/tea-shop.webp"}, {"name": "cafe", "src": "assets/community/cafe.webp"}, {"name": "library", "src": "assets/community/library.webp"}];
+
+const $ = (id)=>document.getElementById(id);
+
+let soundOn = true;
+let teamNames = ["Team A", "Team B"];
+let playerCounts = [4, 4];
+let playerIndex = [1, 1];
+let scores = [0, 0];
+let currentTeam = 0;
+
+let phase = "pickAction";
+let currentAction = null;
+let currentPlace = null;
+let crazyCombo = false;
+let timerHandle = null;
+let actionBag = [];
+let placeBag = [];
+
+const challengeMusic = $("challengeMusic");
+
+function primeChallengeMusic(){
+  try{
+    challengeMusic.pause();
+    challengeMusic.currentTime = 0;
+    challengeMusic.volume = 0.70;
+    challengeMusic.muted = true;
+    const p = challengeMusic.play();
+    if(p && typeof p.catch === "function") p.catch(()=>{});
+  }catch(e){}
+}
+function startChallengeMusic(){
+  try{
+    challengeMusic.pause();
+    challengeMusic.currentTime = 0;
+    challengeMusic.volume = 0.70;
+    challengeMusic.muted = !soundOn;
+    const p = challengeMusic.play();
+    if(p && typeof p.catch === "function") p.catch(()=>{});
+  }catch(e){}
+}
+function stopChallengeMusic(){
+  try{
+    challengeMusic.pause();
+    challengeMusic.currentTime = 0;
+  }catch(e){}
+}
+
+function populateSelects(){
+  for(let i=1;i<=8;i++) {
+    $("playersA").insertAdjacentHTML("beforeend", `<option ${i===4?"selected":""}>${i}</option>`);
+    $("playersB").insertAdjacentHTML("beforeend", `<option ${i===4?"selected":""}>${i}</option>`);
+  }
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function refillBag(type){
+  if(type === "action") actionBag = shuffle([...Array(ACTIONS.length).keys()]);
+  else placeBag = shuffle([...Array(PLACES.length).keys()]);
+}
+
+function pickCard(type){
+  if(type === "action") {
+    if(!actionBag.length) refillBag("action");
+    return ACTIONS[actionBag.pop()];
+  } else {
+    if(!placeBag.length) refillBag("place");
+    return PLACES[placeBag.pop()];
+  }
+}
+
+function beep(freq=600, dur=.08, vol=.05){
+  if(!soundOn) return;
+  try {
+    const ac = beep.ac || (beep.ac = new (window.AudioContext||window.webkitAudioContext)());
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.frequency.value = freq;
+    osc.type = "sine";
+    gain.gain.value = vol;
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+    osc.stop(ac.currentTime + dur);
+  } catch(e) {}
+}
+
+function updateTopBar(){
+  $("teamAName").textContent = teamNames[0];
+  $("teamBName").textContent = teamNames[1];
+  $("playerA").textContent = `Player ${playerIndex[0]} of ${playerCounts[0]}`;
+  $("playerB").textContent = `Player ${playerIndex[1]} of ${playerCounts[1]}`;
+  $("scoreA").textContent = scores[0];
+  $("scoreB").textContent = scores[1];
+  $("teamABox").classList.toggle("active", currentTeam === 0);
+  $("teamBBox").classList.toggle("active", currentTeam === 1);
+  $("turnLine").textContent = `${teamNames[currentTeam]} — Player ${playerIndex[currentTeam]}`;
+}
+
+function clearDecks(){
+  $("actionCard").classList.remove("flipped", "hideAnswer", "disabled");
+  $("placeCard").classList.remove("flipped", "hideAnswer", "disabled");
+  $("actionImg").src = "";
+  $("placeImg").src = "";
+}
+
+function resetTurn(){
+  clearInterval(timerHandle);
+  stopChallengeMusic();
+  phase = "pickAction";
+  currentAction = null;
+  currentPlace = null;
+  crazyCombo = false;
+  clearDecks();
+  $("status").textContent = "Tap the ACTION deck.";
+  $("timer").textContent = "READY";
+  $("crazyBadge").classList.remove("show");
+  $("actBtn").disabled = true;
+  $("answerBtn").disabled = true;
+  $("scorePanel").classList.remove("show");
+}
+
+function startGame(){
+  teamNames = [$("setupA").value.trim() || "Team A", $("setupB").value.trim() || "Team B"];
+  playerCounts = [Number($("playersA").value), Number($("playersB").value)];
+  playerIndex = [1,1];
+  scores = [0,0];
+  currentTeam = 0;
+  refillBag("action");
+  refillBag("place");
+  updateTopBar();
+  resetTurn();
+  $("setup").style.display = "none";
+  beep(760,.1);
+}
+
+$("startBtn").addEventListener("click", startGame);
+
+$("actionCard").addEventListener("click", () => {
+  if(phase !== "pickAction") return;
+  currentAction = pickCard("action");
+  $("actionImg").src = currentAction.src;
+  $("actionImg").alt = currentAction.name;
+  $("actionCard").classList.add("flipped", "disabled");
+  phase = "pickPlace";
+  $("status").textContent = "Now tap the COMMUNITY deck.";
+  beep(760, .08);
+});
+
+$("placeCard").addEventListener("click", () => {
+  if(phase !== "pickPlace") return;
+  currentPlace = pickCard("place");
+  $("placeImg").src = currentPlace.src;
+  $("placeImg").alt = currentPlace.name;
+  $("placeCard").classList.add("flipped", "disabled");
+  crazyCombo = Math.random() < 0.20;
+  $("crazyBadge").classList.toggle("show", crazyCombo);
+  $("status").textContent = "Look carefully. Then press START ACTING!";
+  $("actBtn").disabled = false;
+  phase = "readyToAct";
+  beep(920, .1);
+});
+
+async function countdown(){
+  $("overlay").classList.add("show");
+  const steps = ["READY","SET","ACTION!"];
+  for(const s of steps){
+    $("overlayText").textContent = s;
+    $("overlayText").style.animation = "none";
+    void $("overlayText").offsetWidth;
+    $("overlayText").style.animation = "pop .6s both";
+    if(s === "ACTION!") startChallengeMusic();
+    beep(s === "ACTION!" ? 1000 : (s === "READY" ? 620 : 760), s === "ACTION!" ? .18 : .11);
+    await new Promise(r => setTimeout(r, s === "ACTION!" ? 800 : 700));
+  }
+  $("overlay").classList.remove("show");
+}
+
+$("actBtn").addEventListener("click", async () => {
+  if(phase !== "readyToAct") return;
+  phase = "acting";
+  primeChallengeMusic();
+  $("actBtn").disabled = true;
+  $("answerBtn").disabled = false;
+  $("actionCard").classList.add("hideAnswer");
+  $("placeCard").classList.add("hideAnswer");
+  $("status").textContent = "MIMIC! Team, guess the action and the place!";
+  await countdown();
+  let t = 30;
+  $("timer").textContent = `${t}s`;
+  timerHandle = setInterval(() => {
+    t--;
+    $("timer").textContent = t > 0 ? `${t}s` : "TIME UP!";
+    if(t <= 3 && t > 0) beep(430,.06);
+    if(t <= 0) {
+      clearInterval(timerHandle);
+      stopChallengeMusic();
+      beep(240,.22);
+      $("timer").textContent = "TIME UP!";
+      $("overlayText").textContent = "TIME UP!";
+      $("overlay").classList.add("show");
+      $("overlayText").style.animation = "none";
+      void $("overlayText").offsetWidth;
+      $("overlayText").style.animation = "pop .6s both";
+      setTimeout(() => $("overlay").classList.remove("show"), 1100);
+    }
+  }, 1000);
+});
+
+function showAnswerPanel(){
+  clearInterval(timerHandle);
+  stopChallengeMusic();
+  $("actionCard").classList.remove("hideAnswer");
+  $("placeCard").classList.remove("hideAnswer");
+  $("answerLine").textContent = `${currentAction.name.toUpperCase()} + ${currentPlace.name.toUpperCase()}`;
+  $("actionMark").classList.remove("on"); $("actionMark").dataset.on = "0";
+  $("placeMark").classList.remove("on"); $("placeMark").dataset.on = "0";
+  $("bonusText").textContent = crazyCombo ? "Crazy Combo: +1 extra if BOTH are guessed." : "";
+  $("scorePanel").classList.add("show");
+  phase = "scoring";
+}
+
+$("answerBtn").addEventListener("click", () => {
+  if(phase === "acting" || phase === "readyToAct") showAnswerPanel();
+});
+
+function toggleMark(btn){
+  btn.dataset.on = btn.dataset.on === "1" ? "0" : "1";
+  btn.classList.toggle("on", btn.dataset.on === "1");
+  beep(btn.dataset.on === "1" ? 860 : 360, .06);
+}
+$("actionMark").addEventListener("click", ()=>toggleMark($("actionMark")));
+$("placeMark").addEventListener("click", ()=>toggleMark($("placeMark")));
+
+$("nextBtn").addEventListener("click", () => {
+  let pts = 0;
+  if($("actionMark").dataset.on === "1") pts += 1;
+  if($("placeMark").dataset.on === "1") pts += 1;
+  if(crazyCombo && pts === 2) pts += 1;
+  scores[currentTeam] += pts;
+
+  playerIndex[currentTeam]++;
+  if(playerIndex[currentTeam] > playerCounts[currentTeam]) playerIndex[currentTeam] = 1;
+
+  currentTeam = currentTeam === 0 ? 1 : 0;
+  updateTopBar();
+  resetTurn();
+  beep(940,.11);
+});
+
+$("newTurnBtn").addEventListener("click", () => {
+  resetTurn();
+  beep(420,.07);
+});
+
+$("soundBtn").addEventListener("click", () => {
+  soundOn = !soundOn;
+  $("soundBtn").textContent = soundOn ? "🔊" : "🔇";
+  challengeMusic.muted = !soundOn;
+  if(soundOn) beep(700,.06);
+});
+
+$("fullBtn").addEventListener("click", () => {
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+  else document.exitFullscreen?.();
+});
+
+populateSelects();
+updateTopBar();
+</script>
+</body>
+</html>
