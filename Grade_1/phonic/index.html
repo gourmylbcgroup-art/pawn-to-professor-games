@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Alphabet Adventure — Grade 1 & 2</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand" onclick="goHome()">
+        <div class="brand-badge">Aa</div>
+        <div>
+          <div class="brand-title">Alphabet Adventure</div>
+          <div class="brand-sub">Grade 1 & Grade 2 • Interactive Phonics</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="chip" id="activeLettersChip" onclick="openSelector()">Learning: A · B · C</button>
+        <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Sound">🔊</button>
+        <button class="icon-btn" onclick="goHome()" aria-label="Home">⌂</button>
+      </div>
+    </header>
+
+    <main id="screen" class="screen"></main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <div id="confetti" class="confetti-layer"></div>
+
+  <template id="homeTemplate">
+    <section class="lesson-homeboard">
+      <div class="home-title-plaque">
+        <div class="home-kicker">GRADE 1 & 2 • INTERACTIVE EFL</div>
+        <h1><span>Alphabet</span> Adventure</h1>
+        <div class="home-subtitle">Letters • Phonics • Writing • Games</div>
+      </div>
+
+      <div class="home-top-tools">
+        <div class="home-select-wrap">
+          <div class="home-step-label">Choose letters first</div>
+          <div id="presetGroups" class="preset-grid home-presets"></div>
+          <div class="home-select-actions">
+            <button class="home-mini-btn custom" onclick="openCustomSelector()">✋ My 3 Letters</button>
+            <button class="home-mini-btn all" onclick="setAllLetters()">🔤 All A–Z</button>
+            <button class="home-mini-btn random" onclick="randomThree()">🎲 Random 3</button>
+          </div>
+        </div>
+        <div class="grade-card">
+          <div class="grade-card-title">Level</div>
+          <div class="grade-toggle">
+            <button data-grade="1" class="grade-btn active">Grade 1</button>
+            <button data-grade="2" class="grade-btn">Grade 2</button>
+          </div>
+          <div class="active-set-big">Learning: <b id="homeActiveSet">A · B · C</b></div>
+        </div>
+      </div>
+
+      <div class="home-module-grid">
+        <button class="home-module m1" onclick="openSection('learn')">
+          <span class="home-num">1</span><span class="home-module-title">Learn</span>
+          <div class="home-module-art"><img src="assets/master/A.webp" alt="Alphabet flashcard" decoding="async" loading="lazy"></div>
+          <span class="home-module-caption">Letter • Sound • Picture • Say</span><span class="home-go">Start ➜</span>
+        </button>
+        <button class="home-module m2" onclick="openSection('match')">
+          <span class="home-num">2</span><span class="home-module-title">Match</span>
+          <div class="home-module-art pair-art"><b>A</b><b>a</b></div>
+          <span class="home-module-caption">Big • Small • Picture</span><span class="home-go">Match ➜</span>
+        </button>
+        <button class="home-module m3" onclick="openSection('listen')">
+          <span class="home-num">3</span><span class="home-module-title">Listen</span>
+          <div class="home-module-art icon-art">🎧<span>ABC</span></div>
+          <span class="home-module-caption">Name • Sound • Word</span><span class="home-go">Listen ➜</span>
+        </button>
+        <button class="home-module m4" onclick="openSection('play')">
+          <span class="home-num">4</span><span class="home-module-title">Play</span>
+          <div class="home-module-art icon-art">🎈<span>POP!</span></div>
+          <span class="home-module-caption">Fast guided practice</span><span class="home-go">Play ➜</span>
+        </button>
+        <button class="home-module m5" onclick="openSection('write')">
+          <span class="home-num">5</span><span class="home-module-title">Write</span>
+          <div class="home-module-art write-art">Aa<span>✍️</span></div>
+          <span class="home-module-caption">Watch • Trace • Try</span><span class="home-go">Write ➜</span>
+        </button>
+        <button class="home-module m6" onclick="openSection('games')">
+          <span class="home-num">6</span><span class="home-module-title">Games</span>
+          <div class="home-module-art icon-art">🏆<span>16 Games</span></div>
+          <span class="home-module-caption">Team & individual challenges</span><span class="home-go">Games ➜</span>
+        </button>
+        <button class="home-module m7" onclick="openSection('final')">
+          <span class="home-num">7</span><span class="home-module-title">Final Challenge</span>
+          <div class="home-module-art icon-art">⭐<span>Boss</span></div>
+          <span class="home-module-caption">Mixed alphabet review</span><span class="home-go">Finish ➜</span>
+        </button>
+      </div>
+      <div class="home-footer-note">Small steps • Big progress • You can do it!</div>
+    </section>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

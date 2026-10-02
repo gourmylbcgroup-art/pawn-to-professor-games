@@ -1,0 +1,63 @@
+Alphabet Adventure — 100-User Online Sound Optimization
+
+WHAT I CHECKED
+
+There are two different sound systems in this app:
+
+1. Jia-Jia prerecorded lesson voice
+   - Embedded directly inside app.js as one MP3 data bank.
+   - It does NOT need an online request at playback time.
+   - It is decoded once into a Web Audio AudioBuffer and reused.
+
+2. Balloon Battle sound/music
+   - Sound effects/pop are generated or embedded in memory.
+   - Background music is the separate file:
+     assets/audio/coin-op-groove.mp3
+
+IMPORTANT: Chrome SpeechSynthesis is NOT used in this version.
+
+JIA-JIA VOICE QUALITY
+UNCHANGED.
+The embedded Jia-Jia MP3 data was not compressed, resampled, converted or edited.
+
+Voice bank SHA-256 before:
+fa018edb4768c5e1c13195ac92b9a16395b2bf5a048534f7f6bc079c672021c2
+
+Voice bank SHA-256 after:
+fa018edb4768c5e1c13195ac92b9a16395b2bf5a048534f7f6bc079c672021c2
+
+Result: IDENTICAL.
+
+ONLINE-LAG CHANGES
+
+Jia-Jia voice:
+- Decode is de-duplicated through one shared Promise.
+- AudioContext is resumed on the first user interaction.
+- Once decoded, clips play entirely from RAM.
+- No per-letter / per-word network request is made.
+
+Balloon Battle music:
+- It no longer downloads on the Home screen.
+- It loads only when Balloon Battle needs it.
+- It is fetched once with browser force-cache.
+- The downloaded MP3 is converted to a local Blob URL.
+- Playback then uses the local Blob instead of repeatedly streaming/seeking online.
+- The original MP3 file/quality is unchanged.
+
+100-USER IMAGE OPTIMIZATION
+- 57 large PNG images converted to high-quality WebP.
+- Converted image bytes: 62.4 MB -> 4.4 MB.
+- Images use asynchronous decoding.
+- Non-home static images use browser lazy loading where applicable.
+
+PACKAGE SIZE
+Before: 64.6 MB unpacked
+After:  6.7 MB unpacked
+
+RESULT
+The two network-sensitive areas have been separated:
+- Jia-Jia voice plays from embedded/in-memory audio.
+- Balloon music downloads only when needed and then plays from a local cached Blob.
+
+This greatly reduces the chance of online audio lag for a large class.
+No browser app can guarantee zero delay on every school Wi-Fi network, but normal Jia-Jia voice playback after the initial decode does not depend on the internet.
