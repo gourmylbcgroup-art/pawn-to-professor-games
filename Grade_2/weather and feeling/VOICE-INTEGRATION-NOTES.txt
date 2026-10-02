@@ -1,0 +1,2 @@
+User voice integrated into all 40 spoken prompts.
+Audio split automatically from the supplied MP3 and exported as mono 22.05 kHz WAV for web playback.

@@ -1,0 +1,202 @@
+{
+  "word_happy": {
+    "start_ms": 0,
+    "end_ms": 510,
+    "duration_ms": 510
+  },
+  "word_good": {
+    "start_ms": 2510,
+    "end_ms": 2950,
+    "duration_ms": 440
+  },
+  "word_okay": {
+    "start_ms": 4950,
+    "end_ms": 5570,
+    "duration_ms": 620
+  },
+  "word_tired": {
+    "start_ms": 7610,
+    "end_ms": 8110,
+    "duration_ms": 500
+  },
+  "word_sad": {
+    "start_ms": 10150,
+    "end_ms": 10710,
+    "duration_ms": 560
+  },
+  "word_fine": {
+    "start_ms": 12790,
+    "end_ms": 13330,
+    "duration_ms": 540
+  },
+  "word_sunny": {
+    "start_ms": 15320,
+    "end_ms": 15940,
+    "duration_ms": 620
+  },
+  "word_rainy": {
+    "start_ms": 17890,
+    "end_ms": 18450,
+    "duration_ms": 560
+  },
+  "word_cloudy": {
+    "start_ms": 20480,
+    "end_ms": 21020,
+    "duration_ms": 540
+  },
+  "word_windy": {
+    "start_ms": 22980,
+    "end_ms": 23580,
+    "duration_ms": 600
+  },
+  "word_hot": {
+    "start_ms": 25600,
+    "end_ms": 26090,
+    "duration_ms": 490
+  },
+  "word_cold": {
+    "start_ms": 28130,
+    "end_ms": 28570,
+    "duration_ms": 440
+  },
+  "sent_happy": {
+    "start_ms": 30560,
+    "end_ms": 31310,
+    "duration_ms": 750
+  },
+  "sent_good": {
+    "start_ms": 33270,
+    "end_ms": 33930,
+    "duration_ms": 660
+  },
+  "sent_okay": {
+    "start_ms": 35940,
+    "end_ms": 36770,
+    "duration_ms": 830
+  },
+  "sent_tired": {
+    "start_ms": 38740,
+    "end_ms": 39540,
+    "duration_ms": 800
+  },
+  "sent_sad": {
+    "start_ms": 41550,
+    "end_ms": 42350,
+    "duration_ms": 800
+  },
+  "sent_fine": {
+    "start_ms": 44360,
+    "end_ms": 45190,
+    "duration_ms": 830
+  },
+  "sent_sunny": {
+    "start_ms": 47170,
+    "end_ms": 47950,
+    "duration_ms": 780
+  },
+  "sent_rainy": {
+    "start_ms": 49900,
+    "end_ms": 50680,
+    "duration_ms": 780
+  },
+  "sent_cloudy": {
+    "start_ms": 52640,
+    "end_ms": 53480,
+    "duration_ms": 840
+  },
+  "sent_windy": {
+    "start_ms": 55450,
+    "end_ms": 56250,
+    "duration_ms": 800
+  },
+  "sent_hot": {
+    "start_ms": 58210,
+    "end_ms": 58980,
+    "duration_ms": 770
+  },
+  "sent_cold": {
+    "start_ms": 60940,
+    "end_ms": 61660,
+    "duration_ms": 720
+  },
+  "q_feeling": {
+    "start_ms": 63740,
+    "end_ms": 64660,
+    "duration_ms": 920
+  },
+  "q_weather": {
+    "start_ms": 66680,
+    "end_ms": 67530,
+    "duration_ms": 850
+  },
+  "try_again": {
+    "start_ms": 69520,
+    "end_ms": 70380,
+    "duration_ms": 860
+  },
+  "say_it": {
+    "start_ms": 72370,
+    "end_ms": 72940,
+    "duration_ms": 570
+  },
+  "find_happy": {
+    "start_ms": 74960,
+    "end_ms": 75750,
+    "duration_ms": 790
+  },
+  "find_good": {
+    "start_ms": 77790,
+    "end_ms": 78510,
+    "duration_ms": 720
+  },
+  "find_okay": {
+    "start_ms": 80600,
+    "end_ms": 81480,
+    "duration_ms": 880
+  },
+  "find_tired": {
+    "start_ms": 83500,
+    "end_ms": 84340,
+    "duration_ms": 840
+  },
+  "find_sad": {
+    "start_ms": 86410,
+    "end_ms": 87240,
+    "duration_ms": 830
+  },
+  "find_fine": {
+    "start_ms": 89310,
+    "end_ms": 90150,
+    "duration_ms": 840
+  },
+  "find_sunny": {
+    "start_ms": 92190,
+    "end_ms": 93040,
+    "duration_ms": 850
+  },
+  "find_rainy": {
+    "start_ms": 95070,
+    "end_ms": 95870,
+    "duration_ms": 800
+  },
+  "find_cloudy": {
+    "start_ms": 97900,
+    "end_ms": 98790,
+    "duration_ms": 890
+  },
+  "find_windy": {
+    "start_ms": 100840,
+    "end_ms": 101680,
+    "duration_ms": 840
+  },
+  "find_hot": {
+    "start_ms": 103710,
+    "end_ms": 104390,
+    "duration_ms": 680
+  },
+  "find_cold": {
+    "start_ms": 106420,
+    "end_ms": 107186,
+    "duration_ms": 766
+  }
+}

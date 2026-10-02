@@ -1,0 +1,24 @@
+Feelings + Weather Interactive — SOUND RESTORED + 100-USER VISUAL OPTIMIZATION
+
+IMPORTANT SOUND FIX
+- The original sound system has been restored exactly.
+- All 40 original WAV voice files are back.
+- The original preloadVoices(), playVoiceKey(), audioKeyForText(), and say() behavior is preserved.
+- No audio sprite is used.
+- No audio files were removed, converted, compressed, or re-encoded.
+- Browser SpeechSynthesis fallback is also restored exactly as in the original package.
+
+100-USER OPTIMIZATION
+- Only the visual side was optimized.
+- 53 large PNG images were converted to high-quality WebP.
+- Heavy hidden-screen backgrounds load only when that section is first opened.
+- Images use async decoding and lazy loading.
+- This reduces the total download load substantially while leaving the proven working audio system intact.
+
+SIZE
+Original unpacked: 80.4 MB
+Optimized unpacked: 6.9 MB
+Converted image bytes: 79.1 MB -> 5.7 MB
+
+AUDIO
+Original WAV files present: 40
