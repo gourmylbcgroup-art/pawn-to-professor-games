@@ -16,8 +16,8 @@ let audioCtx, balloonTimer, balloonMoveTimer, balloonMusic=null, balloonPopBuffe
 
 function rand(arr){return arr[Math.floor(Math.random()*arr.length)]}
 function shuffled(arr){return [...arr].sort(()=>Math.random()-.5)}
-function asset(letter){return `assets/phonics/${letter}.png`}
-function masterAsset(letter){return `assets/master/${letter}.png`}
+function asset(letter){return `assets/phonics/${letter}.webp`}
+function masterAsset(letter){return `assets/master/${letter}.webp`}
 function upperLetterAsset(letter){return `assets/letters/uppercase/${letter}.webp`}
 function lowerLetterAsset(letter){return `assets/letters/lowercase/${letter.toLowerCase()}.webp`}
 function upperLetterImg(letter,cls='letter-art'){return `<img class="${cls}" src="${upperLetterAsset(letter)}" alt="${letter}">`}
