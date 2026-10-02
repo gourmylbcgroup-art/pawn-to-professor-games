@@ -51,7 +51,7 @@ body.calm *{animation:none!important;transition:none!important}
 @media(max-width:600px){.home-grid{grid-template-columns:1fr}.topbar{align-items:flex-start}.brand{display:none}.thumb-grid{grid-template-columns:repeat(2,1fr)}.answers{grid-template-columns:1fr}.home-img{height:170px}}
 </style>
 
-<link rel="preload" href="assets/audio/voice-sprite-male-us-v1.mp3" as="audio" type="audio/mpeg">
+<link rel="preload" href="assets/audio/voice-sprite-stephane-v1.mp3" as="audio" type="audio/mpeg" crossorigin>
 </head>
 <body class="calm">
 <div class="app">
@@ -160,64 +160,79 @@ $('motionBtn').onclick=()=>{document.body.classList.toggle('calm');$('motionBtn'
 $('fullBtn').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.();};
 // Instant prerecorded voice sprite for online use.
 // One small file is fetched and decoded once; every Hear button then plays from RAM.
-const VOICE_SPRITE_URL='assets/audio/voice-sprite-male-us-v1.mp3';
-const VOICE_SPRITE_MAP={"mother":[0.05,0.5107],"father":[0.6806,0.5795],"brother":[1.3802,0.4985],"sister":[1.9986,0.5727],"grandfather":[2.6913,0.8306],"grandmother":[3.6419,0.7693],"uncle":[4.5312,0.4968],"aunt":[5.148,0.4325],"dog":[5.7005,0.438],"cat":[6.2585,0.4498],"bird":[6.8283,0.4496],"fish":[7.3978,0.4465],"rabbit":[7.9643,0.5805],"he":[8.6649,0.3701],"she":[9.155,0.4153],"this":[9.6903,0.4447],"that":[10.255,0.4619],"Who is he? He is my _____.":[10.8369,1.7108],"Who is she? She is my _____.":[12.6678,1.8013],"This is my _____. This is a _____.":[14.589,2.0157],"What is this? This is a _____.":[16.7247,1.9189],"What is that? That is a _____.":[18.7636,1.9405],"This is my mother.":[20.824,1.0386],"This is my father.":[21.9827,1.1166],"This is my brother.":[23.2193,1.0583],"This is my sister.":[24.3976,1.1092],"This is my grandfather.":[25.6268,1.4065],"This is my grandmother.":[27.1533,1.3294],"This is my uncle.":[28.6027,1.029],"This is my aunt.":[29.7517,0.946],"This is a dog.":[30.8178,0.9453],"This is a cat.":[31.883,0.9073],"This is a bird.":[32.9103,0.9559],"This is a fish.":[33.9862,0.8962],"This is a rabbit.":[35.0024,0.9879],"Correct":[36.1103,0.6348],"The answer is THIS":[36.8651,1.1561],"The answer is THAT":[38.1413,1.1592],"The answer is HE":[39.4205,1.014],"The answer is SHE":[40.5545,1.0592],"The answer is mother":[41.7337,1.2055],"The answer is father":[43.0592,1.2863],"The answer is brother":[44.4655,1.2204],"The answer is sister":[45.8059,1.2792],"The answer is grandfather":[47.2051,1.5684],"The answer is grandmother":[48.8935,1.4908],"The answer is uncle":[50.5044,1.1868],"The answer is aunt":[51.8111,1.1327],"The answer is dog":[53.0638,1.1642],"The answer is cat":[54.348,1.1785],"The answer is bird":[55.6464,1.1762],"The answer is fish":[56.9426,1.1533],"The answer is rabbit":[58.216,1.2351],"He is my father.":[59.5711,1.0361],"He is my brother.":[60.7271,0.9916],"He is my grandfather.":[61.8387,1.3236],"He is my uncle.":[63.2824,0.9476],"She is my mother.":[64.3499,1.0266],"She is my sister.":[65.4966,1.0746],"She is my grandmother.":[66.6912,1.3053],"She is my aunt.":[68.1165,0.9239],"That is a dog.":[69.1605,0.9512],"That is a cat.":[70.2317,0.9149],"That is a bird.":[71.2665,0.9644],"That is a fish.":[72.3509,0.9145],"That is a rabbit.":[73.3854,1.006],"Title":[74.5114,0.5333],"Meet My Family":[75.1647,1.016],"Mother":[76.3007,0.5107],"Father":[76.9314,0.5795],"Brother":[77.6309,0.4985],"Sister":[78.2494,0.5727],"Family Review":[78.942,1.0409],"Point and Tap":[80.1029,1.1169],"Who Is It?":[81.3398,0.6395],"Mother + Father sentences":[82.0993,1.9801],"Brother + Sister sentences":[84.1994,2.0219],"Family sentence review":[86.3413,1.6084],"Ask-Swap-Move overview":[88.0697,1.6794],"How to Play":[89.8691,0.8766],"Ask-Swap-Move model":[90.8657,1.4673],"Family recall":[92.453,0.9862],"Grandparents":[93.5591,0.9758],"Uncle + Aunt":[94.6549,1.1268],"Big Family Review":[95.9017,1.332],"Who are they?":[97.3537,0.6755],"Meet My Pets":[98.1492,0.9788],"More Pets":[99.2479,0.7736],"My Pets review":[100.1415,1.1433],"What is this?":[101.4049,0.8707],"Two Sentences":[102.3955,1.1049],"Examples":[103.6204,0.8859],"Family or Pet?":[104.6263,1.0173],"Let’s Speak":[105.7636,0.8352],"Ask-Swap-Move pets":[106.7188,1.5175],"Family / Pet swap":[108.3563,1.7147],"My Family Photo":[110.191,1.1952],"Model Presentation":[111.5062,1.3469],"Your Turn":[112.9731,0.6883],"Great Job":[113.7814,0.7865]};
+const VOICE_SPRITE_URL='assets/audio/voice-sprite-stephane-v1.mp3';
+const VOICE_SPRITE_MAP={"mother":[0.055,0.39],"father":[0.565,0.36],"brother":[1.045,0.37],"sister":[1.535,0.475],"grandfather":[2.13,0.605],"grandmother":[2.855,0.56],"uncle":[3.535,0.455],"aunt":[4.11,0.29],"dog":[4.52,0.33],"cat":[4.969,0.235],"bird":[5.324,0.295],"fish":[5.739,0.35],"rabbit":[6.209,0.365],"he":[6.694,0.275],"she":[7.089,0.365],"this":[7.574,0.285],"that":[7.979,0.265],"Who is he? He is my _____.":[8.364,2.28],"Who is she? She is my _____.":[10.764,2.385],"This is my _____. This is a _____.":[13.269,2.65],"What is this? This is a _____.":[16.039,2.41],"What is that? That is a _____.":[18.569,2.39],"This is my mother.":[21.079,0.86],"This is my father.":[22.059,0.94],"This is my brother.":[23.119,0.962],"This is my sister.":[24.201,0.96],"This is my grandfather.":[25.281,1.145],"This is my grandmother.":[26.546,1.085],"This is my uncle.":[27.75,0.905],"This is my aunt.":[28.775,0.7],"This is a dog.":[29.595,0.755],"This is a cat.":[30.47,0.735],"This is a bird.":[31.325,0.73],"This is a fish.":[32.175,0.885],"This is a rabbit.":[33.18,0.78],"Correct":[34.08,0.305],"The answer is THIS":[34.505,0.935],"The answer is THAT":[35.56,0.9],"The answer is HE":[36.58,0.895],"The answer is SHE":[37.595,1.27],"The answer is mother":[38.985,1.015],"The answer is father":[40.12,1.04],"The answer is brother":[41.28,1.025],"The answer is sister":[42.425,1.04],"The answer is grandfather":[43.585,1.265],"The answer is grandmother":[44.97,1.185],"The answer is uncle":[46.275,1.035],"The answer is aunt":[47.43,0.855],"The answer is dog":[48.405,0.97],"The answer is cat":[49.494,1.157],"The answer is bird":[50.771,0.94],"The answer is fish":[51.831,1.045],"The answer is rabbit":[52.996,0.975],"He is my father.":[54.091,0.86],"He is my brother.":[55.071,0.815],"He is my grandfather.":[56.006,1.04],"He is my uncle.":[57.166,0.835],"She is my mother.":[58.121,0.83],"She is my sister.":[59.071,0.945],"She is my grandmother.":[60.136,1.025],"She is my aunt.":[61.281,0.67],"That is a dog.":[62.071,0.785],"That is a cat.":[62.976,0.74],"That is a bird.":[63.836,0.75],"That is a fish.":[64.706,0.88],"That is a rabbit.":[65.706,0.785],"Title":[66.611,0.365],"Meet My Family":[67.096,0.885],"Mother":[68.1,0.4],"Father":[68.62,0.36],"Brother":[69.1,0.365],"Sister":[69.585,0.47],"Family Review":[70.175,0.825],"Point and Tap":[71.12,0.675],"Who Is It?":[71.915,0.498],"Mother + Father sentences":[72.533,1.45],"Brother + Sister sentences":[74.103,1.48],"Family sentence review":[75.703,1.155],"Ask-Swap-Move overview":[76.978,1.785],"How to Play":[78.883,0.675],"Ask-Swap-Move model":[79.678,1.71],"Family recall":[81.508,0.83],"Grandparents":[82.458,0.555],"Uncle + Aunt":[83.133,0.73],"Big Family Review":[83.983,1.055],"Who are they?":[85.158,0.57],"Meet My Pets":[85.848,0.72],"More Pets":[86.688,0.565],"My Pets review":[87.372,0.89],"What is this?":[88.382,0.565],"Two Sentences":[89.067,0.835],"Examples":[90.022,0.66],"Family or Pet?":[90.802,0.765],"Let’s Speak":[91.687,0.57],"Ask-Swap-Move pets":[92.377,1.585],"Family / Pet swap":[94.082,1.2],"My Family Photo":[95.402,1.01],"Model Presentation":[96.532,1.125],"Your Turn":[97.777,0.565],"Great Job":[98.462,0.671]};
 let voiceCtx=null,voiceBuffer=null,voiceSource=null,voiceReady=false;
-let voiceLoadPromise=null;
+let voiceLoadPromise=null,offlineAudio=null,offlineStopTimer=null;
 
 function voiceKey(t){return String(t??'').trim().replace(/\s+/g,' ');}
 function ensureVoiceContext(){
   if(!voiceCtx){const C=window.AudioContext||window.webkitAudioContext;if(C)voiceCtx=new C();}
   return voiceCtx;
 }
+function ensureOfflineAudio(){
+  if(!offlineAudio){offlineAudio=new Audio(VOICE_SPRITE_URL);offlineAudio.preload='auto';offlineAudio.playsInline=true;}
+  return offlineAudio;
+}
 async function loadVoiceSprite(){
   if(voiceBuffer)return voiceBuffer;
   if(voiceLoadPromise)return voiceLoadPromise;
   voiceLoadPromise=(async()=>{
     try{
-      const r=await fetch(VOICE_SPRITE_URL,{cache:'force-cache'});
+      // file:// pages cannot reliably use fetch(); the local HTMLAudioElement path below handles offline folders.
+      if(location.protocol==='file:'){ensureOfflineAudio().load();document.documentElement.dataset.voiceReady='local';return null;}
+      const r=await fetch(VOICE_SPRITE_URL,{cache:'force-cache',credentials:'same-origin'});
       if(!r.ok)throw new Error('voice '+r.status);
       const ab=await r.arrayBuffer();
       const ctx=ensureVoiceContext();
       if(!ctx)throw new Error('No AudioContext');
       voiceBuffer=await ctx.decodeAudioData(ab.slice(0));
-      voiceReady=true;
-      document.documentElement.dataset.voiceReady='1';
+      voiceReady=true;document.documentElement.dataset.voiceReady='1';
       return voiceBuffer;
-    }catch(e){console.warn('Prerecorded voice unavailable; using local speech fallback.',e);return null;}
+    }catch(e){
+      // Never substitute a computer/TTS voice. Keep the same prerecorded voice via media playback fallback.
+      console.warn('AudioBuffer preload unavailable; using prerecorded media fallback.',e);
+      ensureOfflineAudio().load();document.documentElement.dataset.voiceReady='media';return null;
+    }
   })();
   return voiceLoadPromise;
 }
 function stopVoice(){
   if(voiceSource){try{voiceSource.stop();}catch(e){} voiceSource=null;}
-  if('speechSynthesis' in window)try{speechSynthesis.cancel();}catch(e){}
+  if(offlineStopTimer){clearTimeout(offlineStopTimer);offlineStopTimer=null;}
+  if(offlineAudio){try{offlineAudio.pause();}catch(e){}}
 }
-function localSpeechFallback(t){
-  if(!('speechSynthesis' in window))return;
+async function playMediaSegment(seg){
+  const a=ensureOfflineAudio();
+  stopVoice();
+  const start=seg[0],dur=seg[1];
   try{
-    const voices=speechSynthesis.getVoices()||[];
-    const local=voices.find(v=>v.localService&&/^en-US/i.test(v.lang||''))||voices.find(v=>v.localService&&/^en/i.test(v.lang||''))||voices.find(v=>/^en/i.test(v.lang||''));
-    const u=new SpeechSynthesisUtterance(String(t));
-    if(local)u.voice=local;u.lang=(local&&local.lang)||'en-US';u.rate=.80;u.pitch=.82;
-    speechSynthesis.speak(u);
-  }catch(e){}
+    if(a.readyState<1)await new Promise(resolve=>{const done=()=>{a.removeEventListener('loadedmetadata',done);resolve();};a.addEventListener('loadedmetadata',done,{once:true});a.load();setTimeout(done,1200);});
+    a.currentTime=start;
+    const p=a.play();if(p&&p.catch)await p.catch(()=>{});
+    offlineStopTimer=setTimeout(()=>{try{a.pause();}catch(e){} offlineStopTimer=null;},Math.ceil((dur+0.035)*1000));
+  }catch(e){console.warn('Prerecorded voice playback failed.',e);}
 }
 async function speak(t){
   if(!soundOn||!t)return;
   const key=voiceKey(t),seg=VOICE_SPRITE_MAP[key];
-  if(!seg){localSpeechFallback(t);return;}
+  if(!seg){console.warn('No prerecorded voice segment for:',key);return;}
   const ctx=ensureVoiceContext();
   if(ctx&&ctx.state==='suspended')try{await ctx.resume();}catch(e){}
   const buf=voiceBuffer||await loadVoiceSprite();
-  if(!buf){localSpeechFallback(t);return;}
+  if(!buf){await playMediaSegment(seg);return;}
   stopVoice();
   const src=ctx.createBufferSource();src.buffer=buf;src.connect(ctx.destination);voiceSource=src;
   src.onended=()=>{if(voiceSource===src)voiceSource=null;};
   src.start(0,seg[0],Math.min(seg[1],buf.duration-seg[0]));
 }
-// Start downloading/decoding before the teacher reaches the first Hear button.
+// Warm the one compact sprite early. After decoding, every click plays from RAM with no network round-trip.
 loadVoiceSprite();
-['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,()=>{const c=ensureVoiceContext();if(c&&c.state==='suspended')c.resume().catch(()=>{});loadVoiceSprite();},{once:true,passive:true}));
+['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,()=>{
+  const c=ensureVoiceContext();if(c&&c.state==='suspended')c.resume().catch(()=>{});
+  const a=ensureOfflineAudio();if(location.protocol==='file:'&&a.readyState<2)a.load();
+  loadVoiceSprite();
+},{once:true,passive:true}));
 function ptxt(name){return `assets/flashcards/picture_text/${name}.webp`}function ponly(name){return `assets/flashcards/picture_only/${name}.webp`}
 function sentenceFor(name){if(FAMILY.includes(name))return `This is my ${name}.`;return `This is a ${name}.`;}
 function idlePreload(url){if(!url)return;const conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(conn?.saveData||/2g/.test(conn?.effectiveType||''))return;const run=()=>{const img=new Image();img.decoding='async';img.src=url;};if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:1500});else setTimeout(run,900);}

@@ -1,20 +1,17 @@
-My Family & Pets — 100-user classroom optimized build
+My Family & Pets — custom voice / 100-user optimized build
 
-What changed (lesson/design unchanged):
-- Home screen now uses compact 480px WebP thumbnails instead of six full presentation slides.
-- Hidden screens no longer download their images during initial page load.
-- START / LEARN / PRACTICE / SPEAK / FINISH / PRESENTATION images load only when that section is opened.
-- Dynamic lesson images use asynchronous decoding where appropriate.
-- Presentation preloads only the next slide during browser idle time.
-- Next-slide preloading is disabled on Save-Data / 2G connections.
-- Removed the unused 1-byte temp file and macOS metadata is not included in the optimized ZIP.
+AUDIO
+- All 100 spoken lesson items use the newly supplied four TTSMaker recordings, in the supplied order.
+- The recordings are trimmed and packed into ONE compact mono MP3 audio sprite.
+- Online: the sprite is fetched once, decoded once, then every Hear action plays from RAM with no per-click network request.
+- Offline/local folder: a same-file HTMLAudioElement fallback plays the exact same prerecorded sprite; no browser/system voice is substituted.
+- Service-worker cache version v5 forces browsers to replace the previous voice after deployment.
 
-Important:
-- All original full-quality lesson assets remain in the package.
-- No lesson wording, vocabulary, activity sequence, or visual layout was intentionally changed.
-- This reduces first-load bandwidth substantially, which is useful when many students open the app together.
-- Actual 100-user performance still depends on the hosting/CDN and the school Wi-Fi.
+100-USER CLASSROOM OPTIMIZATION
+- One compact audio request instead of 100 separate audio files/requests.
+- Existing lazy-loading of lesson images is preserved.
+- Full lesson images load only when the relevant section opens.
+- Presentation preloads only the next slide and respects Save-Data / slow connections.
+- Static visuals can be reused from the service-worker cache after first successful load.
 
-
-VOICE UPDATE
-US adult male prerecorded voice sprite: assets/audio/voice-sprite-male-us-v1.mp3. Versioned filename + cache v4 prevents stale audio after deployment.
+Actual simultaneous performance also depends on hosting/CDN capacity and the school Wi-Fi, but this build minimizes avoidable browser and network overhead.
