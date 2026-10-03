@@ -1,0 +1,26 @@
+Weather & Feelings — 100-User Website Optimization
+
+WHAT WAS PRESERVED
+- Lesson/game design and content unchanged.
+- All 40 original WAV voice files preserved byte-for-byte.
+- Voice quality was NOT compressed or re-encoded.
+- Existing WebP visual optimization preserved.
+- Existing lazy-loaded backgrounds/images preserved.
+
+WHAT WAS IMPROVED FOR ~100 USERS
+- Removed the unused experimental MP3 voice sprite and service worker files.
+- Replaced the old 40-audio-files-at-once startup burst with staged loading.
+- Core classroom voice files preload first.
+- Remaining voice files load quietly in the background.
+- Maximum background audio loading concurrency is limited to 4.
+- On the first user interaction, remaining audio is warmed in the background.
+- If a requested voice has not loaded yet, it is loaded immediately and playback retries once.
+- This reduces request spikes when many teachers open the activity at the same time.
+
+IMPORTANT
+No static web app can guarantee zero delay on every school network, but this version reduces unnecessary startup request bursts while preserving the original working voice files.
+
+Validation
+- Original WAV files preserved: True
+- Missing literal asset references: 0
+- JavaScript syntax check: True

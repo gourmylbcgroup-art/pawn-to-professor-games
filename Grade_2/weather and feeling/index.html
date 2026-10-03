@@ -11,10 +11,70 @@
 <script>
 const AUDIO={"word_happy":"assets/audio/word_happy.wav","word_good":"assets/audio/word_good.wav","word_okay":"assets/audio/word_okay.wav","word_tired":"assets/audio/word_tired.wav","word_sad":"assets/audio/word_sad.wav","word_fine":"assets/audio/word_fine.wav","word_sunny":"assets/audio/word_sunny.wav","word_rainy":"assets/audio/word_rainy.wav","word_cloudy":"assets/audio/word_cloudy.wav","word_windy":"assets/audio/word_windy.wav","word_hot":"assets/audio/word_hot.wav","word_cold":"assets/audio/word_cold.wav","sent_happy":"assets/audio/sent_happy.wav","sent_good":"assets/audio/sent_good.wav","sent_okay":"assets/audio/sent_okay.wav","sent_tired":"assets/audio/sent_tired.wav","sent_sad":"assets/audio/sent_sad.wav","sent_fine":"assets/audio/sent_fine.wav","sent_sunny":"assets/audio/sent_sunny.wav","sent_rainy":"assets/audio/sent_rainy.wav","sent_cloudy":"assets/audio/sent_cloudy.wav","sent_windy":"assets/audio/sent_windy.wav","sent_hot":"assets/audio/sent_hot.wav","sent_cold":"assets/audio/sent_cold.wav","q_feeling":"assets/audio/q_feeling.wav","q_weather":"assets/audio/q_weather.wav","try_again":"assets/audio/try_again.wav","say_it":"assets/audio/say_it.wav","find_happy":"assets/audio/find_happy.wav","find_good":"assets/audio/find_good.wav","find_okay":"assets/audio/find_okay.wav","find_tired":"assets/audio/find_tired.wav","find_sad":"assets/audio/find_sad.wav","find_fine":"assets/audio/find_fine.wav","find_sunny":"assets/audio/find_sunny.wav","find_rainy":"assets/audio/find_rainy.wav","find_cloudy":"assets/audio/find_cloudy.wav","find_windy":"assets/audio/find_windy.wav","find_hot":"assets/audio/find_hot.wav","find_cold":"assets/audio/find_cold.wav"};
 const VOICES={};let currentVoice=null;
-function preloadVoices(){Object.entries(AUDIO).forEach(([k,src])=>{const a=new Audio(src);a.preload='auto';a.load();VOICES[k]=a})}
-function playVoiceKey(k){const a=VOICES[k];if(!a)return;if(currentVoice&&currentVoice!==a){try{currentVoice.pause();currentVoice.currentTime=0}catch(e){}}currentVoice=a;try{a.currentTime=0}catch(e){};const pr=a.play();if(pr&&pr.catch)pr.catch(()=>{})}
+const AUDIO_LOAD_QUEUE=[];let audioLoadsActive=0;const AUDIO_MAX_CONCURRENT=4;
+
+function ensureVoice(k,priority=false){
+  if(VOICES[k])return VOICES[k];
+  const src=AUDIO[k];
+  if(!src)return null;
+  const a=new Audio();
+  a.preload='auto';
+  a.src=src;
+  VOICES[k]=a;
+  const task=()=>{try{a.load()}catch(e){}};
+  if(priority)AUDIO_LOAD_QUEUE.unshift(task);else AUDIO_LOAD_QUEUE.push(task);
+  pumpAudioQueue();
+  return a;
+}
+
+function pumpAudioQueue(){
+  while(audioLoadsActive<AUDIO_MAX_CONCURRENT&&AUDIO_LOAD_QUEUE.length){
+    const task=AUDIO_LOAD_QUEUE.shift();
+    audioLoadsActive++;
+    try{task()}catch(e){}
+    setTimeout(()=>{audioLoadsActive=Math.max(0,audioLoadsActive-1);pumpAudioQueue()},180);
+  }
+}
+
+function preloadCoreVoices(){
+  [
+    'q_feeling','q_weather','try_again','say_it',
+    'word_happy','word_good','word_okay','word_tired','word_sad','word_fine',
+    'word_sunny','word_rainy','word_cloudy','word_windy','word_hot','word_cold'
+  ].forEach(k=>ensureVoice(k,true));
+}
+
+function preloadRemainingVoices(){
+  Object.keys(AUDIO).forEach(k=>ensureVoice(k,false));
+}
+
+function preloadVoices(){
+  preloadCoreVoices();
+  const later=()=>preloadRemainingVoices();
+  if('requestIdleCallback'in window)requestIdleCallback(later,{timeout:2500});
+  else setTimeout(later,1200);
+}
+
+function playVoiceKey(k){
+  const a=ensureVoice(k,true);
+  if(!a)return;
+  if(currentVoice&&currentVoice!==a){
+    try{currentVoice.pause();currentVoice.currentTime=0}catch(e){}
+  }
+  currentVoice=a;
+  try{a.currentTime=0}catch(e){}
+  const pr=a.play();
+  if(pr&&pr.catch){
+    pr.catch(()=>{
+      try{a.load()}catch(e){}
+      const retry=a.play();
+      if(retry&&retry.catch)retry.catch(()=>{});
+    });
+  }
+}
 function audioKeyForText(t){const x=t.trim().toLowerCase().replace(/[.!?]/g,'');const m={"how are you today":"q_feeling","how's the weather":"q_weather","try again":"try_again","say it":"say_it"};if(m[x])return m[x];if(x.startsWith('find '))return 'find_'+x.slice(5).trim().replace(/\s+/g,'_');if(x.startsWith("i'm "))return 'sent_'+x.slice(4).trim().replace(/\s+/g,'_');if(x.startsWith("it's "))return 'sent_'+x.slice(5).trim().replace(/\s+/g,'_');if(AUDIO['word_'+x])return 'word_'+x;return null}
 preloadVoices();
+document.addEventListener('pointerdown',()=>preloadRemainingVoices(),{once:true,passive:true});
 const DATA=[{"word": "happy", "cat": "feeling", "pw": "assets/happy_playground_jump.webp", "pic": "assets/joyful_playground_leap.webp", "wordImg": "assets/glossy_happy_flashcard_with_pink_waves.webp", "sentImg": "assets/i_m_happy_pastel_flashcard.webp", "sentence": "I'm happy.", "question": "How are you today?"}, {"word": "good", "cat": "feeling", "pw": "assets/good_schoolday_thumbs_up.webp", "pic": "assets/confident_schoolboy_thumbs_up.webp", "wordImg": "assets/glossy_good_flashcard_with_pink_waves.webp", "sentImg": "assets/i_m_good_positivity_flashcard.webp", "sentence": "I'm good.", "question": "How are you today?"}, {"word": "okay", "cat": "feeling", "pw": "assets/okay_playground_flashcard.webp", "pic": "assets/cheerful_boy_making_an_ok_gesture.webp", "wordImg": "assets/glossy_golden_okay_card.webp", "sentImg": "assets/i_m_okay_flashcard_poster.webp", "sentence": "I'm okay.", "question": "How are you today?"}, {"word": "tired", "cat": "feeling", "pw": "assets/tired_girl_school_flashcard.webp", "pic": "assets/sleepy_schoolyard_yawn.webp", "wordImg": "assets/glossy_golden_tired_word_card.webp", "sentImg": "assets/i_m_tired_esl_flashcard.webp", "sentence": "I'm tired.", "question": "How are you today?"}, {"word": "sad", "cat": "feeling", "pw": "assets/sad_playground_flashcard.webp", "pic": "assets/sad_girl_alone_on_the_playground_bench.webp", "wordImg": "assets/glossy_gold_frame_sad_flashcard.webp", "sentImg": "assets/i_m_sad_emotion_flashcard.webp", "sentence": "I'm sad.", "question": "How are you today?"}, {"word": "fine", "cat": "feeling", "pw": "assets/cheerful_playground_fine_flashcard.webp", "pic": "assets/fine_at_the_playground.webp", "wordImg": "assets/glossy_fine_flashcard_with_pink_waves.webp", "sentImg": "assets/playful_golden_i_m_fine_flashcard.webp", "sentence": "I'm fine.", "question": "How are you today?"}, {"word": "sunny", "cat": "weather", "pw": "assets/sunny_playground_smiles.webp", "pic": "assets/joyful_boy_jumping_in_the_schoolyard.webp", "wordImg": "assets/sunny_flashcard_with_glossy_golden_frame.webp", "sentImg": "assets/glossy_golden_frame_flashcard_it_s_sunny.webp", "sentence": "It's sunny.", "question": "How's the weather?"}, {"word": "rainy", "cat": "weather", "pw": "assets/rainy_day_adventure.webp", "pic": "assets/joyful_rainy_day_puddle_splash.webp", "wordImg": "assets/rainy_day_flashcard.webp", "sentImg": "assets/glossy_pink_rainy_day_flashcard.webp", "sentence": "It's rainy.", "question": "How's the weather?"}, {"word": "cloudy", "cat": "weather", "pw": "assets/cloudy_day_flashcard.webp", "pic": "assets/dreaming_beneath_cloudy_skies.webp", "wordImg": "assets/cloudy_sky_flashcard.webp", "sentImg": "assets/it_s_cloudy_flashcard.webp", "sentence": "It's cloudy.", "question": "How's the weather?"}, {"word": "windy", "cat": "weather", "pw": "assets/windy_autumn_twirl_flashcard.webp", "pic": "assets/joyful_windy_day_in_the_park.webp", "wordImg": "assets/glossy_3d_windy_flashcard.webp", "sentImg": "assets/glossy_flashcard_it_s_windy.webp", "sentence": "It's windy.", "question": "How's the weather?"}, {"word": "hot", "cat": "weather", "pw": "assets/hot_summer_flashcard.webp", "pic": "assets/summer_heat_at_the_playground.webp", "wordImg": "assets/glossy_hot_weather_flashcard.webp", "sentImg": "assets/glossy_it_s_hot_educational_flashcard.webp", "sentence": "It's hot.", "question": "How's the weather?"}, {"word": "cold", "cat": "weather", "pw": "assets/winter_cold_flashcard.webp", "pic": "assets/shivering_boy_in_a_snowy_winter_scene.webp", "wordImg": "assets/icy_blue_cold_flashcard.webp", "sentImg": "assets/glossy_red_it_s_cold_flashcard.webp", "sentence": "It's cold.", "question": "How's the weather?"}];
 let currentPair=null, pendingPair=null, memLock=false, pairs=0, speakLevel=1, speakItem=null, mixItem=null;
 let _audioCtx=null;function getAudioCtx(){if(!_audioCtx){const A=window.AudioContext||window.webkitAudioContext;if(A)_audioCtx=new A()}if(_audioCtx&&_audioCtx.state==='suspended')_audioCtx.resume();return _audioCtx}
