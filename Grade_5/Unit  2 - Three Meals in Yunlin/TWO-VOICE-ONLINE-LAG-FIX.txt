@@ -1,0 +1,34 @@
+Grade 6 Unit 2 — Online Two-Voice Lag Fix
+
+WHAT I FOUND
+There are two voice systems:
+1. Jia-Jia recorded voice:
+   game/audio/jiajia/jiajia-voice-sprite.mp3
+2. Browser speech synthesis used for dynamic text / the male-style voice.
+
+WHY ONE CAN LAG ONLINE
+Browser speech synthesis can select a network/cloud voice when internet is available.
+Offline it may automatically use an installed local voice, which explains why both can
+sound fine offline but one voice can become delayed online.
+
+FIX
+- Jia-Jia recorded voice remains exactly unchanged.
+- Jia-Jia still has first priority for every recorded cue.
+- Browser speech now selects ONLY an installed LOCAL English voice.
+- It prefers the browser's default voice when that default is local.
+- It never intentionally falls back to a cloud/network voice.
+- Previous speech is cancelled before new speech starts.
+- Both the main lesson and embedded game use this local-only rule.
+
+IMPORTANT TRADE-OFF
+If a device has no installed local English speech voice, the dynamic browser voice will
+stay silent instead of using a laggy online/cloud voice. The on-screen text remains visible.
+For an exact identical male voice on every device, the only fully reliable solution is to
+record that male voice as audio files, just like Jia-Jia.
+
+JIA-JIA QUALITY CHECK
+SHA-256 before: f6ea0db82eb5232c4a679e05531559986cf30b6febfb84c4bfef03a80eccaa3f
+SHA-256 after:  f6ea0db82eb5232c4a679e05531559986cf30b6febfb84c4bfef03a80eccaa3f
+Result: byte-for-byte unchanged.
+
+This patch keeps the existing 100-user optimizations.

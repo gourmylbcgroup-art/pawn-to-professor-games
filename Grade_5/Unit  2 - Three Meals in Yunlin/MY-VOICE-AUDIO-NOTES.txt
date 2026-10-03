@@ -1,0 +1,11 @@
+MY VOICE AUDIO UPDATE
+
+- All 155 supplied TTS cues are embedded in one optimized MP3 audio sprite.
+- Main lesson and embedded game both use the prerecorded voice sprite.
+- Browser speechSynthesis / cloud TTS fallback has been removed from active code.
+- Audio sprite: audio/my-voice-sprite.mp3
+- Mono MP3 at 64 kbps, approximately 2.5 MB, to reduce online loading time.
+- The main page preloads the sprite immediately and the game reuses the same cached URL.
+- Audio is decoded once with Web Audio API and individual cues play from memory.
+- This avoids a separate network request for every spoken sentence and is suitable for concurrent users behind a CDN/static host.
+- Offline use reads the same local sprite and does not require a network voice.

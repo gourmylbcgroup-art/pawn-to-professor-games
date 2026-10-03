@@ -1,36 +1,51 @@
-Three Meals in Yunlin — 100-User Online Optimization
+Grade 6 Unit 2 — Famous Food Around the World
+100-User Online Optimization
 
 PRIMARY GOAL
-Reduce online lag for many simultaneous users while preserving Jia-Jia's voice quality.
+Reduce online lag when many students open the lesson/game together, especially Jia-Jia's voice.
 
-VOICE QUALITY
-The original jiajia-voice.mp3 was NOT compressed, converted, resampled, or modified.
-Original file size: 770,084 bytes
-SHA-256 before: 3aa219a057c050e16b5728a70a5d29f12bff5158fc3231f6698cc8c6c3b568ae
-SHA-256 after:  3aa219a057c050e16b5728a70a5d29f12bff5158fc3231f6698cc8c6c3b568ae
+JIA-JIA VOICE QUALITY
+UNCHANGED BY RE-ENCODING:
+- 42 original MP3 recordings were NOT transcoded.
+- All originals had the same format: MP3, 44.1 kHz, mono, 64 kbps.
+- They were joined into ONE MP3 sprite using FFmpeg stream copy (-c:a copy).
+- That means the encoded audio frames are reused; there is no quality-lowering re-encode.
 
 ONLINE SOUND-LAG FIX
-- The original 770 KB Jia-Jia MP3 is downloaded once when the GAME page opens.
-- It is stored as a browser Blob URL.
-- Voice cue seeking then happens locally instead of repeatedly seeking through the network.
-- Previous voice is stopped before the next cue begins.
-- One Audio element is reused for all cues.
-- Browser cache is requested with force-cache.
-- If Blob preload fails, the code falls back to the same original MP3 URL.
+Before:
+- 42 separate MP3 files
+- 42 browser Audio objects
+- many independent HTTP requests/seeks
+
+Now:
+- 1 MP3 voice sprite (921.9 KB)
+- 1 fetch request
+- browser cache requested with force-cache
+- file decoded once into an AudioBuffer
+- every voice cue plays locally from that decoded buffer
+- previous voice is stopped before the next starts
+- image preload concurrency is limited so images do not starve audio on school Wi-Fi
 
 100-USER LOADING CHANGES
-- The embedded game does NOT load on the lesson Home screen.
-- Game board/cards/tokens/voice load only when GAME is opened.
-- Hidden lesson sections initialize only when opened.
-- Main lesson images use asynchronous decoding.
-- The Home menu image remains high-priority.
-- Duplicate nested game assets were removed.
-- The nested game now shares the lesson root assets.
+- Embedded game does not load on lesson Home; it loads only when GAME is opened.
+- The lesson no longer preloads all 35 presentation slides on Home.
+- Hidden lesson sections render only when opened.
+- Large PNG/JPG images were converted to high-quality WebP where beneficial.
+- Game preloads only board + core country/food visuals, not all detective clues.
+- Image downloads are limited to 4 at a time during game preparation.
+- Images use asynchronous decoding.
 
-PACKAGE SIZE
-Before optimization: 12.79 MB unpacked
-After optimization:  9.84 MB unpacked
+SIZE
+Original unpacked package: 93.8 MB
+Optimized unpacked package: 19.9 MB
+
+Image conversion:
+Before converted-image bytes: 85.2 MB
+After WebP bytes: 11.4 MB
+
+Voice source files total: 931.9 KB
+Voice sprite: 921.9 KB
 
 IMPORTANT
-This significantly reduces likely online audio lag and first-load traffic.
-No web app can guarantee zero lag on every network; school Wi-Fi quality and device performance still matter.
+This removes the main code-level causes of online voice delay, but no web package can guarantee zero lag on every network.
+School Wi-Fi congestion and device performance can still affect startup. After the one-time sprite download/decoding, Jia-Jia cue playback is local and should not depend on network timing.

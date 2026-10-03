@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>The Amazing Food Race — Grade 6 Unit 2</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="app">
+  <section id="setup" class="screen active">
+    <div class="setup-shell">
+      <div class="hero-panel">
+        <div class="eyebrow">Grade 6 · Unit 2</div>
+        <h1>The Amazing Food Race</h1>
+        <p>Three weeks. Three levels. One world-food adventure.</p>
+        <div class="pair-strip" id="pairStrip"></div>
+      </div>
+
+      <div class="setup-grid">
+        <article class="card">
+          <h2>1. Choose the week</h2>
+          <div class="level-cards">
+            <button class="level-card selected" data-level="4"><strong>Week 4</strong><span>Passport Rookie</span><small>Match, speak, collect stamps</small></button>
+            <button class="level-card" data-level="5"><strong>Week 5</strong><span>Secret Route</span><small>Safe route or fast route</small></button>
+            <button class="level-card" data-level="6"><strong>Week 6</strong><span>Detective Race</span><small>Clues, customs, final challenge</small></button>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>2. Choose teams</h2>
+          <div class="team-count-row">
+            <label>Players / teams</label>
+            <select id="teamCount"><option>2</option><option>3</option><option>4</option></select>
+          </div>
+          <p class="muted">Each team chooses a different country flag token.</p>
+          <div id="teamSelectors"></div>
+        </article>
+
+        <article class="card options-card">
+          <h2>3. Classroom options</h2>
+          <label class="toggle"><input id="soundToggle" type="checkbox" checked><span>Fast local game sounds</span></label>
+          <label class="toggle"><input id="ttsToggle" type="checkbox" checked><span>Question voice (recommended)</span></label>
+          <label class="toggle"><input id="rotateToggle" type="checkbox" checked><span>Different speaker each turn</span></label>
+          <div class="audio-note">Jia-Jia’s original voice quality is preserved. One voice sprite is cached when the game opens, so turns do not fetch separate voice files.</div>
+        </article>
+      </div>
+
+      <button id="startBtn" class="primary huge" disabled>Loading game resources…</button>
+      <div id="preloadStatus" class="preload-status">Preparing images for smooth online play.</div>
+    </div>
+  </section>
+
+  <section id="game" class="screen">
+    <header class="game-header">
+      <div>
+        <div class="eyebrow">The Amazing Food Race</div>
+        <h2 id="levelTitle">Week 4 · Passport Rookie</h2>
+      </div>
+      <div class="header-actions">
+        <button id="reviewBtn" class="ghost">Flashcards</button>
+        <button id="rulesBtn" class="ghost">Rules</button>
+        <button id="setupBtn" class="ghost">Setup</button>
+      </div>
+    </header>
+
+    <main class="game-layout">
+      <section class="board-panel">
+        <div id="boardStage" class="board-stage">
+          <img decoding="async" class="board-art" src="assets/board.webp" alt="Amazing Food Race board" />
+          <div id="tokenLayer" class="token-layer"></div>
+        </div>
+      </section>
+
+      <aside class="side-panel">
+        <article class="turn-card">
+          <div id="currentFlag" class="current-flag"></div>
+          <div>
+            <div class="eyebrow">Current turn</div>
+            <h3 id="currentTeam">Team 1</h3>
+            <p id="turnHint">Choose your challenge.</p>
+          </div>
+        </article>
+
+        <article class="dice-card">
+          <div id="diceFace" class="dice-face">🎲</div>
+          <div id="diceResult" class="dice-result" aria-live="polite"></div>
+          <button id="rollBtn" class="primary">Roll Dice</button>
+        </article>
+
+        <article class="score-card">
+          <h3>Race status</h3>
+          <div id="scoreList"></div>
+        </article>
+
+        <article class="passport-card">
+          <h3>Passport stamps</h3>
+          <div id="passportGrid"></div>
+        </article>
+      </aside>
+    </main>
+  </section>
+</div>
+
+<div id="modal" class="modal" aria-hidden="true"><div id="modalCard" class="modal-card"></div></div>
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+
+<div id="answerFeedbackModal" class="answer-feedback-overlay hidden" aria-hidden="true">
+  <div id="answerFeedbackCard" class="answer-feedback-card">
+    <div id="answerFeedbackIcon" class="answer-feedback-icon">✓</div>
+    <h2 id="answerFeedbackTitle">Correct!</h2>
+    <p id="answerFeedbackText">Great answer!</p>
+    <button id="answerFeedbackButton" class="answer-feedback-button">Continue</button>
+  </div>
+</div>
+
+</body>
+</html>

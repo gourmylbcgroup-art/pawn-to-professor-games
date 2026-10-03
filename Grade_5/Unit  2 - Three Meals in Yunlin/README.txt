@@ -1,25 +1,18 @@
-THREE MEALS IN YUNLIN — Grade 5 Interactive Interface
+GRADE 6 UNIT 2 - FAMOUS FOOD AROUND THE WORLD
+Interactive lesson package
 
-This version deliberately follows the structure of the attached Numbers 1–10 interface:
-1 START
-2 LEARN
-3 PLAY
-4 PRACTICE
-5 SPEAK
-6 FINISH
-7 GAME
+Open index.html in Chrome.
 
-CONTENT USED
-- The attached Grade 5 Unit 2 presentation (50 pages), converted to lightweight WebP slides.
-- The exact flashcards from Flascard.zip, optimized to WebP but not redesigned.
-- The exact attached Three_meal_in_yunlin game, copied unchanged under games/three-meals/.
-- A new 3D home menu adapted to the Three Meals in Yunlin theme.
+Structure: START / LEARN / PLAY / PRACTICE / SPEAK / FINISH.
+Each section can switch between Week 4, Week 5, and Week 6.
+The 35-page attached presentation is included as local WebP slides.
+The attached Amazing Food Race is embedded locally in /game.
 
-WEEK ORGANIZATION
-Week 1: Meals / breakfast / lunch / dinner.
-Week 2: Food + sentence patterns.
-Week 3: Yunlin + night market + review + speaking.
+ONLINE PERFORMANCE
+- No CDN or remote JavaScript dependencies.
+- Navigation/game UI sounds are generated locally with Web Audio.
+- Lesson question voice uses the browser Speech Synthesis API, so the lesson does not download an audio file every time a question opens.
+- Presentation images are compressed WebP and preloaded in the background.
+- The embedded game is packaged locally.
 
-HOW TO USE
-Open index.html in Chrome/Edge/Safari.
-For GitHub Pages, upload the whole folder contents. Do not upload index.html alone.
+UK wording is Fish and Chips throughout this lesson interface.
