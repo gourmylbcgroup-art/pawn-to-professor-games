@@ -1,0 +1,39 @@
+What Time Is It? — 100-User Website Optimization
+
+SOUND
+- All 156 original WAV files are preserved byte-for-byte.
+- No voice file was removed.
+- No voice file was compressed or re-encoded.
+- Playback still uses the original local WAV files.
+- The old version could warm more than 160 audio clips in a rapid burst.
+- The 100-user version warms only common interface voice cues, spaced 180 ms apart.
+- Time clips load only when actually needed, then remain cached in the browser.
+- Playback retries once if a requested clip is still arriving from the network.
+
+WHY THIS HELPS
+With 100 simultaneous users, downloading every time clip immediately would create thousands of
+audio requests at once. This version avoids that startup spike while keeping all audio available.
+
+IMAGES
+- Converted 5 large PNG images to high-quality WebP.
+- Images use async decoding/lazy loading where possible.
+
+SIZE
+Before optimization: 24.96 MB unpacked
+After optimization:  12.29 MB unpacked
+
+VALIDATION
+- WAV files preserved exactly: True
+- Missing literal assets: 6
+- JavaScript syntax OK: True
+
+SOURCE PACKAGE CHECK
+The uploaded original HTML references these 6 WAV files, but they were NOT present in the uploaded ZIP:
+- audio/correct.wav
+- audio/countdown.wav
+- audio/excellent.wav
+- audio/fantastic.wav
+- audio/go.wav
+- audio/great_job.wav
+
+I did not invent or replace those recordings. All 156 WAV files that were actually supplied are preserved exactly.
