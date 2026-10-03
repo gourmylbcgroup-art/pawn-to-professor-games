@@ -192,3 +192,23 @@ body[data-theme="game-classroom"]{background-image:url('assets/backgrounds/class
 .learn-review-play{width:100%;margin-top:8px;border:0;border-radius:14px;padding:11px 9px;background:#eef3ff;color:#334eaa;font-weight:1000}
 @media(max-width:920px){.learn-shell{grid-template-columns:minmax(250px,360px) 1fr;gap:20px}.learn-practice-panel{padding:22px}.learn-audio-step{min-height:88px}.learn-audio-step b{font-size:30px}}
 @media(max-width:720px){.learn-shell{grid-template-columns:1fr}.learn-flashcard{width:min(310px,82vw)}.learn-practice-panel{padding:18px;border-radius:25px}.learn-practice-panel h2{text-align:center;font-size:36px}.learn-prompt{text-align:center;font-size:16px}.learn-sequence-preview{gap:5px}.learn-audio-step{min-height:80px;padding:7px}.learn-audio-step b{font-size:26px}.learn-audio-step small{font-size:9px}.learn-sequence-arrow{font-size:19px}.learn-sound-buttons{gap:7px}.learn-sound-btn{min-height:100px;padding:10px 6px}.learn-sound-btn b{font-size:14px}.learn-sound-btn small{font-size:10px}.learn-navigation{grid-template-columns:1fr 1fr}.learn-dots{grid-column:1 / -1;grid-row:2}.learn-navigation .secondary-btn{width:100%}}
+
+/* TRACE FIX 2026-10-03: keep guide underneath the user's ink. */
+.canvas-wrap{
+  background:linear-gradient(#fff,#fbfcff);
+  position:relative;
+}
+.trace-guide{
+  z-index:1;
+  pointer-events:none;
+  user-select:none;
+}
+.trace-canvas{
+  position:relative;
+  z-index:2;
+  display:block;
+  background:transparent !important;
+  touch-action:none;
+  -ms-touch-action:none;
+  cursor:crosshair;
+}
