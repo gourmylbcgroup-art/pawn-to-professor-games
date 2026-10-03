@@ -1,0 +1,281 @@
+window.addEventListener("DOMContentLoaded",()=>{try{document.getElementById("challengeMusic").load()}catch(e){}});
+
+const ACTIONS = [{"name": "jumping", "src": "assets/actions/jumping.webp"}, {"name": "singing", "src": "assets/actions/singing.webp"}, {"name": "running", "src": "assets/actions/running.webp"}, {"name": "drawing", "src": "assets/actions/drawing.webp"}, {"name": "dancing", "src": "assets/actions/dancing.webp"}, {"name": "writing", "src": "assets/actions/writing.webp"}, {"name": "reading", "src": "assets/actions/reading.webp"}, {"name": "playing", "src": "assets/actions/playing.webp"}, {"name": "eating", "src": "assets/actions/eating.webp"}, {"name": "drinking", "src": "assets/actions/drinking.webp"}];
+const PLACES = [{"name": "hospital", "src": "assets/community/hospital.webp"}, {"name": "school", "src": "assets/community/school.webp"}, {"name": "supermarket", "src": "assets/community/supermarket.webp"}, {"name": "bank", "src": "assets/community/bank.webp"}, {"name": "park", "src": "assets/community/park.webp"}, {"name": "store", "src": "assets/community/store.webp"}, {"name": "night market", "src": "assets/community/night-market.webp"}, {"name": "tea shop", "src": "assets/community/tea-shop.webp"}, {"name": "cafe", "src": "assets/community/cafe.webp"}, {"name": "library", "src": "assets/community/library.webp"}];
+
+const $ = (id)=>document.getElementById(id);
+
+let soundOn = true;
+let teamNames = ["Team A", "Team B"];
+let playerCounts = [4, 4];
+let playerIndex = [1, 1];
+let scores = [0, 0];
+let currentTeam = 0;
+
+let phase = "pickAction";
+let currentAction = null;
+let currentPlace = null;
+let crazyCombo = false;
+let timerHandle = null;
+let actionBag = [];
+let placeBag = [];
+
+const challengeMusic = $("challengeMusic");
+
+function primeChallengeMusic(){
+  try{
+    challengeMusic.pause();
+    challengeMusic.currentTime = 0;
+    challengeMusic.volume = 0.70;
+    challengeMusic.muted = true;
+    const p = challengeMusic.play();
+    if(p && typeof p.catch === "function") p.catch(()=>{});
+  }catch(e){}
+}
+function startChallengeMusic(){
+  try{
+    challengeMusic.pause();
+    challengeMusic.currentTime = 0;
+    challengeMusic.volume = 0.70;
+    challengeMusic.muted = !soundOn;
+    const p = challengeMusic.play();
+    if(p && typeof p.catch === "function") p.catch(()=>{});
+  }catch(e){}
+}
+function stopChallengeMusic(){
+  try{
+    challengeMusic.pause();
+    challengeMusic.currentTime = 0;
+  }catch(e){}
+}
+
+function populateSelects(){
+  for(let i=1;i<=8;i++) {
+    $("playersA").insertAdjacentHTML("beforeend", `<option ${i===4?"selected":""}>${i}</option>`);
+    $("playersB").insertAdjacentHTML("beforeend", `<option ${i===4?"selected":""}>${i}</option>`);
+  }
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function refillBag(type){
+  if(type === "action") actionBag = shuffle([...Array(ACTIONS.length).keys()]);
+  else placeBag = shuffle([...Array(PLACES.length).keys()]);
+}
+
+function pickCard(type){
+  if(type === "action") {
+    if(!actionBag.length) refillBag("action");
+    return ACTIONS[actionBag.pop()];
+  } else {
+    if(!placeBag.length) refillBag("place");
+    return PLACES[placeBag.pop()];
+  }
+}
+
+function beep(freq=600, dur=.08, vol=.05){
+  if(!soundOn) return;
+  try {
+    const ac = beep.ac || (beep.ac = new (window.AudioContext||window.webkitAudioContext)());
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.frequency.value = freq;
+    osc.type = "sine";
+    gain.gain.value = vol;
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+    osc.stop(ac.currentTime + dur);
+  } catch(e) {}
+}
+
+function updateTopBar(){
+  $("teamAName").textContent = teamNames[0];
+  $("teamBName").textContent = teamNames[1];
+  $("playerA").textContent = `Player ${playerIndex[0]} of ${playerCounts[0]}`;
+  $("playerB").textContent = `Player ${playerIndex[1]} of ${playerCounts[1]}`;
+  $("scoreA").textContent = scores[0];
+  $("scoreB").textContent = scores[1];
+  $("teamABox").classList.toggle("active", currentTeam === 0);
+  $("teamBBox").classList.toggle("active", currentTeam === 1);
+  $("turnLine").textContent = `${teamNames[currentTeam]} — Player ${playerIndex[currentTeam]}`;
+}
+
+function clearDecks(){
+  $("actionCard").classList.remove("flipped", "hideAnswer", "disabled");
+  $("placeCard").classList.remove("flipped", "hideAnswer", "disabled");
+  $("actionImg").src = "";
+  $("placeImg").src = "";
+}
+
+function resetTurn(){
+  clearInterval(timerHandle);
+  stopChallengeMusic();
+  phase = "pickAction";
+  currentAction = null;
+  currentPlace = null;
+  crazyCombo = false;
+  clearDecks();
+  $("status").textContent = "Tap the ACTION deck.";
+  $("timer").textContent = "READY";
+  $("crazyBadge").classList.remove("show");
+  $("actBtn").disabled = true;
+  $("answerBtn").disabled = true;
+  $("scorePanel").classList.remove("show");
+}
+
+function startGame(){
+  teamNames = [$("setupA").value.trim() || "Team A", $("setupB").value.trim() || "Team B"];
+  playerCounts = [Number($("playersA").value), Number($("playersB").value)];
+  playerIndex = [1,1];
+  scores = [0,0];
+  currentTeam = 0;
+  refillBag("action");
+  refillBag("place");
+  updateTopBar();
+  resetTurn();
+  $("setup").style.display = "none";
+  beep(760,.1);
+}
+
+$("startBtn").addEventListener("click", startGame);
+
+$("actionCard").addEventListener("click", () => {
+  if(phase !== "pickAction") return;
+  currentAction = pickCard("action");
+  $("actionImg").src = currentAction.src;
+  $("actionImg").alt = currentAction.name;
+  $("actionCard").classList.add("flipped", "disabled");
+  phase = "pickPlace";
+  $("status").textContent = "Now tap the COMMUNITY deck.";
+  beep(760, .08);
+});
+
+$("placeCard").addEventListener("click", () => {
+  if(phase !== "pickPlace") return;
+  currentPlace = pickCard("place");
+  $("placeImg").src = currentPlace.src;
+  $("placeImg").alt = currentPlace.name;
+  $("placeCard").classList.add("flipped", "disabled");
+  crazyCombo = Math.random() < 0.20;
+  $("crazyBadge").classList.toggle("show", crazyCombo);
+  $("status").textContent = "Look carefully. Then press START ACTING!";
+  $("actBtn").disabled = false;
+  phase = "readyToAct";
+  beep(920, .1);
+});
+
+async function countdown(){
+  $("overlay").classList.add("show");
+  const steps = ["READY","SET","ACTION!"];
+  for(const s of steps){
+    $("overlayText").textContent = s;
+    $("overlayText").style.animation = "none";
+    void $("overlayText").offsetWidth;
+    $("overlayText").style.animation = "pop .6s both";
+    if(s === "ACTION!") startChallengeMusic();
+    beep(s === "ACTION!" ? 1000 : (s === "READY" ? 620 : 760), s === "ACTION!" ? .18 : .11);
+    await new Promise(r => setTimeout(r, s === "ACTION!" ? 800 : 700));
+  }
+  $("overlay").classList.remove("show");
+}
+
+$("actBtn").addEventListener("click", async () => {
+  if(phase !== "readyToAct") return;
+  phase = "acting";
+  primeChallengeMusic();
+  $("actBtn").disabled = true;
+  $("answerBtn").disabled = false;
+  $("actionCard").classList.add("hideAnswer");
+  $("placeCard").classList.add("hideAnswer");
+  $("status").textContent = "MIMIC! Team, guess the action and the place!";
+  await countdown();
+  let t = 30;
+  $("timer").textContent = `${t}s`;
+  timerHandle = setInterval(() => {
+    t--;
+    $("timer").textContent = t > 0 ? `${t}s` : "TIME UP!";
+    if(t <= 3 && t > 0) beep(430,.06);
+    if(t <= 0) {
+      clearInterval(timerHandle);
+      stopChallengeMusic();
+      beep(240,.22);
+      $("timer").textContent = "TIME UP!";
+      $("overlayText").textContent = "TIME UP!";
+      $("overlay").classList.add("show");
+      $("overlayText").style.animation = "none";
+      void $("overlayText").offsetWidth;
+      $("overlayText").style.animation = "pop .6s both";
+      setTimeout(() => $("overlay").classList.remove("show"), 1100);
+    }
+  }, 1000);
+});
+
+function showAnswerPanel(){
+  clearInterval(timerHandle);
+  stopChallengeMusic();
+  $("actionCard").classList.remove("hideAnswer");
+  $("placeCard").classList.remove("hideAnswer");
+  $("answerLine").textContent = `${currentAction.name.toUpperCase()} + ${currentPlace.name.toUpperCase()}`;
+  $("actionMark").classList.remove("on"); $("actionMark").dataset.on = "0";
+  $("placeMark").classList.remove("on"); $("placeMark").dataset.on = "0";
+  $("bonusText").textContent = crazyCombo ? "Crazy Combo: +1 extra if BOTH are guessed." : "";
+  $("scorePanel").classList.add("show");
+  phase = "scoring";
+}
+
+$("answerBtn").addEventListener("click", () => {
+  if(phase === "acting" || phase === "readyToAct") showAnswerPanel();
+});
+
+function toggleMark(btn){
+  btn.dataset.on = btn.dataset.on === "1" ? "0" : "1";
+  btn.classList.toggle("on", btn.dataset.on === "1");
+  beep(btn.dataset.on === "1" ? 860 : 360, .06);
+}
+$("actionMark").addEventListener("click", ()=>toggleMark($("actionMark")));
+$("placeMark").addEventListener("click", ()=>toggleMark($("placeMark")));
+
+$("nextBtn").addEventListener("click", () => {
+  let pts = 0;
+  if($("actionMark").dataset.on === "1") pts += 1;
+  if($("placeMark").dataset.on === "1") pts += 1;
+  if(crazyCombo && pts === 2) pts += 1;
+  scores[currentTeam] += pts;
+
+  playerIndex[currentTeam]++;
+  if(playerIndex[currentTeam] > playerCounts[currentTeam]) playerIndex[currentTeam] = 1;
+
+  currentTeam = currentTeam === 0 ? 1 : 0;
+  updateTopBar();
+  resetTurn();
+  beep(940,.11);
+});
+
+$("newTurnBtn").addEventListener("click", () => {
+  resetTurn();
+  beep(420,.07);
+});
+
+$("soundBtn").addEventListener("click", () => {
+  soundOn = !soundOn;
+  $("soundBtn").textContent = soundOn ? "🔊" : "🔇";
+  challengeMusic.muted = !soundOn;
+  if(soundOn) beep(700,.06);
+});
+
+$("fullBtn").addEventListener("click", () => {
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+  else document.exitFullscreen?.();
+});
+
+populateSelects();
+updateTopBar();
