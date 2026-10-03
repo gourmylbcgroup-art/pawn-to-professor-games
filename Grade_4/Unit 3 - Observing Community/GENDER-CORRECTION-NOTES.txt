@@ -1,0 +1,27 @@
+GENDER CORRECTION
+
+The visible flashcards were checked and the action/pronoun mapping was corrected to:
+
+jumping = He
+singing = She
+running = He
+drawing = She
+dancing = She
+writing = He
+reading = He
+playing = He
+eating = He
+drinking = He
+
+The correction applies to the dynamic activities that use the ACTIONS data:
+- He / She practice
+- Look and Guess
+- Listen and Guess
+- Community Reporter
+- Action + Place
+- Practice Challenge
+
+For Action + Place, when a corrected full sentence is not present as one recorded clip,
+the app now plays two existing recorded clips in sequence:
+"[He/She] is [action]." + "at the [place]"
+This avoids falling back to browser TTS and keeps the user's recorded voice.
