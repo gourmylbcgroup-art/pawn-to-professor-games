@@ -1,21 +1,12 @@
-ONLINE AUDIO FIX
+AUDIO CHECK — OCT 3, 2026
 
-This build removes the online-only audio bottleneck.
+Main lesson:
+- Browser speechSynthesis references: 0
+- External voice-sprite MP3 requests: 0
+- Voice sprite is embedded directly in index.html and decoded with Web Audio.
 
-Main lesson speech:
-- Spoken audio is embedded directly inside index.html.
-- No speechSynthesis is used.
-- No voice MP3 is fetched when a card is clicked.
-- Web Audio uses latencyHint='interactive'.
-- The audio buffer is decoded as the page loads and unlocked on the first pointer/touch event.
+Mimic game:
+- Music is embedded directly in game/index.html as a data URI.
+- Beeps use Web Audio oscillators locally.
 
-Mime Game music:
-- Background music is compressed and embedded directly in game/index.html.
-- No music file is fetched after the game opens.
-
-Result:
-- Online and offline use the same bundled audio path.
-- The page no longer depends on network speed at the moment a sound button is pressed.
-
-Upload the complete contents of this folder over the existing
-Grade_4 / Unit 3 - Observing Community / folder on GitHub.
+This removes network requests from voice/music playback after the page itself loads.

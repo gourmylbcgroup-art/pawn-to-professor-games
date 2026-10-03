@@ -1,28 +1,14 @@
 # Action + Community Challenge
 
-Optimized GitHub Pages version.
+## Scoring
+- Correct action: +1 point
+- Correct place: +1 point
+- Correct full sentence: +1 point
+- Perfect round: 3 points
+- Three perfect rounds in a row for the same team: the third perfect round gets +1 bonus, so that round is worth 4 points.
+- A non-perfect round resets that team's perfect-round streak.
 
-## Upload
-Upload the contents of this folder to your GitHub repository:
-- index.html
-- assets/
+Example sentence: "I am running at the store."
 
-Do not upload only index.html because the game now loads the optimized images from assets/.
-
-## GitHub Pages
-Repository → Settings → Pages
-- Source: Deploy from a branch
-- Branch: main
-- Folder: /(root)
-- Save
-
-Your game keeps:
-- the exact Action cards supplied by you
-- the exact Community cards supplied by you
-- 30-second timer
-- READY → SET → ACTION!
-- TIME UP!
-- Team A / Team B
-- scoring and player rotation
-
-The images are WebP versions resized for the web to reduce loading time.
+## Audio
+The lesson voice is embedded directly in the main `index.html`, and the game music is embedded directly in `game/index.html`. No external voice MP3 or browser speech synthesis is required during playback.

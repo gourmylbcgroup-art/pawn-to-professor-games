@@ -176,6 +176,7 @@ button { font:inherit; }
   font-weight:1000;
 }
 .crazy.show { display:block; }
+.streakBadge{background:#fff3b8;color:#734b00;border:3px solid var(--gold);border-radius:14px;padding:8px 12px;font-weight:1000;display:none}.streakBadge.show{display:block}.scoreGuide{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.scoreGuide>div{background:#f7fbff;border:3px solid #d7e9f8;border-radius:16px;padding:10px;text-align:center;font-weight:1000}.scoreGuide b{color:var(--blue);font-size:1.15em}.streakGuide{background:#fff3b8;border:3px solid var(--gold);border-radius:16px;padding:10px 12px;text-align:center;font-weight:1000;margin-top:10px}
 
 .overlay {
   position:fixed; inset:0; display:none; z-index:40; align-items:center; justify-content:center;
@@ -209,7 +210,7 @@ button { font:inherit; }
 }
 .box h2 { margin:0 0 6px; color:var(--blue); font-size:clamp(28px,4vw,48px); }
 .answerLine { font-size:clamp(19px,2.2vw,32px); font-weight:1000; margin:12px 0 18px; }
-.markers { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:15px 0; }
+.markers { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:15px 0; }
 .mark {
   border:4px solid #d7e9f8;
   background:#f7fbff;
@@ -267,6 +268,7 @@ button { font:inherit; }
 }
 
 @media(max-width:780px) {
+  .markers,.scoreGuide{grid-template-columns:1fr;}
   .app { padding:7px; gap:7px; }
   .topbar { grid-template-columns:1fr 1fr; }
   .titlebox { grid-column:1/-1; grid-row:1; }
@@ -350,7 +352,7 @@ button { font:inherit; }
   </div>
 
   <div class="controls">
-    <div class="crazy" id="crazyBadge">😂 CRAZY COMBO! +1 bonus</div>
+    <div class="streakBadge" id="streakBadge">🔥 Perfect streak</div>
     <div class="status" id="status">Tap the ACTION deck.</div>
     <div class="timer" id="timer">READY</div>
     <button class="btn primary" id="actBtn" disabled>START ACTING</button>
@@ -368,6 +370,7 @@ button { font:inherit; }
     <div class="markers">
       <button class="mark" id="actionMark">✓ Action guessed<br><small>+1 point</small></button>
       <button class="mark" id="placeMark">✓ Place guessed<br><small>+1 point</small></button>
+      <button class="mark" id="sentenceMark">✓ Full sentence<br><small>+1 point</small></button>
     </div>
     <div class="bonus" id="bonusText"></div>
     <button class="btn green nextBtn" id="nextBtn">NEXT PLAYER →</button>
@@ -397,12 +400,20 @@ button { font:inherit; }
       </div>
     </div>
     <div class="rules">
-      1. Tap <b>Action deck</b>, then tap <b>Community deck</b>.<br>
-      2. The actor looks at the 2 cards for a few seconds.<br>
-      3. Press <b>START ACTING</b> → cards hide → READY, SET, ACTION!<br>
-      4. The student must <b>mimic</b>. No saying the action word or place word.<br>
-      5. Correct action = <b>+1</b>. Correct place = <b>+1</b>.<br>
-      6. Sometimes a random <b>Crazy Combo</b> gives <b>+1 extra</b> if both are guessed.
+      <b>HOW TO PLAY</b><br>
+      1. Tap the <b>Action deck</b>, then tap the <b>Community deck</b>.<br>
+      2. The actor looks at both cards, then presses <b>START ACTING</b>.<br>
+      3. The cards hide. The actor mimes for 30 seconds — <b>no saying the action or place words</b>.<br>
+      4. The team guesses the <b>action</b>, the <b>place</b>, and then says the complete sentence.<br><br>
+      <div class="scoreGuide">
+        <div><b>Action</b><br>Correct = +1</div>
+        <div><b>Place</b><br>Correct = +1</div>
+        <div><b>Sentence</b><br>Correct = +1</div>
+      </div>
+      <b>Example:</b> running + store → “I am running at the store.”<br>
+      A perfect round is <b>3 points</b>.
+      <div class="streakGuide">🔥 <b>3 perfect rounds in a row</b> → the third perfect round gets <b>+1 bonus</b>, so that round is worth <b>4 points</b>.</div>
+      If a round is not perfect, that team's perfect-round streak goes back to zero.
     </div>
     <button class="btn primary nextBtn" id="startBtn">START GAME</button>
   </div>
@@ -419,12 +430,12 @@ let teamNames = ["Team A", "Team B"];
 let playerCounts = [4, 4];
 let playerIndex = [1, 1];
 let scores = [0, 0];
+let perfectStreak = [0, 0];
 let currentTeam = 0;
 
 let phase = "pickAction";
 let currentAction = null;
 let currentPlace = null;
-let crazyCombo = false;
 let timerHandle = null;
 let actionBag = [];
 let placeBag = [];
@@ -506,6 +517,14 @@ function beep(freq=600, dur=.08, vol=.05){
   } catch(e) {}
 }
 
+function updateStreakBadge(){
+  const n=perfectStreak[currentTeam]||0;
+  const badge=$("streakBadge");
+  if(!badge) return;
+  badge.textContent = n>0 ? `🔥 Perfect streak: ${n}/3` : "🔥 Perfect streak: 0/3";
+  badge.classList.add("show");
+}
+
 function updateTopBar(){
   $("teamAName").textContent = teamNames[0];
   $("teamBName").textContent = teamNames[1];
@@ -516,6 +535,7 @@ function updateTopBar(){
   $("teamABox").classList.toggle("active", currentTeam === 0);
   $("teamBBox").classList.toggle("active", currentTeam === 1);
   $("turnLine").textContent = `${teamNames[currentTeam]} — Player ${playerIndex[currentTeam]}`;
+  updateStreakBadge();
 }
 
 function clearDecks(){
@@ -531,11 +551,10 @@ function resetTurn(){
   phase = "pickAction";
   currentAction = null;
   currentPlace = null;
-  crazyCombo = false;
   clearDecks();
   $("status").textContent = "Tap the ACTION deck.";
   $("timer").textContent = "READY";
-  $("crazyBadge").classList.remove("show");
+  updateStreakBadge();
   $("actBtn").disabled = true;
   $("answerBtn").disabled = true;
   $("scorePanel").classList.remove("show");
@@ -546,6 +565,7 @@ function startGame(){
   playerCounts = [Number($("playersA").value), Number($("playersB").value)];
   playerIndex = [1,1];
   scores = [0,0];
+  perfectStreak = [0,0];
   currentTeam = 0;
   refillBag("action");
   refillBag("place");
@@ -574,8 +594,6 @@ $("placeCard").addEventListener("click", () => {
   $("placeImg").src = currentPlace.src;
   $("placeImg").alt = currentPlace.name;
   $("placeCard").classList.add("flipped", "disabled");
-  crazyCombo = Math.random() < 0.20;
-  $("crazyBadge").classList.toggle("show", crazyCombo);
   $("status").textContent = "Look carefully. Then press START ACTING!";
   $("actBtn").disabled = false;
   phase = "readyToAct";
@@ -605,7 +623,7 @@ $("actBtn").addEventListener("click", async () => {
   $("answerBtn").disabled = false;
   $("actionCard").classList.add("hideAnswer");
   $("placeCard").classList.add("hideAnswer");
-  $("status").textContent = "MIMIC! Team, guess the action and the place!";
+  $("status").textContent = "MIMIC! Guess the action, place, then say the full sentence!";
   await countdown();
   let t = 30;
   $("timer").textContent = `${t}s`;
@@ -633,40 +651,86 @@ function showAnswerPanel(){
   stopChallengeMusic();
   $("actionCard").classList.remove("hideAnswer");
   $("placeCard").classList.remove("hideAnswer");
-  $("answerLine").textContent = `${currentAction.name.toUpperCase()} + ${currentPlace.name.toUpperCase()}`;
+  $("answerLine").textContent = `${currentAction.name.toUpperCase()} + ${currentPlace.name.toUpperCase()} → I am ${currentAction.name} at the ${currentPlace.name}.`;
   $("actionMark").classList.remove("on"); $("actionMark").dataset.on = "0";
   $("placeMark").classList.remove("on"); $("placeMark").dataset.on = "0";
-  $("bonusText").textContent = crazyCombo ? "Crazy Combo: +1 extra if BOTH are guessed." : "";
+  $("sentenceMark").classList.remove("on"); $("sentenceMark").dataset.on = "0";
+  const n=perfectStreak[currentTeam]||0;
+  $("bonusText").textContent = `Perfect-round streak before this round: ${n}/3.`;
   $("scorePanel").classList.add("show");
   phase = "scoring";
+  updateRoundPreview();
 }
 
 $("answerBtn").addEventListener("click", () => {
   if(phase === "acting" || phase === "readyToAct") showAnswerPanel();
 });
 
+function updateRoundPreview(){
+  if(phase !== "scoring") return;
+  const a=$("actionMark").dataset.on === "1";
+  const p=$("placeMark").dataset.on === "1";
+  const sen=$("sentenceMark").dataset.on === "1";
+  const base=(a?1:0)+(p?1:0)+(sen?1:0);
+  const perfect=a&&p&&sen;
+  const nextStreak=perfect ? (perfectStreak[currentTeam]+1) : 0;
+  if(perfect && nextStreak>=3){
+    $("bonusText").textContent="🔥 PERFECT! Third perfect round in a row: 3 + 1 bonus = 4 points.";
+  } else if(perfect){
+    $("bonusText").textContent=`✓ Perfect round = 3 points. Perfect streak: ${nextStreak}/3.`;
+  } else {
+    $("bonusText").textContent=`Selected score: ${base} point${base===1?"":"s"}. A non-perfect round resets this team's streak.`;
+  }
+}
+
 function toggleMark(btn){
   btn.dataset.on = btn.dataset.on === "1" ? "0" : "1";
   btn.classList.toggle("on", btn.dataset.on === "1");
   beep(btn.dataset.on === "1" ? 860 : 360, .06);
+  updateRoundPreview();
 }
 $("actionMark").addEventListener("click", ()=>toggleMark($("actionMark")));
 $("placeMark").addEventListener("click", ()=>toggleMark($("placeMark")));
+$("sentenceMark").addEventListener("click", ()=>toggleMark($("sentenceMark")));
 
-$("nextBtn").addEventListener("click", () => {
+$("nextBtn").addEventListener("click", async () => {
   let pts = 0;
-  if($("actionMark").dataset.on === "1") pts += 1;
-  if($("placeMark").dataset.on === "1") pts += 1;
-  if(crazyCombo && pts === 2) pts += 1;
+  const actionOK = $("actionMark").dataset.on === "1";
+  const placeOK = $("placeMark").dataset.on === "1";
+  const sentenceOK = $("sentenceMark").dataset.on === "1";
+  if(actionOK) pts += 1;
+  if(placeOK) pts += 1;
+  if(sentenceOK) pts += 1;
+
+  const perfect = actionOK && placeOK && sentenceOK;
+  let streakBonus = false;
+  if(perfect){
+    perfectStreak[currentTeam] += 1;
+    if(perfectStreak[currentTeam] >= 3){
+      pts += 1;
+      streakBonus = true;
+      perfectStreak[currentTeam] = 0;
+    }
+  } else {
+    perfectStreak[currentTeam] = 0;
+  }
   scores[currentTeam] += pts;
+  updateTopBar();
+
+  $("overlayText").textContent = streakBonus ? "🔥 4 POINTS!" : `${pts} POINT${pts===1?"":"S"}!`;
+  $("overlay").classList.add("show");
+  $("overlayText").style.animation = "none";
+  void $("overlayText").offsetWidth;
+  $("overlayText").style.animation = "pop .6s both";
+  beep(streakBonus ? 1100 : 940, streakBonus ? .20 : .11);
+  await new Promise(r=>setTimeout(r, streakBonus ? 1200 : 750));
+  $("overlay").classList.remove("show");
 
   playerIndex[currentTeam]++;
   if(playerIndex[currentTeam] > playerCounts[currentTeam]) playerIndex[currentTeam] = 1;
-
   currentTeam = currentTeam === 0 ? 1 : 0;
   updateTopBar();
   resetTurn();
-  beep(940,.11);
 });
 
 $("newTurnBtn").addEventListener("click", () => {
