@@ -1,0 +1,26 @@
+Observing the Community — SOUND RESTORED + 100-USER SAFE OPTIMIZATION
+
+SOUND
+- Original embedded MY VOICE system is fully restored/preserved.
+- Original embedded challenge music is fully restored/preserved.
+- No audio was externalized.
+- No audio was compressed.
+- No audio was re-encoded.
+- No voice sprite was removed.
+- No AudioContext / playback logic was changed.
+
+SAFE 100-USER OPTIMIZATION
+- Only visual/network-safe optimizations were kept.
+- Large home-menu PNG converted to WebP: 3.25 MB -> 0.33 MB.
+- Images use lazy loading and async decoding where possible.
+- Audio remains embedded so it cannot fail because of a missing online path.
+
+VALIDATION
+- Embedded MY VOICE preserved exactly: True
+- Embedded game music preserved exactly: True
+- Missing literal references in main lesson: []
+- Missing literal references in game: []
+
+SIZE
+Before: 12.31 MB unpacked
+After:  9.39 MB unpacked
