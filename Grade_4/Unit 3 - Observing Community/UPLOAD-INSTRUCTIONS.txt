@@ -1,0 +1,12 @@
+ONLINE AUDIO PATCH
+
+The live GitHub version currently uses browser speechSynthesis and has no assets/audio folder.
+
+Upload these files into:
+Grade_4 / Unit 3 - Observing Community /
+
+1. Replace index.html with this index.html
+2. Add assets/audio/voice-sprite.mp3
+3. Wait for GitHub Pages to rebuild, then hard-refresh the page.
+
+Important: if assets/audio/voice-sprite.mp3 is not visible in GitHub after upload, the online page will still use the laggy browser voice.
