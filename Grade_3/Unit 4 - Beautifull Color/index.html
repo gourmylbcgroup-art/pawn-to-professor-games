@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Beautiful Colors & My Feelings — Interactive EFL Lesson</title>
+<style>
+:root{
+ --ink:#112855;--cream:#fff7e7;--paper:#fffdf7;--wood:#a86e42;--gold:#ffbe21;
+ --red:#ef4050;--blue:#2988e7;--green:#39b75c;--purple:#8d50e6;--orange:#f39b1d;--pink:#ef4fa4;--teal:#2c8793;
+ --shadow:0 14px 34px rgba(24,37,59,.20);
+}
+*{box-sizing:border-box} html,body{margin:0;width:100%;min-height:100%;font-family:"Trebuchet MS",Arial,sans-serif;color:var(--ink);background:#ecd9b9}
+button{font:inherit}.bg{position:fixed;inset:0;z-index:-2;background:linear-gradient(rgba(255,248,232,.65),rgba(255,248,232,.82)),url("assets/optimized/index_ef8699d6cc6f07a5.webp") center/cover}
+.topbar{position:sticky;top:0;z-index:120;min-height:66px;display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(255,251,242,.97);box-shadow:0 4px 14px rgba(0,0,0,.13)}
+.icon{width:46px;height:46px;border:0;border-radius:13px;background:#fff;box-shadow:0 3px 9px rgba(0,0,0,.13);cursor:pointer;font-size:20px}
+.brand{font-size:20px;font-weight:1000;white-space:nowrap}.brand b{color:#2586df}
+.nav{display:flex;gap:7px;justify-content:center;align-items:center;flex:1;flex-wrap:wrap}
+.navbtn{border:0;border-radius:18px;color:white;padding:9px 13px;font-weight:1000;font-size:13px;cursor:pointer;box-shadow:inset 0 -4px rgba(0,0,0,.12),0 3px 8px rgba(0,0,0,.12);transition:.15s}
+.navbtn:hover,.navbtn.active{transform:translateY(-1px) scale(1.025);outline:3px solid white}
+.n1{background:var(--red)}.n2{background:var(--blue)}.n3{background:var(--green)}.n4{background:var(--purple)}.n5{background:var(--orange)}.n6{background:var(--pink)}.n7{background:var(--teal)}
+.tools{display:flex;align-items:center;gap:6px}.toolbtn{border:0;border-radius:13px;background:#fff5c7;color:#4c3500;padding:10px 12px;font-weight:1000;cursor:pointer;box-shadow:0 3px 9px rgba(0,0,0,.12)}
+.screen{display:none;min-height:calc(100vh - 66px);padding:16px}.screen.active{display:block}
+.shell{max-width:1240px;margin:auto;background:rgba(255,253,247,.95);border:6px solid var(--wood);border-radius:28px;box-shadow:var(--shadow);padding:17px}
+.heroTitle{text-align:center;background:linear-gradient(#fff9e9,#f1d2a4);border:5px solid var(--wood);border-radius:25px;padding:15px}.heroTitle h1{font-size:49px;line-height:1;margin:0;font-weight:1000}.heroTitle p{margin:8px 0 0;font-size:18px;font-weight:900}
+.homegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:14px}.homecard{position:relative;display:flex;flex-direction:column;min-height:220px;padding:12px;border:4px solid #e2c69c;border-radius:22px;background:#fffdf6;box-shadow:0 7px 18px rgba(0,0,0,.09)}
+.homecard .num{position:absolute;left:9px;top:8px;width:53px;height:53px;border-radius:50%;display:grid;place-items:center;color:white;border:4px solid #fff;font-size:26px;font-weight:1000}.homecard h3{font-size:24px;margin:6px 0 2px 58px}.homecard p{margin:0 0 6px 58px;color:#596275;font-weight:900;min-height:42px}.homevis{height:106px;display:flex;align-items:center;justify-content:center;gap:8px}.homevis img{height:102px;max-width:44%;object-fit:contain;filter:drop-shadow(0 5px 7px rgba(0,0,0,.11))}
+.go{border:0;border-radius:15px;padding:10px;color:white;font-weight:1000;cursor:pointer;margin-top:auto;box-shadow:inset 0 -4px rgba(0,0,0,.13)}
+.homebottom{display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}.note{background:white;border-radius:14px;padding:8px 12px;font-size:13px;font-weight:900}
+.pagehead{max-width:1240px;margin:0 auto 11px;display:flex;gap:12px;align-items:center}.bigbadge{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;color:white;border:5px solid white;font-size:30px;font-weight:1000;box-shadow:0 4px 10px rgba(0,0,0,.16)}.pagehead h1{margin:0;font-size:35px}.pagehead p{margin:3px 0 0;color:#596275;font-weight:900}
+.board{max-width:1240px;margin:auto;background:rgba(255,253,247,.96);border:4px solid #dfc49a;border-radius:26px;padding:14px;box-shadow:var(--shadow)}
+.missionbar{display:grid;grid-template-columns:1fr 1.25fr .75fr;gap:9px;margin-bottom:12px}.missionbox{background:#fff;border:3px solid #e6d8c4;border-radius:16px;padding:9px 12px}.missionbox b{display:block;font-size:12px;color:#7a603d;letter-spacing:.03em}.missionbox span{font-size:15px;font-weight:1000}
+.stagebox{background:linear-gradient(#fff,#fff9ec);border:3px solid #e5d8c5;border-radius:22px;padding:17px;min-height:445px}.stageTitle{text-align:center;font-size:30px;font-weight:1000;margin:0 0 4px}.stageSub{text-align:center;color:#5c6577;font-weight:900;margin-bottom:12px}
+.tabs{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin:8px 0 13px}.tab{border:0;border-radius:14px;padding:9px 12px;background:#e9edf4;color:#24365e;font-weight:1000;cursor:pointer}.tab.active{background:#2b89e7;color:white}
+.twocol{display:grid;grid-template-columns:.9fr 1.1fr;gap:17px;align-items:center}.visual{text-align:center}.visual img{max-width:100%;max-height:350px;object-fit:contain;filter:drop-shadow(0 9px 12px rgba(0,0,0,.12))}
+.monsterCrop{width:min(330px,80vw);height:330px;margin:auto;overflow:hidden;border-radius:22px;background:#fff;box-shadow:0 10px 22px rgba(0,0,0,.12)}.monsterCrop img{width:100%;height:430px;object-fit:cover;object-position:center top}
+.prompt{font-size:29px;font-weight:1000;text-align:center;margin:6px 0}.frame{background:#eaf5ff;border:3px solid #a9ceed;border-radius:17px;padding:12px 15px;min-height:59px;font-size:25px;font-weight:1000;text-align:center;display:flex;align-items:center;justify-content:center}
+.controls{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:11px}.btn{border:0;border-radius:15px;color:#fff;padding:11px 16px;font-weight:1000;cursor:pointer;box-shadow:inset 0 -4px rgba(0,0,0,.12),0 4px 10px rgba(0,0,0,.09)}.blue{background:var(--blue)}.green{background:var(--green)}.orange{background:var(--orange)}.purple{background:var(--purple)}.red{background:var(--red)}.gray{background:#778293}.pink{background:var(--pink)}
+.feedback{text-align:center;font-size:18px;font-weight:1000;margin-top:9px}.good{color:#168a3d}.bad{color:#c93447}
+.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;max-width:720px;margin:12px auto}.ans{border:3px solid #dce3ee;background:#fff;color:#102451;border-radius:16px;padding:12px;font-size:17px;font-weight:1000;cursor:pointer}.ans.correct{background:#d9f7e2;border-color:#38ae5b}.ans.wrong{background:#ffe0e4;border-color:#e74c5d}
+.teacher{margin-top:12px;background:#fff7d6;border:2px solid #ead46b;border-radius:14px;padding:8px 11px}.teacher summary{font-weight:1000;cursor:pointer}.teacher p{line-height:1.45;margin:5px 0}
+.speedDeck{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;max-width:980px;margin:12px auto}.speedCard{border:3px solid #e5d8c5;border-radius:15px;background:#fff;padding:5px;cursor:pointer}.speedCard img{width:100%;height:120px;object-fit:contain;border-radius:9px}.speedCard.active{border-color:#2b89e7;box-shadow:0 6px 15px rgba(43,137,231,.18);transform:translateY(-2px)}
+.wordRow{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;max-width:920px;margin:10px auto}.wordChip{background:white;border:3px solid #e3d7c5;border-radius:13px;padding:10px 5px;font-size:13px;font-weight:1000;color:#111827;text-transform:uppercase;cursor:pointer}.wordChip.active{border-color:#f0b900;background:#fff5c8}
+.mapgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mapitem{background:white;border:3px solid #e5d8c5;border-radius:17px;padding:7px;text-align:center}.mapitem img{height:142px;max-width:100%;object-fit:cover;object-position:center top;border-radius:10px}.mapitem b{display:block;font-size:18px;margin-top:4px}
+.miniCheck{background:#fff;border:3px solid #e2d4c0;border-radius:18px;padding:12px;max-width:820px;margin:14px auto}.miniCheck h2{margin:0 0 6px;text-align:center}
+.matchBoard{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:940px;margin:auto}.monsterPick,.feelingPick{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.pickCard{border:3px solid #e4d8c7;border-radius:15px;background:#fff;padding:6px;color:#102451;font-weight:1000;cursor:pointer}.pickCard img{width:100%;height:140px;object-fit:cover;object-position:center top;border-radius:9px}.pickCard.selected{border-color:#f1ba20;background:#fff5c6}.pickCard.matched{border-color:#39af5b;background:#ddf7e5;opacity:.72}.feelingPick .pickCard{min-height:78px;display:grid;place-items:center;font-size:18px}
+.levelcards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:980px;margin:0 auto 13px}.levelcard{border:4px solid #e4d7c5;background:#fff;border-radius:19px;padding:13px;cursor:pointer;text-align:left;color:#102451}.levelcard.active{border-color:#8d50e6;background:#f3ecff}.levelcard b{font-size:20px}.levelcard span{display:block;color:#61697a;font-weight:900;margin-top:4px}
+.detectiveQuestions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:700px;margin:12px auto}.detectQ{border:3px solid #dce4ee;background:white;border-radius:15px;padding:11px;font-weight:1000;color:#102451;cursor:pointer}.detectQ.used{opacity:.42}.detectLog{background:#f8f5ef;border:3px solid #e4d9ca;border-radius:15px;padding:10px;min-height:70px;font-weight:900;line-height:1.5}
+.buildrow{display:flex;justify-content:center;gap:12px;margin:12px 0}.buildbox{width:145px;height:112px;border:4px dashed #9ba8b7;border-radius:16px;background:#fff;display:grid;place-items:center;font-size:28px;font-weight:1000}.buildbox.filled{border-style:solid;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.45)}
+.colorchoices{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;max-width:760px;margin:12px auto}.dotchoice{height:68px;border-radius:17px;border:5px solid white;box-shadow:0 4px 10px rgba(0,0,0,.15);cursor:pointer}
+.practiceCards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:830px;margin:13px auto}.practiceCard{background:#fff;border:3px solid #e4d7c5;border-radius:17px;padding:13px;text-align:center}.practiceCard h3{margin:2px 0 5px}
+.assess{display:grid;grid-template-columns:.85fr 1.15fr;gap:17px;align-items:center}.scorebox{background:#fff;border:3px solid #e2d4c1;border-radius:19px;padding:13px;text-align:center}.scorebig{font-size:62px;font-weight:1000;color:#8d50e6}.markgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.mark{border:0;border-radius:15px;color:#fff;padding:12px;font-weight:1000;cursor:pointer}.mark.goodbtn{background:#38b75a}.mark.retrybtn{background:#e34c5a}
+.gamegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.gamecard{background:#fff;border:4px solid #e0c49a;border-radius:22px;padding:17px;text-align:center}.gamecard img{height:170px;max-width:100%;object-fit:contain}iframe{width:100%;height:72vh;border:0;border-radius:18px;background:#fff}
+.flashOverlay{position:fixed;inset:0;z-index:400;background:rgba(13,24,45,.85);display:none;padding:18px}.flashOverlay.open{display:flex;align-items:center;justify-content:center}.flashLibrary{width:min(1280px,96vw);height:min(900px,92vh);background:#fffaf0;border-radius:26px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 22px 60px rgba(0,0,0,.38)}.flashHead{display:flex;gap:10px;align-items:center;padding:12px 14px;background:#fff0bd;border-bottom:3px solid #ead58b}.flashHead h2{margin:0;flex:1}.flashClose{width:42px;height:42px;border:0;border-radius:50%;background:#fff;font-size:22px;font-weight:1000;cursor:pointer}.flashTabs{display:flex;gap:7px;flex-wrap:wrap;padding:9px 14px;border-bottom:2px solid #eee}.fltab{border:0;border-radius:13px;padding:8px 10px;background:#e9edf3;color:#26385d;font-weight:1000;cursor:pointer}.fltab.active{background:#2b89e7;color:#fff}.flashBody{flex:1;min-height:0;overflow:auto;padding:12px}.flashGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.flashThumb{border:3px solid transparent;border-radius:14px;background:#fff;padding:5px;cursor:pointer}.flashThumb:hover{border-color:#f0ba25}.flashThumb img{width:100%;height:155px;object-fit:contain;border-radius:9px}.flashThumb span{display:block;font-size:12px;font-weight:1000;padding:4px}
+.flashViewer{position:absolute;inset:0;background:rgba(6,14,29,.93);display:none;align-items:center;justify-content:center;padding:20px}.flashViewer.open{display:flex}.viewerInner{position:relative}.viewerInner img{max-width:86vw;max-height:88vh;display:block;border-radius:20px}.viewerBack{position:absolute;top:9px;left:9px;border:0;border-radius:13px;background:white;padding:9px 12px;font-weight:1000;cursor:pointer}
+@media(max-width:980px){.brand{display:none}.navbtn{font-size:11px;padding:8px}.homegrid{grid-template-columns:repeat(2,1fr)}.missionbar{grid-template-columns:1fr}.twocol,.assess{grid-template-columns:1fr}.flashGrid{grid-template-columns:repeat(4,1fr)}.speedDeck{grid-template-columns:repeat(4,1fr)}.mapgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.homegrid{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.wordRow,.colorchoices{grid-template-columns:repeat(4,1fr)}.matchBoard{grid-template-columns:1fr}.levelcards{grid-template-columns:1fr}.flashGrid{grid-template-columns:repeat(2,1fr)}.gamegrid{grid-template-columns:1fr}}
+
+/* In-app persistent music player */
+.musicPanel{
+ position:fixed;right:14px;top:76px;z-index:250;width:min(410px,92vw);
+ background:#fffaf0;border:4px solid #d6b06d;border-radius:22px;
+ box-shadow:0 18px 42px rgba(0,0,0,.24);padding:13px;display:none
+}
+.musicPanel.open{display:block}
+.musicHead{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.musicHead h3{margin:0;flex:1;font-size:20px}.musicClose{border:0;width:34px;height:34px;border-radius:50%;background:#fff;font-weight:1000;cursor:pointer}
+.musicArt{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:center}.musicArt img{width:92px;height:92px;object-fit:cover;object-position:center top;border-radius:16px}
+.musicControls{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.musicControls button{border:0;border-radius:13px;padding:9px 12px;color:#fff;font-weight:1000;cursor:pointer}
+.musicPlay{background:#39b75c}.musicPause{background:#778293}.musicRestart{background:#2b89e7}
+.musicProgress{height:10px;background:#ece8e0;border-radius:99px;overflow:hidden;margin:10px 0}.musicProgress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ef4fa4,#f39b1d,#39b75c)}
+.musicTime{font-size:12px;font-weight:900;color:#687084;text-align:right}
+.musicHint{font-size:13px;font-weight:900;color:#5d6472;line-height:1.35}
+
+
+/* replaced home interface */
+.interfaceShell{max-width:1240px;margin:0 auto;position:relative;border:6px solid var(--wood);border-radius:30px;overflow:hidden;box-shadow:var(--shadow);background:#fff7ea}
+.interfaceShell img{width:100%;display:block}
+.hotspot{position:absolute;border:0;background:rgba(255,255,255,0.001);cursor:pointer;border-radius:22px}
+.hotspot:hover{box-shadow:0 0 0 4px rgba(255,255,255,.75),0 0 0 8px rgba(43,137,231,.35) inset;background:rgba(255,255,255,.06)}
+.hs-start{left:9.3%;top:27.8%;width:22.0%;height:33.0%}
+.hs-learn{left:31.8%;top:27.8%;width:21.7%;height:33.0%}
+.hs-play{left:54.3%;top:27.8%;width:21.4%;height:33.0%}
+.hs-practice{left:76.6%;top:27.8%;width:20.8%;height:33.0%}
+.hs-speak{left:10.4%;top:63.2%;width:26.2%;height:32.2%}
+.hs-finish{left:37.5%;top:63.2%;width:25.2%;height:32.2%}
+.hs-games{left:64.7%;top:63.2%;width:25.6%;height:32.2%}
+.hs-flash{left:72.8%;top:0.8%;width:9.1%;height:7.0%;border-radius:16px}
+.hs-music{left:82.3%;top:0.8%;width:8.6%;height:7.0%;border-radius:16px}
+.hs-sound{left:91.1%;top:0.8%;width:4.2%;height:7.0%;border-radius:14px}
+.hs-pin{left:95.6%;top:0.8%;width:4.1%;height:7.0%;border-radius:14px}
+.interfaceHint{max-width:1240px;margin:10px auto 0;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.interfaceHint .note{background:#fffef8;border:2px solid #eadcc9}
+@media(max-width:900px){.interfaceShell{border-width:4px;border-radius:22px}.hotspot{border-radius:14px}.interfaceHint{gap:7px}}
+
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<header class="topbar">
+ <button class="icon" id="homeBtn">⌂</button>
+ <div class="brand">Beautiful Colors <b>& My Feelings</b></div>
+ <nav class="nav">
+  <button class="navbtn n1" data-go="start">1 START</button>
+  <button class="navbtn n2" data-go="learn">2 LEARN</button>
+  <button class="navbtn n3" data-go="play">3 PLAY</button>
+  <button class="navbtn n4" data-go="practice">4 PRACTICE</button>
+  <button class="navbtn n5" data-go="speak">5 SPEAK</button>
+  <button class="navbtn n6" data-go="finish">6 FINISH</button>
+  <button class="navbtn n7" data-go="games">7 GAMES</button>
+ </nav>
+ <div class="tools">
+  <button class="icon" id="pinBtn">📌</button>
+  <button class="toolbtn" id="flashBtn">🃏 FLASHCARDS</button>
+  <button class="toolbtn" id="musicBtn">🎵 PLAY MUSIC</button>
+  <button class="icon" id="soundBtn">🔊</button>
+ </div>
+</header>
+
+<div class="musicPanel" id="musicPanel">
+ <div class="musicHead"><h3>🎵 Monster Mission Song</h3><button class="musicClose" id="musicClose">×</button></div>
+ <div class="musicArt">
+  <img src="assets/optimized/index_5dcf1e227df6b394.webp" alt="yellow monster" decoding="async" loading="lazy">
+  <div><b>Monster Mission</b><div class="musicHint">Play the song here. You can move through START, LEARN, PLAY, PRACTICE, SPEAK and FINISH while it keeps playing.</div></div>
+ </div>
+ <audio id="lessonSong" src="Monster Mission.mp3" preload="auto"></audio>
+ <div class="musicControls">
+  <button class="musicPlay" id="musicPlay">▶ PLAY</button>
+  <button class="musicPause" id="musicPause">⏸ PAUSE</button>
+  <button class="musicRestart" id="musicRestart">↺ RESTART</button>
+ </div>
+ <div class="musicProgress"><i id="musicProgressBar"></i></div>
+ <div class="musicTime" id="musicTime">0:00 / 0:00</div>
+</div>
+
+
+
+<section class="screen active" id="home">
+ <div class="interfaceShell">
+  <img src="home_interface_replacement.webp" alt="Beautiful Colors and My Feelings lesson home interface" decoding="async">
+  <button class="hotspot hs-start" data-go="start" aria-label="Start"></button>
+  <button class="hotspot hs-learn" data-go="learn" aria-label="Learn"></button>
+  <button class="hotspot hs-play" data-go="play" aria-label="Play"></button>
+  <button class="hotspot hs-practice" data-go="practice" aria-label="Practice"></button>
+  <button class="hotspot hs-speak" data-go="speak" aria-label="Speak"></button>
+  <button class="hotspot hs-finish" data-go="finish" aria-label="Finish"></button>
+  <button class="hotspot hs-games" data-go="games" aria-label="Games"></button>
+  <button class="hotspot hs-flash" id="flashBtnHome" aria-label="Flashcards"></button>
+  <button class="hotspot hs-music" id="musicBtnHome" aria-label="Play music"></button>
+  <button class="hotspot hs-sound" id="soundBtnHome" aria-label="Sound"></button>
+  <button class="hotspot hs-pin" id="pinBtnHome" aria-label="Teacher tools"></button>
+ </div>
+ <div class="interfaceHint">
+   <div class="note">Same lesson structure kept: 1 START → 7 GAMES</div>
+   <div class="note">Home screen replaced with the new Numbers-style interface image.</div>
+ </div>
+</section>
+
+<section class="screen" id="start">
+ <div class="pagehead"><div class="bigbadge n1">1</div><div><h1>START — Monster Mission Warm-Up</h1><p>5 minutes • short chunks • song + fast color retrieval</p></div></div>
+ <div class="board">
+  <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Activate all seven color words quickly.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>What color is it? → It’s ___.</span></div><div class="missionbox"><b>🧩 WEEK</b><span>Week 9 entry</span></div></div>
+  <div class="stagebox"><div class="tabs"><button class="tab active" data-starttab="flash">COLOR FLASH</button><button class="tab" data-starttab="song">SONG</button><button class="tab" data-starttab="transfer">PICTURE TRANSFER</button></div><div id="startContent"></div>
+   <details class="teacher"><summary>Teacher script & scaffolding</summary><p>Keep START brief. Students first retrieve a color word, then expand to “It’s ___.” Use the song for movement and energy, not as a long teaching stage.</p></details>
+  </div>
+ </div>
+</section>
+
+<section class="screen" id="learn">
+ <div class="pagehead"><div class="bigbadge n2">2</div><div><h1>LEARN — Colors → Feelings</h1><p>10 minutes • one model at a time • model → repeat → mini-check</p></div></div>
+ <div class="board">
+  <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Connect colors to monsters and feelings.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>What color is it? / It’s ___. • How does the monster feel? / He is ___.</span></div><div class="missionbox"><b>🧩 WEEK</b><span>Week 9 core</span></div></div>
+  <div class="stagebox"><div class="tabs"><button class="tab active" data-learntab="colors">🎨 COLORS</button><button class="tab" data-learntab="monsters">👾 MONSTERS</button><button class="tab" data-learntab="sentences">💬 SENTENCES</button></div><div id="learnContent"></div>
+   <div class="miniCheck"><h2>Mini-check</h2><div id="learnMini"></div></div>
+   <details class="teacher"><summary>Teacher script & scaffolding</summary><p>Teach the color sentence first. Then connect yellow/happy, blue/sad, red/angry, green/calm and black/scared. Add pink/love when ready. Keep white as a color-only item.</p></details>
+  </div>
+ </div>
+</section>
+
+<section class="screen" id="play">
+ <div class="pagehead"><div class="bigbadge n3">3</div><div><h1>PLAY — Monster Match</h1><p>8 minutes • one strong guided game • say the sentence before matching</p></div></div>
+ <div class="board">
+  <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Use the Week 9 color–feeling connections accurately.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>What color is it? → It’s ___. • How does the monster feel? → He is ___.</span></div><div class="missionbox"><b>🎮 ACTION</b><span>Choose monster → say → match feeling</span></div></div>
+  <div class="stagebox" id="playContent">
+   <details class="teacher"><summary>Teacher script & scaffolding</summary><p>Students choose a monster, say its color, then match the feeling. Ask the feeling question after each match. The activity ends when all six monsters are matched.</p></details>
+  </div>
+ </div>
+</section>
+
+<section class="screen" id="practice">
+ <div class="pagehead"><div class="bigbadge n4">4</div><div><h1>PRACTICE — Monster Detective</h1><p>10 minutes • Level 1 → Level 2 → Level 3 • support gradually removed</p></div></div>
+ <div class="board">
+  <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Move from identifying language to asking detective questions.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>It’s ___. • He is ___. • Is it ___? → Yes, it is. / No, it isn’t.</span></div><div class="missionbox"><b>🧩 WEEK</b><span>Week 10</span></div></div>
+  <div class="stagebox"><div class="levelcards">
+   <button class="levelcard active" data-practicelevel="1"><b>Level 1 — Point + Identify</b><span>Color or feeling first.</span></button>
+   <button class="levelcard" data-practicelevel="2"><b>Level 2 — Full Sentence</b><span>Complete color + feeling sentences.</span></button>
+   <button class="levelcard" data-practicelevel="3"><b>Level 3 — Ask + Answer</b><span>Use yes/no questions to solve the mystery.</span></button>
+  </div><div id="practiceContent"></div>
+   <details class="teacher"><summary>Teacher script & scaffolding</summary><p>Level 1 allows short identification. Level 2 requires the complete sentence. Level 3 becomes a true Monster Detective: students choose their own color questions until the monster is found.</p></details>
+  </div>
+ </div>
+</section>
+
+<section class="screen" id="speak">
+ <div class="pagehead"><div class="bigbadge n5">5</div><div><h1>SPEAK — Listen & Build Mission</h1><p>7 minutes • listen → say → build • less visual support</p></div></div>
+ <div class="board">
+  <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Produce the Week 11 language with increasing independence.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>It’s yellow / blue / pink. • How does the monster feel? • Are you happy?</span></div><div class="missionbox"><b>🧩 WEEK</b><span>Week 11</span></div></div>
+  <div class="stagebox" id="speakContent">
+   <details class="teacher"><summary>Teacher script & scaffolding</summary><p>Model Box 1 with yellow. Give less help for blue and pink. After the three boxes, connect the colors to feelings. Use the grass clue and personal feeling question only after the core build is complete.</p></details>
+  </div>
+ </div>
+</section>
+
+<section class="screen" id="finish">
+ <div class="pagehead"><div class="bigbadge n6">6</div><div><h1>FINISH — Exit Challenge</h1><p>5 minutes • 8 calm questions • one question at a time • teacher marks after speaking</p></div></div>
+ <div class="board">
+  <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Check independent use of the unit language.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>Color • feeling • yes/no • clue • personal answer</span></div><div class="missionbox"><b>✅ CHECK</b><span>Independent / Needs support</span></div></div>
+  <div class="stagebox assess"><div class="visual"><img id="finishImg" decoding="async" loading="lazy"></div><div><div class="stageSub" id="finishCounter"></div><div class="prompt" id="finishPrompt"></div><div class="frame" id="finishModel">Student answers aloud first.</div><div class="controls"><button class="btn blue" id="finishReveal">SHOW MODEL</button></div><div class="markgrid"><button class="mark goodbtn" id="finishGood">✓ INDEPENDENT</button><button class="mark retrybtn" id="finishRetry">↺ NEEDS SUPPORT</button></div><div class="feedback" id="finishFeedback"></div><div class="scorebox"><div>Independent answers</div><div class="scorebig" id="finishScore">0 / 8</div></div><div class="controls"><button class="btn pink" id="finishNext">NEXT ➜</button><button class="btn gray" id="finishReset">RESET</button></div></div>
+   <details class="teacher"><summary>Teacher script & scaffolding</summary><p>Do not show the model until the student has answered. Students who need help may use the top-right flashcard library, then repeat the full sentence.</p></details>
+  </div>
+ </div>
+</section>
+
+<section class="screen" id="games">
+ <div class="pagehead"><div class="bigbadge n7">7</div><div><h1>GAMES</h1><p>Optional extension • the teaching sequence is already complete</p></div></div>
+ <div class="board">
+  <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Recycle the full unit through play.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>All Week 9–11 sentence patterns</span></div><div class="missionbox"><b>⏱ CHOICE</b><span>Quick 5 min / Full game</span></div></div>
+  <div class="stagebox"><div class="gamegrid">
+   <div class="gamecard"><h2>⚡ Quick Monster Mission</h2><p>Six mixed questions for a normal class.</p><img src="assets/optimized/index_5dcf1e227df6b394.webp" decoding="async" loading="lazy"><button class="btn green" id="quickStart">START QUICK GAME</button></div>
+   <div class="gamecard"><h2>🏆 Full Monster Mission</h2><p>The full 4-player, 3-level game for a longer game block.</p><img src="assets/optimized/index_00299e9506839ee2.webp" decoding="async" loading="lazy"><button class="btn purple" id="fullGameBtn">OPEN FULL GAME</button></div>
+  </div><div id="quickArea" style="display:none;margin-top:15px" class="twocol"><div class="visual"><img id="quickImg" decoding="async" loading="lazy"></div><div><div class="prompt" id="quickPrompt"></div><div class="answers" id="quickAnswers"></div><div class="feedback" id="quickFeedback"></div><div class="controls"><button class="btn green" id="quickNext">NEXT ➜</button><button class="btn gray" id="quickClose">CLOSE</button></div></div></div>
+  <div id="fullArea" style="display:none;margin-top:15px"><iframe src="Monster_Mission_FULL_GAME.html"></iframe><div class="controls"><button class="btn gray" id="fullClose">CLOSE FULL GAME</button></div></div>
+  </div>
+ </div>
+</section>
+
+<div class="flashOverlay" id="flashOverlay">
+ <div class="flashLibrary">
+  <div class="flashHead"><h2>🃏 Flashcard Library</h2><div class="note">Choose any card → show it large.</div><button class="flashClose" id="flashClose">×</button></div>
+  <div class="flashTabs" id="flashTabs"></div><div class="flashBody"><div class="flashGrid" id="flashGrid"></div></div>
+ </div>
+ <div class="flashViewer" id="flashViewer"><div class="viewerInner"><button class="viewerBack" id="viewerBack">← ALL FLASHCARDS</button><img id="viewerImg" decoding="async" loading="lazy"></div></div>
+</div>
+
+<script>
+const DATA={"bg":"assets/optimized/index_ef8699d6cc6f07a5.webp","song":"Monster Mission.mp3","sphere":{"yellow":"assets/optimized/index_3254bd73ec86432c.webp","green":"assets/optimized/index_89571a8fc5b6cecf.webp","red":"assets/optimized/index_69aecefd2a736b22.webp","black":"assets/optimized/index_533b6d15859e11a0.webp","pink":"assets/optimized/index_a66d718090caf679.webp","blue":"assets/optimized/index_504f0aa9f4b84660.webp","white":"assets/optimized/index_5b62fdc559bdac4a.webp"},"objects":{"yellow":"assets/optimized/index_5628b211ffffe8e3.webp","green":"assets/optimized/index_3d6be64607d545f6.webp","red":"assets/optimized/index_7e38cda0d641f856.webp","black":"assets/optimized/index_ad84d62ea3f68afe.webp","pink":"assets/optimized/index_701da6337282de2b.webp","blue":"assets/optimized/index_456785fb8c8f3460.webp","white":"assets/optimized/index_539e31cb5263e1ca.webp"},"monsters":{"yellow":"assets/optimized/index_5dcf1e227df6b394.webp","blue":"assets/optimized/index_38da5f9588bba6cd.webp","red":"assets/optimized/index_e77b1d94f05199ef.webp","green":"assets/optimized/index_33ff06f84c9c6520.webp","black":"assets/optimized/index_ea5616307dfec552.webp","pink":"assets/optimized/index_285e0d9ede82bafa.webp"},"mysteries":["assets/optimized/index_00299e9506839ee2.webp","assets/optimized/index_49f7a4e292ad8227.webp","assets/optimized/index_860a58b624ace6ac.webp","assets/optimized/index_d49a85951bb7af8f.webp","assets/optimized/index_2dddbc0c67a5dcfd.webp"],"words":{"yellow":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2YyYzQwMCIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+WUVMTE9XPC90ZXh0PgogICAgPC9zdmc+","green":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzI1YWQ0YiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+R1JFRU48L3RleHQ+CiAgICA8L3N2Zz4=","red":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2U4NDA0ZSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UkVEPC90ZXh0PgogICAgPC9zdmc+","black":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzIzMjYyYyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxBQ0s8L3RleHQ+CiAgICA8L3N2Zz4=","pink":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2VmNThhYSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UElOSzwvdGV4dD4KICAgIDwvc3ZnPg==","blue":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzJiODZkZiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxVRTwvdGV4dD4KICAgIDwvc3ZnPg==","white":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2Q5ZDlkMyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+V0hJVEU8L3RleHQ+CiAgICA8L3N2Zz4="},"hex":{"yellow":"#f2c400","green":"#25ad4b","red":"#e8404e","black":"#23262c","pink":"#ef58aa","blue":"#2b86df","white":"#d9d9d3"},"extras":{"map":"assets/optimized/index_17e658a372b53bc6.webp","howfeel":"assets/optimized/index_6effbaffd4dc6d4a.webp","arehappy":"assets/optimized/index_ba3b0203de4c9d63.webp","grass":"assets/optimized/index_c001e243810bea68.webp"},"flashcards":[{"cat":"COLOR PICTURES","label":"Yellow \u2014 picture only","src":"assets/optimized/index_3254bd73ec86432c.webp"},{"cat":"COLOR PICTURES","label":"Green \u2014 picture only","src":"assets/optimized/index_89571a8fc5b6cecf.webp"},{"cat":"COLOR PICTURES","label":"Red \u2014 picture only","src":"assets/optimized/index_69aecefd2a736b22.webp"},{"cat":"COLOR PICTURES","label":"Black \u2014 picture only","src":"assets/optimized/index_533b6d15859e11a0.webp"},{"cat":"COLOR PICTURES","label":"Pink \u2014 picture only","src":"assets/optimized/index_a66d718090caf679.webp"},{"cat":"COLOR PICTURES","label":"Blue \u2014 picture only","src":"assets/optimized/index_504f0aa9f4b84660.webp"},{"cat":"COLOR PICTURES","label":"White \u2014 picture only","src":"assets/optimized/index_5b62fdc559bdac4a.webp"},{"cat":"COLOR WORDS","label":"Yellow","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2YyYzQwMCIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+WUVMTE9XPC90ZXh0PgogICAgPC9zdmc+"},{"cat":"COLOR WORDS","label":"Green","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzI1YWQ0YiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+R1JFRU48L3RleHQ+CiAgICA8L3N2Zz4="},{"cat":"COLOR WORDS","label":"Red","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2U4NDA0ZSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UkVEPC90ZXh0PgogICAgPC9zdmc+"},{"cat":"COLOR WORDS","label":"Black","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzIzMjYyYyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxBQ0s8L3RleHQ+CiAgICA8L3N2Zz4="},{"cat":"COLOR WORDS","label":"Pink","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2VmNThhYSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UElOSzwvdGV4dD4KICAgIDwvc3ZnPg=="},{"cat":"COLOR WORDS","label":"Blue","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzJiODZkZiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxVRTwvdGV4dD4KICAgIDwvc3ZnPg=="},{"cat":"COLOR WORDS","label":"White","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2Q5ZDlkMyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+V0hJVEU8L3RleHQ+CiAgICA8L3N2Zz4="},{"cat":"OBJECTS","label":"Yellow \u2014 object","src":"assets/optimized/index_5628b211ffffe8e3.webp"},{"cat":"OBJECTS","label":"Green \u2014 object","src":"assets/optimized/index_3d6be64607d545f6.webp"},{"cat":"OBJECTS","label":"Red \u2014 object","src":"assets/optimized/index_7e38cda0d641f856.webp"},{"cat":"OBJECTS","label":"Black \u2014 object","src":"assets/optimized/index_ad84d62ea3f68afe.webp"},{"cat":"OBJECTS","label":"Pink \u2014 object","src":"assets/optimized/index_701da6337282de2b.webp"},{"cat":"OBJECTS","label":"Blue \u2014 object","src":"assets/optimized/index_456785fb8c8f3460.webp"},{"cat":"OBJECTS","label":"White \u2014 object","src":"assets/optimized/index_539e31cb5263e1ca.webp"},{"cat":"MONSTERS","label":"Yellow \u2014 happy","src":"assets/optimized/index_5dcf1e227df6b394.webp"},{"cat":"MONSTERS","label":"Blue \u2014 sad","src":"assets/optimized/index_38da5f9588bba6cd.webp"},{"cat":"MONSTERS","label":"Red \u2014 angry","src":"assets/optimized/index_e77b1d94f05199ef.webp"},{"cat":"MONSTERS","label":"Green \u2014 calm","src":"assets/optimized/index_33ff06f84c9c6520.webp"},{"cat":"MONSTERS","label":"Black \u2014 scared","src":"assets/optimized/index_ea5616307dfec552.webp"},{"cat":"MONSTERS","label":"Pink \u2014 love","src":"assets/optimized/index_285e0d9ede82bafa.webp"},{"cat":"MYSTERY","label":"Mystery card 1","src":"assets/optimized/index_00299e9506839ee2.webp"},{"cat":"MYSTERY","label":"Mystery card 2","src":"assets/optimized/index_49f7a4e292ad8227.webp"},{"cat":"MYSTERY","label":"Mystery card 3","src":"assets/optimized/index_860a58b624ace6ac.webp"},{"cat":"MYSTERY","label":"Mystery card 4","src":"assets/optimized/index_d49a85951bb7af8f.webp"},{"cat":"MYSTERY","label":"Mystery card 5","src":"assets/optimized/index_2dddbc0c67a5dcfd.webp"}]};
+const COLORS=["yellow","green","red","black","pink","blue","white"];
+const MONSTERS=["yellow","blue","red","green","black","pink"];
+const FEEL={yellow:"happy",blue:"sad",red:"angry",green:"calm",black:"scared",pink:"love"};
+const $=id=>document.getElementById(id);
+let soundOn=true;
+function speak(t){if(!soundOn||!("speechSynthesis"in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.rate=.87;u.pitch=1.03;let vs=speechSynthesis.getVoices(),en=vs.find(v=>/^en/i.test(v.lang));if(en)u.voice=en;speechSynthesis.speak(u)}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function img(c,type="sphere"){return DATA[type][c]} function monster(c){return DATA.monsters[c]}
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.toggle("active",x.id===id));document.querySelectorAll(".navbtn").forEach(x=>x.classList.toggle("active",x.dataset.go===id));window.scrollTo(0,0)}
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));$("homeBtn").onclick=()=>show("home");
+$("soundBtn").onclick=()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"🔊":"🔇";if(!soundOn&&"speechSynthesis"in window)speechSynthesis.cancel()};
+$("pinBtn").onclick=()=>{alert("Teacher tools remain available at the top: Flashcards, Music and Sound.")};
+
+if($("flashBtnHome"))$("flashBtnHome").onclick=()=>$("flashBtn").click();
+if($("musicBtnHome"))$("musicBtnHome").onclick=()=>$("musicBtn").click();
+if($("soundBtnHome"))$("soundBtnHome").onclick=()=>$("soundBtn").click();
+if($("pinBtnHome"))$("pinBtnHome").onclick=()=>$("pinBtn").click();
+
+$("musicBtn").onclick=()=>{$("musicPanel").classList.toggle("open")};
+
+const lessonSong=$("lessonSong");
+function fmtTime(sec){if(!isFinite(sec))return "0:00";const m=Math.floor(sec/60),ss=Math.floor(sec%60).toString().padStart(2,"0");return `${m}:${ss}`}
+$("musicClose").onclick=()=>$("musicPanel").classList.remove("open");
+$("musicPlay").onclick=()=>lessonSong.play().catch(()=>{});
+$("musicPause").onclick=()=>lessonSong.pause();
+$("musicRestart").onclick=()=>{lessonSong.currentTime=0;lessonSong.play().catch(()=>{})};
+lessonSong.addEventListener("timeupdate",()=>{
+ const p=lessonSong.duration?100*lessonSong.currentTime/lessonSong.duration:0;
+ $("musicProgressBar").style.width=p+"%";
+ $("musicTime").textContent=`${fmtTime(lessonSong.currentTime)} / ${fmtTime(lessonSong.duration)}`;
+});
+lessonSong.addEventListener("loadedmetadata",()=>{$("musicTime").textContent=`0:00 / ${fmtTime(lessonSong.duration)}`;});
+
+function answerButtons(el,opts,correct,onCorrect,fb){el.innerHTML="";shuffle(opts).forEach(o=>{let b=document.createElement("button");b.className="ans";b.textContent=o;b.onclick=()=>{if(o===correct){b.classList.add("correct");[...el.children].forEach(x=>x.disabled=true);if(fb){fb.textContent="Correct!";fb.className="feedback good"}speak(o);onCorrect&&onCorrect(o)}else{b.classList.add("wrong");if(fb){fb.textContent="Try again.";fb.className="feedback bad"}setTimeout(()=>b.classList.remove("wrong"),300)}};el.appendChild(b)})}
+
+// START
+let startTab="flash",startColor=0;
+function renderStart(){
+ document.querySelectorAll("[data-starttab]").forEach(b=>b.classList.toggle("active",b.dataset.starttab===startTab));
+ let el=$("startContent");
+ if(startTab==="flash"){
+  let active=COLORS[startColor];
+  el.innerHTML=`<div class="stageTitle">Number-Flash Style Color Review</div><div class="stageSub">Tap a picture → say the color → say the full sentence.</div><div class="speedDeck" id="startDeck">${COLORS.map(c=>`<button class="speedCard ${c===active?"active":""}" data-c="${c}"><img src="${img(c,"objects")}" decoding="async" loading="lazy"></button>`).join("")}</div><div class="prompt">What color is it?</div><div class="frame" id="startFrame">Say the color word.</div><div class="controls"><button class="btn blue" id="startWord">SHOW WORD</button><button class="btn green" id="startFull">FULL SENTENCE</button><button class="btn orange" id="startRandom">RANDOM CARD</button></div>`;
+  function choose(c){startColor=COLORS.indexOf(c);active=c;$("startDeck").querySelectorAll(".speedCard").forEach(x=>x.classList.toggle("active",x.dataset.c===c));$("startFrame").textContent="Say the color word."}
+  $("startDeck").querySelectorAll(".speedCard").forEach(b=>b.onclick=()=>choose(b.dataset.c));$("startWord").onclick=()=>{$("startFrame").textContent=active;speak(active)};$("startFull").onclick=()=>{$("startFrame").textContent=`It’s ${active}.`;speak(`It’s ${active}.`)};$("startRandom").onclick=()=>choose(COLORS[Math.floor(Math.random()*COLORS.length)]);
+ } else if(startTab==="song"){
+  el.innerHTML=`<div class="stageTitle">Monster Mission Song</div><div class="stageSub">Press PLAY SONG. The song starts immediately and can continue while you move through the lesson.</div><div class="twocol"><div class="visual"><div class="monsterCrop"><img src="${monster("yellow")}" decoding="async" loading="lazy"></div></div><div><div class="frame">Red → Jump ×3<br>Blue → Clap ×3<br>Yellow → Turn around<br>Green → Touch the ground</div><div class="controls"><button class="btn red" id="openSong">▶ PLAY SONG</button><button class="btn gray" id="pauseSong">⏸ PAUSE</button></div></div></div>`;
+  $("openSong").onclick=()=>{const a=$("lessonSong");$("musicPanel").classList.add("open");a.play().catch(()=>{});};$("pauseSong").onclick=()=>$("lessonSong").pause();
+ } else {
+  let c=COLORS[startColor];
+  el.innerHTML=`<div class="stageTitle">Picture Transfer</div><div class="stageSub">Move from a plain color to an object without changing the sentence pattern.</div><div class="twocol"><div class="visual"><img src="${img(c,"objects")}" decoding="async" loading="lazy"></div><div><div class="prompt">What color is it?</div><div class="frame">It’s ______.</div><div class="controls"><button class="btn green" id="transferReveal">REVEAL</button><button class="btn orange" id="transferNext">NEXT PICTURE ➜</button></div><div class="feedback" id="transferFb"></div></div></div>`;
+  $("transferReveal").onclick=()=>{$("transferFb").textContent=`It’s ${c}.`;$("transferFb").className="feedback good";speak(`It’s ${c}.`)};$("transferNext").onclick=()=>{startColor=(startColor+1)%COLORS.length;renderStart()}
+ }
+}
+document.querySelectorAll("[data-starttab]").forEach(b=>b.onclick=()=>{startTab=b.dataset.starttab;renderStart()});renderStart();
+
+// LEARN
+let learnTab="colors",learnIndex=0;
+function renderLearn(){
+ document.querySelectorAll("[data-learntab]").forEach(b=>b.classList.toggle("active",b.dataset.learntab===learnTab));
+ let el=$("learnContent");
+ if(learnTab==="colors"){
+  let c=COLORS[learnIndex%COLORS.length];
+  el.innerHTML=`<div class="stageTitle">Step 1 — Colors</div><div class="stageSub">One model at a time.</div><div class="twocol"><div class="visual"><img src="${img(c,"objects")}" decoding="async" loading="lazy"></div><div><div class="prompt">What color is it?</div><div class="frame" id="learnFrame">It’s ______.</div><div class="controls"><button class="btn blue" id="learnHear">🔊 HEAR MODEL</button><button class="btn green" id="learnReveal">REVEAL</button><button class="btn orange" id="learnNext">NEXT MODEL ➜</button></div></div></div><div class="wordRow">${COLORS.map(x=>`<button class="wordChip ${x===c?"active":""}">${x}</button>`).join("")}</div>`;
+  $("learnHear").onclick=()=>speak(`What color is it? It’s ${c}.`);$("learnReveal").onclick=()=>{$("learnFrame").textContent=`It’s ${c}.`};$("learnNext").onclick=()=>{learnIndex=(learnIndex+1)%COLORS.length;renderLearn()}
+ } else if(learnTab==="monsters"){
+  el.innerHTML=`<div class="stageTitle">Step 2 — Connect Colors and Feelings</div><div class="stageSub">Yellow = happy • Blue = sad • Red = angry • Green = calm • Black = scared • Pink = love</div><div class="mapgrid">${MONSTERS.map(c=>`<div class="mapitem"><img src="${monster(c)}" decoding="async" loading="lazy"><b>${c} → ${FEEL[c]}</b></div>`).join("")}</div><div class="controls"><button class="btn blue" id="mapHear">🔊 HEAR MAP</button></div>`;
+  $("mapHear").onclick=()=>speak("Yellow is happy. Blue is sad. Red is angry. Green is calm. Black is scared. Pink is love.");
+ } else {
+  let c=["yellow","blue","red","green","black"][learnIndex%5];
+  el.innerHTML=`<div class="stageTitle">Step 3 — Two-Question Model</div><div class="stageSub">Use the same monster for color first, then feeling.</div><div class="twocol"><div class="visual"><div class="monsterCrop"><img src="${monster(c)}" decoding="async" loading="lazy"></div></div><div><div class="prompt">What color is it?</div><div class="frame">It’s ${c}.</div><div class="prompt">How does the monster feel?</div><div class="frame">He is ${FEEL[c]}.</div><div class="controls"><button class="btn blue" id="sentHear">🔊 HEAR MODEL</button><button class="btn orange" id="sentNext">NEXT MONSTER ➜</button></div></div></div>`;
+  $("sentHear").onclick=()=>speak(`What color is it? It’s ${c}. How does the monster feel? He is ${FEEL[c]}.`);$("sentNext").onclick=()=>{learnIndex=(learnIndex+1)%5;renderLearn()}
+ }
+ renderLearnMini();
+}
+function renderLearnMini(){
+ let color=COLORS[(learnIndex+2)%COLORS.length];
+ if(learnTab==="colors") $("learnMini").innerHTML=`<div class="prompt">Mini-check: What color is it?</div><div class="visual"><img style="max-height:130px" src="${img(color,"sphere")}" decoding="async" loading="lazy"></div><div class="controls"><button class="btn green" id="miniReveal">SHOW ANSWER</button></div><div class="feedback" id="miniFb"></div>`;
+ else if(learnTab==="monsters"){let c=MONSTERS[(learnIndex+1)%MONSTERS.length];$("learnMini").innerHTML=`<div class="prompt">Mini-check: How does the monster feel?</div><div class="visual"><div class="monsterCrop" style="height:150px;width:170px"><img style="height:220px" src="${monster(c)}" decoding="async" loading="lazy"></div></div><div class="controls"><button class="btn green" id="miniReveal">SHOW ANSWER</button></div><div class="feedback" id="miniFb"></div>`}
+ else {let c=["yellow","blue","red","green","black"][learnIndex%5];$("learnMini").innerHTML=`<div class="prompt">Mini-check: Is it ${c}?</div><div class="controls"><button class="btn green" id="miniReveal">SHOW MODEL</button></div><div class="feedback" id="miniFb"></div>`}
+ $("miniReveal").onclick=()=>{let t=learnTab==="colors"?`It’s ${color}.`:learnTab==="monsters"?`He is ${FEEL[MONSTERS[(learnIndex+1)%MONSTERS.length]]}.`:`Yes, it is.`;$("miniFb").textContent=t;$("miniFb").className="feedback good";speak(t)}
+}
+document.querySelectorAll("[data-learntab]").forEach(b=>b.onclick=()=>{learnTab=b.dataset.learntab;renderLearn()});renderLearn();
+
+// PLAY
+let playSelected=null,playMatched=new Set();
+function renderPlay(){
+ $("playContent").innerHTML=`<div class="stageTitle">Monster Match</div><div class="stageSub">1 Choose a monster → 2 say its color → 3 match its feeling.</div><div class="matchBoard"><div><div class="stageSub">MONSTERS</div><div class="monsterPick" id="playMonsters">${MONSTERS.map(c=>`<button class="pickCard ${playMatched.has(c)?"matched":""}" data-c="${c}" ${playMatched.has(c)?"disabled":""}><img src="${monster(c)}" decoding="async" loading="lazy"><span>${c}</span></button>`).join("")}</div></div><div><div class="stageSub">FEELINGS</div><div class="feelingPick" id="playFeelings">${MONSTERS.map(c=>`<button class="pickCard" data-f="${FEEL[c]}">${FEEL[c]}</button>`).join("")}</div></div></div><div class="feedback" id="playFb">${playMatched.size===6?"All six matched!":"Choose a monster."}</div><div class="controls"><button class="btn gray" id="playReset">RESET MATCH</button></div>`;
+ $("playMonsters").querySelectorAll(".pickCard").forEach(b=>b.onclick=()=>{playSelected=b.dataset.c;$("playMonsters").querySelectorAll(".pickCard").forEach(x=>x.classList.toggle("selected",x===b));$("playFb").textContent=`Say: “It’s ${playSelected}.” Then choose the feeling.`;speak(`What color is it?`)});
+ $("playFeelings").querySelectorAll(".pickCard").forEach(b=>b.onclick=()=>{if(!playSelected)return;if(b.dataset.f===FEEL[playSelected]){playMatched.add(playSelected);$("playFb").textContent=`Correct — How does the monster feel? He is ${FEEL[playSelected]}.`;$("playFb").className="feedback good";speak(`How does the monster feel? He is ${FEEL[playSelected]}.`);playSelected=null;setTimeout(renderPlay,350)}else{$("playFb").textContent="Try another feeling.";$("playFb").className="feedback bad"}});
+ $("playReset").onclick=()=>{playSelected=null;playMatched.clear();renderPlay()}
+}
+renderPlay();
+
+// PRACTICE
+let practiceLevel=1,practiceIndex=0;
+function renderPractice(){
+ document.querySelectorAll("[data-practicelevel]").forEach(b=>b.classList.toggle("active",Number(b.dataset.practicelevel)===practiceLevel));
+ let el=$("practiceContent"),c=MONSTERS[practiceIndex%MONSTERS.length];
+ if(practiceLevel===1){
+  el.innerHTML=`<div class="stageTitle">Level 1 — Point + Identify</div><div class="stageSub">Short answer first. Build confidence before full sentences.</div><div class="twocol"><div class="visual"><div class="monsterCrop"><img src="${monster(c)}" decoding="async" loading="lazy"></div></div><div><div class="prompt">Choose the feeling</div><div class="answers" id="p1ans"></div><div class="feedback" id="p1fb">Say the feeling word before you click.</div><div class="controls"><button class="btn orange" id="pNext">NEXT ➜</button></div></div></div>`;
+  answerButtons($("p1ans"),shuffle([FEEL[c],...MONSTERS.filter(x=>x!==c).slice(0,3).map(x=>FEEL[x])]),FEEL[c],null,$("p1fb"));$("pNext").onclick=()=>{practiceIndex++;renderPractice()}
+ } else if(practiceLevel===2){
+  el.innerHTML=`<div class="stageTitle">Level 2 — Full Sentence</div><div class="stageSub">Two complete answers about the same monster.</div><div class="twocol"><div class="visual"><div class="monsterCrop"><img src="${monster(c)}" decoding="async" loading="lazy"></div></div><div><div class="prompt">What color is it?</div><div class="frame">It’s ______.</div><div class="prompt">How does the monster feel?</div><div class="frame">He is ______.</div><div class="controls"><button class="btn green" id="p2Reveal">REVEAL MODEL</button><button class="btn orange" id="p2Next">NEXT ➜</button></div><div class="feedback" id="p2fb">Students answer aloud before the model appears.</div></div></div>`;
+  $("p2Reveal").onclick=()=>{$("p2fb").textContent=`It’s ${c}. He is ${FEEL[c]}.`;$("p2fb").className="feedback good";speak(`It’s ${c}. He is ${FEEL[c]}.`)};$("p2Next").onclick=()=>{practiceIndex++;renderPractice()}
+ } else {
+  renderDetective(el,c)
+ }
+}
+function renderDetective(el,target){
+ let solved=false,used=0;
+ el.innerHTML=`<div class="stageTitle">Level 3 — Ask + Answer: Monster Detective</div><div class="stageSub">Students choose the questions. A correct color question reveals the monster.</div><div class="twocol"><div class="visual"><img id="detectImg" src="${DATA.mysteries[practiceIndex%DATA.mysteries.length]}" decoding="async" loading="lazy"></div><div><div class="prompt">Choose a detective question</div><div class="detectiveQuestions" id="detectQs">${MONSTERS.map(c=>`<button class="detectQ" data-c="${c}">Is it ${c}?</button>`).join("")}</div><div class="detectLog" id="detectLog">Ask a color question.</div><div id="detectFinish"></div><div class="feedback" id="detectFb">Say the question aloud before clicking.</div><div class="controls"><button class="btn orange" id="detectNext" disabled>NEW MYSTERY ➜</button></div></div></div>`;
+ $("detectQs").querySelectorAll(".detectQ").forEach(b=>b.onclick=()=>{if(solved||b.classList.contains("used"))return;let c=b.dataset.c;b.classList.add("used");used++;speak(`Is it ${c}?`);if(c===target){solved=true;$("detectLog").innerHTML+=`<br><b>Is it ${c}? → Yes, it is.</b>`;$("detectImg").src=monster(target);$("detectFinish").innerHTML=`<div class="prompt">What color is it?</div><div class="frame">It’s ${target}.</div><div class="prompt">How does the monster feel?</div><div class="frame">${target==="pink"?"He feels love.":`He is ${FEEL[target]}.`}</div>`;$("detectFb").textContent=`Solved in ${used} question${used===1?"":"s"}.`;$("detectFb").className="feedback good";speak(`Yes, it is. It’s ${target}. ${target==="pink"?"He feels love.":`He is ${FEEL[target]}.`}`);$("detectNext").disabled=false}else{$("detectLog").innerHTML+=`<br>Is it ${c}? → No, it isn’t.`;speak("No, it isn’t.")}});
+ $("detectNext").onclick=()=>{practiceIndex++;renderPractice()}
+}
+document.querySelectorAll("[data-practicelevel]").forEach(b=>b.onclick=()=>{practiceLevel=Number(b.dataset.practicelevel);renderPractice()});renderPractice();
+
+// SPEAK
+let buildPos=0,buildMode=0;
+function renderSpeak(){
+ let targets=["yellow","blue","pink"];
+ $("speakContent").innerHTML=`<div class="stageTitle">Listen & Build — Boxes 1, 2, 3</div><div class="stageSub">Box 1 is modeled. Box 2 and Box 3 require more independence.</div><div class="buildrow"><div class="buildbox" id="b0">1</div><div class="buildbox" id="b1">2</div><div class="buildbox" id="b2">3</div></div><div class="prompt" id="buildPrompt">Box 1 — listen to the color sentence.</div><div class="frame" id="buildFrame">Press LISTEN.</div><div class="controls"><button class="btn blue" id="buildListen">🔊 LISTEN</button></div><div class="colorchoices" id="buildChoices"></div><div class="feedback" id="buildFb">Listen → say → choose → build.</div><div id="buildAfter"></div><div class="practiceCards"><div class="practiceCard"><h3>More Practice A — Grass Clue</h3><p>“It is the color of grass.”</p><button class="btn green" id="grassPractice">TRY CLUE</button></div><div class="practiceCard"><h3>More Practice B — Personal Feeling</h3><p>“Are you happy?”</p><button class="btn orange" id="personalPractice">ASK</button></div></div>`;
+ buildPos=0;
+ function step(){
+  if(buildPos>=3){finishBuild();return}
+  let c=targets[buildPos];$("buildPrompt").textContent=`Box ${buildPos+1} — ${buildPos===0?"Model":"Your turn"}`;$("buildFrame").textContent=buildPos===0?"Press LISTEN.":"Listen, say, then choose.";
+  $("buildChoices").innerHTML=COLORS.map(x=>`<button class="dotchoice" data-c="${x}" style="background:${DATA.hex[x]}"></button>`).join("");
+  document.querySelectorAll(".dotchoice").forEach(b=>b.onclick=()=>{let x=b.dataset.c;if(x===c){let box=$("b"+buildPos);box.classList.add("filled");box.style.background=DATA.hex[c];box.textContent="✓";$("buildFb").textContent=`Correct — It’s ${c}.`;$("buildFb").className="feedback good";speak(`It’s ${c}.`);buildPos++;setTimeout(step,250)}else{$("buildFb").textContent="Listen again.";$("buildFb").className="feedback bad"}})
+ }
+ $("buildListen").onclick=()=>{if(buildPos<3){let c=targets[buildPos];$("buildFrame").textContent=`It’s ${c}.`;speak(`It’s ${c}.`)}};
+ function finishBuild(){$("buildChoices").innerHTML="";$("buildPrompt").textContent="Mission boxes complete — connect colors to feelings.";$("buildFrame").textContent="yellow → happy • blue → sad • pink → love";$("buildAfter").innerHTML=`<div class="twocol" style="margin-top:12px"><div class="visual"><div class="monsterCrop"><img src="${monster("blue")}" decoding="async" loading="lazy"></div></div><div><div class="prompt">How does the monster feel?</div><div class="frame">He is ______.</div><div class="controls"><button class="btn green" id="buildFeel">REVEAL</button></div></div></div>`;$("buildFeel").onclick=()=>{document.querySelector("#buildAfter .frame").textContent="He is sad.";speak("He is sad.")}}
+ step();
+ $("grassPractice").onclick=()=>{speak("It is the color of grass.");$("buildFb").textContent="Student answers: It’s green.";$("buildFb").className="feedback good"};
+ $("personalPractice").onclick=()=>{speak("Are you happy?");$("buildFb").textContent="Student answers: Yes, I am. / No, I’m not.";$("buildFb").className="feedback good"};
+}
+renderSpeak();
+
+// FINISH
+const finishQs=[
+ {img:DATA.sphere.white,q:"What color is it?",a:"It’s white."},
+ {img:DATA.sphere.pink,q:"What color is it?",a:"It’s pink."},
+ {img:DATA.monsters.blue,q:"How does the monster feel?",a:"He is sad."},
+ {img:DATA.monsters.red,q:"How does the monster feel?",a:"He is angry."},
+ {img:DATA.monsters.green,q:"How does the monster feel?",a:"He is calm."},
+ {img:DATA.monsters.black,q:"Is it black?",a:"Yes, it is."},
+ {img:DATA.sphere.green,q:"It is the color of grass. What color is it?",a:"It’s green."},
+ {img:DATA.monsters.yellow,q:"Are you happy?",a:"Yes, I am. / No, I’m not.",personal:true}
+];
+let fi=0,fs=0,marked=false;
+function renderFinish(){marked=false;let q=finishQs[fi];$("finishImg").src=q.img;$("finishPrompt").textContent=q.q;$("finishCounter").textContent=`Question ${fi+1} / ${finishQs.length}`;$("finishModel").textContent="Student answers aloud first.";$("finishFeedback").textContent="";$("finishFeedback").className="feedback";
+ $("finishReveal").onclick=()=>{$("finishModel").textContent=q.a;speak(q.a.replace(" / "," "))};
+ $("finishGood").onclick=()=>{if(marked)return;marked=true;fs++;$("finishScore").textContent=`${fs} / ${finishQs.length}`;$("finishFeedback").textContent="Recorded: independent.";$("finishFeedback").className="feedback good"};
+ $("finishRetry").onclick=()=>{if(marked)return;marked=true;$("finishFeedback").textContent="Recorded: needs support. Use a flashcard, then repeat.";$("finishFeedback").className="feedback bad"};
+}
+$("finishNext").onclick=()=>{fi=(fi+1)%finishQs.length;renderFinish()};$("finishReset").onclick=()=>{fi=0;fs=0;$("finishScore").textContent="0 / 8";renderFinish()};renderFinish();
+
+// GAMES
+const quickQs=[
+ {img:DATA.objects.red,q:"What color is it?",c:"It’s red.",o:["It’s red.","It’s blue.","It’s black.","It’s green."]},
+ {img:DATA.monsters.yellow,q:"How does the monster feel?",c:"He is happy.",o:["He is sad.","He is happy.","He is scared.","He is calm."]},
+ {img:DATA.mysteries[0],q:"Is it blue?",c:"No, it isn’t.",o:["Yes, it is.","No, it isn’t."]},
+ {img:DATA.monsters.black,q:"What color is it?",c:"It’s black.",o:["It’s black.","It’s blue.","It’s red.","It’s green."]},
+ {img:DATA.sphere.green,q:"It is the color of grass. What color is it?",c:"It’s green.",o:["It’s green.","It’s yellow.","It’s pink.","It’s white."]},
+ {img:DATA.monsters.pink,q:"What color is it?",c:"It’s pink.",o:["It’s pink.","It’s red.","It’s white.","It’s blue."]}
+];let qi=0;
+function renderQuick(){let q=quickQs[qi];$("quickImg").src=q.img;$("quickPrompt").textContent=q.q;$("quickFeedback").textContent=`Question ${qi+1} / ${quickQs.length}`;answerButtons($("quickAnswers"),q.o,q.c,null,$("quickFeedback"))}
+$("quickStart").onclick=()=>{$("quickArea").style.display="grid";$("fullArea").style.display="none";qi=0;renderQuick()};$("quickNext").onclick=()=>{qi=(qi+1)%quickQs.length;renderQuick()};$("quickClose").onclick=()=>$("quickArea").style.display="none";$("fullGameBtn").onclick=()=>{$("fullArea").style.display="block";$("quickArea").style.display="none";$("fullArea").scrollIntoView({behavior:"smooth"})};$("fullClose").onclick=()=>$("fullArea").style.display="none";
+
+// FLASHCARDS
+const cats=["ALL","COLOR PICTURES","COLOR WORDS","OBJECTS","MONSTERS","MYSTERY"];let flashCat="ALL";
+function renderFlashTabs(){$("flashTabs").innerHTML=cats.map(c=>`<button class="fltab ${c===flashCat?"active":""}" data-c="${c}">${c}</button>`).join("");$("flashTabs").querySelectorAll(".fltab").forEach(b=>b.onclick=()=>{flashCat=b.dataset.c;renderFlashTabs();renderFlashGrid()})}
+function renderFlashGrid(){let cards=flashCat==="ALL"?DATA.flashcards:DATA.flashcards.filter(x=>x.cat===flashCat);$("flashGrid").innerHTML=cards.map(x=>`<button class="flashThumb" data-src="${x.src}"><img src="${x.src}" decoding="async" loading="lazy"><span>${x.label}</span></button>`).join("");$("flashGrid").querySelectorAll(".flashThumb").forEach(b=>b.onclick=()=>{$("viewerImg").src=b.dataset.src;$("flashViewer").classList.add("open")})}
+$("flashBtn").onclick=()=>{$("flashOverlay").classList.add("open");flashCat="ALL";renderFlashTabs();renderFlashGrid()};$("flashClose").onclick=()=>$("flashOverlay").classList.remove("open");$("viewerBack").onclick=()=>$("flashViewer").classList.remove("open");$("flashOverlay").onclick=e=>{if(e.target===$("flashOverlay"))$("flashOverlay").classList.remove("open")};renderFlashTabs();renderFlashGrid();
+</script>
+</body>
+</html>

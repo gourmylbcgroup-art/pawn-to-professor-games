@@ -1,0 +1,37 @@
+{
+  "audio_files": [
+    "Monster Mission.mp3"
+  ],
+  "audio_preserved_exactly": true,
+  "missing_local_refs": [],
+  "home_image_converted_to_webp": true,
+  "home_image_saved_kb": 2969.3,
+  "html_stats": {
+    "index.html": {
+      "html_before_mb": 3.65,
+      "html_after_mb": 0.07,
+      "embedded_audio_duplicates_removed": 1,
+      "embedded_images_externalized": 30,
+      "images_converted_to_webp": 0,
+      "image_bytes_saved": 0
+    },
+    "Monster_Mission_FULL_GAME.html": {
+      "html_before_mb": 1.28,
+      "html_after_mb": 0.04,
+      "embedded_audio_duplicates_removed": 0,
+      "embedded_images_externalized": 28,
+      "images_converted_to_webp": 0,
+      "image_bytes_saved": 0
+    }
+  },
+  "javascript_checks": {
+    "index.html": {
+      "ok": true,
+      "message": ""
+    },
+    "Monster_Mission_FULL_GAME.html": {
+      "ok": true,
+      "message": ""
+    }
+  }
+}

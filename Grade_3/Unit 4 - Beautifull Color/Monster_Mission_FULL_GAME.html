@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Monster Mission — Colors & Feelings</title>
+<style>
+:root{
+  --navy:#102451; --cream:#fff7e6; --gold:#ffbf22; --red:#ef4055; --blue:#2b8be6;
+  --green:#39b85a; --purple:#8d51e7; --pink:#ef54a9; --shadow:0 14px 34px rgba(19,37,71,.20);
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:"Trebuchet MS",Arial,sans-serif;color:var(--navy)}
+button{font:inherit}
+.app{position:relative;width:100vw;height:100vh;min-height:620px;overflow:hidden;background:#ead8b9}
+.bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,248,233,.20),rgba(255,248,233,.38)),url("assets/optimized/game_1520f8aa6a9197f0.webp");background-size:cover;background-position:center}
+.topbar{position:relative;z-index:20;height:72px;display:flex;gap:10px;align-items:center;padding:8px 14px;background:rgba(255,250,240,.94);box-shadow:0 3px 12px rgba(0,0,0,.14)}
+.brand{font-weight:1000;font-size:21px;white-space:nowrap}
+.icon{width:48px;height:48px;border:0;border-radius:14px;background:white;box-shadow:0 3px 10px rgba(0,0,0,.15);font-size:22px;cursor:pointer}
+.levels{display:flex;gap:8px;flex:1;justify-content:center}
+.level{border:0;border-radius:18px;padding:10px 16px;color:white;font-weight:1000;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.16);opacity:.64;transition:.18s}
+.level[data-level="1"]{background:var(--green)} .level[data-level="2"]{background:var(--blue)} .level[data-level="3"]{background:var(--purple)}
+.level.active{opacity:1;transform:translateY(-1px) scale(1.02);outline:3px solid white}
+.screen{position:absolute;z-index:3;top:72px;left:0;right:0;bottom:0;display:none;padding:16px}
+.screen.active{display:flex}
+.glass{background:rgba(255,250,239,.93);border:2px solid rgba(255,255,255,.88);box-shadow:var(--shadow);backdrop-filter:blur(5px);border-radius:24px}
+.start{align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.hero{width:min(1120px,94vw);display:grid;grid-template-columns:1.05fr .95fr;overflow:hidden;min-height:490px}
+.hero-copy{padding:38px}
+.eyebrow{font-weight:1000;color:#6e4b12;letter-spacing:.06em}
+h1{font-size:58px;line-height:.96;margin:10px 0 14px}.hero p{font-size:21px;line-height:1.35;margin:0 0 22px}
+.hero-art{position:relative;overflow:hidden;min-height:450px}
+.hero-art::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,250,239,.95),rgba(255,250,239,.12) 36%,transparent)}
+.hero-art img{width:100%;height:100%;object-fit:cover}
+.bigbtn,.btn{border:0;border-radius:18px;font-weight:1000;cursor:pointer;box-shadow:0 5px 14px rgba(0,0,0,.18)}
+.bigbtn{padding:16px 25px;font-size:20px}.btn{padding:12px 18px;font-size:16px}
+.primary{background:linear-gradient(#ffce3c,#f5a600);color:#4b3000}.secondary{background:white;color:var(--navy);border:2px solid #d8deea}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px}
+.quick-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}.quick-levels button{padding:12px 8px;border-radius:14px;border:0;font-weight:1000;color:white;cursor:pointer}
+.quick-levels button:nth-child(1){background:var(--green)}.quick-levels button:nth-child(2){background:var(--blue)}.quick-levels button:nth-child(3){background:var(--purple)}
+.player-strip{width:min(1120px,94vw);display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px}
+.player-chip{display:flex;align-items:center;gap:10px;background:white;border-radius:16px;padding:8px 12px;font-weight:1000}.player-chip img{width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:center 28%}
+
+.how{align-items:center;justify-content:center}.how-card{width:min(1050px,94vw);padding:26px;max-height:82vh;overflow:auto}.how-card h2{text-align:center;font-size:42px;margin:0 0 18px}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.how-item{background:white;border-radius:20px;padding:18px;box-shadow:0 6px 18px rgba(0,0,0,.08)}.how-item h3{font-size:25px;margin:6px 0}.how-item p{line-height:1.4}
+.badge{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;color:white;font-weight:1000}.b1{background:var(--green)}.b2{background:var(--blue)}.b3{background:var(--purple)}
+.rule{font-size:18px;background:#fff4c4;padding:12px 16px;border-radius:15px;font-weight:900}
+
+.game{flex-direction:column;gap:10px}
+.hud{height:92px;display:flex;align-items:center;justify-content:space-between;padding:8px 12px}
+.players{display:flex;gap:8px;align-items:center}
+.pcard{display:flex;align-items:center;gap:7px;background:white;border-radius:15px;padding:6px 9px;border:3px solid transparent;min-width:128px}.pcard.current{border-color:var(--gold);transform:scale(1.03);box-shadow:0 0 0 4px rgba(255,191,34,.22)}
+.pcard img{width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:center 26%}.pcard b{font-size:13px}.score{font-size:12px}
+.status{text-align:right}.status .lname{font-size:22px;font-weight:1000}.status .stage{font-size:15px;font-weight:900;color:#6b5b48}.status .counter{font-size:13px;margin-top:4px}
+.stage-track{display:flex;gap:5px;justify-content:flex-end;margin-top:6px}.dot{width:12px;height:12px;border-radius:50%;background:#d6d6d6}.dot.done{background:#47b964}.dot.now{background:#ffb900;outline:2px solid #fff}
+
+.play{flex:1;min-height:0;display:grid;grid-template-columns:34% 66%;overflow:hidden}
+.speaker{position:relative;padding:16px;display:flex;align-items:center;justify-content:center;border-right:2px solid rgba(16,36,81,.08)}
+.speaker-card{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.speaker-monster{max-width:90%;max-height:78%;object-fit:contain;filter:drop-shadow(0 12px 14px rgba(0,0,0,.13));animation:float 2.6s ease-in-out infinite}
+.bubble{position:absolute;left:3%;right:3%;top:2%;background:white;border:3px solid var(--navy);padding:12px 16px;border-radius:20px;text-align:center;font-weight:1000;font-size:22px;box-shadow:0 7px 15px rgba(0,0,0,.10)}
+.bubble:after{content:"";position:absolute;left:48%;bottom:-14px;border:8px solid transparent;border-top-color:var(--navy)}
+.challenge{padding:14px;overflow:auto;display:flex;align-items:center;justify-content:center}
+.panel{width:100%;max-width:900px;text-align:center}
+.stage-title{font-size:28px;font-weight:1000;margin:0 0 8px}.instruction{font-size:16px;font-weight:900;margin:0 0 12px;color:#5b6273}
+.cardrow{display:flex;justify-content:center;gap:16px;align-items:center;min-height:300px}
+.flash{width:min(255px,31vw);height:340px;border-radius:21px;overflow:hidden;background:#fff;box-shadow:0 10px 24px rgba(0,0,0,.15);position:relative}
+.flash img{width:100%;height:100%;object-fit:cover}
+.flash.crop img{height:124%;object-position:center top}
+.flash.crop{height:305px}
+.text-card{width:min(230px,29vw);height:300px;border-radius:22px;background:#fffdf4;border:8px solid var(--tc,#d9d9d9);display:grid;place-items:center;box-shadow:0 9px 22px rgba(0,0,0,.13);padding:14px}
+.text-card span{font-size:44px;font-weight:1000;color:#111827;text-transform:uppercase;line-height:1}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(150px,1fr));gap:9px;max-width:720px;margin:14px auto}
+.answer{border:3px solid #dde4ef;background:white;color:var(--navy);border-radius:16px;padding:13px 14px;font-size:18px;font-weight:1000;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.08);transition:.15s}
+.answer:hover{transform:translateY(-1px)}.answer.correct{background:#d9f7e2;border-color:#35ad5a}.answer.wrong{background:#ffe0e4;border-color:#e8495a;animation:shake .25s}
+.word-grid,.sort-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin:10px auto;max-width:850px}
+.word-card{border:4px solid var(--wc,#cdd4df);border-radius:14px;background:#fff;padding:12px 3px;font-size:13px;font-weight:1000;color:#111827;text-transform:uppercase;cursor:pointer}
+.sort-bin{border:3px solid transparent;border-radius:14px;background:white;padding:5px;cursor:pointer;opacity:.88}.sort-bin img{width:100%;height:88px;object-fit:cover;border-radius:10px}.sort-bin.good{border-color:#37b75b;transform:scale(1.04)}.locked{pointer-events:none;opacity:.42}
+.section-note{font-size:15px;font-weight:900;margin-top:8px;color:#6b5b48}
+.two-step{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mini-panel{background:#fff;border-radius:17px;padding:12px;box-shadow:0 5px 14px rgba(0,0,0,.08)}
+.mystery-layout{display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:center}.mystery-layout .flash{width:270px;height:360px}
+.yesno{grid-template-columns:1fr 1fr}
+.build-row{display:flex;justify-content:center;gap:12px;margin:8px auto 14px}.build-box{width:130px;height:110px;border:4px dashed #93a0b4;border-radius:16px;background:#fff;display:grid;place-items:center;font-size:25px;font-weight:1000}.build-box.filled{border-style:solid;color:#fff;text-shadow:0 2px 3px rgba(0,0,0,.45)}
+.color-choices{display:grid;grid-template-columns:repeat(7,1fr);gap:9px;max-width:700px;margin:12px auto}.color-choice{height:62px;border-radius:14px;border:5px solid white;box-shadow:0 3px 9px rgba(0,0,0,.18);cursor:pointer}
+.clue{background:#fff8d7;border:3px solid #efbd30;border-radius:18px;padding:16px;font-size:24px;font-weight:1000;margin:10px auto;max-width:680px}
+.footer{height:72px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between}
+.feedback{font-size:18px;font-weight:1000;text-align:center}.goodtxt{color:#168c3d}.badtxt{color:#c93446}
+.finish{align-items:center;justify-content:center}.finish-card{width:min(900px,94vw);padding:28px;text-align:center}.finish-card h1{font-size:52px}.trophy{font-size:80px}.final-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}.final-player{background:white;border-radius:18px;padding:12px}.final-player img{width:80px;height:80px;border-radius:50%;object-fit:cover;object-position:center 25%}.winner{outline:6px solid var(--gold)}
+.starburst{position:fixed;z-index:80;left:50%;top:50%;pointer-events:none}.spark{position:absolute;font-size:24px;animation:burst .7s ease-out forwards}
+@keyframes float{50%{transform:translateY(-8px)}} @keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}} @keyframes burst{to{transform:translate(var(--x),var(--y)) rotate(180deg);opacity:0}}
+
+.speaker-neutral{display:grid;place-items:center;width:210px;height:210px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#fff,#fff7dd 55%,#f0c966 100%);border:8px solid #fff;box-shadow:0 12px 26px rgba(0,0,0,.16),inset 0 0 0 5px #f2bf32;font-size:108px;font-weight:1000;color:var(--navy);animation:float 2.6s ease-in-out infinite}
+.speaker-monster.hidden{display:none}.speaker-neutral.hidden{display:none}
+.answer-prompt{font-size:24px;font-weight:1000;margin:8px 0 2px;color:var(--navy)}
+.reveal-card{animation:revealPop .32s ease-out}
+@keyframes revealPop{0%{transform:scale(.82);opacity:0}100%{transform:scale(1);opacity:1}}
+
+@media(max-width:980px){.brand{display:none}.level{font-size:11px;padding:9px}.pcard{min-width:100px}.pcard b{display:none}.play{grid-template-columns:30% 70%}.word-grid,.sort-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:720px){.hero{grid-template-columns:1fr}.hero-art{display:none}.players{gap:3px}.pcard{min-width:auto;padding:4px}.pcard img{width:42px;height:42px}.score{display:none}.speaker{display:none}.play{grid-template-columns:1fr}.screen{padding:8px}.how-grid{grid-template-columns:1fr}.answers{grid-template-columns:1fr 1fr}.mystery-layout{grid-template-columns:1fr}.mystery-layout .flash{margin:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="bg"></div>
+<header class="topbar">
+  <button class="icon" id="homeBtn">⌂</button>
+  <div class="brand">MONSTER MISSION</div>
+  <div class="levels">
+    <button class="level active" data-level="1"><b>1</b> COLOR ONLY</button>
+    <button class="level" data-level="2"><b>2</b> FEELING ONLY</button>
+    <button class="level" data-level="3"><b>3</b> MIXED MISSION</button>
+  </div>
+  <button class="icon" id="voiceBtn">🔊</button>
+</header>
+
+<section class="screen start active" id="startScreen">
+  <div class="hero glass">
+    <div class="hero-copy">
+      <div class="eyebrow">4 PLAYERS • EASY → HARD • SPEAK BEFORE YOU CLICK</div>
+      <h1>Monster Mission</h1>
+      <p>Review colors first, then feelings, then combine everything in Monster Detective and Listen & Build challenges.</p>
+      <div class="hero-actions">
+        <button class="bigbtn primary" id="startBtn">START FULL MISSION ▶</button>
+        <button class="bigbtn secondary" id="howBtn">HOW TO PLAY</button>
+      </div>
+      <div class="quick-levels">
+        <button data-jump="1">1 COLOR ONLY</button>
+        <button data-jump="2">2 FEELING ONLY</button>
+        <button data-jump="3">3 MIXED</button>
+      </div>
+    </div>
+    <div class="hero-art"><img src="assets/optimized/game_1520f8aa6a9197f0.webp" alt="monster classroom" decoding="async" loading="lazy"></div>
+  </div>
+  <div class="player-strip glass" id="startPlayers"></div>
+</section>
+
+<section class="screen how" id="howScreen">
+ <div class="how-card glass">
+   <h2>How to Play</h2>
+   <div class="how-grid">
+     <div class="how-item"><span class="badge b1">1</span><h3>Color Only</h3><p>Recognize the color, say the word, build the full sentence, match objects, then let a monster ask “What color am I?”</p></div>
+     <div class="how-item"><span class="badge b2">2</span><h3>Feeling Only</h3><p>Recognize feelings, answer “He is ___,” then move to the monster’s voice: “How do I feel?” → “I am ___.”</p></div>
+     <div class="how-item"><span class="badge b3">3</span><h3>Mixed Mission</h3><p>Combine color + feeling, solve Monster Detective, complete Listen & Build boxes, then finish with clue challenges.</p></div>
+   </div>
+   <p class="rule">Class rule: <b>say the answer aloud first, then click.</b> Correct speaking choice earns a point; completing the game action earns another point. All four players stay in the game.</p>
+   <button class="btn primary" id="howBack">BACK</button>
+ </div>
+</section>
+
+<section class="screen game" id="gameScreen">
+ <div class="hud glass">
+   <div class="players" id="playersHud"></div>
+   <div class="status">
+      <div class="lname" id="levelName"></div>
+      <div class="stage" id="stageName"></div>
+      <div class="counter" id="counter"></div>
+      <div class="stage-track" id="stageTrack"></div>
+   </div>
+ </div>
+ <main class="play glass">
+   <aside class="speaker">
+     <div class="speaker-card">
+       <img class="speaker-monster" id="speakerMonster" alt="talking monster" decoding="async" loading="lazy"><div class="speaker-neutral hidden" id="speakerNeutral">?</div>
+       <div class="bubble" id="bubble">What color is it?</div>
+     </div>
+   </aside>
+   <section class="challenge" id="challenge"></section>
+ </main>
+ <div class="footer glass">
+   <button class="btn secondary" id="repeatBtn">🔊 REPEAT</button>
+   <div class="feedback" id="feedback">Say it aloud, then choose.</div>
+   <button class="btn primary" id="nextBtn" disabled>NEXT ▶</button>
+ </div>
+</section>
+
+<section class="screen finish" id="finishScreen">
+ <div class="finish-card glass">
+   <div class="trophy">🏆</div>
+   <h1>Mission Complete!</h1>
+   <p>Colors ✓ Feelings ✓ Detective ✓ Listen & Build ✓</p>
+   <div class="final-grid" id="finalGrid"></div>
+   <button class="bigbtn primary" id="againBtn">PLAY AGAIN</button>
+ </div>
+</section>
+</div>
+
+<script>
+const ASSET={"bg":"assets/optimized/game_1520f8aa6a9197f0.webp","mystery":"assets/optimized/game_e92f74a3b0c38a1d.webp","color_yellow":"assets/optimized/game_e06fc030de876f1c.webp","color_green":"assets/optimized/game_eb1e5fee2ad184f1.webp","color_red":"assets/optimized/game_3d2b1174bf9c6d13.webp","color_black":"assets/optimized/game_931a7565dc38e11e.webp","color_pink":"assets/optimized/game_4ee5a689edaccffb.webp","color_blue":"assets/optimized/game_baf9c6b9257f39e3.webp","color_white":"assets/optimized/game_596c67419c1e1372.webp","obj_yellow":"assets/optimized/game_e9b342a0e2f46d1e.webp","obj_green":"assets/optimized/game_75a38c532b2484df.webp","obj_red":"assets/optimized/game_2967c02fe1fc34ab.webp","obj_black":"assets/optimized/game_a6318ba97f295004.webp","obj_pink":"assets/optimized/game_61345146b4120dc7.webp","obj_blue":"assets/optimized/game_bf7b7e7b841a22dd.webp","obj_white":"assets/optimized/game_86ebb07d207af684.webp","monster_yellow":"assets/optimized/game_9e734852db3984fb.webp","monster_blue":"assets/optimized/game_daf28014c0d3e9b6.webp","monster_red":"assets/optimized/game_59abf78cf714d636.webp","monster_green":"assets/optimized/game_c736b91a33863d43.webp","monster_black":"assets/optimized/game_5b98bd6ec97beda7.webp","monster_pink":"assets/optimized/game_306a1cf5e6ebe66e.webp","monsterplay_yellow":"assets/optimized/game_25a710e906b1bd4c.webp","monsterplay_blue":"assets/optimized/game_985846ff4d7c9fa2.webp","monsterplay_red":"assets/optimized/game_b044091c0ded94fd.webp","monsterplay_green":"assets/optimized/game_5232ccec651716e9.webp","monsterplay_black":"assets/optimized/game_95dfb9b968a670b6.webp","monsterplay_pink":"assets/optimized/game_3a5eaa7940304208.webp"};
+
+const COLORS=["yellow","green","red","black","pink","blue","white"];
+const HEX={yellow:"#f2c300",green:"#26ad4b",red:"#e9434e",black:"#20242a",pink:"#ef58aa",blue:"#2b86df",white:"#e9e7e0"};
+const FEEL={
+  yellow:{word:"happy",he:"He is happy.",i:"I am happy."},
+  blue:{word:"sad",he:"He is sad.",i:"I am sad."},
+  red:{word:"angry",he:"He is angry.",i:"I am angry."},
+  green:{word:"calm",he:"He is calm.",i:"I am calm."},
+  black:{word:"scared",he:"He is scared.",i:"I am scared."},
+  pink:{word:"in love",he:"He is in love.",i:"I am in love."}
+};
+const MONSTER_COLORS=["yellow","blue","red","green","black","pink"];
+const objectName={yellow:"sun",green:"leaf",red:"apple",black:"cat",pink:"heart",blue:"raindrop",white:"cloud"};
+const colorImg=c=>ASSET["color_"+c];
+const objImg=c=>ASSET["obj_"+c];
+const monsterCard=c=>ASSET["monster_"+c];
+const monsterImg=c=>ASSET["monsterplay_"+c]||ASSET["monster_"+c];
+
+const players=[
+ {name:"Player 1",color:"yellow",img:monsterImg("yellow"),score:0,stars:0},
+ {name:"Player 2",color:"blue",img:monsterImg("blue"),score:0,stars:0},
+ {name:"Player 3",color:"red",img:monsterImg("red"),score:0,stars:0},
+ {name:"Player 4",color:"green",img:monsterImg("green"),score:0,stars:0}
+];
+
+const levelDefs={
+  1:{name:"Level 1 — Color Only",stages:[
+    {name:"Stage 1 — See & Name",cards:COLORS.map(c=>({color:c}))},
+    {name:"Stage 2 — Full Sentence",cards:COLORS.map(c=>({color:c}))},
+    {name:"Stage 3 — Picture Transfer",cards:COLORS.map(c=>({color:c}))},
+    {name:"Stage 4 — Monster Speaks",cards:MONSTER_COLORS.map(c=>({color:c}))}
+  ]},
+  2:{name:"Level 2 — Feeling Only",stages:[
+    {name:"Stage 1 — Feeling Words",cards:MONSTER_COLORS.map(c=>({color:c}))},
+    {name:"Stage 2 — He Is…",cards:MONSTER_COLORS.map(c=>({color:c}))},
+    {name:"Stage 3 — How Do I Feel?",cards:MONSTER_COLORS.map(c=>({color:c}))},
+    {name:"Stage 4 — Try Alone",cards:[...MONSTER_COLORS.map(c=>({color:c})),{personal:true,color:"yellow"}]}
+  ]},
+  3:{name:"Level 3 — Mixed Mission",stages:[
+    {name:"Stage 1 — Color + Feeling",cards:MONSTER_COLORS.map(c=>({color:c}))},
+    {name:"Stage 2 — Monster Detective",cards:MONSTER_COLORS.map(c=>({color:c}))},
+    {name:"Stage 3 — Listen & Build",cards:[
+      {set:["yellow","blue","pink"],clues:["I am yellow.","I am blue.","I am pink."]},
+      {set:["green","red","black"],clues:["I am green.","I am red.","I am black."]}
+    ]},
+    {name:"Stage 4 — Clue Challenge",cards:[
+      {color:"green",clue:"It is the color of grass."},
+      {color:"red",clue:"It is the color of an apple."},
+      {color:"black",clue:"It is the color of the night."},
+      {color:"white",clue:"It is the color of a cloud."}
+    ]}
+  ]}
+};
+
+let state={level:1,stage:0,index:0,turn:0,voice:true,ready:false,sub:0,current:null,buildIndex:0};
+const $=id=>document.getElementById(id);
+const screens=["startScreen","howScreen","gameScreen","finishScreen"];
+
+function show(id){screens.forEach(s=>$(s).classList.toggle("active",s===id))}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function currentPlayer(){return players[state.turn%4]}
+function score(points,stars=0){let p=currentPlayer();p.score+=points;p.stars+=stars;renderHud()}
+function feedback(msg,type=""){let el=$("feedback");el.textContent=msg;el.className="feedback "+(type==="good"?"goodtxt":type==="bad"?"badtxt":"")}
+function say(text){
+ if(!state.voice || !("speechSynthesis" in window))return;
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(text);u.rate=.86;u.pitch=1.03;u.volume=1;
+ const voices=speechSynthesis.getVoices();const en=voices.find(v=>/^en/i.test(v.lang));if(en)u.voice=en;
+ speechSynthesis.speak(u);
+}
+function setSpeaker(color,text,auto=true){
+ const img=$("speakerMonster"),neutral=$("speakerNeutral");
+ neutral.classList.add("hidden");img.classList.remove("hidden");
+ img.src=monsterImg(color)||monsterImg("yellow");$("bubble").textContent=text;if(auto)say(text)
+}
+function setNeutralSpeaker(text,auto=true,symbol="?"){
+ const img=$("speakerMonster"),neutral=$("speakerNeutral");
+ img.classList.add("hidden");neutral.classList.remove("hidden");neutral.textContent=symbol;$("bubble").textContent=text;if(auto)say(text)
+}
+function burst(){
+ const holder=document.createElement("div");holder.className="starburst";document.body.appendChild(holder);
+ for(let i=0;i<10;i++){let s=document.createElement("span");s.className="spark";s.textContent=i%2?"⭐":"✨";let a=(Math.PI*2*i)/10;let d=90+Math.random()*80;s.style.setProperty("--x",Math.cos(a)*d+"px");s.style.setProperty("--y",Math.sin(a)*d+"px");holder.appendChild(s)}
+ setTimeout(()=>holder.remove(),800)
+}
+function renderStartPlayers(){$("startPlayers").innerHTML=players.map(p=>`<div class="player-chip"><img src="${p.img}" decoding="async" loading="lazy"><span>${p.name}</span></div>`).join("")}
+function renderHud(){
+ $("playersHud").innerHTML=players.map((p,i)=>`<div class="pcard ${i===state.turn%4?"current":""}"><img src="${p.img}" decoding="async" loading="lazy"><div><b>${p.name}</b><div class="score">${p.score} pts • ${p.stars} ★</div></div></div>`).join("");
+ const ld=levelDefs[state.level],st=ld.stages[state.stage];
+ $("levelName").textContent=ld.name;$("stageName").textContent=st.name;
+ $("counter").textContent=`Card ${state.index+1} / ${st.cards.length} • ${currentPlayer().name}`;
+ $("stageTrack").innerHTML=ld.stages.map((_,i)=>`<span class="dot ${i<state.stage?"done":i===state.stage?"now":""}"></span>`).join("");
+ document.querySelectorAll(".level").forEach(b=>b.classList.toggle("active",Number(b.dataset.level)===state.level));
+}
+function textCard(color){
+ return `<div class="text-card" style="--tc:${HEX[color]}"><span>${color}</span></div>`
+}
+function imgCard(src,crop=false,alt="flashcard"){
+ return `<div class="flash ${crop?"crop":""}"><img src="${src}" alt="${alt}" decoding="async" loading="lazy"></div>`
+}
+function answers(options,correct,callback){
+ const wrap=document.createElement("div");wrap.className="answers";
+ options.forEach(o=>{const b=document.createElement("button");b.className="answer";b.textContent=o;b.onclick=()=>{
+   if(b.disabled)return;
+   if(o===correct){b.classList.add("correct");score(1);burst();feedback("Correct! Now finish the game action.","good");[...wrap.children].forEach(x=>x.disabled=true);callback&&callback()}
+   else{b.classList.add("wrong");feedback("Try again. Say the full answer first.","bad");setTimeout(()=>b.classList.remove("wrong"),300)}
+ };wrap.appendChild(b)});
+ return wrap;
+}
+function makeColorOptions(correct,mode="sentence",prefix="It’s "){
+ const others=shuffle(COLORS.filter(c=>c!==correct)).slice(0,3);
+ const vals=shuffle([correct,...others]);
+ if(mode==="word")return vals.map(c=>c);
+ return vals.map(c=>prefix+c+".");
+}
+function feelingOptions(color,kind="he",wordOnly=false){
+ const correct=wordOnly?FEEL[color].word:FEEL[color][kind];
+ const pool=MONSTER_COLORS.filter(c=>c!==color).map(c=>wordOnly?FEEL[c].word:FEEL[c][kind]);
+ return {correct,options:shuffle([correct,...shuffle(pool).slice(0,3)])}
+}
+function setNext(enabled){state.ready=enabled;$("nextBtn").disabled=!enabled}
+function nextCard(){
+ if(!state.ready)return;
+ state.turn++;state.index++;state.sub=0;
+ const st=levelDefs[state.level].stages[state.stage];
+ if(state.index>=st.cards.length){state.stage++;state.index=0;currentPlayer().stars++; if(state.stage>=levelDefs[state.level].stages.length){state.level++;state.stage=0;if(state.level>3){finish();return}}}
+ render()
+}
+function skipTo(level){state.level=level;state.stage=0;state.index=0;state.turn=0;state.sub=0;show("gameScreen");render()}
+function finish(){
+ show("finishScreen");say("Mission complete! Great speaking!");
+ const ranked=[...players].sort((a,b)=>b.score-a.score),best=ranked[0].score;
+ $("finalGrid").innerHTML=ranked.map(p=>`<div class="final-player ${p.score===best?"winner":""}"><img src="${p.img}" decoding="async" loading="lazy"><h3>${p.name}</h3><b>${p.score} points</b><div>${p.stars} ★</div></div>`).join("")
+}
+function resetScores(){players.forEach(p=>{p.score=0;p.stars=0})}
+
+function render(){
+ setNext(false);renderHud();const stage=state.stage,index=state.index,item=levelDefs[state.level].stages[stage].cards[index];state.current=item;
+ if(state.level===1)renderColor(stage,item);
+ else if(state.level===2)renderFeeling(stage,item);
+ else renderMixed(stage,item);
+}
+function panel(title,instruction){
+ $("challenge").innerHTML=`<div class="panel"><div class="stage-title">${title}</div><div class="instruction">${instruction}</div><div id="work"></div></div>`;
+ return $("work")
+}
+function wordGrid(target,callback){
+ const wrap=document.createElement("div");wrap.className="word-grid";
+ COLORS.forEach(c=>{let b=document.createElement("button");b.className="word-card";b.style.setProperty("--wc",HEX[c]);b.textContent=c;b.onclick=()=>{
+   if(c===target){b.style.background="#dff7e6";score(1);burst();feedback("Great match!","good");callback&&callback()}
+   else feedback("Try another word card.","bad")
+ };wrap.appendChild(b)});return wrap
+}
+function sortGrid(target,callback){
+ const wrap=document.createElement("div");wrap.className="sort-grid";
+ COLORS.forEach(c=>{let b=document.createElement("button");b.className="sort-bin";b.innerHTML=`<img src="${colorImg(c)}" alt="${c}" decoding="async" loading="lazy">`;b.onclick=()=>{
+   if(c===target){b.classList.add("good");score(1);burst();feedback("Correct sort!","good");[...wrap.children].forEach(x=>x.disabled=true);callback&&callback()}
+   else feedback("Not that color. Try again.","bad")
+ };wrap.appendChild(b)});return wrap
+}
+
+function renderColor(stage,item){
+ const c=item.color,work=panel(levelDefs[1].stages[stage].name,"Easy → hard: say the answer aloud before you click.");
+ if(stage===0){
+   setNeutralSpeaker("What color is it?",true,"?");
+   // IMPORTANT: show ONLY the no-text color card. Do not display the color word before the answer.
+   work.innerHTML=`<div class="cardrow">${imgCard(colorImg(c),false,c)}</div>`;
+   const a=answers(makeColorOptions(c,"word"),c,()=>{say(c);setNext(true)});work.appendChild(a);feedback("Look at ONE color. Say the color word, then click it.")
+ }else if(stage===1){
+   setNeutralSpeaker("What color is it?",true,"?");
+   work.innerHTML=`<div class="cardrow">${imgCard(colorImg(c),false,c)}</div>`;
+   const correct=`It’s ${c}.`;work.appendChild(answers(makeColorOptions(c,"sentence"),correct,()=>{
+      say(correct);let note=document.createElement("div");note.className="section-note";note.textContent="Now match the word card.";work.appendChild(note);work.appendChild(wordGrid(c,()=>setNext(true)));
+   }));feedback("Say the full sentence: “It’s …” The word answer appears only AFTER you answer.")
+ }else if(stage===2){
+   setNeutralSpeaker("What color is it?",true,"?");
+   work.innerHTML=`<div class="cardrow">${imgCard(objImg(c),true,objectName[c])}</div>`;
+   const correct=`It’s ${c}.`;work.appendChild(answers(makeColorOptions(c,"sentence"),correct,()=>{
+      say(correct);let note=document.createElement("div");note.className="section-note";note.textContent="Now sort the picture into the matching color.";work.appendChild(note);work.appendChild(sortGrid(c,()=>setNext(true)));
+   }));feedback("Only the object is shown. Identify its color, then sort it.")
+ }else{
+   // Here the monster IS the target, so the monster itself asks the question. No second monster/card is shown.
+   setSpeaker(c,"What color am I?");
+   work.innerHTML=`<div class="answer-prompt">Look at the talking monster on the left.</div>`;
+   const correct=`I am ${c}.`;work.appendChild(answers(makeColorOptions(c,"sentence","I am "),correct,()=>{
+      say(correct);let note=document.createElement("div");note.className="section-note";note.textContent="Now match the color word.";work.appendChild(note);work.appendChild(wordGrid(c,()=>setNext(true)));
+   }));feedback("One monster only. Answer the monster: “I am …”")
+ }
+}
+
+function renderFeeling(stage,item){
+ const c=item.color,work=panel(levelDefs[2].stages[stage].name,"Focus on feelings only. No color answer is shown.");
+ if(item.personal){
+   setSpeaker("yellow","Are you happy?");
+   work.innerHTML=`<div class="answer-prompt">Answer for yourself.</div>`;
+   work.appendChild(answers(["Yes, I am.","No, I’m not."],"Yes, I am.",()=>{}));
+   feedback("Personal speaking check: BOTH answers are acceptable if they match the student.");
+   [...work.querySelectorAll(".answer")].forEach(b=>{b.onclick=()=>{if(b.disabled)return;b.classList.add("correct");[...work.querySelectorAll(".answer")].forEach(x=>x.disabled=true);score(1,1);say(b.textContent);burst();feedback("Great personal answer!","good");setNext(true)}})
+   return;
+ }
+ if(stage===0){
+   setNeutralSpeaker("How does the monster feel?",true,"?");
+   work.innerHTML=`<div class="cardrow">${imgCard(monsterImg(c),false,"monster without word")}</div>`;
+   const fo=feelingOptions(c,"he",true);work.appendChild(answers(fo.options,fo.correct,()=>{say(fo.correct);setNext(true)}));feedback("The feeling word is hidden. Look at the face and choose the feeling.")
+ }else if(stage===1){
+   setNeutralSpeaker("How does the monster feel?",true,"?");
+   work.innerHTML=`<div class="cardrow">${imgCard(monsterImg(c),false,"monster without word")}</div>`;
+   const fo=feelingOptions(c,"he");work.appendChild(answers(fo.options,fo.correct,()=>{say(fo.correct);setNext(true)}));feedback("Use the full sentence: “He is …”")
+ }else if(stage===2){
+   setSpeaker(c,"How do I feel?");
+   work.innerHTML=`<div class="answer-prompt">The monster on the left is talking.</div>`;
+   const fo=feelingOptions(c,"i");work.appendChild(answers(fo.options,fo.correct,()=>{say(fo.correct);setNext(true)}));feedback("One monster only. Answer with “I am …”")
+ }else{
+   setSpeaker(c,"How do I feel?");
+   work.innerHTML=`<div class="answer-prompt">Try without a feeling label.</div>`;
+   const fo=feelingOptions(c,"i");work.appendChild(answers(fo.options,fo.correct,()=>{say(fo.correct);score(1,1);feedback("Independent answer! Bonus star.","good");setNext(true)}));feedback("Try alone: no word on the monster card gives the answer.")
+ }
+}
+
+function renderMixed(stage,item){
+ const work=panel(levelDefs[3].stages[stage].name,"Use everything you learned: colors, feelings, yes/no, listening and clues.");
+ if(stage===0){
+   const c=item.color;state.sub=0;setSpeaker(c,"What color am I?");
+   work.innerHTML=`<div class="answer-prompt">The talking monster is the only color clue.</div><div id="mixedStep"></div>`;
+   const area=$("mixedStep"),correct=`I am ${c}.`;
+   area.appendChild(answers(makeColorOptions(c,"sentence","I am "),correct,()=>{
+     say(correct);setSpeaker(c,"How do I feel?");
+     const fo=feelingOptions(c,"i");area.innerHTML="<div class='section-note'>Second question: How do I feel?</div>";area.appendChild(answers(fo.options,fo.correct,()=>{say(fo.correct);score(1,1);setNext(true)}))
+   }));feedback("Two-step speaking: color first, feeling second. One monster only.")
+ }else if(stage===1){
+   const target=item.color;const guess=indexGuess(target,state.index);
+   setNeutralSpeaker(`Is it ${guess}?`,true,"?");
+   work.innerHTML=`<div class="mystery-layout">${imgCard(ASSET.mystery,false,"mystery monster")}<div id="detectiveArea"><div class="clue">Is it ${guess}?</div></div></div>`;
+   const area=$("detectiveArea"),yes=guess===target,correct=yes?"Yes, it is.":"No, it isn’t.";
+   area.appendChild(answers(["Yes, it is.","No, it isn’t."],correct,()=>{
+      say(correct);setTimeout(()=>{work.querySelector(".flash img").src=monsterImg(target);work.querySelector(".flash").classList.add("reveal-card");setSpeaker(target,"What color am I?");
+      area.innerHTML="<div class='section-note'>Reveal! Now identify the monster.</div>";
+      const cc=`I am ${target}.`;area.appendChild(answers(makeColorOptions(target,"sentence","I am "),cc,()=>{
+        say(cc);setSpeaker(target,"How do I feel?");const fo=feelingOptions(target,"i");area.innerHTML="<div class='section-note'>Final detective question: How do I feel?</div>";area.appendChild(answers(fo.options,fo.correct,()=>{say(fo.correct);score(1,1);setNext(true)}))
+      }))},350)
+   }));feedback("Detective: mystery first. No colored helper monster gives the answer.")
+ }else if(stage===2){
+   renderBuildMission(item,work)
+ }else{
+   const c=item.color;setNeutralSpeaker(item.clue,true,"🔊");
+   // IMPORTANT: do NOT show the target color card before the student solves the clue.
+   work.innerHTML=`<div class="clue">${item.clue}</div><div id="clueArea"></div>`;
+   const area=$("clueArea"),correct=`It’s ${c}.`;area.appendChild(answers(makeColorOptions(c,"sentence"),correct,()=>{
+      say(correct);
+      area.innerHTML=`<div class="section-note">Correct — now you may see the color.</div><div class="cardrow">${imgCard(colorImg(c),false,c)}</div>`;
+      if(FEEL[c]){setNeutralSpeaker("How does the monster feel?",true,"?");area.innerHTML+=`<div class="section-note">Now connect the color to the feeling.</div><div class="cardrow">${imgCard(monsterImg(c),false,"monster without word")}</div>`;const fo=feelingOptions(c,"he");area.appendChild(answers(fo.options,fo.correct,()=>{say(fo.correct);score(1,1);setNext(true)}))}
+      else{score(1,1);feedback("White is color only. Bonus star!","good");setNext(true)}
+   }));feedback("Listen to the clue. The answer picture stays hidden until you answer.")
+ }
+}
+
+function indexGuess(target,i){
+ // alternates correct and incorrect guesses so both Yes and No are practised
+ if(i%2===0)return target;
+ const others=COLORS.filter(c=>c!==target);return others[(i*2)%others.length];
+}
+function renderBuildMission(item,work){
+ let pos=0,chosen=[];const set=item.set,clues=item.clues;
+ work.innerHTML=`<div class="build-row"><div class="build-box" id="b0">1</div><div class="build-box" id="b1">2</div><div class="build-box" id="b2">3</div></div><div class="clue" id="buildClue"></div><div class="color-choices" id="colorChoices"></div><div id="buildAfter"></div>`;
+ function step(){
+   if(pos>=3){finishBuild();return}
+   const c=set[pos],clue=clues[pos];$("buildClue").textContent="Listen carefully.";setNeutralSpeaker(clue,true,"🔊");
+   $("colorChoices").innerHTML=COLORS.map(x=>`<button class="color-choice" data-c="${x}" style="background:${HEX[x]}" title="color choice"></button>`).join("");
+   [...$("colorChoices").children].forEach(b=>b.onclick=()=>{const x=b.dataset.c;if(x===c){score(1);say(`It’s ${c}.`);let box=$("b"+pos);box.classList.add("filled");box.style.background=HEX[c];box.textContent="✓";chosen.push(c);pos++;burst();feedback("Correct! Next listening box.","good");setTimeout(step,250)}else feedback("Listen again and choose another color.","bad")})
+ }
+ function finishBuild(){
+   $("colorChoices").innerHTML="";$("buildClue").textContent="Mission boxes complete!";
+   const c=chosen[chosen.length-1];if(FEEL[c]){setNeutralSpeaker("How does the monster feel?",true,"?");$("buildAfter").innerHTML=`<div class="cardrow">${imgCard(monsterImg(c),false,"monster without word")}</div>`;const fo=feelingOptions(c,"he");$("buildAfter").appendChild(answers(fo.options,fo.correct,()=>{say(fo.correct);score(1,1);feedback("Listen & Build complete! Bonus star.","good");setNext(true)}))}
+   else{score(1,1);setNext(true)}
+ }
+ step();feedback("LISTEN → SAY → BUILD. The speaker image does not reveal the color.")
+}
+
+function start(level=1){resetScores();state.level=level;state.stage=0;state.index=0;state.turn=0;state.sub=0;show("gameScreen");render()}
+$("startBtn").onclick=()=>start(1);$("howBtn").onclick=()=>show("howScreen");$("howBack").onclick=()=>show("startScreen");
+document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>start(Number(b.dataset.jump)));
+document.querySelectorAll(".level").forEach(b=>b.onclick=()=>{if($("gameScreen").classList.contains("active")){state.level=Number(b.dataset.level);state.stage=0;state.index=0;state.sub=0;render()}});
+$("nextBtn").onclick=nextCard;$("repeatBtn").onclick=()=>say($("bubble").textContent);
+$("voiceBtn").onclick=()=>{state.voice=!state.voice;$("voiceBtn").textContent=state.voice?"🔊":"🔇";if(!state.voice&&"speechSynthesis"in window)speechSynthesis.cancel()};
+$("homeBtn").onclick=()=>{if("speechSynthesis"in window)speechSynthesis.cancel();show("startScreen")};
+$("againBtn").onclick=()=>start(1);
+renderStartPlayers();
+</script>
+</body>
+</html>
