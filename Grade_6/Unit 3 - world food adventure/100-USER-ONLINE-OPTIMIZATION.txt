@@ -1,0 +1,26 @@
+Grade 6 Unit 3 — 100-User Online Optimization
+
+AUDIO CHECK
+- 93 MP3 voice files found.
+- Every supplied MP3 is preserved byte-for-byte: True
+- Missing referenced audio files: 0
+- The original HTML embedded the same voice audio again as base64, making index.html about 1.4 MB.
+- The optimized version now uses the existing external MP3 files instead.
+- Audio is loaded on demand and then cached by the browser.
+- The old version attempted to load all 93 clips during idle time.
+- The optimized version only lightly pre-warms the common feedback clips (084, 085, 086), spaced apart.
+- Playback retries once if a clip is still arriving over the network.
+
+WHY THIS IS BETTER FOR 100 USERS
+The previous version could cause a large startup/request burst when many teachers opened the lesson at the same time.
+This version avoids downloading/decoding every voice clip immediately, reducing bandwidth pressure and first-load work.
+
+IMAGE OPTIMIZATION
+- Front/index image converted to high-quality WebP: True
+- Image tags use async decoding / lazy loading.
+- Unused .bak2 backup file removed.
+
+VALIDATION
+- JavaScript syntax OK: True
+- All supplied audio files unchanged: True
+- Missing audio refs: []
