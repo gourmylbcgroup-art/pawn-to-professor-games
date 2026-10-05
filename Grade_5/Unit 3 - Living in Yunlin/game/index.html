@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#176b41" />
+<title>Living in Yunlin — Family Mission</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app" class="app">
+  <header class="topbar">
+    <div class="brand"><span>Living in Yunlin</span><strong>Family Mission</strong></div>
+    <div class="top-actions">
+      <button id="flashcardsBtn" class="flashcards-top-btn" aria-label="Open flashcards">🃏 <span>FLASHCARDS</span></button>
+      <button id="voiceBtn" class="icon-btn" aria-label="Toggle voice">🗣️</button>
+      <button id="soundBtn" class="icon-btn" aria-label="Toggle sound">🔊</button>
+      <button id="homeBtn" class="icon-btn" aria-label="Home">🏠</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="startScreen" class="screen active start-screen">
+      <div class="hero-card">
+        <div class="hero-copy">
+          <span class="eyebrow">GRADE 5 • UNIT 3</span>
+          <h1>Yunlin Family Mission</h1>
+          <p>Look at the cards, listen to the question, and say one clear English sentence.</p>
+          <div class="mode-grid">
+            <button class="mode-card selected" data-level="1"><span class="mode-badge green">LEVEL 1</span><b>Week 6</b><strong>Family & Jobs</strong><small>2 cards • short complete sentences</small></button>
+            <button class="mode-card" data-level="2"><span class="mode-badge blue">LEVEL 2</span><b>Week 7</b><strong>Daily Life</strong><small>3 cards • person + action + time/place</small></button>
+          </div>
+          <div class="setup-row"><span>Teams</span><div class="segmented"><button data-teams="2">2</button><button data-teams="3">3</button><button class="selected" data-teams="4">4</button></div></div>
+          <div class="voice-note">🎙️ Questions play automatically. Model answers play after a correct response.<br>🕵️ Family Mission includes WHO AM I? challenges, or play WHO AM I? as a separate game.</div>
+          <div class="start-game-buttons">
+            <button id="startBtn" class="primary-btn">START FAMILY MISSION 🚀</button>
+            <button id="whoGameBtn" class="who-game-btn">🕵️ PLAY WHO AM I? GAME</button>
+          </div>
+        </div>
+        <div class="hero-visual"><div class="mission-stamp">🌾<span>YUNLIN<br>FAMILY LIFE</span></div></div>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen game-screen">
+      <div id="scoreboard" class="scoreboard"></div>
+      <div class="game-card">
+        <div class="turn-banner">
+          <span id="turnAvatar" class="turn-avatar"></span>
+          <div><small>YOUR TURN</small><strong id="turnName">Red Team</strong></div>
+          <div class="round-pill">MISSION <span id="roundNow">1</span>/<span id="roundTotal">12</span></div>
+        </div>
+
+        <div class="mission-head">
+          <div><span id="levelLabel" class="eyebrow">LEVEL 1 • WEEK 6</span><h2 id="missionTitle">Family & Jobs</h2></div>
+          <div class="streak-box">🔥 <span id="streakNow">0</span>/3</div>
+        </div>
+
+        <div id="visualCards" class="visual-cards"></div>
+
+        <div id="whoChoices" class="who-choices hidden"></div>
+        <div id="identityBand" class="identity-band hidden">
+          <span>✅ WHO AM I?</span>
+          <strong id="identitySentence"></strong>
+          <button id="identityVoiceBtn" class="voice-play">🔊 Hear it</button>
+        </div>
+
+        <div class="question-box">
+          <div class="question-top"><span>QUESTION</span><button id="questionVoiceBtn" class="voice-play">🔊 Hear question</button></div>
+          <div id="questionText" class="question-text"></div>
+        </div>
+
+        <div class="speak-box">
+          <div class="speak-top"><span id="speakLabel">SAY THE ANSWER</span><button id="helpBtn" class="help-btn">💬 SENTENCE</button></div>
+          <div id="helpBox" class="help-box hidden"></div>
+          <div id="teacherControls" class="teacher-controls"><button id="tryBtn" class="try-btn">↻ TRY AGAIN</button><button id="correctBtn" class="correct-btn">✓ CORRECT</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rewardScreen" class="screen reward-screen">
+      <div class="reward-card">
+        <div id="rewardIcon" class="reward-icon">⭐</div>
+        <h1 id="rewardTitle">Great speaking!</h1>
+        <div class="answer-model">
+          <span>MODEL ANSWER</span>
+          <strong id="modelAnswer"></strong>
+          <button id="answerVoiceBtn" class="voice-play big">🔊 Hear answer</button>
+        </div>
+        <p id="rewardText">+1 star</p>
+        <button id="nextBtn" class="primary-btn">NEXT TEAM ➜</button>
+      </div>
+    </section>
+
+    <section id="finalScreen" class="screen final-screen">
+      <div class="final-card">
+        <span class="eyebrow">FINAL YUNLIN CHALLENGE</span>
+        <h1>One last sentence!</h1>
+        <div id="finalVisuals" class="visual-cards final-visuals"></div>
+        <div class="question-box"><div class="question-top"><span>QUESTION</span><button id="finalQuestionVoiceBtn" class="voice-play">🔊 Hear question</button></div><div id="finalPrompt" class="question-text"></div></div>
+        <button id="finalHelpBtn" class="help-btn">💬 SENTENCE</button>
+        <div id="finalHelp" class="help-box hidden"></div>
+        <div class="teacher-controls"><button id="finalTryBtn" class="try-btn">↻ TRY AGAIN</button><button id="finalCorrectBtn" class="correct-btn">✓ CORRECT</button></div>
+      </div>
+    </section>
+
+    <section id="winnerScreen" class="screen winner-screen">
+      <div class="winner-card"><div class="trophy">🏆</div><h1>YUNLIN SUPER SPEAKERS!</h1><p id="winnerText"></p><div id="finalScores" class="final-scores"></div><button id="playAgainBtn" class="primary-btn">PLAY AGAIN 🔁</button></div>
+    </section>
+  </main>
+
+
+  <div id="flashcardLibrary" class="flashcard-library hidden" aria-hidden="true">
+    <div class="flashcard-library-shell">
+      <div class="flashcard-library-head">
+        <div>
+          <span class="eyebrow">UNIT 3 • LIVING IN YUNLIN</span>
+          <h2>Flashcards</h2>
+          <p>Tap any card to open it full screen.</p>
+        </div>
+        <button id="closeFlashcardsBtn" class="library-close" aria-label="Close flashcards">✕</button>
+      </div>
+      <div class="flashcard-filter-row">
+        <button class="flash-filter selected" data-filter="all">ALL</button>
+        <button class="flash-filter" data-filter="vocabulary">VOCABULARY</button>
+        <button class="flash-filter" data-filter="routine">ROUTINES</button>
+        <button class="flash-filter" data-filter="question">QUESTIONS</button>
+        <button class="flash-filter" data-filter="answer">ANSWERS</button>
+        <button class="flash-filter" data-filter="dialogue">DIALOGUES</button>
+      </div>
+      <div id="flashcardGrid" class="flashcard-grid"></div>
+    </div>
+  </div>
+
+  <div id="flashcardViewer" class="flashcard-viewer hidden" aria-hidden="true">
+    <button id="viewerCloseBtn" class="viewer-close" aria-label="Close full-screen flashcard">✕</button>
+    <button id="viewerPrevBtn" class="viewer-nav viewer-prev" aria-label="Previous flashcard">‹</button>
+    <div class="viewer-stage">
+      <img id="viewerImage" alt="Full-screen flashcard">
+      <div id="viewerLabel" class="viewer-label"></div>
+    </div>
+    <button id="viewerNextBtn" class="viewer-nav viewer-next" aria-label="Next flashcard">›</button>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <div id="confetti" class="confetti"></div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>

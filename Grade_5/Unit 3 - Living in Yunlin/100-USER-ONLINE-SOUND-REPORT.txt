@@ -1,0 +1,19 @@
+{
+  "sound_type": "Browser Speech Synthesis (no MP3 voice files in this ZIP)",
+  "audio_files_found": 0,
+  "important_finding": "This lesson does not contain recorded voice MP3 files. The voice uses the browser's speechSynthesis engine.",
+  "dashboard_image_optimized": true,
+  "dashboard_saved_kb": 1939.5,
+  "duplicate_game_assets_removed_mb": 6.01,
+  "missing_local_asset_references": 0,
+  "javascript_syntax": "PASS",
+  "online_sound_optimizations": [
+    "English browser voice is selected once and cached.",
+    "Added a short 35 ms pause after speechSynthesis.cancel() before starting the next utterance to reduce Chrome cancel/speak race delays.",
+    "Reduced competing online downloads by staggering game image preloading.",
+    "Removed duplicated game image/flashcard files and reused the main lesson asset folder.",
+    "Converted the 2.3 MB dashboard PNG to a much smaller high-quality WebP.",
+    "Kept flashcards lazy-loaded so opening the lesson does not request all images at once."
+  ],
+  "100_user_note": "These changes reduce first-load bandwidth and simultaneous request bursts when many users open the lesson. Actual browser speech latency can still vary by device/browser because speechSynthesis is controlled by the browser/operating system."
+}
