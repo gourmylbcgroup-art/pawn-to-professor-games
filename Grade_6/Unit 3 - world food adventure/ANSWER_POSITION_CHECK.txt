@@ -1,0 +1,7 @@
+Two-choice questions checked: 41
+Correct on LEFT: 20
+Correct on RIGHT: 21
+Maximum same-side streak: 1
+Invalid answers: 0
+
+Rule used: deterministic alternating positions across the whole lesson. The answer stays in the same position when a learner retries the same question.

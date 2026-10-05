@@ -27,3 +27,23 @@ OWN VOICE / ONLINE AUDIO FIX
 - Audio elements are warmed in the browser cache after load.
 - Browser speech synthesis has been removed from lesson playback.
 - Week 9 question audio finishes first, then students get a 4-second response window before the recorded model answer.
+
+
+CONTENT REBALANCE
+- Same clickable World Food Adventure interface.
+- Flashcard review unchanged.
+- Presentation unchanged.
+- Existing user voice system retained.
+- Every teaching window now shows a visible Objective.
+- Week 7 focuses on HAVE / BUY.
+- Week 8 focuses on FAMOUS FOR + I WOULD LIKE.
+- Week 9 focuses on TO HAVE / TO BUY + the full conversation.
+
+
+RANDOM ANSWER POSITION UPDATE
+- All multiple-choice options are shuffled randomly when an activity is opened.
+- The correct answer may appear left or right unpredictably.
+- Answer positions remain fixed while the learner retries or moves Back/Next within that activity.
+- Reopening/restarting the activity creates a new random arrangement.
+- Correctness is checked by answer value, never by button position.
+- Interface, objectives, scaffolding, voice, flashcards, presentation, and Foodoku are unchanged.
