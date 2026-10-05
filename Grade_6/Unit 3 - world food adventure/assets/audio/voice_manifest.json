@@ -1,0 +1,374 @@
+{
+  "001": {
+    "text": "Japan",
+    "file": "assets/audio/001.mp3"
+  },
+  "002": {
+    "text": "Taiwan",
+    "file": "assets/audio/002.mp3"
+  },
+  "003": {
+    "text": "Argentina",
+    "file": "assets/audio/003.mp3"
+  },
+  "004": {
+    "text": "South Africa",
+    "file": "assets/audio/004.mp3"
+  },
+  "005": {
+    "text": "Spain",
+    "file": "assets/audio/005.mp3"
+  },
+  "006": {
+    "text": "Sushi",
+    "file": "assets/audio/006.mp3"
+  },
+  "007": {
+    "text": "Beef noodles",
+    "file": "assets/audio/007.mp3"
+  },
+  "008": {
+    "text": "Pineapple cakes",
+    "file": "assets/audio/008.mp3"
+  },
+  "009": {
+    "text": "Empanadas",
+    "file": "assets/audio/009.mp3"
+  },
+  "010": {
+    "text": "Braai",
+    "file": "assets/audio/010.mp3"
+  },
+  "011": {
+    "text": "Paella",
+    "file": "assets/audio/011.mp3"
+  },
+  "012": {
+    "text": "Food is something you eat.",
+    "file": "assets/audio/012.mp3"
+  },
+  "013": {
+    "text": "Souvenir is something you buy and take home.",
+    "file": "assets/audio/013.mp3"
+  },
+  "014": {
+    "text": "Country is a place.",
+    "file": "assets/audio/014.mp3"
+  },
+  "015": {
+    "text": "Which country goes with sushi?",
+    "file": "assets/audio/015.mp3"
+  },
+  "016": {
+    "text": "Which country goes with beef noodles?",
+    "file": "assets/audio/016.mp3"
+  },
+  "017": {
+    "text": "Which country goes with empanadas?",
+    "file": "assets/audio/017.mp3"
+  },
+  "018": {
+    "text": "Which country goes with braai?",
+    "file": "assets/audio/018.mp3"
+  },
+  "019": {
+    "text": "Which country goes with paella?",
+    "file": "assets/audio/019.mp3"
+  },
+  "020": {
+    "text": "Food or souvenir?",
+    "file": "assets/audio/020.mp3"
+  },
+  "021": {
+    "text": "Have for food. Buy for souvenir.",
+    "file": "assets/audio/021.mp3"
+  },
+  "022": {
+    "text": "I have sushi.",
+    "file": "assets/audio/022.mp3"
+  },
+  "023": {
+    "text": "I have beef noodles.",
+    "file": "assets/audio/023.mp3"
+  },
+  "024": {
+    "text": "I buy pineapple cakes.",
+    "file": "assets/audio/024.mp3"
+  },
+  "025": {
+    "text": "I have empanadas.",
+    "file": "assets/audio/025.mp3"
+  },
+  "026": {
+    "text": "I have braai.",
+    "file": "assets/audio/026.mp3"
+  },
+  "027": {
+    "text": "I have paella.",
+    "file": "assets/audio/027.mp3"
+  },
+  "028": {
+    "text": "I [PAUSE] sushi.",
+    "file": "assets/audio/028.mp3"
+  },
+  "029": {
+    "text": "I [PAUSE] pineapple cakes.",
+    "file": "assets/audio/029.mp3"
+  },
+  "030": {
+    "text": "HAVE or BUY?",
+    "file": "assets/audio/030.mp3"
+  },
+  "031": {
+    "text": "Japan is famous for sushi.",
+    "file": "assets/audio/031.mp3"
+  },
+  "032": {
+    "text": "Taiwan is famous for beef noodles.",
+    "file": "assets/audio/032.mp3"
+  },
+  "033": {
+    "text": "Argentina is famous for empanadas.",
+    "file": "assets/audio/033.mp3"
+  },
+  "034": {
+    "text": "South Africa is famous for braai.",
+    "file": "assets/audio/034.mp3"
+  },
+  "035": {
+    "text": "Spain is famous for paella.",
+    "file": "assets/audio/035.mp3"
+  },
+  "036": {
+    "text": "[PAUSE] is famous for sushi.",
+    "file": "assets/audio/036.mp3"
+  },
+  "037": {
+    "text": "Spain is famous for [PAUSE].",
+    "file": "assets/audio/037.mp3"
+  },
+  "038": {
+    "text": "[PAUSE] is famous for braai.",
+    "file": "assets/audio/038.mp3"
+  },
+  "039": {
+    "text": "Argentina is famous for [PAUSE].",
+    "file": "assets/audio/039.mp3"
+  },
+  "040": {
+    "text": "Which country is famous for beef noodles?",
+    "file": "assets/audio/040.mp3"
+  },
+  "041": {
+    "text": "I would like sushi.",
+    "file": "assets/audio/041.mp3"
+  },
+  "042": {
+    "text": "I would like beef noodles.",
+    "file": "assets/audio/042.mp3"
+  },
+  "043": {
+    "text": "I would like empanadas in Argentina.",
+    "file": "assets/audio/043.mp3"
+  },
+  "044": {
+    "text": "I would like braai in South Africa.",
+    "file": "assets/audio/044.mp3"
+  },
+  "045": {
+    "text": "I would like paella in Spain.",
+    "file": "assets/audio/045.mp3"
+  },
+  "046": {
+    "text": "I would like pineapple cakes in Taiwan.",
+    "file": "assets/audio/046.mp3"
+  },
+  "047": {
+    "text": "Choose the correct sentence.",
+    "file": "assets/audio/047.mp3"
+  },
+  "048": {
+    "text": "I would like sushi in Japan.",
+    "file": "assets/audio/048.mp3"
+  },
+  "049": {
+    "text": "Taiwan is famous for beef noodles. I would like beef noodles in Taiwan.",
+    "file": "assets/audio/049.mp3"
+  },
+  "050": {
+    "text": "Spain. Paella.",
+    "file": "assets/audio/050.mp3"
+  },
+  "051": {
+    "text": "I would like beef noodles in Taiwan.",
+    "file": "assets/audio/051.mp3"
+  },
+  "052": {
+    "text": "What would you like?",
+    "file": "assets/audio/052.mp3"
+  },
+  "053": {
+    "text": "What would you like to have?",
+    "file": "assets/audio/053.mp3"
+  },
+  "054": {
+    "text": "What would you like to have in Japan?",
+    "file": "assets/audio/054.mp3"
+  },
+  "055": {
+    "text": "I would like to have sushi in Japan.",
+    "file": "assets/audio/055.mp3"
+  },
+  "056": {
+    "text": "What would you like to have in Taiwan?",
+    "file": "assets/audio/056.mp3"
+  },
+  "057": {
+    "text": "I would like to have beef noodles in Taiwan.",
+    "file": "assets/audio/057.mp3"
+  },
+  "058": {
+    "text": "What would you like to have in Argentina?",
+    "file": "assets/audio/058.mp3"
+  },
+  "059": {
+    "text": "I would like to have empanadas in Argentina.",
+    "file": "assets/audio/059.mp3"
+  },
+  "060": {
+    "text": "What would you like to have in South Africa?",
+    "file": "assets/audio/060.mp3"
+  },
+  "061": {
+    "text": "I would like to have braai in South Africa.",
+    "file": "assets/audio/061.mp3"
+  },
+  "062": {
+    "text": "What would you like to have in Spain?",
+    "file": "assets/audio/062.mp3"
+  },
+  "063": {
+    "text": "I would like to have paella in Spain.",
+    "file": "assets/audio/063.mp3"
+  },
+  "064": {
+    "text": "What would you like to buy in Taiwan?",
+    "file": "assets/audio/064.mp3"
+  },
+  "065": {
+    "text": "I would like to buy pineapple cakes in Taiwan.",
+    "file": "assets/audio/065.mp3"
+  },
+  "066": {
+    "text": "What would you like to [PAUSE] in Japan?",
+    "file": "assets/audio/066.mp3"
+  },
+  "067": {
+    "text": "What would you like to have in [PAUSE]?",
+    "file": "assets/audio/067.mp3"
+  },
+  "068": {
+    "text": "Choose the correct answer.",
+    "file": "assets/audio/068.mp3"
+  },
+  "069": {
+    "text": "What would you like to [PAUSE] in Taiwan?",
+    "file": "assets/audio/069.mp3"
+  },
+  "070": {
+    "text": "Which country is famous for braai?",
+    "file": "assets/audio/070.mp3"
+  },
+  "071": {
+    "text": "What would you like to [PAUSE] in Spain?",
+    "file": "assets/audio/071.mp3"
+  },
+  "072": {
+    "text": "What would you like to have in Spain? I would like to have paella in Spain.",
+    "file": "assets/audio/072.mp3"
+  },
+  "073": {
+    "text": "What would you like to have in South Africa? I would like to have braai in South Africa.",
+    "file": "assets/audio/073.mp3"
+  },
+  "074": {
+    "text": "What would you like to have in Taiwan? I would like to have beef noodles in Taiwan.",
+    "file": "assets/audio/074.mp3"
+  },
+  "075": {
+    "text": "Japan. Sushi.",
+    "file": "assets/audio/075.mp3"
+  },
+  "076": {
+    "text": "What would you like to have in [PAUSE]?",
+    "file": "assets/audio/076.mp3"
+  },
+  "077": {
+    "text": "Speak independently.",
+    "file": "assets/audio/077.mp3"
+  },
+  "078": {
+    "text": "Noodles",
+    "file": "assets/audio/078.mp3"
+  },
+  "079": {
+    "text": "Have",
+    "file": "assets/audio/079.mp3"
+  },
+  "080": {
+    "text": "Buy",
+    "file": "assets/audio/080.mp3"
+  },
+  "081": {
+    "text": "Food",
+    "file": "assets/audio/081.mp3"
+  },
+  "082": {
+    "text": "Souvenir",
+    "file": "assets/audio/082.mp3"
+  },
+  "083": {
+    "text": "Have or Buy",
+    "file": "assets/audio/083.mp3"
+  },
+  "084": {
+    "text": "Correct!",
+    "file": "assets/audio/084.mp3"
+  },
+  "085": {
+    "text": "Try again.",
+    "file": "assets/audio/085.mp3"
+  },
+  "086": {
+    "text": "Foodoku complete. Great job!",
+    "file": "assets/audio/086.mp3"
+  },
+  "087": {
+    "text": "Easy: many clues. Fill each row and column with each food once. When you complete a line, say a simple Week 7 sentence.",
+    "file": "assets/audio/087.mp3"
+  },
+  "088": {
+    "text": "Medium: fewer clues. When you complete a line, say a FAMOUS FOR sentence or an I WOULD LIKE sentence.",
+    "file": "assets/audio/088.mp3"
+  },
+  "089": {
+    "text": "Hard: six foods. When you complete a line, say the full Week 9 question and answer.",
+    "file": "assets/audio/089.mp3"
+  },
+  "090": {
+    "text": "I have noodles.",
+    "file": "assets/audio/090.mp3"
+  },
+  "091": {
+    "text": "What would you like to have in Japan? I would like to have sushi in Japan.",
+    "file": "assets/audio/091.mp3"
+  },
+  "092": {
+    "text": "What would you like to buy in Taiwan? I would like to buy pineapple cakes in Taiwan.",
+    "file": "assets/audio/092.mp3"
+  },
+  "093": {
+    "text": "What would you like to have in Argentina? I would like to have empanadas in Argentina.",
+    "file": "assets/audio/093.mp3"
+  }
+}
