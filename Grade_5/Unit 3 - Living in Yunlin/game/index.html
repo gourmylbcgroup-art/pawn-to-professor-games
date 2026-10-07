@@ -30,7 +30,7 @@
             <button class="mode-card selected" data-level="1"><span class="mode-badge green">LEVEL 1</span><b>Week 6</b><strong>Family & Jobs</strong><small>2 cards • short complete sentences</small></button>
             <button class="mode-card" data-level="2"><span class="mode-badge blue">LEVEL 2</span><b>Week 7</b><strong>Daily Life</strong><small>3 cards • person + action + time/place</small></button>
           </div>
-          <div class="setup-row"><span>Teams</span><div class="segmented"><button data-teams="2">2</button><button data-teams="3">3</button><button class="selected" data-teams="4">4</button></div></div>
+          <div class="setup-row"><span>Players</span><div class="segmented" aria-label="Choose number of players"><button data-teams="2">2</button><button data-teams="3">3</button><button class="selected" data-teams="4">4</button></div></div>
           <div class="voice-note">🎙️ Questions play automatically. Model answers play after a correct response.<br>🕵️ Family Mission includes WHO AM I? challenges, or play WHO AM I? as a separate game.</div>
           <div class="start-game-buttons">
             <button id="startBtn" class="primary-btn">START FAMILY MISSION 🚀</button>
@@ -144,6 +144,7 @@
   <div id="toast" class="toast"></div>
   <div id="confetti" class="confetti"></div>
 </div>
+<script src="audio-manager.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
