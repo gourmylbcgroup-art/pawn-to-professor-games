@@ -1,0 +1,1 @@
+Grade 2 Unit 2 update: 50 original PDF slides rendered to JPG; original flashcards and soup game preserved; full-screen soup iframe; full-screen presentation; user classroom background on lesson pages only. Open index.html. Full screen can be exited with Esc. Progress stored in browser localStorage.

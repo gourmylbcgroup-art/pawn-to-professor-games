@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Magic Days Soup</title>
+<style>
+
+*{box-sizing:border-box}body{margin:0;font-family:Fredoka,'Trebuchet MS',Arial,sans-serif;background:linear-gradient(#0004,#0004),url('kitchen-background.webp') center/cover fixed;color:white;min-height:100vh}
+main{max-width:1040px;margin:auto;padding:15px 14px 32px;text-align:center}h1{font-size:clamp(30px,5vw,57px);margin:6px 0;color:#ffb567;text-shadow:0 5px #702e1d}
+.sub{font-size:clamp(15px,2vw,23px);margin:2px 0 12px;color:#fce8cb}
+.toolbar{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin:10px 0}
+button{font:inherit;cursor:pointer} .pill{border:3px solid #fff;background:white;color:#3b4260;padding:9px 17px;border-radius:30px;font-weight:700;font-size:clamp(15px,2vw,20px)}
+.pill.active{background:#ffad55;color:#4b2312;border-color:#ffcc91}
+.prompt{background:#fff;color:#24294b;border-radius:25px;padding:10px 18px;display:inline-flex;gap:12px;align-items:center;font-size:clamp(21px,3.4vw,38px);font-weight:700;box-shadow:0 7px 0 #e6b58e}
+.word{border-radius:14px;padding:3px 13px;color:#18202c;background:#fff;text-shadow:none}
+.speak{border:0;background:#ffcb4d;border-radius:50%;font-size:27px;width:52px;height:52px}
+.soup{position:relative;width:min(90vw,690px);height:min(70vw,520px);min-height:340px;margin:18px auto 12px;border-radius:50%;background:radial-gradient(ellipse at 40% 32%,#ffde9e,#e8a859 66%,#b97138 98%);border:clamp(14px,3vw,25px) solid #fff;box-shadow:0 18px 0 #bcc1c8,0 28px 30px #0006,inset 0 0 25px #9b5e2d}
+.soup:before{content:'🥕     🥬';position:absolute;inset:20% 5%;font-size:38px;opacity:.3;pointer-events:none;letter-spacing:30px}
+.character{position:absolute;width:clamp(78px,15%,116px);height:clamp(82px,22%,121px);border:5px solid var(--c);border-radius:24px;overflow:hidden;background:white;box-shadow:0 8px 0 #8d4e27a6,0 10px 16px #0005;transform:translate(-50%,-50%) rotate(var(--rot));transition:left .68s ease-in-out,top .68s ease-in-out,transform .2s,filter .2s;touch-action:manipulation}
+.character img{width:100%;height:100%;object-fit:cover;display:block}.character:active{transform:translate(-50%,-50%) scale(1.12)}
+.character:hover{filter:brightness(1.1)}.character:focus-visible{outline:5px dashed #fff}
+.bubble{position:absolute;pointer-events:none;animation:bub 2.8s ease-in infinite;opacity:0;border:3px solid #fff9;border-radius:50%;width:24px;height:24px;bottom:5%;left:var(--x)}
+@keyframes bub{10%{opacity:.8}100%{transform:translateY(-280px) scale(1.4);opacity:0}}
+.status{font-size:22px;color:#fff0c9;min-height:34px}.toast{position:fixed;top:48%;left:50%;transform:translate(-50%,-50%) scale(.85);background:white;color:#164d2a;border:7px solid #ffc652;border-radius:30px;padding:24px 35px;z-index:20;box-shadow:0 20px 60px #0009;font-size:clamp(24px,5vw,45px);font-weight:700;opacity:0;pointer-events:none;transition:.18s;max-width:90vw}.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.footer{font-size:15px;color:#ddd;margin:8px}
+@media(max-width:560px){.soup{width:95vw;height:370px;min-height:0}.character{width:76px;height:84px}.toolbar{gap:5px}.pill{padding:7px 12px}}
+#intro{position:fixed;inset:0;z-index:99;display:flex;align-items:center;justify-content:center;background:linear-gradient(#132b4680,#152e4480),url('kitchen-background.webp') center/cover;transition:opacity .7s ease,visibility .7s}
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.introPanel{width:min(650px,91vw);text-align:center;background:#fffef3f2;color:#183d49;border:7px solid #ffbf56;border-radius:40px;padding:25px 23px;box-shadow:0 25px 70px #0008;animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-9px)}}
+.introPanel h2{font-size:clamp(36px,6vw,69px);color:#f07823;text-shadow:2px 3px #ffe4a1;margin:4px 0 10px}
+.introPanel p{font-size:clamp(20px,3vw,31px);margin:12px 0}
+#start{background:#39c769;color:white;border:5px solid white;border-radius:30px;padding:16px 35px;font-size:clamp(28px,4vw,42px);font-weight:700;box-shadow:0 8px #218844;cursor:pointer}
+#home{position:fixed;left:12px;top:12px;z-index:12;background:#fff;color:#275179;border:3px solid #ffc95e;border-radius:20px;padding:7px 12px;font-weight:700}
+@media(max-width:600px){#home{position:static;margin:8px auto;display:block}.introPanel{padding:18px 12px}}
+.timerbar{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;margin:9px auto}.clock{background:#fff;color:#174369;border:3px solid #ffc45a;border-radius:20px;padding:7px 16px;font-size:24px;font-weight:700}.pill.selected{background:#ffad55;color:#4b2312;border-color:#ffcc91}.musicnote{font-size:16px;color:#fff;background:#21496dc9;border-radius:12px;padding:5px 10px}
+</style></head><body>
+<div id="intro"><div class="introPanel"><div style="font-size:50px">🍜✨🥕</div><h2>Magic Days Soup!</h2><p>Oh no! Seven silly days jumped into my soup!</p><p>Can you catch them? 😄</p><button id="start">▶ START GAME</button></div></div>
+<button id="home" hidden>🏠 Home</button>
+<main>
+<h1>🍜 Magic Days Soup!</h1><div class="sub">Listen • Find • Click • Celebrate!</div>
+<div class="toolbar"><button class="pill active" data-level="3">Easy · 3</button><button class="pill" data-level="5">Medium · 5</button><button class="pill" data-level="7">Challenge · 7</button><button class="pill" data-level="mystery">🎧 Mystery · 7</button></div>
+<div class="timerbar"><span class="clock" id="clock">⏱ 01:00</span><button class="pill selected" id="timed">⏱ 1 Minute</button><button class="pill" id="endless">♾ Continuous</button><button class="pill" id="musicBtn">🎵 Music ON</button></div>
+<div class="toolbar"><button class="pill" id="wordsToggle">🙈 Hide Words</button></div>
+<div class="prompt"><button class="speak" id="listen" title="Listen again">🔊</button> Find <span id="word" class="word">Monday</span>!</div>
+<div class="soup" id="soup" aria-label="Find the character in the soup"></div>
+<div class="status" id="status">Catch the matching character!</div>
+<div class="toolbar"><button class="pill" id="shuffle">🔄 Mix the Soup</button><button class="pill" id="repeat">🔊 Listen Again</button></div>
+<div class="footer">Original seven day characters • No spelling required • Offline-friendly</div>
+<div class="toast" id="toast"></div><audio id="song" src="Bubble.mp3" preload="none" loop></audio>
+</main>
+<script>
+const weekIndex=Math.max(0,Math.min(3,Number(new URLSearchParams(location.search).get("week")||0)));
+const weekNames=["Week 1: Monday & Tuesday","Week 2: Tuesday, Wednesday & Thursday","Week 3: Friday, Saturday & Sunday","Week 4: All Seven Days"];
+const days=[
+{name:'Monday',color:'#1688f5',img:'monday.webp'},
+{name:'Tuesday',color:'#f5bf19',img:'tuesday.webp'},
+{name:'Wednesday',color:'#f1343c',img:'wednesday.webp'},
+{name:'Thursday',color:'#8f43e6',img:'thursday.webp'},
+{name:'Friday',color:'#27b947',img:'friday.webp'},
+{name:'Saturday',color:'#f44f9a',img:'saturday.webp'},
+{name:'Sunday',color:'#fa821a',img:'sunday.webp'}
+];
+const allowedByWeek=[[0,1],[1,2,3],[4,5,6],[0,1,2,3,4,5,6]];
+const allowed=allowedByWeek[weekIndex];
+const positions={
+2:[[30,45],[70,45]],
+3:[[30,30],[70,31],[50,71]],
+5:[[27,27],[73,27],[49,48],[28,76],[73,76]],
+7:[[26,22],[50,19],[74,23],[27,51],[73,51],[37,80],[64,80]]
+};
+let gameMode="timed",musicEnabled=true,secondsLeft=60,countdown=null,gameOver=false;
+const song=document.getElementById("song"),clock=document.getElementById("clock");song.volume=.42;
+let count=weekIndex===0?2:weekIndex===3?7:3,selected=[],target=null,locked=false,completed=0,seq=0, mystery=false,hideWords=false;let swimTimer=null;
+const soup=document.getElementById('soup'),word=document.getElementById('word'),status=document.getElementById('status'),toast=document.getElementById('toast');
+function shuffle(a){return a.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(v=>v[1])}
+function say(s){if(musicEnabled&&!song.paused){song.volume=.14;setTimeout(()=>{if(musicEnabled)song.volume=.42},1900)}if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(s);u.lang='en-US';u.rate=.83;u.pitch=1.16;window.speechSynthesis.speak(u)}
+function updateWords(){
+ word.textContent=(mystery||hideWords)?'❓':(weekIndex===3?"It's "+days[target].name+'!':days[target].name);
+ word.style.background='#fff';word.style.color='#18202c';
+ document.getElementById('wordsToggle').textContent=(hideWords?'👁 Show Words':'🙈 Hide Words');
+}
+function announce(){say(weekIndex===3?"Find: It's "+days[target].name+'!':'Find '+days[target].name+'!')}
+function moveSoup(){
+ if(locked||gameOver)return;
+ const chars=[...soup.querySelectorAll('.character')];
+ // Shuffle character positions, preserving spacing between clickable targets.
+ const spots=shuffle([...positions[count]]);
+ chars.forEach((el,i)=>{
+   el.style.left=spots[i][0]+'%';
+   el.style.top=spots[i][1]+'%';
+   el.style.setProperty('--rot',(Math.random()*14-7).toFixed(1)+'deg');
+ });
+}
+function round(){
+ if(gameOver||!started)return;
+ if(swimTimer)clearInterval(swimTimer);
+ locked=false;
+ selected=shuffle(allowed).slice(0,count);
+ target=selected[Math.floor(Math.random()*selected.length)];
+ updateWords();
+ soup.replaceChildren();
+ shuffle(selected).forEach((i,j)=>{
+  const b=document.createElement('button');b.className='character';b.style.setProperty('--c',days[i].color);
+  b.style.setProperty('--rot',(Math.random()*18-9).toFixed(1)+'deg');
+  b.style.left=positions[count][j][0]+'%';b.style.top=positions[count][j][1]+'%';
+  b.setAttribute('aria-label','Character '+(j+1));
+  const img=document.createElement('img');img.src=days[i].img;img.decoding='async';img.alt='';b.appendChild(img);
+  b.onclick=()=>choose(i);soup.appendChild(b);
+ });
+ for(let i=0;i<7;i++){let el=document.createElement('div');el.className='bubble';el.style.setProperty('--x',Math.round(Math.random()*80+10)+'%');el.style.animationDelay=(Math.random()*3)+'s';soup.appendChild(el)}
+ status.textContent='Catch the matching character!';swimTimer=setInterval(moveSoup,850);if(started)setTimeout(announce,800);
+}
+function choose(i){
+ if(locked||gameOver)return;
+ if(i!==target){status.textContent='Try again! 😊';say('Oops! Try again!');return}
+ locked=true;if(swimTimer)clearInterval(swimTimer);completed++;try{localStorage.setItem('magic_soup_week_'+weekIndex,JSON.stringify({caught:completed,updated:new Date().toISOString()}));}catch(e){}status.textContent='⭐ Great job! '+completed+' correct!';
+ toast.textContent='🌟 '+(weekIndex===3?"It's ":'')+days[i].name+'! 🌟';toast.classList.add('show');
+ say(weekIndex===3?"It's "+days[i].name+'!':days[i].name);
+ const token=++seq;setTimeout(()=>{if(token!==seq)return;toast.classList.remove('show');round()},1900);
+}
+document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{if(weekIndex!==3)return;
+ document.querySelectorAll('[data-level]').forEach(x=>x.classList.remove('active'));b.classList.add('active');mystery=b.dataset.level==='mystery';count=mystery?7:+b.dataset.level;seq++;toast.classList.remove('show');round();
+});
+document.getElementById('wordsToggle').onclick=()=>{hideWords=!hideWords;updateWords();};
+document.getElementById('shuffle').onclick=()=>{seq++;toast.classList.remove('show');round()};
+document.getElementById('listen').onclick=announce;
+document.getElementById('repeat').onclick=announce;
+let started=false;updateClock();
+function updateClock(){clock.textContent=gameMode==='endless'?'♾ Continuous':'⏱ '+String(Math.floor(secondsLeft/60)).padStart(2,'0')+':'+String(secondsLeft%60).padStart(2,'0')}
+function stopClock(){if(countdown){clearInterval(countdown);countdown=null}}
+function endGame(){gameOver=true;locked=true;stopClock();if(swimTimer)clearInterval(swimTimer);song.pause();song.currentTime=0;if('speechSynthesis'in window)speechSynthesis.cancel();toast.textContent='⏰ Time’s Up! Great Job! ⭐ '+completed+' caught';toast.classList.add('show');status.textContent='Great job! Press Home to play again.'}
+function startClock(){stopClock();secondsLeft=60;updateClock();if(gameMode==='timed'){countdown=setInterval(()=>{if(!started||gameOver)return;secondsLeft--;updateClock();if(secondsLeft<=0)endGame()},1000)}}
+function updateMode(){document.getElementById('timed').classList.toggle('selected',gameMode==='timed');document.getElementById('endless').classList.toggle('selected',gameMode==='endless');updateClock();if(started&&!gameOver)startClock()}
+document.getElementById('timed').onclick=()=>{gameMode='timed';updateMode()};
+document.getElementById('endless').onclick=()=>{gameMode='endless';updateMode()};
+document.getElementById('musicBtn').onclick=()=>{musicEnabled=!musicEnabled;document.getElementById('musicBtn').textContent=musicEnabled?'🎵 Music ON':'🔇 Music OFF';if(musicEnabled&&started&&!gameOver)song.play().catch(()=>{});else song.pause()};
+document.querySelectorAll('[data-level]').forEach(b=>b.style.display=weekIndex===3?'':'none');
+document.querySelector('.sub').textContent=weekNames[weekIndex]+' · Listen • Find • Click • Celebrate!';
+document.getElementById('start').onclick=()=>{
+ started=true;gameOver=false;completed=0;toast.classList.remove('show');startClock();if(musicEnabled){song.currentTime=0;song.play().catch(()=>{})}document.getElementById('intro').classList.add('hide');
+ document.getElementById('home').hidden=false;
+ seq++;round();
+ say('Oh no! The days are in my soup! Catch them! Find '+days[target].name+'!');
+};
+document.getElementById('home').onclick=()=>{
+ started=false;gameOver=false;seq++;stopClock();song.pause();song.currentTime=0;secondsLeft=60;updateClock();toast.classList.remove('show');if(swimTimer)clearInterval(swimTimer);
+ if('speechSynthesis' in window) speechSynthesis.cancel();
+ document.getElementById('intro').classList.remove('hide');
+ document.getElementById('home').hidden=true;
+};
+</script></body></html>

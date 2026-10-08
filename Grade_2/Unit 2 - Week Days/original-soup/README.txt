@@ -1,0 +1,1 @@
+Magic Days Soup: Open index.html. Four levels: Easy 3, Medium 5, Challenge 7, Mystery 7 (listening only). Hide Words / Show Words works in all levels, except Mystery always hides the day name. Day prompt is neutral black on white. Original characters and kitchen background retained. Keep files together. Browser text-to-speech requires an installed English voice.
