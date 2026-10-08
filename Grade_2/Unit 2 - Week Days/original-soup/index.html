@@ -70,7 +70,45 @@ const song=document.getElementById("song"),clock=document.getElementById("clock"
 let count=weekIndex===0?2:weekIndex===3?7:3,selected=[],target=null,locked=false,completed=0,seq=0, mystery=false,hideWords=false;let swimTimer=null;
 const soup=document.getElementById('soup'),word=document.getElementById('word'),status=document.getElementById('status'),toast=document.getElementById('toast');
 function shuffle(a){return a.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(v=>v[1])}
-function say(s){if(musicEnabled&&!song.paused){song.volume=.14;setTimeout(()=>{if(musicEnabled)song.volume=.42},1900)}if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(s);u.lang='en-US';u.rate=.83;u.pitch=1.16;window.speechSynthesis.speak(u)}
+// Locally hosted recorded voice: reuse preloaded audio instead of browser/cloud TTS.
+const voiceCache=new Map();
+const voiceKeys=['monday','tuesday','wednesday','thursday','friday','saturday','sunday',
+  'it-s-monday','it-s-tuesday','it-s-wednesday','it-s-thursday','it-s-friday','it-s-saturday','it-s-sunday',
+  'find-monday','find-tuesday','find-wednesday','find-thursday','find-friday','find-saturday','find-sunday',
+  'try-again','good-try','correct','well-done'];
+for(const key of voiceKeys){const audio=new Audio('../assets/voice/'+key+'.mp3');audio.preload='auto';voiceCache.set(key,audio)}
+let voiceSequence=0, currentVoice=null, voiceRestore=null;
+function stopVoice(){
+  ++voiceSequence;
+  if(currentVoice){currentVoice.pause();currentVoice.currentTime=0;currentVoice=null}
+  if(voiceRestore){clearTimeout(voiceRestore);voiceRestore=null}
+  song.volume=.42;
+}
+function speakClip(key){
+  stopVoice();
+  const clip=voiceCache.get(key);if(!clip)return;
+  currentVoice=clip;
+  if(musicEnabled&&!song.paused)song.volume=.15;
+  clip.currentTime=0;
+  const token=voiceSequence;
+  const restore=()=>{if(token===voiceSequence){song.volume=.42;currentVoice=null}};
+  clip.onended=restore;
+  clip.onerror=restore;
+  clip.play().catch(restore);
+  voiceRestore=setTimeout(restore,4500);
+}
+function say(s){
+  const value=s.trim().toLowerCase();
+  const found=value.match(/(?:find\s*:?(?:\s+it's)?|catch them! find)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/i);
+  if(found){speakClip('find-'+found[1]);return}
+  if(value.includes('try again')||value.includes('oops')){speakClip('try-again');return}
+  if(value.includes('great job')||value.includes('well done')){speakClip('well-done');return}
+  const match=value.match(/^(?:it's|it is)\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)!?$/);
+  if(match){speakClip('it-s-'+match[1]);return}
+  const day=value.replace(/[!.]/g,'').trim();
+  if(voiceCache.has(day))speakClip(day);
+}
+
 function updateWords(){
  word.textContent=(mystery||hideWords)?'❓':(weekIndex===3?"It's "+days[target].name+'!':days[target].name);
  word.style.background='#fff';word.style.color='#18202c';
@@ -105,7 +143,7 @@ function round(){
   b.onclick=()=>choose(i);soup.appendChild(b);
  });
  for(let i=0;i<7;i++){let el=document.createElement('div');el.className='bubble';el.style.setProperty('--x',Math.round(Math.random()*80+10)+'%');el.style.animationDelay=(Math.random()*3)+'s';soup.appendChild(el)}
- status.textContent='Catch the matching character!';swimTimer=setInterval(moveSoup,850);if(started)setTimeout(announce,800);
+ status.textContent='Catch the matching character!';swimTimer=setInterval(moveSoup,850);const announceSeq=seq;if(started)setTimeout(()=>{if(announceSeq===seq&&!gameOver&&started)announce()},350);
 }
 function choose(i){
  if(locked||gameOver)return;
@@ -125,7 +163,7 @@ document.getElementById('repeat').onclick=announce;
 let started=false;updateClock();
 function updateClock(){clock.textContent=gameMode==='endless'?'♾ Continuous':'⏱ '+String(Math.floor(secondsLeft/60)).padStart(2,'0')+':'+String(secondsLeft%60).padStart(2,'0')}
 function stopClock(){if(countdown){clearInterval(countdown);countdown=null}}
-function endGame(){gameOver=true;locked=true;stopClock();if(swimTimer)clearInterval(swimTimer);song.pause();song.currentTime=0;if('speechSynthesis'in window)speechSynthesis.cancel();toast.textContent='⏰ Time’s Up! Great Job! ⭐ '+completed+' caught';toast.classList.add('show');status.textContent='Great job! Press Home to play again.'}
+function endGame(){gameOver=true;locked=true;stopClock();if(swimTimer)clearInterval(swimTimer);song.pause();song.currentTime=0;stopVoice();toast.textContent='⏰ Time’s Up! Great Job! ⭐ '+completed+' caught';toast.classList.add('show');status.textContent='Great job! Press Home to play again.'}
 function startClock(){stopClock();secondsLeft=60;updateClock();if(gameMode==='timed'){countdown=setInterval(()=>{if(!started||gameOver)return;secondsLeft--;updateClock();if(secondsLeft<=0)endGame()},1000)}}
 function updateMode(){document.getElementById('timed').classList.toggle('selected',gameMode==='timed');document.getElementById('endless').classList.toggle('selected',gameMode==='endless');updateClock();if(started&&!gameOver)startClock()}
 document.getElementById('timed').onclick=()=>{gameMode='timed';updateMode()};
@@ -137,11 +175,10 @@ document.getElementById('start').onclick=()=>{
  started=true;gameOver=false;completed=0;toast.classList.remove('show');startClock();if(musicEnabled){song.currentTime=0;song.play().catch(()=>{})}document.getElementById('intro').classList.add('hide');
  document.getElementById('home').hidden=false;
  seq++;round();
- say('Oh no! The days are in my soup! Catch them! Find '+days[target].name+'!');
 };
 document.getElementById('home').onclick=()=>{
- started=false;gameOver=false;seq++;stopClock();song.pause();song.currentTime=0;secondsLeft=60;updateClock();toast.classList.remove('show');if(swimTimer)clearInterval(swimTimer);
- if('speechSynthesis' in window) speechSynthesis.cancel();
+ started=false;gameOver=false;seq++;stopClock();song.pause();song.currentTime=0;stopVoice();secondsLeft=60;updateClock();toast.classList.remove('show');if(swimTimer)clearInterval(swimTimer);
+ stopVoice();
  document.getElementById('intro').classList.remove('hide');
  document.getElementById('home').hidden=true;
 };
