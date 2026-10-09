@@ -1,0 +1,21 @@
+LEARN AUDIO UPDATE
+
+The LEARN section now uses a deliberate response gap with the user's own voice.
+
+COLORS
+1. User voice: “What color is it?”
+2. 3-second silence for the child to answer.
+3. User voice: “It’s yellow/green/red/etc.”
+
+TWO-QUESTION MODEL
+1. “What color is it?”
+2. 3-second learner response gap.
+3. “It’s ___.”
+4. 0.8-second transition.
+5. “How does the monster feel?”
+6. 3-second learner response gap.
+7. “The monster is ___.”
+
+No new audio files were created.
+The existing three cached own-voice audio sprites are reused, preserving the
+100-user online optimization and avoiding extra audio requests.

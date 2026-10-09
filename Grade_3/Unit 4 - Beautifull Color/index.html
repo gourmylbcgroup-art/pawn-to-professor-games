@@ -159,6 +159,16 @@ button{font:inherit}.bg{position:fixed;inset:0;z-index:-2;background:linear-grad
  .presArrow{width:44px;height:60px;font-size:25px}
 }
 
+
+.learnTurnCue{
+  min-height:30px;margin:8px 0 2px;text-align:center;
+  font-size:clamp(18px,2vw,28px);font-weight:1000;color:#7b3fd4;
+}
+.learnTurnCue.waiting{
+  animation:learnPulse .8s ease-in-out infinite alternate;
+}
+@keyframes learnPulse{from{transform:scale(1);opacity:.72}to{transform:scale(1.035);opacity:1}}
+
 </style>
 </head>
 <body>
@@ -302,7 +312,7 @@ One, two, three — woo-hoo!</div>
 <section class="screen" id="learn">
  <div class="pagehead"><div class="bigbadge n2">2</div><div><h1>LEARN — Colors → Feelings</h1><p>10 minutes • one model at a time • model → repeat → mini-check</p></div></div>
  <div class="board">
-  <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Connect colors to monsters and feelings.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>What color is it? / It’s ___. • How does the monster feel? / He is ___.</span></div><div class="missionbox"><b>🧩 WEEK</b><span>Week 9 core</span></div></div>
+  <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Connect colors to monsters and feelings.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>What color is it? → It’s ___. • How does the monster feel? → The monster is ___.</span></div><div class="missionbox"><b>🧩 WEEK</b><span>Week 9 core</span></div></div>
   <div class="stagebox"><div class="tabs"><button class="tab active" data-learntab="colors">🎨 COLORS</button><button class="tab" data-learntab="monsters">👾 MONSTERS</button><button class="tab" data-learntab="sentences">💬 SENTENCES</button></div><div id="learnContent"></div>
    <div class="miniCheck"><h2>Mini-check</h2><div id="learnMini"></div></div>
    <details class="teacher"><summary>Teacher script & scaffolding</summary><p>For each color, show the color flashcard first, then immediately check the SAME color with a real object: yellow→sun, green→leaf, red→apple, black→cat, pink→heart, blue→raindrop, white→cloud. Then connect colors to feelings.</p></details>
@@ -585,21 +595,82 @@ function renderStart(){
 document.querySelectorAll("[data-starttab]").forEach(b=>b.onclick=()=>{startTab=b.dataset.starttab;renderStart()});renderStart();
 
 // LEARN
+const LEARN_RESPONSE_PAUSE_MS=3000;
+const LEARN_BETWEEN_MODELS_MS=800;
+let learnSequenceToken=0;
+
+function learnSleep(ms){return new Promise(r=>setTimeout(r,ms))}
+function cancelLearnSequence(){
+  learnSequenceToken++;
+  if(typeof ownVoiceStop==="function")ownVoiceStop();
+}
+async function runLearnQuestionAnswer(button,question,answer,statusId){
+  const token=++learnSequenceToken;
+  if(button)button.disabled=true;
+  const status=$(statusId);
+  try{
+    if(status){status.textContent="👂 LISTEN";status.className="learnTurnCue";}
+    await speak(question);
+    if(token!==learnSequenceToken)return;
+    if(status){
+      status.textContent="🎤 YOUR TURN — say the answer";
+      status.className="learnTurnCue waiting";
+    }
+    await learnSleep(LEARN_RESPONSE_PAUSE_MS);
+    if(token!==learnSequenceToken)return;
+    if(status){status.textContent="🔊 MODEL ANSWER";status.className="learnTurnCue";}
+    await speak(answer);
+    if(token!==learnSequenceToken)return;
+    if(status){status.textContent="✓ LISTEN AND REPEAT";status.className="learnTurnCue";}
+  } finally {
+    if(button&&token===learnSequenceToken)button.disabled=false;
+  }
+}
+async function runLearnTwoQuestionModel(button,color,feeling,statusId){
+  const token=++learnSequenceToken;
+  if(button)button.disabled=true;
+  const status=$(statusId);
+  const sayStep=async(question,answer,label)=>{
+    if(token!==learnSequenceToken)return false;
+    if(status){status.textContent=`👂 ${label}`;status.className="learnTurnCue";}
+    await speak(question);
+    if(token!==learnSequenceToken)return false;
+    if(status){
+      status.textContent="🎤 YOUR TURN — say the answer";
+      status.className="learnTurnCue waiting";
+    }
+    await learnSleep(LEARN_RESPONSE_PAUSE_MS);
+    if(token!==learnSequenceToken)return false;
+    if(status){status.textContent="🔊 MODEL ANSWER";status.className="learnTurnCue";}
+    await speak(answer);
+    return token===learnSequenceToken;
+  };
+  try{
+    if(!await sayStep("What color is it?",`It’s ${color}.`,"COLOR QUESTION"))return;
+    await learnSleep(LEARN_BETWEEN_MODELS_MS);
+    if(!await sayStep("How does the monster feel?",`The monster is ${feeling}.`,"FEELING QUESTION"))return;
+    if(status){status.textContent="✓ GREAT — LISTEN AND REPEAT";status.className="learnTurnCue";}
+  } finally {
+    if(button&&token===learnSequenceToken)button.disabled=false;
+  }
+}
+
 let learnTab="colors",learnIndex=0;
 function renderLearn(){
+ cancelLearnSequence();
  document.querySelectorAll("[data-learntab]").forEach(b=>b.classList.toggle("active",b.dataset.learntab===learnTab));
  let el=$("learnContent");
  if(learnTab==="colors"){
   let c=COLORS[learnIndex%COLORS.length];
-  el.innerHTML=`<div class="stageTitle">Step 1 — Colors</div><div class="stageSub">Flashcard first → same-color real object mini-check.</div><div class="twocol"><div class="visual"><img class="learnColorCard" src="${LEARN_COLOR_CARD[c]}" decoding="async" loading="lazy"></div><div><div class="prompt">What color is it?</div><div class="frame" id="learnFrame">It’s ______.</div><div class="controls"><button class="btn blue" id="learnHear">🔊 HEAR MODEL</button><button class="btn green" id="learnReveal">REVEAL</button><button class="btn orange" id="learnNext">NEXT MODEL ➜</button></div></div></div><div class="wordRow">${COLORS.map(x=>`<button class="wordChip ${x===c?"active":""}">${x}</button>`).join("")}</div>`;
-  $("learnHear").onclick=()=>speak(`What color is it? It’s ${c}.`);$("learnReveal").onclick=()=>{$("learnFrame").textContent=`It’s ${c}.`};$("learnNext").onclick=()=>{learnIndex=(learnIndex+1)%COLORS.length;renderLearn()}
+  el.innerHTML=`<div class="stageTitle">Step 1 — Colors</div><div class="stageSub">Listen to the question → answer during the pause → hear the model answer.</div><div class="twocol"><div class="visual"><img class="learnColorCard" src="${LEARN_COLOR_CARD[c]}" decoding="async" loading="lazy"></div><div><div class="prompt">What color is it?</div><div class="frame" id="learnFrame">It’s ______.</div><div class="learnTurnCue" id="learnTurnCue">Press HEAR MODEL</div><div class="controls"><button class="btn blue" id="learnHear">🔊 HEAR MODEL</button><button class="btn green" id="learnReveal">REVEAL</button><button class="btn orange" id="learnNext">NEXT MODEL ➜</button></div></div></div><div class="wordRow">${COLORS.map(x=>`<button class="wordChip ${x===c?"active":""}">${x}</button>`).join("")}</div>`;
+  $("learnHear").onclick=()=>runLearnQuestionAnswer($("learnHear"),"What color is it?",`It’s ${c}.`,"learnTurnCue");$("learnReveal").onclick=()=>{$("learnFrame").textContent=`It’s ${c}.`};$("learnNext").onclick=()=>{cancelLearnSequence();learnIndex=(learnIndex+1)%COLORS.length;renderLearn()}
  } else if(learnTab==="monsters"){
   el.innerHTML=`<div class="stageTitle">Step 2 — Connect Colors and Feelings</div><div class="stageSub">Yellow = happy • Blue = sad • Red = angry • Green = calm • Black = scared • Pink = love</div><div class="mapgrid">${MONSTERS.map(c=>`<div class="mapitem"><img src="${monster(c)}" decoding="async" loading="lazy"><b>${c} → ${FEEL[c]}</b></div>`).join("")}</div><div class="controls"><button class="btn blue" id="mapHear">🔊 HEAR MAP</button></div>`;
   $("mapHear").onclick=()=>speak("Yellow is happy. Blue is sad. Red is angry. Green is calm. Black is scared. Pink is in love.");
  } else {
   let c=["yellow","blue","red","green","black"][learnIndex%5];
-  el.innerHTML=`<div class="stageTitle">Step 3 — Two-Question Model</div><div class="stageSub">Use the same monster for color first, then feeling.</div><div class="twocol"><div class="visual"><div class="monsterCrop"><img src="${monster(c)}" decoding="async" loading="lazy"></div></div><div><div class="prompt">What color is it?</div><div class="frame">It’s ${c}.</div><div class="prompt">How does the monster feel?</div><div class="frame">He is ${FEEL[c]}.</div><div class="controls"><button class="btn blue" id="sentHear">🔊 HEAR MODEL</button><button class="btn orange" id="sentNext">NEXT MONSTER ➜</button></div></div></div>`;
-  $("sentHear").onclick=()=>speak(`What color is it? It’s ${c}. How does the monster feel? He is ${FEEL[c]}.`);$("sentNext").onclick=()=>{learnIndex=(learnIndex+1)%5;renderLearn()}
+  el.innerHTML=`<div class="stageTitle">Step 3 — Two-Question Model</div><div class="stageSub">Your voice asks → 3-second learner pause → your voice gives the answer.</div><div class="twocol"><div class="visual"><div class="monsterCrop"><img src="${monster(c)}" decoding="async" loading="lazy"></div></div><div><div class="prompt">What color is it?</div><div class="frame">It’s ${c}.</div><div class="prompt">How does the monster feel?</div><div class="frame">The monster is ${FEEL[c]}.</div><div class="learnTurnCue" id="sentTurnCue">Press HEAR MODEL</div><div class="controls"><button class="btn blue" id="sentHear">🔊 HEAR MODEL</button><button class="btn orange" id="sentNext">NEXT MONSTER ➜</button></div></div></div>`;
+  $("sentHear").onclick=()=>runLearnTwoQuestionModel($("sentHear"),c,FEEL[c],"sentTurnCue");$("sentNext").onclick=()=>{cancelLearnSequence();learnIndex=(learnIndex+1)%5;renderLearn()}
  }
  renderLearnMini();
 }
@@ -608,7 +679,7 @@ function renderLearnMini(){
  if(learnTab==="colors") $("learnMini").innerHTML=`<div class="prompt">Mini-check: What color is it?</div><div class="stageSub">Same color, new picture.</div><div class="visual"><img class="miniObject" src="${img(color,"objects")}" decoding="async" loading="lazy"></div><div class="controls"><button class="btn green" id="miniReveal">SHOW ANSWER</button></div><div class="feedback" id="miniFb"></div>`;
  else if(learnTab==="monsters"){let c=MONSTERS[(learnIndex+1)%MONSTERS.length];$("learnMini").innerHTML=`<div class="prompt">Mini-check: How does the monster feel?</div><div class="visual"><div class="monsterCrop" style="height:150px;width:170px"><img style="height:220px" src="${monster(c)}" decoding="async" loading="lazy"></div></div><div class="controls"><button class="btn green" id="miniReveal">SHOW ANSWER</button></div><div class="feedback" id="miniFb"></div>`}
  else {let c=["yellow","blue","red","green","black"][learnIndex%5];$("learnMini").innerHTML=`<div class="prompt">Mini-check: Is it ${c}?</div><div class="controls"><button class="btn green" id="miniReveal">SHOW MODEL</button></div><div class="feedback" id="miniFb"></div>`}
- $("miniReveal").onclick=()=>{let t=learnTab==="colors"?`It’s ${color}.`:learnTab==="monsters"?`He is ${FEEL[MONSTERS[(learnIndex+1)%MONSTERS.length]]}.`:`Yes, it is.`;$("miniFb").textContent=t;$("miniFb").className="feedback good";speak(t)}
+ $("miniReveal").onclick=()=>{let t=learnTab==="colors"?`It’s ${color}.`:learnTab==="monsters"?`The monster is ${FEEL[MONSTERS[(learnIndex+1)%MONSTERS.length]]}.`:`Yes, it is.`;$("miniFb").textContent=t;$("miniFb").className="feedback good";speak(t)}
 }
 document.querySelectorAll("[data-learntab]").forEach(b=>b.onclick=()=>{learnTab=b.dataset.learntab;renderLearn()});renderLearn();
 
