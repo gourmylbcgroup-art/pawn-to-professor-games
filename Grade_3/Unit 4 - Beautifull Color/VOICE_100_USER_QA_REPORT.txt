@@ -1,0 +1,41 @@
+OWN VOICE / 100-USER QA REPORT
+
+Voice:
+- 3 attached TTSMaker MP3 files copied byte-for-byte.
+- 89 phrases detected from the 2-second-separated recording batches.
+- Playback uses 3 audio sprites, avoiding 89 separate network requests.
+- Root lesson browser SpeechSynthesis removed.
+- Monster Sort browser SpeechSynthesis removed.
+- Web Audio decoding is used on HTTP/HTTPS after the first interaction.
+- HTMLAudio sprite fallback keeps local/offline opening compatible.
+- Voice files preload once; repeated plays use local browser memory/cache.
+- Music volume ducks during spoken voice.
+
+100-user / bandwidth optimization:
+- Monster Sort iframe is lazy-loaded only when OPEN MONSTER SORT is pressed.
+- Six large color-card PNGs (~7.2 MB total) converted to compact WebP.
+- Duplicate Monster Sort song removed; lesson/game share one song file.
+- Unused old Monster Mission audio/game removed.
+- Presentation images remain lazy-loaded.
+- Service worker caches MP3/image assets online for repeat access.
+- Vercel cache headers supplied for immutable static media.
+
+Package size:
+- Previous package: about 18.37 MB
+- Updated package: about 10.42 MB
+- Reduction: about 43%
+
+Voice file integrity:
+own_voice_1_v1.mp3: EXACT COPY | SHA256 622b11509693891f15cdb2bd5829adfa3a03fdb9696dfc75151baa5a8d79d682
+own_voice_2_v1.mp3: EXACT COPY | SHA256 281ee5855d4ec6e2c77ff60e875dcaf6d558516ec2d5f108de10d79f2919d878
+own_voice_3_v1.mp3: EXACT COPY | SHA256 116f6ba12e15edef34d718014739aaa38ca54fe8f7c5698366e48791e13680e8
+
+Validation:
+- Root JavaScript syntax: PASS
+- Game JavaScript syntax: PASS
+- Voice cue count: 89 / 89
+- Static reference check: PASS
+
+Notes:
+- This design removes the previous online TTS/network-request pattern that commonly caused delayed speech.
+- No web lesson can guarantee zero delay on every connection/device, but this build front-loads and caches the compact voice sprites specifically to minimize that risk.

@@ -1,0 +1,536 @@
+{
+  "yellow": {
+    "f": 0,
+    "s": 0,
+    "e": 0.54,
+    "t": "Yellow."
+  },
+  "green": {
+    "f": 0,
+    "s": 2.465,
+    "e": 3.13,
+    "t": "Green."
+  },
+  "red": {
+    "f": 0,
+    "s": 5.032,
+    "e": 5.564,
+    "t": "Red."
+  },
+  "black": {
+    "f": 0,
+    "s": 7.622,
+    "e": 8.051,
+    "t": "Black."
+  },
+  "pink": {
+    "f": 0,
+    "s": 10.203,
+    "e": 10.548,
+    "t": "Pink."
+  },
+  "blue": {
+    "f": 0,
+    "s": 12.675,
+    "e": 13.264,
+    "t": "Blue."
+  },
+  "white": {
+    "f": 0,
+    "s": 15.215,
+    "e": 15.725,
+    "t": "White."
+  },
+  "it's yellow": {
+    "f": 0,
+    "s": 17.81,
+    "e": 18.546,
+    "t": "It’s yellow."
+  },
+  "it's green": {
+    "f": 0,
+    "s": 20.439,
+    "e": 21.271,
+    "t": "It’s green."
+  },
+  "it's red": {
+    "f": 0,
+    "s": 23.202,
+    "e": 23.888,
+    "t": "It’s red."
+  },
+  "it's black": {
+    "f": 0,
+    "s": 25.877,
+    "e": 26.56,
+    "t": "It’s black."
+  },
+  "it's pink": {
+    "f": 0,
+    "s": 28.655,
+    "e": 29.31,
+    "t": "It’s pink."
+  },
+  "it's blue": {
+    "f": 0,
+    "s": 31.419,
+    "e": 32.193,
+    "t": "It’s blue."
+  },
+  "it's white": {
+    "f": 0,
+    "s": 34.081,
+    "e": 34.738,
+    "t": "It’s white."
+  },
+  "what color is it": {
+    "f": 0,
+    "s": 36.822,
+    "e": 37.747,
+    "t": "What color is it?"
+  },
+  "what color is it it's yellow": {
+    "f": 0,
+    "s": 39.773,
+    "e": 41.468,
+    "t": "What color is it? It’s yellow."
+  },
+  "what color is it it's green": {
+    "f": 0,
+    "s": 43.386,
+    "e": 45.179,
+    "t": "What color is it? It’s green."
+  },
+  "what color is it it's red": {
+    "f": 0,
+    "s": 47.129,
+    "e": 48.771,
+    "t": "What color is it? It’s red."
+  },
+  "what color is it it's black": {
+    "f": 0,
+    "s": 50.784,
+    "e": 52.423,
+    "t": "What color is it? It’s black."
+  },
+  "what color is it it's pink": {
+    "f": 0,
+    "s": 54.545,
+    "e": 56.163,
+    "t": "What color is it? It’s pink."
+  },
+  "what color is it it's blue": {
+    "f": 0,
+    "s": 58.288,
+    "e": 60.022,
+    "t": "What color is it? It’s blue."
+  },
+  "what color is it it's white": {
+    "f": 0,
+    "s": 61.93,
+    "e": 63.545,
+    "t": "What color is it? It’s white."
+  },
+  "yellow is happy": {
+    "f": 0,
+    "s": 65.618,
+    "e": 66.597,
+    "t": "Yellow is happy."
+  },
+  "blue is sad": {
+    "f": 0,
+    "s": 68.539,
+    "e": 69.426,
+    "t": "Blue is sad."
+  },
+  "red is angry": {
+    "f": 0,
+    "s": 71.336,
+    "e": 72.267,
+    "t": "Red is angry."
+  },
+  "green is calm": {
+    "f": 0,
+    "s": 74.215,
+    "e": 75.181,
+    "t": "Green is calm."
+  },
+  "black is scared": {
+    "f": 0,
+    "s": 77.125,
+    "e": 78.101,
+    "t": "Black is scared."
+  },
+  "pink is in love": {
+    "f": 0,
+    "s": 80.132,
+    "e": 81.08,
+    "t": "Pink is in love."
+  },
+  "happy": {
+    "f": 0,
+    "s": 83.168,
+    "e": 83.732,
+    "t": "Happy."
+  },
+  "sad": {
+    "f": 0,
+    "s": 85.74,
+    "e": 86.322,
+    "t": "Sad."
+  },
+  "angry": {
+    "f": 0,
+    "s": 88.353,
+    "e": 88.981,
+    "t": "Angry."
+  },
+  "calm": {
+    "f": 0,
+    "s": 90.994,
+    "e": 91.594,
+    "t": "Calm."
+  },
+  "scared": {
+    "f": 0,
+    "s": 93.554,
+    "e": 94.188,
+    "t": "Scared."
+  },
+  "in love": {
+    "f": 0,
+    "s": 96.22,
+    "e": 96.889,
+    "t": "In love."
+  },
+  "how does the monster feel": {
+    "f": 0,
+    "s": 98.974,
+    "e": 100.265,
+    "t": "How does the monster feel?"
+  },
+  "he is happy": {
+    "f": 0,
+    "s": 102.235,
+    "e": 102.98,
+    "t": "He is happy."
+  },
+  "how does the monster feel he is happy": {
+    "f": 1,
+    "s": 0,
+    "e": 1.994,
+    "t": "How does the monster feel? He is happy."
+  },
+  "the monster is happy": {
+    "f": 1,
+    "s": 3.93,
+    "e": 5.1,
+    "t": "The monster is happy."
+  },
+  "he is sad": {
+    "f": 1,
+    "s": 7.081,
+    "e": 7.785,
+    "t": "He is sad."
+  },
+  "how does the monster feel he is sad": {
+    "f": 1,
+    "s": 9.698,
+    "e": 11.708,
+    "t": "How does the monster feel? He is sad."
+  },
+  "the monster is sad": {
+    "f": 1,
+    "s": 13.603,
+    "e": 14.73,
+    "t": "The monster is sad."
+  },
+  "he is angry": {
+    "f": 1,
+    "s": 16.735,
+    "e": 17.499,
+    "t": "He is angry."
+  },
+  "how does the monster feel he is angry": {
+    "f": 1,
+    "s": 19.468,
+    "e": 21.539,
+    "t": "How does the monster feel? He is angry."
+  },
+  "the monster is angry": {
+    "f": 1,
+    "s": 23.492,
+    "e": 24.648,
+    "t": "The monster is angry."
+  },
+  "he is calm": {
+    "f": 1,
+    "s": 26.651,
+    "e": 27.365,
+    "t": "He is calm."
+  },
+  "how does the monster feel he is calm": {
+    "f": 1,
+    "s": 29.32,
+    "e": 31.341,
+    "t": "How does the monster feel? He is calm."
+  },
+  "the monster is calm": {
+    "f": 1,
+    "s": 33.279,
+    "e": 34.453,
+    "t": "The monster is calm."
+  },
+  "he is scared": {
+    "f": 1,
+    "s": 36.443,
+    "e": 37.209,
+    "t": "He is scared."
+  },
+  "how does the monster feel he is scared": {
+    "f": 1,
+    "s": 39.227,
+    "e": 41.294,
+    "t": "How does the monster feel? He is scared."
+  },
+  "the monster is scared": {
+    "f": 1,
+    "s": 43.3,
+    "e": 44.485,
+    "t": "The monster is scared."
+  },
+  "he is in love": {
+    "f": 1,
+    "s": 46.532,
+    "e": 47.361,
+    "t": "He is in love."
+  },
+  "how does the monster feel he is in love": {
+    "f": 1,
+    "s": 49.431,
+    "e": 51.568,
+    "t": "How does the monster feel? He is in love."
+  },
+  "the monster is in love": {
+    "f": 1,
+    "s": 53.626,
+    "e": 54.861,
+    "t": "The monster is in love."
+  },
+  "it's yellow he is happy": {
+    "f": 1,
+    "s": 56.879,
+    "e": 58.338,
+    "t": "It’s yellow. He is happy."
+  },
+  "the yellow monster is happy": {
+    "f": 1,
+    "s": 60.279,
+    "e": 61.776,
+    "t": "The yellow monster is happy."
+  },
+  "it's blue he is sad": {
+    "f": 1,
+    "s": 63.71,
+    "e": 65.165,
+    "t": "It’s blue. He is sad."
+  },
+  "the blue monster is sad": {
+    "f": 1,
+    "s": 67.061,
+    "e": 68.424,
+    "t": "The blue monster is sad."
+  },
+  "it's red he is angry": {
+    "f": 1,
+    "s": 70.388,
+    "e": 71.925,
+    "t": "It’s red. He is angry."
+  },
+  "the red monster is angry": {
+    "f": 1,
+    "s": 73.884,
+    "e": 75.298,
+    "t": "The red monster is angry."
+  },
+  "it's green he is calm": {
+    "f": 1,
+    "s": 77.236,
+    "e": 78.802,
+    "t": "It’s green. He is calm."
+  },
+  "the green monster is calm": {
+    "f": 1,
+    "s": 80.741,
+    "e": 82.198,
+    "t": "The green monster is calm."
+  },
+  "it's black he is scared": {
+    "f": 1,
+    "s": 84.127,
+    "e": 85.776,
+    "t": "It’s black. He is scared."
+  },
+  "the black monster is scared": {
+    "f": 2,
+    "s": 0,
+    "e": 1.409,
+    "t": "The black monster is scared."
+  },
+  "it's pink he is in love": {
+    "f": 2,
+    "s": 3.392,
+    "e": 5.103,
+    "t": "It’s pink. He is in love."
+  },
+  "the pink monster is in love": {
+    "f": 2,
+    "s": 7.157,
+    "e": 8.638,
+    "t": "The pink monster is in love."
+  },
+  "is it yellow": {
+    "f": 2,
+    "s": 10.649,
+    "e": 11.517,
+    "t": "Is it yellow?"
+  },
+  "is it blue": {
+    "f": 2,
+    "s": 13.371,
+    "e": 14.21,
+    "t": "Is it blue?"
+  },
+  "is it red": {
+    "f": 2,
+    "s": 16.062,
+    "e": 16.82,
+    "t": "Is it red?"
+  },
+  "is it green": {
+    "f": 2,
+    "s": 18.785,
+    "e": 19.702,
+    "t": "Is it green?"
+  },
+  "is it black": {
+    "f": 2,
+    "s": 21.554,
+    "e": 22.318,
+    "t": "Is it black?"
+  },
+  "is it pink": {
+    "f": 2,
+    "s": 24.351,
+    "e": 25.092,
+    "t": "Is it pink?"
+  },
+  "yes it is": {
+    "f": 2,
+    "s": 27.122,
+    "e": 28.405,
+    "t": "Yes, it is."
+  },
+  "no it isn't": {
+    "f": 2,
+    "s": 30.383,
+    "e": 31.491,
+    "t": "No, it isn’t."
+  },
+  "how do i feel": {
+    "f": 2,
+    "s": 33.531,
+    "e": 34.387,
+    "t": "How do I feel?"
+  },
+  "i am happy": {
+    "f": 2,
+    "s": 36.304,
+    "e": 37.083,
+    "t": "I am happy."
+  },
+  "i am sad": {
+    "f": 2,
+    "s": 39.015,
+    "e": 39.858,
+    "t": "I am sad."
+  },
+  "i am angry": {
+    "f": 2,
+    "s": 41.823,
+    "e": 42.616,
+    "t": "I am angry."
+  },
+  "i am calm": {
+    "f": 2,
+    "s": 44.582,
+    "e": 45.358,
+    "t": "I am calm."
+  },
+  "i am scared": {
+    "f": 2,
+    "s": 47.284,
+    "e": 48.158,
+    "t": "I am scared."
+  },
+  "i am in love": {
+    "f": 2,
+    "s": 50.149,
+    "e": 51.021,
+    "t": "I am in love."
+  },
+  "are you happy": {
+    "f": 2,
+    "s": 53.058,
+    "e": 53.951,
+    "t": "Are you happy?"
+  },
+  "yes i am": {
+    "f": 2,
+    "s": 55.823,
+    "e": 57.216,
+    "t": "Yes, I am."
+  },
+  "no i'm not": {
+    "f": 2,
+    "s": 59.086,
+    "e": 60.287,
+    "t": "No, I’m not."
+  },
+  "it is the color of grass": {
+    "f": 2,
+    "s": 62.384,
+    "e": 63.737,
+    "t": "It is the color of grass."
+  },
+  "what color am i": {
+    "f": 2,
+    "s": 65.849,
+    "e": 66.913,
+    "t": "What color am I?"
+  },
+  "touch the center-edge card you want to move": {
+    "f": 2,
+    "s": 68.852,
+    "e": 70.964,
+    "t": "Touch the center-edge card you want to move."
+  },
+  "great group complete": {
+    "f": 2,
+    "s": 73.001,
+    "e": 74.467,
+    "t": "Great! Group complete!"
+  },
+  "mission complete": {
+    "f": 2,
+    "s": 76.576,
+    "e": 77.55,
+    "t": "Mission complete!"
+  },
+  "mission complete great speaking": {
+    "f": 2,
+    "s": 79.637,
+    "e": 81.718,
+    "t": "Mission complete! Great speaking!"
+  }
+}

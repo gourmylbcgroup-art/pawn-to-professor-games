@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Beautiful Colors & My Feelings — Interactive EFL Lesson</title>
+<link rel="preload" href="voice/own_voice_1_v1.mp3" as="audio" type="audio/mpeg">
+<link rel="preload" href="voice/own_voice_2_v1.mp3" as="audio" type="audio/mpeg">
+<link rel="preload" href="voice/own_voice_3_v1.mp3" as="audio" type="audio/mpeg">
 <style>
 :root{
  --ink:#112855;--cream:#fff7e7;--paper:#fffdf7;--wood:#a86e42;--gold:#ffbe21;
@@ -93,6 +96,69 @@ button{font:inherit}.bg{position:fixed;inset:0;z-index:-2;background:linear-grad
 .interfaceHint .note{background:#fffef8;border:2px solid #eadcc9}
 @media(max-width:900px){.interfaceShell{border-width:4px;border-radius:22px}.hotspot{border-radius:14px}.interfaceHint{gap:7px}}
 
+
+/* Monster Colors song + clearer Learn scaffold */
+.musicLyrics{display:none;margin-top:10px;max-height:310px;overflow:auto;background:#fff;border:3px solid #ead8a9;border-radius:15px;padding:12px 14px;line-height:1.55;font-weight:900;white-space:pre-line;color:#23345d}
+.musicLyrics.open{display:block}.learnColorCard{max-height:360px;max-width:100%;object-fit:contain;border-radius:18px;filter:drop-shadow(0 9px 12px rgba(0,0,0,.12))}.miniObject{max-height:180px;max-width:220px;object-fit:contain}.gameHero{display:grid;grid-template-columns:.8fr 1.2fr;gap:14px;align-items:center}.gameHero img{max-height:190px;max-width:100%;object-fit:contain}.songActionGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;text-align:left;font-weight:1000}.songActionGrid div{background:#fff;border:2px solid #e6dac9;border-radius:12px;padding:8px 10px}@media(max-width:700px){.songActionGrid{grid-template-columns:1fr}.gameHero{grid-template-columns:1fr}}
+
+
+/* Embedded 40-slide presentation viewer */
+.presentationWrap{
+ max-width:1240px;margin:auto;background:rgba(255,253,247,.97);
+ border:5px solid var(--wood);border-radius:26px;padding:14px;box-shadow:var(--shadow)
+}
+.presentationToolbar{
+ display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin-bottom:12px
+}
+.presBtn{
+ border:0;border-radius:14px;padding:10px 13px;background:#fff;color:var(--ink);
+ font-weight:1000;cursor:pointer;box-shadow:0 3px 9px rgba(0,0,0,.13)
+}
+.presBtn.primary{background:#2b89e7;color:#fff}
+.presBtn.week9{background:#ef4050;color:#fff}
+.presBtn.week10{background:#8d50e6;color:#fff}
+.presBtn.week11{background:#39b75c;color:#fff}
+.presentationStage{
+ position:relative;background:#1a2440;border-radius:22px;padding:10px;overflow:hidden;
+ min-height:320px;display:flex;align-items:center;justify-content:center
+}
+.presentationStage img{
+ display:block;width:100%;height:auto;max-height:76vh;object-fit:contain;border-radius:13px;
+ box-shadow:0 12px 28px rgba(0,0,0,.32);background:#fff
+}
+.presArrow{
+ position:absolute;top:50%;transform:translateY(-50%);z-index:4;width:54px;height:70px;
+ border:0;border-radius:18px;background:rgba(255,255,255,.88);color:#102451;font-size:30px;
+ font-weight:1000;cursor:pointer;box-shadow:0 5px 15px rgba(0,0,0,.25)
+}
+.presArrow:hover{background:#fff}.presPrev{left:18px}.presNext{right:18px}
+.presMeta{
+ display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;
+ margin-top:9px;background:#fff7d7;border:2px solid #ead46b;border-radius:14px;padding:8px 12px;
+ font-weight:1000
+}
+.presThumbs{
+ display:none;margin-top:12px;max-height:55vh;overflow:auto;background:#f5efe4;
+ border:3px solid #dfcba9;border-radius:17px;padding:10px;
+ grid-template-columns:repeat(5,1fr);gap:9px
+}
+.presThumbs.open{display:grid}
+.presThumb{
+ border:3px solid transparent;background:#fff;border-radius:11px;padding:4px;cursor:pointer;
+ box-shadow:0 4px 10px rgba(0,0,0,.12)
+}
+.presThumb:hover,.presThumb.active{border-color:#2b89e7}
+.presThumb img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:7px;display:block}
+.presThumb span{display:block;padding:4px 2px 1px;font-size:11px;font-weight:1000}
+.homePresentationBtn{
+ border:0;border-radius:16px;padding:11px 18px;background:#8d50e6;color:white;font-weight:1000;
+ cursor:pointer;box-shadow:inset 0 -4px rgba(0,0,0,.13),0 4px 10px rgba(0,0,0,.11)
+}
+@media(max-width:760px){
+ .presThumbs{grid-template-columns:repeat(3,1fr)}
+ .presArrow{width:44px;height:60px;font-size:25px}
+}
+
 </style>
 </head>
 <body>
@@ -112,28 +178,56 @@ button{font:inherit}.bg{position:fixed;inset:0;z-index:-2;background:linear-grad
  <div class="tools">
   <button class="icon" id="pinBtn">📌</button>
   <button class="toolbtn" id="flashBtn">🃏 FLASHCARDS</button>
-  <button class="toolbtn" id="musicBtn">🎵 PLAY MUSIC</button>
+  <button class="toolbtn" data-go="presentation">📽 PRESENTATION</button>
+  <button class="toolbtn" id="musicBtn">🎵 MONSTER COLORS</button>
   <button class="icon" id="soundBtn">🔊</button>
  </div>
 </header>
 
 <div class="musicPanel" id="musicPanel">
- <div class="musicHead"><h3>🎵 Monster Mission Song</h3><button class="musicClose" id="musicClose">×</button></div>
+ <div class="musicHead"><h3>🎵 Monster Colors Song</h3><button class="musicClose" id="musicClose">×</button></div>
  <div class="musicArt">
   <img src="assets/optimized/index_5dcf1e227df6b394.webp" alt="yellow monster" decoding="async" loading="lazy">
-  <div><b>Monster Mission</b><div class="musicHint">Play the song here. You can move through START, LEARN, PLAY, PRACTICE, SPEAK and FINISH while it keeps playing.</div></div>
+  <div><b>Monster Colors</b><div class="musicHint">Play the song inside the lesson. It loops until you pause it. Open the lyrics when students sing along.</div></div>
  </div>
- <audio id="lessonSong" src="Monster Mission.mp3" preload="auto"></audio>
+ <audio id="lessonSong" src="Monster Colors.mp3" preload="auto" loop playsinline></audio><audio id="ownVoiceSprite1" src="voice/own_voice_1_v1.mp3" preload="auto" playsinline style="display:none"></audio><audio id="ownVoiceSprite2" src="voice/own_voice_2_v1.mp3" preload="auto" playsinline style="display:none"></audio><audio id="ownVoiceSprite3" src="voice/own_voice_3_v1.mp3" preload="auto" playsinline style="display:none"></audio>
  <div class="musicControls">
   <button class="musicPlay" id="musicPlay">▶ PLAY</button>
   <button class="musicPause" id="musicPause">⏸ PAUSE</button>
   <button class="musicRestart" id="musicRestart">↺ RESTART</button>
+  <button class="musicPlay" id="musicLyricsBtn">📜 LYRICS</button>
  </div>
  <div class="musicProgress"><i id="musicProgressBar"></i></div>
  <div class="musicTime" id="musicTime">0:00 / 0:00</div>
+ <div class="musicLyrics" id="musicLyrics">Monster, monster, here we go!
+Say the color, nice and slow!
+
+Red monster, red monster — jump, jump, jump!
+Red monster, red monster — red, red, red!
+
+Blue monster, blue monster — clap, clap, clap!
+Blue monster, blue monster — blue, blue, blue!
+
+Yellow monster, yellow monster — wave hello!
+Yellow monster, yellow monster — yellow, yellow, yellow!
+
+Green monster, green monster — touch your knees!
+Green monster, green monster — green, green, green!
+
+Pink monster, pink monster — wink, wink, wink!
+Pink, pink, pink!
+
+Black monster, black monster — tap, tap, tap!
+Black, black, black!
+
+White monster, white monster — hands up high!
+White, white, white!
+
+Red monster! Blue monster! Yellow monster! Green monster!
+Pink monster! Black monster! White monster too!
+Monster colors, sing with me!
+One, two, three — woo-hoo!</div>
 </div>
-
-
 
 <section class="screen active" id="home">
  <div class="interfaceShell">
@@ -151,8 +245,47 @@ button{font:inherit}.bg{position:fixed;inset:0;z-index:-2;background:linear-grad
   <button class="hotspot hs-pin" id="pinBtnHome" aria-label="Teacher tools"></button>
  </div>
  <div class="interfaceHint">
+   <button class="homePresentationBtn" data-go="presentation">📽 OPEN 40-SLIDE PRESENTATION</button>
    <div class="note">Same lesson structure kept: 1 START → 7 GAMES</div>
-   <div class="note">Home screen replaced with the new Numbers-style interface image.</div>
+ </div>
+</section>
+
+
+<section class="screen" id="presentation">
+ <div class="pagehead">
+  <div class="bigbadge n2">▶</div>
+  <div>
+   <h1>CLASS PRESENTATION — Beautiful Colors & My Feelings</h1>
+   <p>40 original slides • Week 9 → Week 10 → Week 11 • built directly into the interactive lesson</p>
+  </div>
+ </div>
+ <div class="presentationWrap">
+  <div class="presentationToolbar">
+   <button class="presBtn week9" data-presjump="1">WEEK 9 • Slides 1–13</button>
+   <button class="presBtn week10" data-presjump="14">WEEK 10 • Slides 14–27</button>
+   <button class="presBtn week11" data-presjump="28">WEEK 11 • Slides 28–40</button>
+   <button class="presBtn" id="presThumbBtn">▦ THUMBNAILS</button>
+   <button class="presBtn primary" id="presFullBtn">⛶ FULL SCREEN</button>
+  </div>
+
+  <div class="presentationStage" id="presentationStage">
+   <button class="presArrow presPrev" id="presPrev" aria-label="Previous slide">‹</button>
+   <img id="presentationImg" src="presentation/slide_01.webp" alt="Presentation slide 1">
+   <button class="presArrow presNext" id="presNext" aria-label="Next slide">›</button>
+  </div>
+
+  <div class="presMeta">
+   <span id="presWeek">Week 9</span>
+   <span id="presCounter">Slide 1 / 40</span>
+   <span>Use ← / → keys to change slides</span>
+  </div>
+
+  <div class="presThumbs" id="presThumbs"></div>
+
+  <details class="teacher">
+   <summary>Teacher use</summary>
+   <p>Use the presentation whenever you want the original visual sequence. The interactive lesson remains available from the top navigation, so you can move between slides, practice, speaking and the Monster Sort game without opening another file.</p>
+  </details>
  </div>
 </section>
 
@@ -172,7 +305,7 @@ button{font:inherit}.bg{position:fixed;inset:0;z-index:-2;background:linear-grad
   <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Connect colors to monsters and feelings.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>What color is it? / It’s ___. • How does the monster feel? / He is ___.</span></div><div class="missionbox"><b>🧩 WEEK</b><span>Week 9 core</span></div></div>
   <div class="stagebox"><div class="tabs"><button class="tab active" data-learntab="colors">🎨 COLORS</button><button class="tab" data-learntab="monsters">👾 MONSTERS</button><button class="tab" data-learntab="sentences">💬 SENTENCES</button></div><div id="learnContent"></div>
    <div class="miniCheck"><h2>Mini-check</h2><div id="learnMini"></div></div>
-   <details class="teacher"><summary>Teacher script & scaffolding</summary><p>Teach the color sentence first. Then connect yellow/happy, blue/sad, red/angry, green/calm and black/scared. Add pink/love when ready. Keep white as a color-only item.</p></details>
+   <details class="teacher"><summary>Teacher script & scaffolding</summary><p>For each color, show the color flashcard first, then immediately check the SAME color with a real object: yellow→sun, green→leaf, red→apple, black→cat, pink→heart, blue→raindrop, white→cloud. Then connect colors to feelings.</p></details>
   </div>
  </div>
 </section>
@@ -224,12 +357,12 @@ button{font:inherit}.bg{position:fixed;inset:0;z-index:-2;background:linear-grad
 <section class="screen" id="games">
  <div class="pagehead"><div class="bigbadge n7">7</div><div><h1>GAMES</h1><p>Optional extension • the teaching sequence is already complete</p></div></div>
  <div class="board">
-  <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Recycle the full unit through play.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>All Week 9–11 sentence patterns</span></div><div class="missionbox"><b>⏱ CHOICE</b><span>Quick 5 min / Full game</span></div></div>
+  <div class="missionbar"><div class="missionbox"><b>🎯 OBJECTIVE</b><span>Apply the full unit language in Monster Sort Mission.</span></div><div class="missionbox"><b>💬 LANGUAGE</b><span>All Week 9–11 sentence patterns</span></div><div class="missionbox"><b>⏱ CHOICE</b><span>Quick 5 min / Full game</span></div></div>
   <div class="stagebox"><div class="gamegrid">
    <div class="gamecard"><h2>⚡ Quick Monster Mission</h2><p>Six mixed questions for a normal class.</p><img src="assets/optimized/index_5dcf1e227df6b394.webp" decoding="async" loading="lazy"><button class="btn green" id="quickStart">START QUICK GAME</button></div>
-   <div class="gamecard"><h2>🏆 Full Monster Mission</h2><p>The full 4-player, 3-level game for a longer game block.</p><img src="assets/optimized/index_00299e9506839ee2.webp" decoding="async" loading="lazy"><button class="btn purple" id="fullGameBtn">OPEN FULL GAME</button></div>
+   <div class="gamecard"><h2>👾 Monster Sort Mission</h2><p>The attached sorting game with 3 progressive language levels: color → feeling → color + feeling.</p><img src="Monster_Sort_Mission/color_yellow.webp" decoding="async" loading="lazy"><button class="btn purple" id="fullGameBtn">OPEN MONSTER SORT</button></div>
   </div><div id="quickArea" style="display:none;margin-top:15px" class="twocol"><div class="visual"><img id="quickImg" decoding="async" loading="lazy"></div><div><div class="prompt" id="quickPrompt"></div><div class="answers" id="quickAnswers"></div><div class="feedback" id="quickFeedback"></div><div class="controls"><button class="btn green" id="quickNext">NEXT ➜</button><button class="btn gray" id="quickClose">CLOSE</button></div></div></div>
-  <div id="fullArea" style="display:none;margin-top:15px"><iframe src="Monster_Mission_FULL_GAME.html"></iframe><div class="controls"><button class="btn gray" id="fullClose">CLOSE FULL GAME</button></div></div>
+  <div id="fullArea" style="display:none;margin-top:15px"><div class="gameHero"><div><h2>👾 Monster Sort Mission</h2><p><b>Level 1:</b> “It’s red.”<br><b>Level 2:</b> “The monster is calm.”<br><b>Level 3:</b> “The red monster is angry.”</p></div><div class="frame">Sort the monsters. Speak before each move.</div></div><iframe id="monsterGameFrame" data-src="Monster_Sort_Mission/index.html" loading="lazy" title="Monster Sort Mission"></iframe><div class="controls"><button class="btn gray" id="fullClose">CLOSE MONSTER SORT</button></div></div>
   </div>
  </div>
 </section>
@@ -243,18 +376,169 @@ button{font:inherit}.bg{position:fixed;inset:0;z-index:-2;background:linear-grad
 </div>
 
 <script>
-const DATA={"bg":"assets/optimized/index_ef8699d6cc6f07a5.webp","song":"Monster Mission.mp3","sphere":{"yellow":"assets/optimized/index_3254bd73ec86432c.webp","green":"assets/optimized/index_89571a8fc5b6cecf.webp","red":"assets/optimized/index_69aecefd2a736b22.webp","black":"assets/optimized/index_533b6d15859e11a0.webp","pink":"assets/optimized/index_a66d718090caf679.webp","blue":"assets/optimized/index_504f0aa9f4b84660.webp","white":"assets/optimized/index_5b62fdc559bdac4a.webp"},"objects":{"yellow":"assets/optimized/index_5628b211ffffe8e3.webp","green":"assets/optimized/index_3d6be64607d545f6.webp","red":"assets/optimized/index_7e38cda0d641f856.webp","black":"assets/optimized/index_ad84d62ea3f68afe.webp","pink":"assets/optimized/index_701da6337282de2b.webp","blue":"assets/optimized/index_456785fb8c8f3460.webp","white":"assets/optimized/index_539e31cb5263e1ca.webp"},"monsters":{"yellow":"assets/optimized/index_5dcf1e227df6b394.webp","blue":"assets/optimized/index_38da5f9588bba6cd.webp","red":"assets/optimized/index_e77b1d94f05199ef.webp","green":"assets/optimized/index_33ff06f84c9c6520.webp","black":"assets/optimized/index_ea5616307dfec552.webp","pink":"assets/optimized/index_285e0d9ede82bafa.webp"},"mysteries":["assets/optimized/index_00299e9506839ee2.webp","assets/optimized/index_49f7a4e292ad8227.webp","assets/optimized/index_860a58b624ace6ac.webp","assets/optimized/index_d49a85951bb7af8f.webp","assets/optimized/index_2dddbc0c67a5dcfd.webp"],"words":{"yellow":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2YyYzQwMCIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+WUVMTE9XPC90ZXh0PgogICAgPC9zdmc+","green":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzI1YWQ0YiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+R1JFRU48L3RleHQ+CiAgICA8L3N2Zz4=","red":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2U4NDA0ZSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UkVEPC90ZXh0PgogICAgPC9zdmc+","black":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzIzMjYyYyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxBQ0s8L3RleHQ+CiAgICA8L3N2Zz4=","pink":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2VmNThhYSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UElOSzwvdGV4dD4KICAgIDwvc3ZnPg==","blue":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzJiODZkZiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxVRTwvdGV4dD4KICAgIDwvc3ZnPg==","white":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2Q5ZDlkMyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+V0hJVEU8L3RleHQ+CiAgICA8L3N2Zz4="},"hex":{"yellow":"#f2c400","green":"#25ad4b","red":"#e8404e","black":"#23262c","pink":"#ef58aa","blue":"#2b86df","white":"#d9d9d3"},"extras":{"map":"assets/optimized/index_17e658a372b53bc6.webp","howfeel":"assets/optimized/index_6effbaffd4dc6d4a.webp","arehappy":"assets/optimized/index_ba3b0203de4c9d63.webp","grass":"assets/optimized/index_c001e243810bea68.webp"},"flashcards":[{"cat":"COLOR PICTURES","label":"Yellow \u2014 picture only","src":"assets/optimized/index_3254bd73ec86432c.webp"},{"cat":"COLOR PICTURES","label":"Green \u2014 picture only","src":"assets/optimized/index_89571a8fc5b6cecf.webp"},{"cat":"COLOR PICTURES","label":"Red \u2014 picture only","src":"assets/optimized/index_69aecefd2a736b22.webp"},{"cat":"COLOR PICTURES","label":"Black \u2014 picture only","src":"assets/optimized/index_533b6d15859e11a0.webp"},{"cat":"COLOR PICTURES","label":"Pink \u2014 picture only","src":"assets/optimized/index_a66d718090caf679.webp"},{"cat":"COLOR PICTURES","label":"Blue \u2014 picture only","src":"assets/optimized/index_504f0aa9f4b84660.webp"},{"cat":"COLOR PICTURES","label":"White \u2014 picture only","src":"assets/optimized/index_5b62fdc559bdac4a.webp"},{"cat":"COLOR WORDS","label":"Yellow","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2YyYzQwMCIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+WUVMTE9XPC90ZXh0PgogICAgPC9zdmc+"},{"cat":"COLOR WORDS","label":"Green","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzI1YWQ0YiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+R1JFRU48L3RleHQ+CiAgICA8L3N2Zz4="},{"cat":"COLOR WORDS","label":"Red","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2U4NDA0ZSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UkVEPC90ZXh0PgogICAgPC9zdmc+"},{"cat":"COLOR WORDS","label":"Black","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzIzMjYyYyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxBQ0s8L3RleHQ+CiAgICA8L3N2Zz4="},{"cat":"COLOR WORDS","label":"Pink","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2VmNThhYSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UElOSzwvdGV4dD4KICAgIDwvc3ZnPg=="},{"cat":"COLOR WORDS","label":"Blue","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzJiODZkZiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxVRTwvdGV4dD4KICAgIDwvc3ZnPg=="},{"cat":"COLOR WORDS","label":"White","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2Q5ZDlkMyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+V0hJVEU8L3RleHQ+CiAgICA8L3N2Zz4="},{"cat":"OBJECTS","label":"Yellow \u2014 object","src":"assets/optimized/index_5628b211ffffe8e3.webp"},{"cat":"OBJECTS","label":"Green \u2014 object","src":"assets/optimized/index_3d6be64607d545f6.webp"},{"cat":"OBJECTS","label":"Red \u2014 object","src":"assets/optimized/index_7e38cda0d641f856.webp"},{"cat":"OBJECTS","label":"Black \u2014 object","src":"assets/optimized/index_ad84d62ea3f68afe.webp"},{"cat":"OBJECTS","label":"Pink \u2014 object","src":"assets/optimized/index_701da6337282de2b.webp"},{"cat":"OBJECTS","label":"Blue \u2014 object","src":"assets/optimized/index_456785fb8c8f3460.webp"},{"cat":"OBJECTS","label":"White \u2014 object","src":"assets/optimized/index_539e31cb5263e1ca.webp"},{"cat":"MONSTERS","label":"Yellow \u2014 happy","src":"assets/optimized/index_5dcf1e227df6b394.webp"},{"cat":"MONSTERS","label":"Blue \u2014 sad","src":"assets/optimized/index_38da5f9588bba6cd.webp"},{"cat":"MONSTERS","label":"Red \u2014 angry","src":"assets/optimized/index_e77b1d94f05199ef.webp"},{"cat":"MONSTERS","label":"Green \u2014 calm","src":"assets/optimized/index_33ff06f84c9c6520.webp"},{"cat":"MONSTERS","label":"Black \u2014 scared","src":"assets/optimized/index_ea5616307dfec552.webp"},{"cat":"MONSTERS","label":"Pink \u2014 love","src":"assets/optimized/index_285e0d9ede82bafa.webp"},{"cat":"MYSTERY","label":"Mystery card 1","src":"assets/optimized/index_00299e9506839ee2.webp"},{"cat":"MYSTERY","label":"Mystery card 2","src":"assets/optimized/index_49f7a4e292ad8227.webp"},{"cat":"MYSTERY","label":"Mystery card 3","src":"assets/optimized/index_860a58b624ace6ac.webp"},{"cat":"MYSTERY","label":"Mystery card 4","src":"assets/optimized/index_d49a85951bb7af8f.webp"},{"cat":"MYSTERY","label":"Mystery card 5","src":"assets/optimized/index_2dddbc0c67a5dcfd.webp"}]};
+const DATA={"bg":"assets/optimized/index_ef8699d6cc6f07a5.webp","song":"Monster Colors.mp3","sphere":{"yellow":"assets/optimized/index_3254bd73ec86432c.webp","green":"assets/optimized/index_89571a8fc5b6cecf.webp","red":"assets/optimized/index_69aecefd2a736b22.webp","black":"assets/optimized/index_533b6d15859e11a0.webp","pink":"assets/optimized/index_a66d718090caf679.webp","blue":"assets/optimized/index_504f0aa9f4b84660.webp","white":"assets/optimized/index_5b62fdc559bdac4a.webp"},"objects":{"yellow":"assets/optimized/index_5628b211ffffe8e3.webp","green":"assets/optimized/index_3d6be64607d545f6.webp","red":"assets/optimized/index_7e38cda0d641f856.webp","black":"assets/optimized/index_ad84d62ea3f68afe.webp","pink":"assets/optimized/index_701da6337282de2b.webp","blue":"assets/optimized/index_456785fb8c8f3460.webp","white":"assets/optimized/index_539e31cb5263e1ca.webp"},"monsters":{"yellow":"assets/optimized/index_5dcf1e227df6b394.webp","blue":"assets/optimized/index_38da5f9588bba6cd.webp","red":"assets/optimized/index_e77b1d94f05199ef.webp","green":"assets/optimized/index_33ff06f84c9c6520.webp","black":"assets/optimized/index_ea5616307dfec552.webp","pink":"assets/optimized/index_285e0d9ede82bafa.webp"},"mysteries":["assets/optimized/index_00299e9506839ee2.webp","assets/optimized/index_49f7a4e292ad8227.webp","assets/optimized/index_860a58b624ace6ac.webp","assets/optimized/index_d49a85951bb7af8f.webp","assets/optimized/index_2dddbc0c67a5dcfd.webp"],"words":{"yellow":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2YyYzQwMCIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+WUVMTE9XPC90ZXh0PgogICAgPC9zdmc+","green":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzI1YWQ0YiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+R1JFRU48L3RleHQ+CiAgICA8L3N2Zz4=","red":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2U4NDA0ZSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UkVEPC90ZXh0PgogICAgPC9zdmc+","black":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzIzMjYyYyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxBQ0s8L3RleHQ+CiAgICA8L3N2Zz4=","pink":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2VmNThhYSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UElOSzwvdGV4dD4KICAgIDwvc3ZnPg==","blue":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzJiODZkZiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxVRTwvdGV4dD4KICAgIDwvc3ZnPg==","white":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2Q5ZDlkMyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+V0hJVEU8L3RleHQ+CiAgICA8L3N2Zz4="},"hex":{"yellow":"#f2c400","green":"#25ad4b","red":"#e8404e","black":"#23262c","pink":"#ef58aa","blue":"#2b86df","white":"#d9d9d3"},"extras":{"map":"assets/optimized/index_17e658a372b53bc6.webp","howfeel":"assets/optimized/index_6effbaffd4dc6d4a.webp","arehappy":"assets/optimized/index_ba3b0203de4c9d63.webp","grass":"assets/optimized/index_c001e243810bea68.webp"},"flashcards":[{"cat":"COLOR PICTURES","label":"Yellow \u2014 picture only","src":"assets/optimized/index_3254bd73ec86432c.webp"},{"cat":"COLOR PICTURES","label":"Green \u2014 picture only","src":"assets/optimized/index_89571a8fc5b6cecf.webp"},{"cat":"COLOR PICTURES","label":"Red \u2014 picture only","src":"assets/optimized/index_69aecefd2a736b22.webp"},{"cat":"COLOR PICTURES","label":"Black \u2014 picture only","src":"assets/optimized/index_533b6d15859e11a0.webp"},{"cat":"COLOR PICTURES","label":"Pink \u2014 picture only","src":"assets/optimized/index_a66d718090caf679.webp"},{"cat":"COLOR PICTURES","label":"Blue \u2014 picture only","src":"assets/optimized/index_504f0aa9f4b84660.webp"},{"cat":"COLOR PICTURES","label":"White \u2014 picture only","src":"assets/optimized/index_5b62fdc559bdac4a.webp"},{"cat":"COLOR WORDS","label":"Yellow","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2YyYzQwMCIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+WUVMTE9XPC90ZXh0PgogICAgPC9zdmc+"},{"cat":"COLOR WORDS","label":"Green","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzI1YWQ0YiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+R1JFRU48L3RleHQ+CiAgICA8L3N2Zz4="},{"cat":"COLOR WORDS","label":"Red","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2U4NDA0ZSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UkVEPC90ZXh0PgogICAgPC9zdmc+"},{"cat":"COLOR WORDS","label":"Black","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzIzMjYyYyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxBQ0s8L3RleHQ+CiAgICA8L3N2Zz4="},{"cat":"COLOR WORDS","label":"Pink","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2VmNThhYSIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+UElOSzwvdGV4dD4KICAgIDwvc3ZnPg=="},{"cat":"COLOR WORDS","label":"Blue","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iIzJiODZkZiIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+QkxVRTwvdGV4dD4KICAgIDwvc3ZnPg=="},{"cat":"COLOR WORDS","label":"White","src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA0MCIgdmlld0JveD0iMCAwIDc2MCAxMDQwIj4KICAgIDxkZWZzPgogICAgICA8ZmlsdGVyIGlkPSJzIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMTAiIHN0ZERldmlhdGlvbj0iMTQiIGZsb29kLW9wYWNpdHk9Ii4xOCIvPjwvZmlsdGVyPgogICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZmVmOCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZjhlNyIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNzYwIiBoZWlnaHQ9IjEwNDAiIGZpbGw9IiNmM2VhZGMiLz4KICAgIDxyZWN0IHg9IjM1IiB5PSIzNSIgd2lkdGg9IjY5MCIgaGVpZ2h0PSI5NzAiIHJ4PSI1OCIgZmlsbD0idXJsKCNiZykiIHN0cm9rZT0iI2Q5ZDlkMyIgc3Ryb2tlLXdpZHRoPSIxOCIgZmlsdGVyPSJ1cmwoI3MpIi8+CiAgICA8cmVjdCB4PSI1NSIgeT0iNTUiIHdpZHRoPSI2NTAiIGhlaWdodD0iOTMwIiByeD0iNDYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+CiAgICA8dGV4dCB4PSIzODAiIHk9IjU2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIFJvdW5kZWQgTVQgQm9sZCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyNiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzExMTgyNyI+V0hJVEU8L3RleHQ+CiAgICA8L3N2Zz4="},{"cat":"OBJECTS","label":"Yellow \u2014 object","src":"assets/optimized/index_5628b211ffffe8e3.webp"},{"cat":"OBJECTS","label":"Green \u2014 object","src":"assets/optimized/index_3d6be64607d545f6.webp"},{"cat":"OBJECTS","label":"Red \u2014 object","src":"assets/optimized/index_7e38cda0d641f856.webp"},{"cat":"OBJECTS","label":"Black \u2014 object","src":"assets/optimized/index_ad84d62ea3f68afe.webp"},{"cat":"OBJECTS","label":"Pink \u2014 object","src":"assets/optimized/index_701da6337282de2b.webp"},{"cat":"OBJECTS","label":"Blue \u2014 object","src":"assets/optimized/index_456785fb8c8f3460.webp"},{"cat":"OBJECTS","label":"White \u2014 object","src":"assets/optimized/index_539e31cb5263e1ca.webp"},{"cat":"MONSTERS","label":"Yellow \u2014 happy","src":"assets/optimized/index_5dcf1e227df6b394.webp"},{"cat":"MONSTERS","label":"Blue \u2014 sad","src":"assets/optimized/index_38da5f9588bba6cd.webp"},{"cat":"MONSTERS","label":"Red \u2014 angry","src":"assets/optimized/index_e77b1d94f05199ef.webp"},{"cat":"MONSTERS","label":"Green \u2014 calm","src":"assets/optimized/index_33ff06f84c9c6520.webp"},{"cat":"MONSTERS","label":"Black \u2014 scared","src":"assets/optimized/index_ea5616307dfec552.webp"},{"cat":"MONSTERS","label":"Pink \u2014 love","src":"assets/optimized/index_285e0d9ede82bafa.webp"},{"cat":"MYSTERY","label":"Mystery card 1","src":"assets/optimized/index_00299e9506839ee2.webp"},{"cat":"MYSTERY","label":"Mystery card 2","src":"assets/optimized/index_49f7a4e292ad8227.webp"},{"cat":"MYSTERY","label":"Mystery card 3","src":"assets/optimized/index_860a58b624ace6ac.webp"},{"cat":"MYSTERY","label":"Mystery card 4","src":"assets/optimized/index_d49a85951bb7af8f.webp"},{"cat":"MYSTERY","label":"Mystery card 5","src":"assets/optimized/index_2dddbc0c67a5dcfd.webp"}]};
 const COLORS=["yellow","green","red","black","pink","blue","white"];
+const LEARN_COLOR_CARD={yellow:"Monster_Sort_Mission/color_yellow.webp",green:"Monster_Sort_Mission/color_green.webp",red:"Monster_Sort_Mission/color_red.webp",black:"Monster_Sort_Mission/color_black.webp",pink:"Monster_Sort_Mission/color_pink.webp",blue:"Monster_Sort_Mission/color_blue.webp",white:DATA.sphere.white};
 const MONSTERS=["yellow","blue","red","green","black","pink"];
-const FEEL={yellow:"happy",blue:"sad",red:"angry",green:"calm",black:"scared",pink:"love"};
+const FEEL={yellow:"happy",blue:"sad",red:"angry",green:"calm",black:"scared",pink:"in love"};
 const $=id=>document.getElementById(id);
 let soundOn=true;
-function speak(t){if(!soundOn||!("speechSynthesis"in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.rate=.87;u.pitch=1.03;let vs=speechSynthesis.getVoices(),en=vs.find(v=>/^en/i.test(v.lang));if(en)u.voice=en;speechSynthesis.speak(u)}
+
+const OWN_VOICE_FILES=["voice/own_voice_1_v1.mp3","voice/own_voice_2_v1.mp3","voice/own_voice_3_v1.mp3"];
+const OWN_VOICE_CUES={"yellow":{"f":0,"s":0,"e":0.54,"t":"Yellow."},"green":{"f":0,"s":2.465,"e":3.13,"t":"Green."},"red":{"f":0,"s":5.032,"e":5.564,"t":"Red."},"black":{"f":0,"s":7.622,"e":8.051,"t":"Black."},"pink":{"f":0,"s":10.203,"e":10.548,"t":"Pink."},"blue":{"f":0,"s":12.675,"e":13.264,"t":"Blue."},"white":{"f":0,"s":15.215,"e":15.725,"t":"White."},"it's yellow":{"f":0,"s":17.81,"e":18.546,"t":"It’s yellow."},"it's green":{"f":0,"s":20.439,"e":21.271,"t":"It’s green."},"it's red":{"f":0,"s":23.202,"e":23.888,"t":"It’s red."},"it's black":{"f":0,"s":25.877,"e":26.56,"t":"It’s black."},"it's pink":{"f":0,"s":28.655,"e":29.31,"t":"It’s pink."},"it's blue":{"f":0,"s":31.419,"e":32.193,"t":"It’s blue."},"it's white":{"f":0,"s":34.081,"e":34.738,"t":"It’s white."},"what color is it":{"f":0,"s":36.822,"e":37.747,"t":"What color is it?"},"what color is it it's yellow":{"f":0,"s":39.773,"e":41.468,"t":"What color is it? It’s yellow."},"what color is it it's green":{"f":0,"s":43.386,"e":45.179,"t":"What color is it? It’s green."},"what color is it it's red":{"f":0,"s":47.129,"e":48.771,"t":"What color is it? It’s red."},"what color is it it's black":{"f":0,"s":50.784,"e":52.423,"t":"What color is it? It’s black."},"what color is it it's pink":{"f":0,"s":54.545,"e":56.163,"t":"What color is it? It’s pink."},"what color is it it's blue":{"f":0,"s":58.288,"e":60.022,"t":"What color is it? It’s blue."},"what color is it it's white":{"f":0,"s":61.93,"e":63.545,"t":"What color is it? It’s white."},"yellow is happy":{"f":0,"s":65.618,"e":66.597,"t":"Yellow is happy."},"blue is sad":{"f":0,"s":68.539,"e":69.426,"t":"Blue is sad."},"red is angry":{"f":0,"s":71.336,"e":72.267,"t":"Red is angry."},"green is calm":{"f":0,"s":74.215,"e":75.181,"t":"Green is calm."},"black is scared":{"f":0,"s":77.125,"e":78.101,"t":"Black is scared."},"pink is in love":{"f":0,"s":80.132,"e":81.08,"t":"Pink is in love."},"happy":{"f":0,"s":83.168,"e":83.732,"t":"Happy."},"sad":{"f":0,"s":85.74,"e":86.322,"t":"Sad."},"angry":{"f":0,"s":88.353,"e":88.981,"t":"Angry."},"calm":{"f":0,"s":90.994,"e":91.594,"t":"Calm."},"scared":{"f":0,"s":93.554,"e":94.188,"t":"Scared."},"in love":{"f":0,"s":96.22,"e":96.889,"t":"In love."},"how does the monster feel":{"f":0,"s":98.974,"e":100.265,"t":"How does the monster feel?"},"he is happy":{"f":0,"s":102.235,"e":102.98,"t":"He is happy."},"how does the monster feel he is happy":{"f":1,"s":0,"e":1.994,"t":"How does the monster feel? He is happy."},"the monster is happy":{"f":1,"s":3.93,"e":5.1,"t":"The monster is happy."},"he is sad":{"f":1,"s":7.081,"e":7.785,"t":"He is sad."},"how does the monster feel he is sad":{"f":1,"s":9.698,"e":11.708,"t":"How does the monster feel? He is sad."},"the monster is sad":{"f":1,"s":13.603,"e":14.73,"t":"The monster is sad."},"he is angry":{"f":1,"s":16.735,"e":17.499,"t":"He is angry."},"how does the monster feel he is angry":{"f":1,"s":19.468,"e":21.539,"t":"How does the monster feel? He is angry."},"the monster is angry":{"f":1,"s":23.492,"e":24.648,"t":"The monster is angry."},"he is calm":{"f":1,"s":26.651,"e":27.365,"t":"He is calm."},"how does the monster feel he is calm":{"f":1,"s":29.32,"e":31.341,"t":"How does the monster feel? He is calm."},"the monster is calm":{"f":1,"s":33.279,"e":34.453,"t":"The monster is calm."},"he is scared":{"f":1,"s":36.443,"e":37.209,"t":"He is scared."},"how does the monster feel he is scared":{"f":1,"s":39.227,"e":41.294,"t":"How does the monster feel? He is scared."},"the monster is scared":{"f":1,"s":43.3,"e":44.485,"t":"The monster is scared."},"he is in love":{"f":1,"s":46.532,"e":47.361,"t":"He is in love."},"how does the monster feel he is in love":{"f":1,"s":49.431,"e":51.568,"t":"How does the monster feel? He is in love."},"the monster is in love":{"f":1,"s":53.626,"e":54.861,"t":"The monster is in love."},"it's yellow he is happy":{"f":1,"s":56.879,"e":58.338,"t":"It’s yellow. He is happy."},"the yellow monster is happy":{"f":1,"s":60.279,"e":61.776,"t":"The yellow monster is happy."},"it's blue he is sad":{"f":1,"s":63.71,"e":65.165,"t":"It’s blue. He is sad."},"the blue monster is sad":{"f":1,"s":67.061,"e":68.424,"t":"The blue monster is sad."},"it's red he is angry":{"f":1,"s":70.388,"e":71.925,"t":"It’s red. He is angry."},"the red monster is angry":{"f":1,"s":73.884,"e":75.298,"t":"The red monster is angry."},"it's green he is calm":{"f":1,"s":77.236,"e":78.802,"t":"It’s green. He is calm."},"the green monster is calm":{"f":1,"s":80.741,"e":82.198,"t":"The green monster is calm."},"it's black he is scared":{"f":1,"s":84.127,"e":85.776,"t":"It’s black. He is scared."},"the black monster is scared":{"f":2,"s":0,"e":1.409,"t":"The black monster is scared."},"it's pink he is in love":{"f":2,"s":3.392,"e":5.103,"t":"It’s pink. He is in love."},"the pink monster is in love":{"f":2,"s":7.157,"e":8.638,"t":"The pink monster is in love."},"is it yellow":{"f":2,"s":10.649,"e":11.517,"t":"Is it yellow?"},"is it blue":{"f":2,"s":13.371,"e":14.21,"t":"Is it blue?"},"is it red":{"f":2,"s":16.062,"e":16.82,"t":"Is it red?"},"is it green":{"f":2,"s":18.785,"e":19.702,"t":"Is it green?"},"is it black":{"f":2,"s":21.554,"e":22.318,"t":"Is it black?"},"is it pink":{"f":2,"s":24.351,"e":25.092,"t":"Is it pink?"},"yes it is":{"f":2,"s":27.122,"e":28.405,"t":"Yes, it is."},"no it isn't":{"f":2,"s":30.383,"e":31.491,"t":"No, it isn’t."},"how do i feel":{"f":2,"s":33.531,"e":34.387,"t":"How do I feel?"},"i am happy":{"f":2,"s":36.304,"e":37.083,"t":"I am happy."},"i am sad":{"f":2,"s":39.015,"e":39.858,"t":"I am sad."},"i am angry":{"f":2,"s":41.823,"e":42.616,"t":"I am angry."},"i am calm":{"f":2,"s":44.582,"e":45.358,"t":"I am calm."},"i am scared":{"f":2,"s":47.284,"e":48.158,"t":"I am scared."},"i am in love":{"f":2,"s":50.149,"e":51.021,"t":"I am in love."},"are you happy":{"f":2,"s":53.058,"e":53.951,"t":"Are you happy?"},"yes i am":{"f":2,"s":55.823,"e":57.216,"t":"Yes, I am."},"no i'm not":{"f":2,"s":59.086,"e":60.287,"t":"No, I’m not."},"it is the color of grass":{"f":2,"s":62.384,"e":63.737,"t":"It is the color of grass."},"what color am i":{"f":2,"s":65.849,"e":66.913,"t":"What color am I?"},"touch the center-edge card you want to move":{"f":2,"s":68.852,"e":70.964,"t":"Touch the center-edge card you want to move."},"great group complete":{"f":2,"s":73.001,"e":74.467,"t":"Great! Group complete!"},"mission complete":{"f":2,"s":76.576,"e":77.55,"t":"Mission complete!"},"mission complete great speaking":{"f":2,"s":79.637,"e":81.718,"t":"Mission complete! Great speaking!"}};
+let ownVoiceCtx=null,ownVoiceBuffers=[null,null,null],ownVoiceLoadPromise=null,ownVoiceSource=null,ownVoiceFallback=null,ownVoiceFallbackTimer=0,ownVoiceToken=0;
+
+function ownVoiceNorm(t){
+ return String(t||"").toLowerCase().replace(/[’‘]/g,"'").replace(/[“”"]/g,"")
+   .replace(/colour/g,"color").replace(/[^a-z0-9'\s-]+/g," ").replace(/\s+/g," ").trim();
+}
+function ownVoiceParts(t){
+ const exact=OWN_VOICE_CUES[ownVoiceNorm(t)];
+ if(exact)return [exact];
+ const raw=String(t||"").replace(/Pink is love\./gi,"Pink is in love.")
+   .replace(/He feels love\./gi,"He is in love.");
+ const bits=raw.match(/[^.!?]+[.!?]?/g)||[raw];
+ return bits.map(x=>OWN_VOICE_CUES[ownVoiceNorm(x)]).filter(Boolean);
+}
+function ownVoiceEnsureContext(){
+ if(!ownVoiceCtx)ownVoiceCtx=new (window.AudioContext||window.webkitAudioContext)();
+ if(ownVoiceCtx.state==="suspended")ownVoiceCtx.resume().catch(()=>{});
+ return ownVoiceCtx;
+}
+async function ownVoiceLoad(){
+ if(ownVoiceLoadPromise)return ownVoiceLoadPromise;
+ if(location.protocol==="file:")return null;
+ ownVoiceLoadPromise=(async()=>{
+   try{
+     const ctx=ownVoiceEnsureContext();
+     const arr=await Promise.all(OWN_VOICE_FILES.map(async u=>{
+       const r=await fetch(u,{cache:"force-cache"});
+       if(!r.ok)throw new Error("voice fetch "+r.status);
+       return await ctx.decodeAudioData(await r.arrayBuffer());
+     }));
+     ownVoiceBuffers=arr;
+     return arr;
+   }catch(e){console.warn("Own voice WebAudio fallback:",e);return null;}
+ })();
+ return ownVoiceLoadPromise;
+}
+function ownVoiceStop(){
+ ownVoiceToken++;
+ if(ownVoiceSource){try{ownVoiceSource.stop()}catch(e){} ownVoiceSource=null;}
+ if(ownVoiceFallback){try{ownVoiceFallback.pause()}catch(e){} ownVoiceFallback=null;}
+ if(ownVoiceFallbackTimer)clearTimeout(ownVoiceFallbackTimer);
+}
+function ownVoiceFallbackPlay(cue){
+ return new Promise(resolve=>{
+   const a=document.getElementById("ownVoiceSprite"+(cue.f+1));
+   if(!a){resolve();return;}
+   ownVoiceFallback=a;
+   const run=()=>{
+     try{a.currentTime=Math.max(0,cue.s);}catch(e){}
+     const dur=Math.max(.08,cue.e-cue.s);
+     const done=()=>{if(ownVoiceFallback===a){a.pause();ownVoiceFallback=null;} resolve();};
+     a.play().then(()=>{ownVoiceFallbackTimer=setTimeout(done,dur*1000);}).catch(()=>resolve());
+   };
+   if(a.readyState>=1)run(); else a.addEventListener("loadedmetadata",run,{once:true});
+ });
+}
+async function ownVoicePlayCue(cue,token){
+ if(token!==ownVoiceToken)return;
+ if(ownVoiceBuffers[cue.f]&&ownVoiceCtx){
+   const ctx=ownVoiceEnsureContext(),src=ctx.createBufferSource(),gain=ctx.createGain();
+   src.buffer=ownVoiceBuffers[cue.f];gain.gain.value=1;src.connect(gain).connect(ctx.destination);
+   ownVoiceSource=src;
+   const dur=Math.max(.08,cue.e-cue.s);
+   return await new Promise(resolve=>{src.onended=()=>{if(ownVoiceSource===src)ownVoiceSource=null;resolve();};src.start(0,cue.s,dur);});
+ }
+ return await ownVoiceFallbackPlay(cue);
+}
+async function playOwnVoiceText(t,opts={}){
+ if(typeof soundOn!=="undefined"&&!soundOn)return false;
+ const parts=ownVoiceParts(t);
+ if(!parts.length){console.warn("Own voice phrase not recorded:",t);return false;}
+ ownVoiceStop();const token=ownVoiceToken;
+ const song=opts.song||document.getElementById("lessonSong");
+ const oldVol=song?song.volume:0,duck=!!(song&&!song.paused);
+ if(duck)song.volume=Math.min(oldVol,.07);
+ ownVoiceEnsureContext();
+ ownVoiceLoad();
+ for(let i=0;i<parts.length;i++){
+   if(token!==ownVoiceToken)break;
+   await ownVoicePlayCue(parts[i],token);
+   if(i<parts.length-1)await new Promise(r=>setTimeout(r,180));
+ }
+ if(duck&&song)song.volume=oldVol;
+ return true;
+}
+window.playOwnVoiceText=playOwnVoiceText;
+["pointerdown","keydown"].forEach(ev=>window.addEventListener(ev,()=>{ownVoiceEnsureContext();ownVoiceLoad();},{once:true,passive:true}));
+setTimeout(()=>{OWN_VOICE_FILES.forEach((_,i)=>document.getElementById("ownVoiceSprite"+(i+1))?.load());ownVoiceLoad();},120);
+
+function speak(t){return playOwnVoiceText(t,{song:$("lessonSong")})}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function img(c,type="sphere"){return DATA[type][c]} function monster(c){return DATA.monsters[c]}
 function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.toggle("active",x.id===id));document.querySelectorAll(".navbtn").forEach(x=>x.classList.toggle("active",x.dataset.go===id));window.scrollTo(0,0)}
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));$("homeBtn").onclick=()=>show("home");
-$("soundBtn").onclick=()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"🔊":"🔇";if(!soundOn&&"speechSynthesis"in window)speechSynthesis.cancel()};
+
+// PRESENTATION VIEWER
+const PRES_TOTAL=40;
+let presSlide=1;
+function presPath(n){return `presentation/slide_${String(n).padStart(2,"0")}.webp`}
+function presWeekLabel(n){
+ if(n<=13)return "Week 9";
+ if(n<=27)return "Week 10";
+ return "Week 11";
+}
+function showPresSlide(n){
+ presSlide=Math.max(1,Math.min(PRES_TOTAL,n));
+ $("presentationImg").src=presPath(presSlide);
+ $("presentationImg").alt=`Presentation slide ${presSlide}`;
+ $("presCounter").textContent=`Slide ${presSlide} / ${PRES_TOTAL}`;
+ $("presWeek").textContent=presWeekLabel(presSlide);
+ document.querySelectorAll(".presThumb").forEach(x=>x.classList.toggle("active",Number(x.dataset.slide)===presSlide));
+}
+$("presPrev").onclick=()=>showPresSlide(presSlide-1);
+$("presNext").onclick=()=>showPresSlide(presSlide+1);
+document.querySelectorAll("[data-presjump]").forEach(b=>b.onclick=()=>{
+ showPresSlide(Number(b.dataset.presjump));
+ $("presThumbs").classList.remove("open");
+});
+$("presThumbBtn").onclick=()=>$("presThumbs").classList.toggle("open");
+$("presFullBtn").onclick=()=>{
+ const el=$("presentationStage");
+ if(!document.fullscreenElement){el.requestFullscreen?.()}else{document.exitFullscreen?.()}
+};
+$("presentationStage").onclick=e=>{
+ if(e.target.id==="presentationImg"){
+   const r=e.target.getBoundingClientRect();
+   const x=e.clientX-r.left;
+   if(x<r.width*.32)showPresSlide(presSlide-1);
+   else if(x>r.width*.68)showPresSlide(presSlide+1);
+ }
+};
+$("presThumbs").innerHTML=Array.from({length:PRES_TOTAL},(_,i)=>{
+ const n=i+1;
+ return `<button class="presThumb ${n===1?"active":""}" data-slide="${n}"><img loading="lazy" decoding="async" src="${presPath(n)}" alt="Slide ${n}"><span>${presWeekLabel(n)} • ${n}</span></button>`;
+}).join("");
+$("presThumbs").querySelectorAll(".presThumb").forEach(b=>b.onclick=()=>{
+ showPresSlide(Number(b.dataset.slide));
+ $("presThumbs").classList.remove("open");
+ window.scrollTo({top:0,behavior:"smooth"});
+});
+document.addEventListener("keydown",e=>{
+ if(!$("presentation").classList.contains("active"))return;
+ if(e.key==="ArrowLeft")showPresSlide(presSlide-1);
+ if(e.key==="ArrowRight")showPresSlide(presSlide+1);
+});
+showPresSlide(1);
+
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+ window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}),{once:true});
+}
+
+
+$("soundBtn").onclick=()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"🔊":"🔇";if(!soundOn)ownVoiceStop()};
 $("pinBtn").onclick=()=>{alert("Teacher tools remain available at the top: Flashcards, Music and Sound.")};
 
 if($("flashBtnHome"))$("flashBtnHome").onclick=()=>$("flashBtn").click();
@@ -264,12 +548,12 @@ if($("pinBtnHome"))$("pinBtnHome").onclick=()=>$("pinBtn").click();
 
 $("musicBtn").onclick=()=>{$("musicPanel").classList.toggle("open")};
 
-const lessonSong=$("lessonSong");
+const lessonSong=$("lessonSong");lessonSong.loop=true;lessonSong.volume=.35;
 function fmtTime(sec){if(!isFinite(sec))return "0:00";const m=Math.floor(sec/60),ss=Math.floor(sec%60).toString().padStart(2,"0");return `${m}:${ss}`}
 $("musicClose").onclick=()=>$("musicPanel").classList.remove("open");
 $("musicPlay").onclick=()=>lessonSong.play().catch(()=>{});
 $("musicPause").onclick=()=>lessonSong.pause();
-$("musicRestart").onclick=()=>{lessonSong.currentTime=0;lessonSong.play().catch(()=>{})};
+$("musicRestart").onclick=()=>{lessonSong.currentTime=0;lessonSong.play().catch(()=>{})};$("musicLyricsBtn").onclick=()=>$("musicLyrics").classList.toggle("open");
 lessonSong.addEventListener("timeupdate",()=>{
  const p=lessonSong.duration?100*lessonSong.currentTime/lessonSong.duration:0;
  $("musicProgressBar").style.width=p+"%";
@@ -290,8 +574,8 @@ function renderStart(){
   function choose(c){startColor=COLORS.indexOf(c);active=c;$("startDeck").querySelectorAll(".speedCard").forEach(x=>x.classList.toggle("active",x.dataset.c===c));$("startFrame").textContent="Say the color word."}
   $("startDeck").querySelectorAll(".speedCard").forEach(b=>b.onclick=()=>choose(b.dataset.c));$("startWord").onclick=()=>{$("startFrame").textContent=active;speak(active)};$("startFull").onclick=()=>{$("startFrame").textContent=`It’s ${active}.`;speak(`It’s ${active}.`)};$("startRandom").onclick=()=>choose(COLORS[Math.floor(Math.random()*COLORS.length)]);
  } else if(startTab==="song"){
-  el.innerHTML=`<div class="stageTitle">Monster Mission Song</div><div class="stageSub">Press PLAY SONG. The song starts immediately and can continue while you move through the lesson.</div><div class="twocol"><div class="visual"><div class="monsterCrop"><img src="${monster("yellow")}" decoding="async" loading="lazy"></div></div><div><div class="frame">Red → Jump ×3<br>Blue → Clap ×3<br>Yellow → Turn around<br>Green → Touch the ground</div><div class="controls"><button class="btn red" id="openSong">▶ PLAY SONG</button><button class="btn gray" id="pauseSong">⏸ PAUSE</button></div></div></div>`;
-  $("openSong").onclick=()=>{const a=$("lessonSong");$("musicPanel").classList.add("open");a.play().catch(()=>{});};$("pauseSong").onclick=()=>$("lessonSong").pause();
+  el.innerHTML=`<div class="stageTitle">Monster Colors Song</div><div class="stageSub">Sing, move and repeat the seven colors.</div><div class="twocol"><div class="visual"><div class="monsterCrop"><img src="${monster("yellow")}" decoding="async" loading="lazy"></div></div><div><div class="songActionGrid"><div>🔴 Red → Jump ×3</div><div>🔵 Blue → Clap ×3</div><div>🟡 Yellow → Wave hello</div><div>🟢 Green → Touch your knees</div><div>💗 Pink → Wink ×3</div><div>⚫ Black → Tap ×3</div><div>⚪ White → Hands up high</div></div><div class="controls"><button class="btn red" id="openSong">▶ PLAY SONG</button><button class="btn blue" id="showLyricsStart">📜 LYRICS</button><button class="btn gray" id="pauseSong">⏸ PAUSE</button></div></div></div>`;
+  $("openSong").onclick=()=>{const a=$("lessonSong");$("musicPanel").classList.add("open");a.play().catch(()=>{});};$("showLyricsStart").onclick=()=>{$("musicPanel").classList.add("open");$("musicLyrics").classList.add("open")};$("pauseSong").onclick=()=>$("lessonSong").pause();
  } else {
   let c=COLORS[startColor];
   el.innerHTML=`<div class="stageTitle">Picture Transfer</div><div class="stageSub">Move from a plain color to an object without changing the sentence pattern.</div><div class="twocol"><div class="visual"><img src="${img(c,"objects")}" decoding="async" loading="lazy"></div><div><div class="prompt">What color is it?</div><div class="frame">It’s ______.</div><div class="controls"><button class="btn green" id="transferReveal">REVEAL</button><button class="btn orange" id="transferNext">NEXT PICTURE ➜</button></div><div class="feedback" id="transferFb"></div></div></div>`;
@@ -307,11 +591,11 @@ function renderLearn(){
  let el=$("learnContent");
  if(learnTab==="colors"){
   let c=COLORS[learnIndex%COLORS.length];
-  el.innerHTML=`<div class="stageTitle">Step 1 — Colors</div><div class="stageSub">One model at a time.</div><div class="twocol"><div class="visual"><img src="${img(c,"objects")}" decoding="async" loading="lazy"></div><div><div class="prompt">What color is it?</div><div class="frame" id="learnFrame">It’s ______.</div><div class="controls"><button class="btn blue" id="learnHear">🔊 HEAR MODEL</button><button class="btn green" id="learnReveal">REVEAL</button><button class="btn orange" id="learnNext">NEXT MODEL ➜</button></div></div></div><div class="wordRow">${COLORS.map(x=>`<button class="wordChip ${x===c?"active":""}">${x}</button>`).join("")}</div>`;
+  el.innerHTML=`<div class="stageTitle">Step 1 — Colors</div><div class="stageSub">Flashcard first → same-color real object mini-check.</div><div class="twocol"><div class="visual"><img class="learnColorCard" src="${LEARN_COLOR_CARD[c]}" decoding="async" loading="lazy"></div><div><div class="prompt">What color is it?</div><div class="frame" id="learnFrame">It’s ______.</div><div class="controls"><button class="btn blue" id="learnHear">🔊 HEAR MODEL</button><button class="btn green" id="learnReveal">REVEAL</button><button class="btn orange" id="learnNext">NEXT MODEL ➜</button></div></div></div><div class="wordRow">${COLORS.map(x=>`<button class="wordChip ${x===c?"active":""}">${x}</button>`).join("")}</div>`;
   $("learnHear").onclick=()=>speak(`What color is it? It’s ${c}.`);$("learnReveal").onclick=()=>{$("learnFrame").textContent=`It’s ${c}.`};$("learnNext").onclick=()=>{learnIndex=(learnIndex+1)%COLORS.length;renderLearn()}
  } else if(learnTab==="monsters"){
   el.innerHTML=`<div class="stageTitle">Step 2 — Connect Colors and Feelings</div><div class="stageSub">Yellow = happy • Blue = sad • Red = angry • Green = calm • Black = scared • Pink = love</div><div class="mapgrid">${MONSTERS.map(c=>`<div class="mapitem"><img src="${monster(c)}" decoding="async" loading="lazy"><b>${c} → ${FEEL[c]}</b></div>`).join("")}</div><div class="controls"><button class="btn blue" id="mapHear">🔊 HEAR MAP</button></div>`;
-  $("mapHear").onclick=()=>speak("Yellow is happy. Blue is sad. Red is angry. Green is calm. Black is scared. Pink is love.");
+  $("mapHear").onclick=()=>speak("Yellow is happy. Blue is sad. Red is angry. Green is calm. Black is scared. Pink is in love.");
  } else {
   let c=["yellow","blue","red","green","black"][learnIndex%5];
   el.innerHTML=`<div class="stageTitle">Step 3 — Two-Question Model</div><div class="stageSub">Use the same monster for color first, then feeling.</div><div class="twocol"><div class="visual"><div class="monsterCrop"><img src="${monster(c)}" decoding="async" loading="lazy"></div></div><div><div class="prompt">What color is it?</div><div class="frame">It’s ${c}.</div><div class="prompt">How does the monster feel?</div><div class="frame">He is ${FEEL[c]}.</div><div class="controls"><button class="btn blue" id="sentHear">🔊 HEAR MODEL</button><button class="btn orange" id="sentNext">NEXT MONSTER ➜</button></div></div></div>`;
@@ -320,8 +604,8 @@ function renderLearn(){
  renderLearnMini();
 }
 function renderLearnMini(){
- let color=COLORS[(learnIndex+2)%COLORS.length];
- if(learnTab==="colors") $("learnMini").innerHTML=`<div class="prompt">Mini-check: What color is it?</div><div class="visual"><img style="max-height:130px" src="${img(color,"sphere")}" decoding="async" loading="lazy"></div><div class="controls"><button class="btn green" id="miniReveal">SHOW ANSWER</button></div><div class="feedback" id="miniFb"></div>`;
+ let color=COLORS[learnIndex%COLORS.length];
+ if(learnTab==="colors") $("learnMini").innerHTML=`<div class="prompt">Mini-check: What color is it?</div><div class="stageSub">Same color, new picture.</div><div class="visual"><img class="miniObject" src="${img(color,"objects")}" decoding="async" loading="lazy"></div><div class="controls"><button class="btn green" id="miniReveal">SHOW ANSWER</button></div><div class="feedback" id="miniFb"></div>`;
  else if(learnTab==="monsters"){let c=MONSTERS[(learnIndex+1)%MONSTERS.length];$("learnMini").innerHTML=`<div class="prompt">Mini-check: How does the monster feel?</div><div class="visual"><div class="monsterCrop" style="height:150px;width:170px"><img style="height:220px" src="${monster(c)}" decoding="async" loading="lazy"></div></div><div class="controls"><button class="btn green" id="miniReveal">SHOW ANSWER</button></div><div class="feedback" id="miniFb"></div>`}
  else {let c=["yellow","blue","red","green","black"][learnIndex%5];$("learnMini").innerHTML=`<div class="prompt">Mini-check: Is it ${c}?</div><div class="controls"><button class="btn green" id="miniReveal">SHOW MODEL</button></div><div class="feedback" id="miniFb"></div>`}
  $("miniReveal").onclick=()=>{let t=learnTab==="colors"?`It’s ${color}.`:learnTab==="monsters"?`He is ${FEEL[MONSTERS[(learnIndex+1)%MONSTERS.length]]}.`:`Yes, it is.`;$("miniFb").textContent=t;$("miniFb").className="feedback good";speak(t)}
@@ -356,7 +640,7 @@ function renderPractice(){
 function renderDetective(el,target){
  let solved=false,used=0;
  el.innerHTML=`<div class="stageTitle">Level 3 — Ask + Answer: Monster Detective</div><div class="stageSub">Students choose the questions. A correct color question reveals the monster.</div><div class="twocol"><div class="visual"><img id="detectImg" src="${DATA.mysteries[practiceIndex%DATA.mysteries.length]}" decoding="async" loading="lazy"></div><div><div class="prompt">Choose a detective question</div><div class="detectiveQuestions" id="detectQs">${MONSTERS.map(c=>`<button class="detectQ" data-c="${c}">Is it ${c}?</button>`).join("")}</div><div class="detectLog" id="detectLog">Ask a color question.</div><div id="detectFinish"></div><div class="feedback" id="detectFb">Say the question aloud before clicking.</div><div class="controls"><button class="btn orange" id="detectNext" disabled>NEW MYSTERY ➜</button></div></div></div>`;
- $("detectQs").querySelectorAll(".detectQ").forEach(b=>b.onclick=()=>{if(solved||b.classList.contains("used"))return;let c=b.dataset.c;b.classList.add("used");used++;speak(`Is it ${c}?`);if(c===target){solved=true;$("detectLog").innerHTML+=`<br><b>Is it ${c}? → Yes, it is.</b>`;$("detectImg").src=monster(target);$("detectFinish").innerHTML=`<div class="prompt">What color is it?</div><div class="frame">It’s ${target}.</div><div class="prompt">How does the monster feel?</div><div class="frame">${target==="pink"?"He feels love.":`He is ${FEEL[target]}.`}</div>`;$("detectFb").textContent=`Solved in ${used} question${used===1?"":"s"}.`;$("detectFb").className="feedback good";speak(`Yes, it is. It’s ${target}. ${target==="pink"?"He feels love.":`He is ${FEEL[target]}.`}`);$("detectNext").disabled=false}else{$("detectLog").innerHTML+=`<br>Is it ${c}? → No, it isn’t.`;speak("No, it isn’t.")}});
+ $("detectQs").querySelectorAll(".detectQ").forEach(b=>b.onclick=()=>{if(solved||b.classList.contains("used"))return;let c=b.dataset.c;b.classList.add("used");used++;speak(`Is it ${c}?`);if(c===target){solved=true;$("detectLog").innerHTML+=`<br><b>Is it ${c}? → Yes, it is.</b>`;$("detectImg").src=monster(target);$("detectFinish").innerHTML=`<div class="prompt">What color is it?</div><div class="frame">It’s ${target}.</div><div class="prompt">How does the monster feel?</div><div class="frame">${`He is ${FEEL[target]}.`}</div>`;$("detectFb").textContent=`Solved in ${used} question${used===1?"":"s"}.`;$("detectFb").className="feedback good";speak(`Yes, it is. It’s ${target}. ${`He is ${FEEL[target]}.`}`);$("detectNext").disabled=false}else{$("detectLog").innerHTML+=`<br>Is it ${c}? → No, it isn’t.`;speak("No, it isn’t.")}});
  $("detectNext").onclick=()=>{practiceIndex++;renderPractice()}
 }
 document.querySelectorAll("[data-practicelevel]").forEach(b=>b.onclick=()=>{practiceLevel=Number(b.dataset.practicelevel);renderPractice()});renderPractice();
@@ -410,7 +694,7 @@ const quickQs=[
  {img:DATA.monsters.pink,q:"What color is it?",c:"It’s pink.",o:["It’s pink.","It’s red.","It’s white.","It’s blue."]}
 ];let qi=0;
 function renderQuick(){let q=quickQs[qi];$("quickImg").src=q.img;$("quickPrompt").textContent=q.q;$("quickFeedback").textContent=`Question ${qi+1} / ${quickQs.length}`;answerButtons($("quickAnswers"),q.o,q.c,null,$("quickFeedback"))}
-$("quickStart").onclick=()=>{$("quickArea").style.display="grid";$("fullArea").style.display="none";qi=0;renderQuick()};$("quickNext").onclick=()=>{qi=(qi+1)%quickQs.length;renderQuick()};$("quickClose").onclick=()=>$("quickArea").style.display="none";$("fullGameBtn").onclick=()=>{$("fullArea").style.display="block";$("quickArea").style.display="none";$("fullArea").scrollIntoView({behavior:"smooth"})};$("fullClose").onclick=()=>$("fullArea").style.display="none";
+$("quickStart").onclick=()=>{$("quickArea").style.display="grid";$("fullArea").style.display="none";qi=0;renderQuick()};$("quickNext").onclick=()=>{qi=(qi+1)%quickQs.length;renderQuick()};$("quickClose").onclick=()=>$("quickArea").style.display="none";$("fullGameBtn").onclick=()=>{lessonSong.pause();let f=$("monsterGameFrame");if(f&&!f.src)f.src=f.dataset.src;$("fullArea").style.display="block";$("quickArea").style.display="none";$("fullArea").scrollIntoView({behavior:"smooth"})};$("fullClose").onclick=()=>$("fullArea").style.display="none";
 
 // FLASHCARDS
 const cats=["ALL","COLOR PICTURES","COLOR WORDS","OBJECTS","MONSTERS","MYSTERY"];let flashCat="ALL";

@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Monster Sort Mission — Team Challenge</title>
+<style>
+:root{
+  --ink:#132a55;--cream:#fff8e8;--paper:#fffdf8;--gold:#ffc72b;--red:#ef4454;--blue:#2e8be7;
+  --green:#36b75b;--purple:#8e53e8;--orange:#ef9b26;--pink:#ef56a8;--teal:#23a1b7;
+  --shadow:0 16px 40px rgba(22,32,55,.28);
+}
+*{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;font-family:"Trebuchet MS",Arial,sans-serif;color:var(--ink);background:#211c35}button,input{font:inherit}button{cursor:pointer}
+body{overflow-x:hidden}.hidden{display:none!important}
+.app{min-height:100vh;background:linear-gradient(rgba(20,24,44,.06),rgba(20,24,44,.1)),url('background.webp') center/cover fixed}
+.btn{border:0;border-radius:16px;padding:11px 16px;font-weight:1000;color:white;box-shadow:inset 0 -4px rgba(0,0,0,.13),0 5px 12px rgba(0,0,0,.18);transition:.15s}.btn:hover{transform:translateY(-1px)}
+.blue{background:var(--blue)}.green{background:var(--green)}.purple{background:var(--purple)}.orange{background:var(--orange)}.pink{background:var(--pink)}.red{background:var(--red)}.gray{background:#718097}.teal{background:var(--teal)}
+
+/* SETUP */
+.setup{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(rgba(255,246,225,.18),rgba(255,246,225,.08))}
+.setupPanel{width:min(980px,96vw);background:rgba(255,250,237,.94);border:6px solid #9e6b40;border-radius:30px;box-shadow:var(--shadow);padding:22px;backdrop-filter:blur(5px)}
+.title{text-align:center}.title h1{font-size:clamp(38px,6vw,72px);line-height:.93;margin:0;font-weight:1000;text-shadow:0 3px #fff}.title p{font-size:18px;font-weight:900;margin:10px 0 0;color:#596177}
+.goal{margin:16px auto;background:#fff2ba;border:3px solid #e9c54d;border-radius:18px;padding:12px 16px;text-align:center;font-size:20px;font-weight:1000;max-width:760px}
+.setupGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.setupCard{background:#fff;border:3px solid #e6d7c0;border-radius:20px;padding:15px}.setupCard h2{margin:0 0 10px;font-size:23px}.choiceRow{display:flex;gap:8px;flex-wrap:wrap}.selectBtn{border:3px solid #d9e1ed;background:#fff;color:var(--ink);border-radius:15px;padding:11px 15px;font-weight:1000;cursor:pointer}.selectBtn.active{background:#e8f4ff;border-color:#2d8ce7;box-shadow:0 0 0 3px rgba(45,140,231,.14)}
+.teamInputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.teamInput{display:flex;align-items:center;gap:8px;background:#f8f6f1;border-radius:13px;padding:7px 9px}.teamDot{width:20px;height:20px;border-radius:50%;flex:0 0 auto}.teamInput input{width:100%;border:2px solid #d9e0ea;border-radius:10px;padding:8px;font-weight:900;color:var(--ink)}
+.setupActions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}.smallNote{text-align:center;font-size:13px;font-weight:900;color:#616a7b;margin-top:10px}
+
+/* GAME */
+.game{min-height:100vh;display:none;padding:10px}.game.active{display:block}.hud{max-width:1380px;margin:0 auto 8px;background:rgba(255,250,238,.95);border:4px solid #a06d43;border-radius:20px;padding:8px 10px;box-shadow:0 8px 20px rgba(0,0,0,.2);display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}.hudTitle{font-weight:1000;font-size:21px;white-space:nowrap}.hudCenter{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.pill{background:white;border:2px solid #e1d7c6;border-radius:13px;padding:6px 10px;font-weight:1000;font-size:13px}.timerPill{font-size:18px;background:#fff0b5;border-color:#e6bf36}.penalty{color:#c63445}.hudTools{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.miniBtn{border:0;border-radius:11px;padding:8px 10px;background:white;color:var(--ink);font-weight:1000;box-shadow:0 3px 8px rgba(0,0,0,.12)}
+.boardWrap{max-width:1380px;margin:auto}.board{position:relative;width:100%;aspect-ratio:3/2;background:url('background.webp') center/100% 100% no-repeat;border:6px solid #9d6940;border-radius:28px;overflow:hidden;box-shadow:var(--shadow)}
+.promptBar{position:absolute;left:31%;top:2.2%;width:38%;z-index:40;background:rgba(255,252,244,.95);border:4px solid #264a7d;border-radius:18px;padding:8px 12px;text-align:center;font-weight:1000;font-size:clamp(13px,1.5vw,21px);box-shadow:0 6px 14px rgba(0,0,0,.16)}
+.promptSub{display:block;font-size:.72em;color:#687085;margin-top:2px}.feedback{position:absolute;left:31%;top:10.7%;width:38%;z-index:39;text-align:center;font-weight:1000;font-size:clamp(11px,1.2vw,16px);padding:5px 10px;border-radius:12px;background:rgba(255,255,255,.85);min-height:28px}.feedback.good{color:#137f38;background:rgba(224,249,232,.94)}.feedback.bad{color:#c13547;background:rgba(255,230,233,.94)}
+.platform{position:absolute;z-index:20;border:4px solid rgba(255,255,255,.0);border-radius:18px;cursor:pointer;transition:.17s;padding:3px;display:flex;align-items:center;justify-content:center}.platform:hover{background:rgba(255,255,255,.08)}.platform.selected{border-color:#45b6ff;background:rgba(116,205,255,.16);box-shadow:0 0 0 6px rgba(99,190,255,.22),0 0 24px rgba(53,163,235,.55)}.platform.full{cursor:not-allowed}.platformLabel{position:absolute;left:5px;top:4px;background:rgba(16,42,85,.75);color:#fff;border-radius:9px;padding:3px 7px;font-size:10px;font-weight:1000;z-index:5}.platform.selected .platformLabel{background:#238cda}.stack{width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;gap:2px;padding:12px 3px 2px}.card{position:relative;height:min(12.9vw,134px);aspect-ratio:3/4;flex:0 0 auto;border-radius:10px;background:#fff;box-shadow:0 5px 12px rgba(0,0,0,.20);transition:.18s}.card img{width:100%;height:100%;object-fit:contain;border-radius:10px;display:block}.card{cursor:pointer}.card.top{outline:3px solid rgba(255,255,255,.92)}.card:hover{transform:translateY(-6px) scale(1.04);outline:3px solid #ffd32d}.card.notTop{opacity:1}.card.mystery img{filter:grayscale(1) brightness(.42) blur(1px)}.card.mystery:after{content:'?';position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(28px,4vw,58px);font-weight:1000;color:white;text-shadow:0 4px 10px #000;background:rgba(38,45,74,.18);border-radius:10px}.topTag{position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:#ffd42d;color:#433100;border-radius:8px;padding:3px 6px;font-size:10px;font-weight:1000;white-space:nowrap}
+.card.top.legalMove{outline:4px solid #45df78;box-shadow:0 0 0 5px rgba(69,223,120,.22),0 7px 18px rgba(0,0,0,.20);cursor:pointer;animation:legalPulse 1.05s ease-in-out infinite}
+.card.top.illegalMove{opacity:.33;filter:grayscale(.45);cursor:not-allowed;outline:2px solid rgba(255,255,255,.35)}
+.card.top.legalMove:hover{transform:translateY(-7px) scale(1.06);outline-color:#55f38a}
+.topTag.moveNow{background:#45df78;color:#083a1b;box-shadow:0 3px 8px rgba(16,120,55,.26)}
+.platform.noMove{border-color:#ef5262;background:rgba(239,82,98,.13);box-shadow:0 0 0 5px rgba(239,82,98,.16)}
+@keyframes legalPulse{0%,100%{transform:translateY(0);box-shadow:0 0 0 4px rgba(69,223,120,.17),0 5px 12px rgba(0,0,0,.18)}50%{transform:translateY(-3px);box-shadow:0 0 0 8px rgba(69,223,120,.28),0 8px 18px rgba(0,0,0,.22)}}
+
+
+.card.selectedFree{
+ outline:5px solid #45b6ff!important;
+ transform:translateY(-8px) scale(1.06);
+ box-shadow:0 0 0 7px rgba(69,182,255,.22),0 9px 20px rgba(0,0,0,.28);
+ z-index:8
+}
+
+
+.platform.illegalDestination{opacity:.67}
+
+
+.card.centralEdgeCard{
+ cursor:pointer;
+ outline:4px solid rgba(255,214,45,.95);
+ box-shadow:0 0 0 5px rgba(255,214,45,.18),0 5px 12px rgba(0,0,0,.20);
+ z-index:6
+}
+.card.centralEdgeCard:hover{
+ transform:translateY(-7px) scale(1.05);
+ outline-color:#55ef82
+}
+.card.lockedCard{
+ cursor:not-allowed;
+ opacity:.88
+}
+.card.lockedCard:hover{transform:none;outline:none}
+
+.card img{width:100%;height:100%;object-fit:contain!important;object-position:center!important;background:#fff}
+/* shelf positions */
+.p0{left:2.7%;top:14.5%;width:23.7%;height:14.0%}.p1{left:2.7%;top:31.3%;width:23.7%;height:14.0%}.p2{left:2.7%;top:48.0%;width:23.7%;height:14.0%}
+.p3{left:73.6%;top:14.5%;width:23.7%;height:14.0%}.p4{left:73.6%;top:31.3%;width:23.7%;height:14.0%}.p5{left:73.6%;top:48.0%;width:23.7%;height:14.0%}
+/* Two clearly empty sorting pads on the carpet so the first move is always possible. */
+.p6{left:40.75%;top:72.0%;width:18.5%;height:15.0%;border:4px dashed rgba(255,221,100,.78);border-radius:28px;background:rgba(255,249,220,.16)}
+.p6.legalDestination{border-style:solid;background:rgba(93,230,128,.22)}
+.p6 .platformLabel{left:50%;transform:translateX(-50%);top:1px}
+
+.detectivePanel{position:absolute;z-index:60;left:29%;top:18%;width:42%;background:rgba(255,250,239,.97);border:5px solid #8250d9;border-radius:24px;padding:14px;box-shadow:0 18px 40px rgba(0,0,0,.34);text-align:center}.detectivePanel h2{margin:0 0 5px}.detectiveChoices{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.detectQ{border:3px solid #d9e0eb;background:#fff;border-radius:13px;padding:9px 6px;font-weight:1000;color:var(--ink)}.detectQ.used{opacity:.45}.detectiveLog{margin-top:9px;background:#f5f2ed;border-radius:12px;padding:8px;font-weight:900;min-height:42px}.detReveal{display:flex;justify-content:center;margin:8px 0}.detReveal img{height:150px;max-width:100%;object-fit:contain;border-radius:13px}
+.countdown{position:absolute;inset:0;z-index:120;background:rgba(14,22,43,.46);display:none;align-items:center;justify-content:center}.countdown.show{display:flex}.countNumber{font-size:clamp(90px,18vw,220px);font-weight:1000;color:white;text-shadow:0 9px 30px rgba(0,0,0,.45),0 0 30px #ffcc34}
+.flyCard{position:fixed;z-index:9999;pointer-events:none;background:white;border-radius:12px;box-shadow:0 15px 36px rgba(0,0,0,.45);transition:transform .58s cubic-bezier(.2,.85,.3,1),opacity .58s}.flyCard img{width:100%;height:100%;object-fit:contain;border-radius:12px}
+
+/* MODALS */
+.modal{position:fixed;inset:0;z-index:500;background:rgba(9,17,33,.78);display:none;align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}.modalCard{width:min(850px,96vw);max-height:92vh;overflow:auto;background:#fffaf0;border:5px solid #c59551;border-radius:26px;box-shadow:0 24px 60px rgba(0,0,0,.4);padding:18px}.modalHead{display:flex;align-items:center;gap:10px}.modalHead h2{margin:0;flex:1}.close{border:0;width:40px;height:40px;border-radius:50%;background:#fff;font-size:22px;font-weight:1000;box-shadow:0 3px 8px rgba(0,0,0,.12)}.lyrics{white-space:pre-line;line-height:1.52;font-weight:900;background:#fff;border:3px solid #eee0c8;border-radius:16px;padding:14px;margin-top:10px}.songControls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.volumeRow{display:flex;align-items:center;gap:9px;margin-top:10px;font-weight:900}.volumeRow input{width:180px}
+.resultBox{text-align:center}.resultBox h1{font-size:45px;margin:6px}.resultStats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}.stat{background:#fff;border:3px solid #eadcc7;border-radius:16px;padding:12px}.stat b{display:block;font-size:26px}.leaderboard{display:grid;gap:8px;margin:13px 0}.leader{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:8px;background:#fff;border:3px solid #e8dcc9;border-radius:15px;padding:9px 12px;text-align:left}.leader.winner{border-color:#f0bd25;background:#fff3bd}.rank{font-size:24px;font-weight:1000}.leaderTime{font-size:20px;font-weight:1000}
+.helpSteps{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:10px}.helpStep{background:#fff;border:3px solid #eadcc8;border-radius:16px;padding:12px;text-align:center;font-weight:900}.helpStep b{display:block;font-size:24px;color:#2e8be7}
+
+@media(max-width:900px){.setupGrid{grid-template-columns:1fr}.hud{grid-template-columns:1fr}.hudTitle{text-align:center}.hudTools{justify-content:center}.card{height:min(12vw,95px)}.helpSteps{grid-template-columns:repeat(2,1fr)}.promptBar{left:27%;width:46%}.feedback{left:27%;width:46%}}
+@media(max-width:600px){.teamInputs{grid-template-columns:1fr}.resultStats{grid-template-columns:1fr}.detectiveChoices{grid-template-columns:repeat(2,1fr)}.card{height:min(13vw,72px)}.platformLabel{font-size:8px}.stack{gap:2px;padding-left:2px;padding-right:2px}}
+
+/* Bird-Sort interaction update */
+.card.linkedSelected{outline:4px solid #ffd42d!important;transform:translateY(-5px) scale(1.035);box-shadow:0 0 0 5px rgba(255,212,45,.24),0 8px 18px rgba(0,0,0,.24)}
+.card.linkedMember{outline:3px solid rgba(255,212,45,.72)}
+.platform.legalDestination{border-color:#45d66b!important;background:rgba(87,224,117,.16)!important;box-shadow:0 0 0 5px rgba(75,214,107,.18),0 0 22px rgba(75,214,107,.35)}
+.platform.illegalDestination{opacity:.60}
+.moveCount{position:absolute;right:4px;top:4px;background:#ffd42d;color:#433100;border-radius:9px;padding:2px 6px;font-size:10px;font-weight:1000;z-index:6}
+.clearing .card{animation:monsterFlyAway .72s ease-in forwards}
+@keyframes monsterFlyAway{0%{transform:translateY(0) scale(1);opacity:1}45%{transform:translateY(-28px) scale(1.08) rotate(-3deg)}100%{transform:translateY(-165px) scale(.72) rotate(9deg);opacity:0}}
+.celebrateBurst{position:absolute;z-index:90;pointer-events:none;font-size:28px;animation:burstUp .9s ease-out forwards}
+@keyframes burstUp{from{opacity:1;transform:translate(-50%,0) scale(.7)}to{opacity:0;transform:translate(-50%,-120px) scale(1.4)}}
+.modeBadge{font-weight:1000}
+
+</style>
+</head>
+<body>
+<div class="app">
+<section class="setup" id="setupScreen">
+ <div class="setupPanel">
+  <div class="title"><h1>👾 MONSTER SORT MISSION</h1><p>Bird-Sort Style Puzzle • Speak Before You Move</p></div>
+  <div class="goal">🎯 GOAL: Group matching monsters on the same platform. A complete group flies away!</div>
+  <div class="setupGrid">
+   <div class="setupCard">
+    <h2>1. Choose game mode</h2>
+    <div class="choiceRow" id="modeChoices"><button class="selectBtn active" data-mode="classic">🧩 CLASSIC PUZZLE</button><button class="selectBtn" data-mode="race">🏁 TEAM RACE</button></div>
+    <p class="smallNote"><b>Classic:</b> no timer, Undo + Restart. <b>Team Race:</b> same puzzle for every team; fastest time wins.</p>
+    <div id="raceSetup" class="hidden" style="margin-top:12px"><h3 style="margin:0 0 8px">Choose number of teams</h3><div class="choiceRow" id="teamCountChoices"><button class="selectBtn active" data-count="2">2 TEAMS</button><button class="selectBtn" data-count="3">3 TEAMS</button><button class="selectBtn" data-count="4">4 TEAMS</button></div><div class="teamInputs" id="teamInputs"></div></div>
+   </div>
+   <div class="setupCard">
+    <h2>2. Choose the mission</h2>
+    <div class="choiceRow" id="levelChoices"><button class="selectBtn active" data-level="1">1 COLOR SORT</button><button class="selectBtn" data-level="2">2 FEELING SORT</button><button class="selectBtn" data-level="3">3 COLOR + FEELING</button></div>
+    <p class="smallNote">Move only the card on the CENTER EDGE of a platform. Then choose ANY other platform with free space.</p>
+   </div>
+  </div>
+  <div class="setupActions"><button class="btn pink" id="songIntro">🎵 SONG & LYRICS</button><button class="btn blue" id="howBtn">❓ HOW TO PLAY</button><button class="btn green" id="startCompetition">▶ START PUZZLE</button></div>
+  <div class="smallNote">Music loops during the game. Illegal moves simply stay in place.</div>
+ </div>
+</section>
+
+<section class="game" id="gameScreen">
+ <div class="hud">
+  <div class="hudTitle">👾 MONSTER SORT MISSION</div>
+  <div class="hudCenter"><span class="pill" id="levelPill">Level 1</span><span class="pill" id="teamPill">Classic</span><span class="pill timerPill hidden" id="timerPill">⏱ <span id="timerText">0:00.0</span></span><span class="pill">Moves: <span id="movesText">0</span></span></div>
+  <div class="hudTools"><button class="miniBtn" id="listenBtn">🔊 LISTEN</button><button class="miniBtn" id="lyricsBtn">🎵 LYRICS</button><button class="miniBtn" id="musicToggle">🎶 ON</button><button class="miniBtn" id="undoBtn">↶ UNDO</button><button class="miniBtn" id="restartTeam">↻ RESTART</button><button class="miniBtn" id="exitBtn">⌂ EXIT</button></div>
+ </div>
+ <div class="boardWrap">
+  <div class="board" id="board">
+   <div class="promptBar" id="promptBar">Touch the CENTER-EDGE card you want to move.<span class="promptSub" id="promptSub">CENTER EDGE → SAY → PLATFORM → MOVE</span></div>
+   <div class="feedback" id="feedback"></div>
+   <div id="platforms"></div>
+   <div class="detectivePanel hidden" id="detectivePanel" style="display:none"><h2>🔎 Color + Feeling</h2><div id="detectiveQuestion">Say the color + feeling sentence.</div><div class="detectiveChoices" id="detectiveChoices"></div><div class="detectiveLog" id="detectiveLog"></div><div class="detReveal hidden" id="detReveal"><img id="detRevealImg" alt="revealed monster"></div></div>
+   <div class="countdown" id="countdown"><div class="countNumber" id="countNumber">3</div></div>
+  </div>
+ </div>
+</section>
+</div>
+
+<audio id="music" src="../Monster Colors.mp3" preload="auto" loop playsinline></audio><audio id="gameVoiceSprite1" src="../voice/own_voice_1_v1.mp3" preload="none" playsinline style="display:none"></audio><audio id="gameVoiceSprite2" src="../voice/own_voice_2_v1.mp3" preload="none" playsinline style="display:none"></audio><audio id="gameVoiceSprite3" src="../voice/own_voice_3_v1.mp3" preload="none" playsinline style="display:none"></audio>
+
+<div class="modal" id="songModal"><div class="modalCard"><div class="modalHead"><h2>🎵 Monster Colors Song</h2><button class="close" data-close="songModal">×</button></div><div class="songControls"><button class="btn green" id="songPlay">▶ PLAY</button><button class="btn gray" id="songPause">⏸ PAUSE</button><button class="btn blue" id="songRestart">↺ RESTART</button></div><div class="volumeRow">Volume <input id="volumeSlider" type="range" min="0" max="100" value="32"></div><div class="lyrics">Monster, monster, here we go!
+Say the color nice and slow!
+
+Red monster, red monster,
+Jump, jump, jump!
+Red monster, red monster,
+Red, red, red!
+
+Blue monster, blue monster,
+Clap, clap, clap!
+Blue monster, blue monster,
+Blue, blue, blue!
+
+Yellow monster, yellow monster,
+Wave hello!
+Yellow monster, yellow monster,
+Yellow, yellow, yellow!
+
+Green monster, green monster,
+Touch your knees!
+Green monster, green monster,
+Green, green, green!
+
+Pink monster, pink monster,
+Wink, wink, wink!
+Pink, pink, pink!
+
+Black monster, black monster,
+Tap, tap, tap!
+Black, black, black!
+
+White monster, white monster,
+Hands up high!
+White, white, white!
+
+Red monster! Blue monster!
+Yellow monster! Green monster!
+Pink monster! Black monster!
+White monster too!
+
+Monster colors, sing with me!
+One, two, three — woo-hoo!</div></div></div>
+
+<div class="modal" id="helpModal"><div class="modalCard"><div class="modalHead"><h2>How to Play</h2><button class="close" data-close="helpModal">×</button></div>
+<div class="helpSteps"><div class="helpStep"><b>1</b>Touch the CENTER-EDGE card.</div><div class="helpStep"><b>2</b>Say the English answer aloud.</div><div class="helpStep"><b>3</b>Touch ANY other platform with free space.</div><div class="helpStep"><b>4</b>The selected monster flies to that platform.</div></div>
+<p><b>Monster Sort rule:</b> Only the card on the edge nearest the center of the board may move. New cards always join the BACK. On the left shelves this is the RIGHTMOST card; on the right shelves it is the LEFTMOST card. The bottom Magic Platform uses its exposed card. After selecting it, you may move it to ANY other platform that has fewer than 3 cards.</p>
+<p><b>Back-of-platform rule:</b> Every moved monster joins the BACK of the destination. It never jumps in front of the existing cards. The card nearest the center remains the FRONT and is the only movable card.</p><p><b>Complete group:</b> When 3 matching monsters fill a platform, they celebrate and fly away. Mixed groups may also hold 3 cards, but you must rearrange them later. Clear all six matching groups to win.</p>
+<p><b>Classic Puzzle:</b> no timer. Use <b>UNDO</b> or <b>RESTART</b> whenever needed.</p>
+<p><b>Team Race:</b> every team gets the same puzzle. The timer runs, but illegal moves do not move and there is no time penalty. Fastest completion time wins.</p>
+<p><b>Level 1 — Color:</b> Say the sentence: “It’s red.”<br><b>Level 2 — Feeling:</b> Say the sentence: “The monster is calm.”<br><b>Level 3 — Color + Feeling:</b> Say both together: “The red monster is angry.”</p></div></div>
+
+<div class="modal" id="teamResultModal"><div class="modalCard resultBox"><h1 id="teamResultTitle">Mission Complete!</h1><div class="resultStats"><div class="stat">Time<b id="rawTime">0:00.0</b></div><div class="stat">Moves<b id="mistakesStat">0</b></div><div class="stat">Groups cleared<b id="finalTime">6</b></div></div><button class="btn green" id="nextTeamBtn">NEXT TEAM ➜</button></div></div>
+
+<div class="modal" id="finalModal"><div class="modalCard resultBox"><h1 id="finalTitle">🏆 Competition Results</h1><div class="leaderboard" id="leaderboard"></div><div class="setupActions"><button class="btn green" id="playAgain">PLAY AGAIN</button><button class="btn blue" id="backSetup">CHANGE SETUP</button></div></div></div>
+
+<script>
+const COLORS=['yellow','blue','red','green','black','pink'];
+const FEEL={yellow:'happy',blue:'sad',red:'angry',green:'calm',black:'scared',pink:'in love'};
+const COLOR_CARD={
+ yellow:'color_yellow.webp',
+ blue:'color_blue.webp',
+ red:'color_red.webp',
+ green:'color_green.webp',
+ black:'color_black.webp',
+ pink:'color_pink.webp'
+};
+function cardImage(color){
+ return selectedLevel===1 ? COLOR_CARD[color] : `${color}.webp`;
+}
+
+const TEAM_COLORS=['#ffd22f','#3c9ce9','#ef5058','#48ba59'];
+const CAPACITY=3;
+const TEMPLATES=[
+ [[4,1,5],[3,2,3],[0,1,5],[0,0,5],[2,2,1],[4,3,4],[]],
+ [[1,3,2],[0,2,5],[2,0,4],[4,1,5],[4,5,0],[3,1,3],[]],
+ [[3,3,0],[1,3,4],[1,4,2],[5,2,5],[4,2,0],[5,1,0],[]],
+ [[0,2,5],[3,0,1],[1,5,2],[4,5,3],[1,3,4],[2,4,0],[]],
+ [[0,1,5],[5,0,1],[3,4,0],[2,2,1],[4,2,3],[5,3,4],[]]
+];
+const $=id=>document.getElementById(id);
+let gameMode='classic',teamCount=2,selectedLevel=1,teamNames=['Team 1','Team 2','Team 3','Team 4'];
+let teamIndex=0,results=[],template=null,shelves=[],selectedSource=null,selectedPos=null,selectedColor=null,selectedCount=0,locked=true;
+let history=[],moves=0,clearedGroups=0,timerStart=0,timerRAF=0,musicOn=true,currentPrompt='Touch the CENTER-EDGE card you want to move.';
+let detectiveSolved=false,detectiveTarget=null;
+const music=$('music'); music.volume=.32; music.loop=true;
+function deepTemplate(t){return t.map(s=>s.map(i=>COLORS[i]))}
+function cloneShelves(){return shelves.map(x=>[...x])}
+function fmt(sec){sec=Math.max(0,sec);let m=Math.floor(sec/60),ss=Math.floor(sec%60),d=Math.floor((sec-Math.floor(sec))*10);return `${m}:${String(ss).padStart(2,'0')}.${d}`}
+function rawElapsed(){return timerStart?(performance.now()-timerStart)/1000:0}
+function updateTimer(){if(!timerStart)return;$('timerText').textContent=fmt(rawElapsed());timerRAF=requestAnimationFrame(updateTimer)}
+function stopTimer(){if(timerRAF)cancelAnimationFrame(timerRAF);timerRAF=0}
+function setFeedback(t,type=''){let e=$('feedback');e.textContent=t;e.className='feedback '+type}
+function setPrompt(t,sub){currentPrompt=t;$('promptBar').childNodes[0].nodeValue=t;$('promptSub').textContent=sub||'CENTER EDGE → SAY → PLATFORM → MOVE'}
+function beep(ok=true){try{let ac=beep.ac||(beep.ac=new (window.AudioContext||window.webkitAudioContext)());let o=ac.createOscillator(),g=ac.createGain();o.frequency.value=ok?720:170;o.type=ok?'sine':'sawtooth';g.gain.value=.035;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+(ok?.12:.18))}catch(e){}}
+const GAME_VOICE_CUES={"yellow":{"f":0,"s":0,"e":0.54,"t":"Yellow."},"green":{"f":0,"s":2.465,"e":3.13,"t":"Green."},"red":{"f":0,"s":5.032,"e":5.564,"t":"Red."},"black":{"f":0,"s":7.622,"e":8.051,"t":"Black."},"pink":{"f":0,"s":10.203,"e":10.548,"t":"Pink."},"blue":{"f":0,"s":12.675,"e":13.264,"t":"Blue."},"white":{"f":0,"s":15.215,"e":15.725,"t":"White."},"it's yellow":{"f":0,"s":17.81,"e":18.546,"t":"It’s yellow."},"it's green":{"f":0,"s":20.439,"e":21.271,"t":"It’s green."},"it's red":{"f":0,"s":23.202,"e":23.888,"t":"It’s red."},"it's black":{"f":0,"s":25.877,"e":26.56,"t":"It’s black."},"it's pink":{"f":0,"s":28.655,"e":29.31,"t":"It’s pink."},"it's blue":{"f":0,"s":31.419,"e":32.193,"t":"It’s blue."},"it's white":{"f":0,"s":34.081,"e":34.738,"t":"It’s white."},"what color is it":{"f":0,"s":36.822,"e":37.747,"t":"What color is it?"},"what color is it it's yellow":{"f":0,"s":39.773,"e":41.468,"t":"What color is it? It’s yellow."},"what color is it it's green":{"f":0,"s":43.386,"e":45.179,"t":"What color is it? It’s green."},"what color is it it's red":{"f":0,"s":47.129,"e":48.771,"t":"What color is it? It’s red."},"what color is it it's black":{"f":0,"s":50.784,"e":52.423,"t":"What color is it? It’s black."},"what color is it it's pink":{"f":0,"s":54.545,"e":56.163,"t":"What color is it? It’s pink."},"what color is it it's blue":{"f":0,"s":58.288,"e":60.022,"t":"What color is it? It’s blue."},"what color is it it's white":{"f":0,"s":61.93,"e":63.545,"t":"What color is it? It’s white."},"yellow is happy":{"f":0,"s":65.618,"e":66.597,"t":"Yellow is happy."},"blue is sad":{"f":0,"s":68.539,"e":69.426,"t":"Blue is sad."},"red is angry":{"f":0,"s":71.336,"e":72.267,"t":"Red is angry."},"green is calm":{"f":0,"s":74.215,"e":75.181,"t":"Green is calm."},"black is scared":{"f":0,"s":77.125,"e":78.101,"t":"Black is scared."},"pink is in love":{"f":0,"s":80.132,"e":81.08,"t":"Pink is in love."},"happy":{"f":0,"s":83.168,"e":83.732,"t":"Happy."},"sad":{"f":0,"s":85.74,"e":86.322,"t":"Sad."},"angry":{"f":0,"s":88.353,"e":88.981,"t":"Angry."},"calm":{"f":0,"s":90.994,"e":91.594,"t":"Calm."},"scared":{"f":0,"s":93.554,"e":94.188,"t":"Scared."},"in love":{"f":0,"s":96.22,"e":96.889,"t":"In love."},"how does the monster feel":{"f":0,"s":98.974,"e":100.265,"t":"How does the monster feel?"},"he is happy":{"f":0,"s":102.235,"e":102.98,"t":"He is happy."},"how does the monster feel he is happy":{"f":1,"s":0,"e":1.994,"t":"How does the monster feel? He is happy."},"the monster is happy":{"f":1,"s":3.93,"e":5.1,"t":"The monster is happy."},"he is sad":{"f":1,"s":7.081,"e":7.785,"t":"He is sad."},"how does the monster feel he is sad":{"f":1,"s":9.698,"e":11.708,"t":"How does the monster feel? He is sad."},"the monster is sad":{"f":1,"s":13.603,"e":14.73,"t":"The monster is sad."},"he is angry":{"f":1,"s":16.735,"e":17.499,"t":"He is angry."},"how does the monster feel he is angry":{"f":1,"s":19.468,"e":21.539,"t":"How does the monster feel? He is angry."},"the monster is angry":{"f":1,"s":23.492,"e":24.648,"t":"The monster is angry."},"he is calm":{"f":1,"s":26.651,"e":27.365,"t":"He is calm."},"how does the monster feel he is calm":{"f":1,"s":29.32,"e":31.341,"t":"How does the monster feel? He is calm."},"the monster is calm":{"f":1,"s":33.279,"e":34.453,"t":"The monster is calm."},"he is scared":{"f":1,"s":36.443,"e":37.209,"t":"He is scared."},"how does the monster feel he is scared":{"f":1,"s":39.227,"e":41.294,"t":"How does the monster feel? He is scared."},"the monster is scared":{"f":1,"s":43.3,"e":44.485,"t":"The monster is scared."},"he is in love":{"f":1,"s":46.532,"e":47.361,"t":"He is in love."},"how does the monster feel he is in love":{"f":1,"s":49.431,"e":51.568,"t":"How does the monster feel? He is in love."},"the monster is in love":{"f":1,"s":53.626,"e":54.861,"t":"The monster is in love."},"it's yellow he is happy":{"f":1,"s":56.879,"e":58.338,"t":"It’s yellow. He is happy."},"the yellow monster is happy":{"f":1,"s":60.279,"e":61.776,"t":"The yellow monster is happy."},"it's blue he is sad":{"f":1,"s":63.71,"e":65.165,"t":"It’s blue. He is sad."},"the blue monster is sad":{"f":1,"s":67.061,"e":68.424,"t":"The blue monster is sad."},"it's red he is angry":{"f":1,"s":70.388,"e":71.925,"t":"It’s red. He is angry."},"the red monster is angry":{"f":1,"s":73.884,"e":75.298,"t":"The red monster is angry."},"it's green he is calm":{"f":1,"s":77.236,"e":78.802,"t":"It’s green. He is calm."},"the green monster is calm":{"f":1,"s":80.741,"e":82.198,"t":"The green monster is calm."},"it's black he is scared":{"f":1,"s":84.127,"e":85.776,"t":"It’s black. He is scared."},"the black monster is scared":{"f":2,"s":0,"e":1.409,"t":"The black monster is scared."},"it's pink he is in love":{"f":2,"s":3.392,"e":5.103,"t":"It’s pink. He is in love."},"the pink monster is in love":{"f":2,"s":7.157,"e":8.638,"t":"The pink monster is in love."},"is it yellow":{"f":2,"s":10.649,"e":11.517,"t":"Is it yellow?"},"is it blue":{"f":2,"s":13.371,"e":14.21,"t":"Is it blue?"},"is it red":{"f":2,"s":16.062,"e":16.82,"t":"Is it red?"},"is it green":{"f":2,"s":18.785,"e":19.702,"t":"Is it green?"},"is it black":{"f":2,"s":21.554,"e":22.318,"t":"Is it black?"},"is it pink":{"f":2,"s":24.351,"e":25.092,"t":"Is it pink?"},"yes it is":{"f":2,"s":27.122,"e":28.405,"t":"Yes, it is."},"no it isn't":{"f":2,"s":30.383,"e":31.491,"t":"No, it isn’t."},"how do i feel":{"f":2,"s":33.531,"e":34.387,"t":"How do I feel?"},"i am happy":{"f":2,"s":36.304,"e":37.083,"t":"I am happy."},"i am sad":{"f":2,"s":39.015,"e":39.858,"t":"I am sad."},"i am angry":{"f":2,"s":41.823,"e":42.616,"t":"I am angry."},"i am calm":{"f":2,"s":44.582,"e":45.358,"t":"I am calm."},"i am scared":{"f":2,"s":47.284,"e":48.158,"t":"I am scared."},"i am in love":{"f":2,"s":50.149,"e":51.021,"t":"I am in love."},"are you happy":{"f":2,"s":53.058,"e":53.951,"t":"Are you happy?"},"yes i am":{"f":2,"s":55.823,"e":57.216,"t":"Yes, I am."},"no i'm not":{"f":2,"s":59.086,"e":60.287,"t":"No, I’m not."},"it is the color of grass":{"f":2,"s":62.384,"e":63.737,"t":"It is the color of grass."},"what color am i":{"f":2,"s":65.849,"e":66.913,"t":"What color am I?"},"touch the center-edge card you want to move":{"f":2,"s":68.852,"e":70.964,"t":"Touch the center-edge card you want to move."},"great group complete":{"f":2,"s":73.001,"e":74.467,"t":"Great! Group complete!"},"mission complete":{"f":2,"s":76.576,"e":77.55,"t":"Mission complete!"},"mission complete great speaking":{"f":2,"s":79.637,"e":81.718,"t":"Mission complete! Great speaking!"}};
+async function say(t){
+ let old=music.volume,duck=!music.paused;if(duck)music.volume=.07;
+ try{
+   if(window.parent&&window.parent!==window&&typeof window.parent.playOwnVoiceText==="function"){
+     await window.parent.playOwnVoiceText(t,{song:null});
+   }else{
+     // Direct-open fallback: lightweight local sprite player.
+     let norm=x=>String(x||"").toLowerCase().replace(/[’‘]/g,"'").replace(/[“”"]/g,"").replace(/[^a-z0-9'\s-]+/g," ").replace(/\s+/g," ").trim();
+     let parts=String(t||"").match(/[^.!?]+[.!?]?/g)||[t], map=GAME_VOICE_CUES;
+     for(let part of parts){
+       let cue=map[norm(part)];if(!cue)continue;
+       let a=document.getElementById("gameVoiceSprite"+(cue.f+1));if(!a)continue;
+       await new Promise(resolve=>{
+         let run=()=>{try{a.currentTime=cue.s}catch(e){};a.play().then(()=>setTimeout(()=>{a.pause();resolve()},Math.max(80,(cue.e-cue.s)*1000))).catch(()=>resolve())};
+         if(a.readyState>=1)run();else a.addEventListener("loadedmetadata",run,{once:true});
+       });
+     }
+   }
+ }finally{if(duck)music.volume=old}
+}
+function shake(el){if(!el)return;el.animate([{transform:'translateX(0)'},{transform:'translateX(-7px)'},{transform:'translateX(7px)'},{transform:'translateX(0)'}],{duration:280})}
+function levelName(){return selectedLevel===1?'Level 1 — Color Sort':selectedLevel===2?'Level 2 — Feeling Sort':'Level 3 — Color + Feeling'}
+function renderTeamInputs(){let box=$('teamInputs');box.innerHTML='';for(let i=0;i<teamCount;i++){let row=document.createElement('div');row.className='teamInput';row.innerHTML=`<span class="teamDot" style="background:${TEAM_COLORS[i]}"></span><input maxlength="18" value="${teamNames[i]}" data-i="${i}">`;box.appendChild(row)}box.querySelectorAll('input').forEach(inp=>inp.oninput=()=>teamNames[+inp.dataset.i]=inp.value.trim()||`Team ${+inp.dataset.i+1}`)}
+renderTeamInputs();
+$('modeChoices').querySelectorAll('.selectBtn').forEach(b=>b.onclick=()=>{gameMode=b.dataset.mode;$('modeChoices').querySelectorAll('.selectBtn').forEach(x=>x.classList.toggle('active',x===b));$('raceSetup').classList.toggle('hidden',gameMode!=='race');$('startCompetition').textContent=gameMode==='race'?'🏁 START TEAM RACE':'▶ START PUZZLE'});
+$('teamCountChoices').querySelectorAll('.selectBtn').forEach(b=>b.onclick=()=>{teamCount=+b.dataset.count;$('teamCountChoices').querySelectorAll('.selectBtn').forEach(x=>x.classList.toggle('active',x===b));renderTeamInputs()});
+$('levelChoices').querySelectorAll('.selectBtn').forEach(b=>b.onclick=()=>{selectedLevel=+b.dataset.level;$('levelChoices').querySelectorAll('.selectBtn').forEach(x=>x.classList.toggle('active',x===b))});
+function openModal(id){$(id).classList.add('open')}function closeModal(id){$(id).classList.remove('open')}
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
+$('songIntro').onclick=()=>{openModal('songModal');music.play().catch(()=>{})};$('howBtn').onclick=()=>openModal('helpModal');$('lyricsBtn').onclick=()=>openModal('songModal');
+$('songPlay').onclick=()=>music.play().catch(()=>{});$('songPause').onclick=()=>music.pause();$('songRestart').onclick=()=>{music.currentTime=0;music.play().catch(()=>{})};$('volumeSlider').oninput=e=>music.volume=+e.target.value/100;
+$('musicToggle').onclick=()=>{musicOn=!musicOn;if(musicOn){music.play().catch(()=>{});$('musicToggle').textContent='🎶 ON'}else{music.pause();$('musicToggle').textContent='🎶 OFF'}};
+$('listenBtn').onclick=()=>say(currentPrompt);
+$('exitBtn').onclick=()=>{stopTimer();music.pause();$('gameScreen').classList.remove('active');$('setupScreen').classList.remove('hidden')};
+function startCompetition(){
+ results=[];teamIndex=0;teamNames=teamNames.slice(0,teamCount).map((n,i)=>n||`Team ${i+1}`);template=TEMPLATES[Math.floor(Math.random()*TEMPLATES.length)].map(s=>[...s]);
+ $('setupScreen').classList.add('hidden');$('gameScreen').classList.add('active');startRound();
+}
+$('startCompetition').onclick=startCompetition;
+function startRound(){
+ closeModal('teamResultModal');closeModal('finalModal');shelves=deepTemplate(template);selectedSource=null;selectedPos=null;selectedColor=null;selectedCount=0;history=[];moves=0;clearedGroups=0;locked=true;detectiveSolved=false;detectiveTarget=null;stopTimer();timerStart=0;
+ $('levelPill').textContent=levelName();$('teamPill').textContent=gameMode==='race'?teamNames[teamIndex]:'Classic Puzzle';$('timerPill').classList.toggle('hidden',gameMode!=='race');$('timerText').textContent='0:00.0';$('movesText').textContent='0';
+ setPrompt('Touch the CENTER-EDGE card you want to move.','CENTER EDGE → SAY → PLATFORM → MOVE');setFeedback(gameMode==='race'?`${teamNames[teamIndex]}: get ready!`:'Touch the CENTER-EDGE card you want to move.');render();
+ if(gameMode==='race')countdownStart();else{locked=false;if(musicOn)music.play().catch(()=>{})}
+}
+function countdownStart(){let c=$('countdown'),n=$('countNumber'),v=3;c.classList.add('show');n.textContent=v;let it=setInterval(()=>{v--;if(v>0){n.textContent=v;beep(true)}else if(v===0){n.textContent='GO!';beep(true)}else{clearInterval(it);c.classList.remove('show');locked=false;timerStart=performance.now();updateTimer();if(musicOn)music.play().catch(()=>{});setFeedback('Go! Touch any flashcard.','good')}},700)}
+$('restartTeam').onclick=()=>{if(confirm('Restart this puzzle from the beginning?'))startRound()};
+$('undoBtn').onclick=undoMove;
+const posClasses=['p0','p1','p2','p3','p4','p5','p6'];
+
+function centralEdgeIndex(i){
+ let st=shelves[i];
+ if(!st.length)return -1;
+ // Left shelves face inward from the RIGHT.
+ if(i>=0 && i<=2)return st.length-1;
+ // Right shelves face inward from the LEFT.
+ if(i>=3 && i<=5)return 0;
+ // Bottom Magic Platform: the rightmost card is the FRONT/center-edge card.
+ return st.length-1;
+}
+
+function selectedIndices(i){
+ let set=new Set();
+ if(selectedSource===i&&selectedPos!==null)set.add(selectedPos);
+ return set;
+}
+
+function legalDestination(i){
+ if(selectedSource===null||i===selectedSource)return false;
+ return shelves[i].length<CAPACITY;
+}
+
+function render(){
+ let html='';
+ shelves.forEach((stack,i)=>{
+   let edge=centralEdgeIndex(i);
+   let selIdx=selectedIndices(i);
+   let canShowTargets=selectedSource!==null&&(selectedLevel!==3||detectiveSolved);
+   let legal=canShowTargets&&legalDestination(i);
+   let illegal=canShowTargets&&!legal&&i!==selectedSource;
+
+   html+=`<div class="platform ${posClasses[i]} ${legal?'legalDestination':''} ${illegal?'illegalDestination':''}" data-i="${i}">
+     <span class="platformLabel">${i===6?'MAGIC PLATFORM':'PLATFORM '+(i+1)}</span>
+     ${selectedSource===i?`<span class="moveCount">SELECTED</span>`:''}
+     <div class="stack">
+       ${stack.length===0?'<div style="font-weight:1000;color:#fff7b1;text-shadow:0 2px 5px #5b4113;font-size:14px">EMPTY — MOVE HERE</div>':''}
+       ${stack.map((c,j)=>{
+          let selected=selIdx.has(j);
+          let movable=j===edge;
+          let mystery=false;
+          return `<div class="card ${movable?'centralEdgeCard':'lockedCard'} ${selected?'selectedFree':''} ${mystery?'mystery':''}" data-shelf="${i}" data-pos="${j}" data-color="${c}">
+            <img src="${cardImage(c)}" alt="${selectedLevel===1 ? c+' color flashcard' : c+' feeling flashcard'}">
+            ${movable?'<span class="topTag">MOVE</span>':''}
+          </div>`;
+       }).join('')}
+     </div>
+   </div>`;
+ });
+
+ $('platforms').innerHTML=html;
+
+ // Only the center-edge card can be selected as a source.
+ document.querySelectorAll('.card.centralEdgeCard').forEach(c=>c.onclick=e=>{
+   e.stopPropagation();
+   let shelf=+c.dataset.shelf,pos=+c.dataset.pos,color=c.dataset.color;
+
+   // If a source is already selected, a card on another platform means:
+   // use that entire platform as the destination.
+   if(selectedSource!==null && shelf!==selectedSource){
+      chooseDestination(shelf,document.querySelector(`.platform[data-i="${shelf}"]`));
+      return;
+   }
+   selectMonster(shelf,pos,color,c);
+ });
+
+ // Non-edge cards cannot be selected, but after a source is selected
+ // clicking them still chooses their whole platform as destination.
+ document.querySelectorAll('.card.lockedCard').forEach(c=>c.onclick=e=>{
+   e.stopPropagation();
+   let shelf=+c.dataset.shelf;
+   if(selectedSource!==null && shelf!==selectedSource){
+      chooseDestination(shelf,document.querySelector(`.platform[data-i="${shelf}"]`));
+   }else{
+      shake(c);
+      setFeedback('Only the card on the CENTER EDGE can move.','bad');
+   }
+ });
+
+ document.querySelectorAll('.platform').forEach(p=>p.onclick=e=>{
+   if(e.target.closest('.card'))return;
+   if(selectedSource===null){
+      shake(p);
+      setFeedback('First touch the CENTER-EDGE card.','bad');
+   }else{
+      chooseDestination(+p.dataset.i,p);
+   }
+ });
+}
+
+function selectMonster(from,pos,color,el){
+ if(locked)return;
+
+ // Enforce the center-edge source rule.
+ if(pos!==centralEdgeIndex(from)){
+   shake(el);
+   setFeedback('Only the CENTER-EDGE card can move.','bad');
+   return;
+ }
+
+ if(selectedSource===from && selectedPos===pos){
+   selectedSource=null;selectedPos=null;selectedColor=null;selectedCount=0;
+   detectiveSolved=false;detectiveTarget=null;
+   render();
+   setPrompt('Touch the CENTER-EDGE card you want to move.','CENTER EDGE → SAY → PLATFORM → MOVE');
+   setFeedback('Selection cancelled.');
+   return;
+ }
+
+ selectedSource=from;
+ selectedPos=pos;
+ selectedColor=color;
+ selectedCount=1;
+ detectiveSolved=false;
+ detectiveTarget=null;
+ render();
+
+ if(selectedLevel===1){
+   let sentence=`It’s ${color}.`;
+   setPrompt(sentence,'Say the full sentence, then touch ANY green platform with space.');
+   setFeedback(`Say: “${sentence}”`,'good');
+   say(sentence);
+ }else if(selectedLevel===2){
+   let sentence=`The monster is ${FEEL[color]}.`;
+   setPrompt(sentence,'Say the full sentence, then touch ANY green platform with space.');
+   setFeedback(`Say: “${sentence}”`,'good');
+   say(sentence);
+ }else{
+   detectiveSolved=true;
+   let sentence=`The ${color} monster is ${FEEL[color]}.`;
+   setPrompt(sentence,'Say the full sentence, then touch ANY green platform with space.');
+   setFeedback(`Say: “${sentence}”`,'good');
+   say(sentence);
+ }
+}
+function openDetective(color){
+ detectiveTarget=color;detectiveSolved=false;$('detectivePanel').classList.remove('hidden');$('detectiveLog').textContent='Say the color + feeling sentence.';$('detReveal').classList.add('hidden');$('detectiveChoices').innerHTML=COLORS.map(c=>`<button class="detectQ" data-c="${c}">Is it ${c}?</button>`).join('');
+ $('detectiveChoices').querySelectorAll('.detectQ').forEach(b=>b.onclick=()=>{if(b.classList.contains('used')||detectiveSolved)return;b.classList.add('used');let c=b.dataset.c,yes=c===detectiveTarget,ans=yes?'Yes, it is.':'No, it isn’t.';$('detectiveLog').textContent=`Is it ${c}? — ${ans}`;say(`Is it ${c}? ${ans}`);if(yes){detectiveSolved=true;$('detRevealImg').src=`${detectiveTarget}.webp`;$('detReveal').classList.remove('hidden');$('detectiveLog').textContent=`Solved! It’s ${detectiveTarget}. He is ${FEEL[detectiveTarget]}.`;say(`It’s ${detectiveTarget}. He is ${FEEL[detectiveTarget]}.`);setTimeout(()=>{$('detectivePanel').classList.add('hidden');render();setPrompt('Choose a GREEN destination platform.','Mystery solved — now move the selected flashcard.');setFeedback('Mystery solved. Choose where it can legally move.','good')},900)}})
+}
+function chooseDestination(to,el){
+ if(locked)return;
+ if(selectedSource===null){
+   shake(el);setFeedback('Touch the CENTER-EDGE card first.','bad');return;
+ }
+
+ if(to===selectedSource){
+   shake(el);setFeedback('Choose another platform.','bad');return;
+ }
+ if(shelves[to].length>=CAPACITY){
+   shake(el);beep(false);setFeedback('That platform is full. Choose one with space.','bad');return;
+ }
+
+ performMove(selectedSource,selectedPos,to,selectedColor);
+}
+function performMove(from,pos,to,color){
+ history.push({shelves:cloneShelves(),moves,clearedGroups});
+ moves++;
+ $('movesText').textContent=moves;
+ locked=true;
+
+ let sourceEl=document.querySelector(`.platform[data-i="${from}"] .card[data-pos="${pos}"]`);
+ animateMove(sourceEl,to,1,()=>{
+   let moved=shelves[from].splice(pos,1)[0];
+
+   // NEW RULE: every incoming card joins the BACK of the destination platform.
+   // LEFT shelves (0–2): movable FRONT is the rightmost/center-edge card,
+   // so the BACK is the far-left side.
+   // RIGHT shelves (3–5): movable FRONT is the leftmost/center-edge card,
+   // so the BACK is the far-right side.
+   // MAGIC platform (6): exposed FRONT is the rightmost card,
+   // so new cards join at the far-left BACK.
+   if(to>=3 && to<=5)shelves[to].push(moved);
+   else shelves[to].unshift(moved);
+
+   selectedSource=null;selectedPos=null;selectedColor=null;selectedCount=0;
+   detectiveSolved=false;detectiveTarget=null;
+   render();beep(true);
+   setFeedback('Monster moved to the BACK of the platform!','good');
+   setPrompt('Touch the CENTER-EDGE card you want to move.','CENTER EDGE → SAY → PLATFORM → MOVE');
+   checkCompleted(to);
+ });
+}
+function animateMove(el,to,count,done){
+ if(!el){done();return}let src=el.getBoundingClientRect(),dest=document.querySelector(`.platform[data-i="${to}"] .stack`).getBoundingClientRect();let clone=document.createElement('div');clone.className='flyCard';clone.style.left=src.left+'px';clone.style.top=src.top+'px';clone.style.width=src.width+'px';clone.style.height=src.height+'px';clone.innerHTML=el.querySelector('img').outerHTML+(count>1?`<span style="position:absolute;right:-8px;top:-8px;background:#ffd42d;border-radius:50%;padding:4px 7px;font-weight:1000">×${count}</span>`:'');document.body.appendChild(clone);let toIndex=to;
+ let ex;
+ // Aim the flying card toward the destination BACK edge.
+ if(toIndex>=3 && toIndex<=5){
+   // Right shelves: BACK is far-right.
+   ex=dest.right-src.width-8;
+ }else{
+   // Left shelves and Magic platform: BACK is far-left.
+   ex=dest.left+8;
+ }
+ let ey=dest.top+dest.height/2-src.height/2;requestAnimationFrame(()=>requestAnimationFrame(()=>clone.style.transform=`translate(${ex-src.left}px,${ey-src.top}px) scale(1.04)`));setTimeout(()=>{clone.style.opacity='0';setTimeout(()=>{clone.remove();done()},100)},520)
+}
+function checkCompleted(i){
+ let st=shelves[i];if(st.length===CAPACITY&&st.every(c=>c===st[0])){locked=true;let p=document.querySelector(`.platform[data-i="${i}"]`);if(p)p.classList.add('clearing');celebrate(i);say('Great! Group complete!');setTimeout(()=>{shelves[i]=[];clearedGroups++;locked=false;render();setFeedback(`Group complete! ${clearedGroups} / 6 cleared.`,'good');if(isSolved())finishRound()},760)}else{locked=false;if(isSolved())finishRound()}
+}
+function celebrate(i){let p=document.querySelector(`.platform[data-i="${i}"]`);if(!p)return;let r=p.getBoundingClientRect();for(let k=0;k<6;k++){let s=document.createElement('div');s.className='celebrateBurst';s.textContent=k%2?'✨':'⭐';s.style.left=(r.left+r.width*(.25+.1*k))+'px';s.style.top=(r.top+r.height*.45)+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),950)}}
+function undoMove(){
+ if(locked||!history.length){setFeedback(history.length?'Wait for the move to finish.':'Nothing to undo.','bad');return}
+ let prev=history.pop();shelves=prev.shelves;moves=prev.moves;clearedGroups=prev.clearedGroups;selectedSource=null;selectedPos=null;selectedColor=null;selectedCount=0;detectiveSolved=false;$('movesText').textContent=moves;render();setPrompt('Touch the CENTER-EDGE card you want to move.');setFeedback('Move undone.','good')
+}
+function isSolved(){return shelves.every(s=>s.length===0)}
+function finishRound(){
+ locked=true;stopTimer();say('Mission complete!');
+ if(gameMode==='classic'){$('finalTitle').textContent='🎉 Puzzle Complete!';$('leaderboard').innerHTML=`<div class="leader winner"><div class="rank">⭐</div><div><b>All 6 monster groups cleared</b><div>${moves} moves • Undo and Restart were available</div></div><div class="leaderTime">Great!</div></div>`;openModal('finalModal');return}
+ let time=rawElapsed();results.push({name:teamNames[teamIndex],time,moves});$('rawTime').textContent=fmt(time);$('mistakesStat').textContent=moves;$('finalTime').textContent='6';$('teamResultTitle').textContent=`${teamNames[teamIndex]} — Mission Complete!`;$('nextTeamBtn').textContent=teamIndex<teamCount-1?'NEXT TEAM ➜':'SHOW RESULTS 🏆';openModal('teamResultModal')
+}
+$('nextTeamBtn').onclick=()=>{closeModal('teamResultModal');if(teamIndex<teamCount-1){teamIndex++;startRound()}else showFinal()};
+function showFinal(){let sorted=[...results].sort((a,b)=>a.time-b.time);$('finalTitle').textContent='🏆 Team Race Results';$('leaderboard').innerHTML=sorted.map((r,i)=>`<div class="leader ${i===0?'winner':''}"><div class="rank">${i===0?'🏆':i+1}</div><div><b>${r.name}</b><div>${r.moves} moves</div></div><div class="leaderTime">${fmt(r.time)}</div></div>`).join('');openModal('finalModal')}
+$('playAgain').onclick=()=>{closeModal('finalModal');results=[];teamIndex=0;template=TEMPLATES[Math.floor(Math.random()*TEMPLATES.length)].map(s=>[...s]);startRound()};
+$('backSetup').onclick=()=>{closeModal('finalModal');stopTimer();$('gameScreen').classList.remove('active');$('setupScreen').classList.remove('hidden')};
+</script>
+</body>
+</html>
