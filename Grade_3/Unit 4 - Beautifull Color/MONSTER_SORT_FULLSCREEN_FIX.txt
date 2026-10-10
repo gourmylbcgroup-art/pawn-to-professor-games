@@ -1,0 +1,17 @@
+MONSTER SORT MISSION — DISPLAY FIX
+
+Changes:
+- Added a FULL SCREEN button inside Monster Sort Mission.
+- Parent lesson iframe now permits fullscreen.
+- Reduced flashcard size by about 18%.
+- Increased all six main platform heights so 3 complete cards fit cleanly.
+- Platform labels sit above the cards instead of covering them.
+- MOVE tag is smaller and sits in the card corner.
+- Fullscreen mode automatically scales the board to the monitor/projector.
+- Six main platforms remain: 3 left + 3 right.
+- One Magic Platform remains at the bottom center.
+- Game rules and movement logic are unchanged.
+
+Fullscreen:
+Click "FULL SCREEN" in the game HUD.
+Press Esc or click "EXIT FULL SCREEN" to return.
