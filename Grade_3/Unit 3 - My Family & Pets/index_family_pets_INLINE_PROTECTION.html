@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>My Family & Pets — Grade 3 Week 6</title>
+<style>
+:root{
+  --ink:#103d7b; --paper:#fffdf6; --cream:#fff8e8; --blue:#178ee8; --red:#f04452;
+  --green:#2bb86b; --orange:#f6a315; --purple:#8451df; --pink:#ef4d8f; --wood:#b97235;
+  --shadow:0 14px 30px rgba(74,43,18,.20),0 3px 0 rgba(65,37,15,.14);
+  --soft:0 9px 18px rgba(16,61,123,.13);
+}
+*{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:Nunito,"Trebuchet MS",Arial,sans-serif;color:var(--ink)}
+body{background:linear-gradient(180deg,#f7ead0,#e7b671);overflow-x:hidden}
+button{font:inherit}.app{min-height:100vh}
+.topbar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:9px;padding:9px 12px;background:rgba(255,252,245,.97);border-bottom:2px solid rgba(83,51,25,.12);box-shadow:0 6px 17px rgba(45,31,17,.11);backdrop-filter:blur(5px)}
+.brand{font-weight:1000;white-space:nowrap;font-size:clamp(15px,1.8vw,23px)}
+.brand span{color:#278dd7}.navchips{display:flex;gap:5px;overflow:auto;flex:1;padding:2px}.chip{border:0;border-radius:999px;padding:8px 11px;color:white;font-weight:1000;cursor:pointer;white-space:nowrap;box-shadow:inset 0 -3px rgba(0,0,0,.16),0 3px 8px rgba(0,0,0,.12)}
+.c1{background:var(--red)}.c2{background:var(--blue)}.c3{background:var(--green)}.c4{background:var(--purple)}.c5{background:var(--orange)}.c6{background:var(--pink)}.c7{background:linear-gradient(#25b8c9,#0a7f94)}
+.iconbtn{border:2px solid #ded7ca;background:#fff;border-radius:13px;padding:7px 10px;cursor:pointer;font-weight:1000;min-width:42px;box-shadow:0 3px 8px rgba(0,0,0,.08)}
+.screen{display:none;width:min(1500px,96vw);margin:17px auto 28px;animation:enter .18s ease}.screen.active{display:block}@keyframes enter{from{opacity:.35;transform:translateY(7px)}to{opacity:1;transform:none}}
+body.calm *{animation:none!important;transition:none!important}
+/* HOME */
+.home-board{position:relative;overflow:hidden;border-radius:30px;border:8px solid rgba(111,67,29,.55);box-shadow:0 23px 45px rgba(70,41,17,.28);padding:20px;background:#f1d49f}
+.home-board::before{content:"";position:absolute;inset:0;background:url('assets/home_thumbs/slide_01.webp') center/cover no-repeat;filter:blur(2px) saturate(.9);opacity:.24;transform:scale(1.04)}
+.home-inner{position:relative;z-index:1}.title-plank{width:min(820px,93%);margin:0 auto 17px;text-align:center;background:linear-gradient(#c27b3f,#925125);border:6px solid #754019;border-radius:28px;padding:10px 20px;box-shadow:inset 0 5px rgba(255,255,255,.17),inset 0 -7px rgba(0,0,0,.14),0 10px 17px rgba(72,40,15,.18);color:#fff9ec;text-shadow:0 3px 0 #66320d}
+.title-plank h1{margin:0;font-size:clamp(32px,5vw,68px);line-height:.98}.title-plank b{color:#ffe460}.title-plank p{margin:5px 0 0;font-weight:1000;font-size:clamp(15px,2vw,25px);text-shadow:none}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.home-card{border:5px solid var(--color);border-radius:28px;overflow:hidden;background:#fff;box-shadow:inset 0 -7px rgba(0,0,0,.05),0 10px 18px rgba(56,37,17,.18);cursor:pointer;position:relative;min-height:260px;padding:0}.home-card:hover{transform:translateY(-3px)}.home-head{height:66px;display:flex;align-items:center;gap:12px;padding:7px 16px;background:linear-gradient(180deg,color-mix(in srgb,var(--color),white 12%),var(--color));color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.24);font-weight:1000;font-size:clamp(23px,2.8vw,40px)}
+.home-num{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;border:4px solid rgba(255,255,255,.55);box-shadow:inset 0 -6px rgba(0,0,0,.13);flex:0 0 auto}.home-img{width:100%;height:205px;object-fit:cover;display:block}.home-label{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.95);border:3px solid var(--color);border-radius:999px;padding:7px 16px;font-weight:1000;box-shadow:0 6px 12px rgba(0,0,0,.13);white-space:nowrap}
+.home-note{text-align:center;margin-top:15px;background:rgba(255,255,255,.9);border-radius:16px;padding:10px 14px;font-weight:900;box-shadow:var(--soft)}
+/* COMMON */
+.section-title{display:flex;align-items:center;gap:14px;margin:8px 0 13px}.badge{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;color:white;font-size:34px;font-weight:1000;box-shadow:inset 0 -7px rgba(0,0,0,.16),inset 0 4px rgba(255,255,255,.25),0 6px 12px rgba(0,0,0,.18)}
+.section-title h1{margin:0;font-size:clamp(28px,3.1vw,48px);line-height:1}.section-title p{margin:4px 0 0;font-weight:800;color:#59658c}.board{background:linear-gradient(#fffaf0,#f8ead6);border:4px solid #e1b77f;border-radius:30px;padding:clamp(15px,2vw,27px);box-shadow:var(--shadow)}
+.stage{background:white;border:3px solid #eadbc2;border-radius:25px;padding:20px;box-shadow:var(--soft);min-height:300px}.controls{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:17px;padding:11px 18px;color:#fff;font-weight:1000;cursor:pointer;box-shadow:inset 0 -5px rgba(0,0,0,.17),0 6px 12px rgba(0,0,0,.13)}.blue{background:linear-gradient(#29a8ff,#0875d6)}.green{background:linear-gradient(#37d184,#0ba65e)}.orange{background:linear-gradient(#ffbb37,#ef8c00)}.purple{background:linear-gradient(#a164f0,#7335d4)}.pink{background:linear-gradient(#ff68aa,#dc2e75)}.red{background:linear-gradient(#ff6770,#dc2736)}.gray{background:linear-gradient(#8692ad,#626f8e)}
+.language-bar{position:sticky;bottom:8px;z-index:20;margin:18px auto 0;width:min(1180px,96%);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:9px;border-radius:17px;background:rgba(16,61,123,.94);color:white;box-shadow:0 9px 22px rgba(16,61,123,.23)}.language-bar span{background:rgba(255,255,255,.11);padding:7px 11px;border-radius:11px;font-weight:900}
+/* FLASH */
+.flash-layout{display:grid;grid-template-columns:minmax(320px,650px) minmax(250px,1fr);gap:20px;align-items:center}.flash-card-wrap{display:flex;justify-content:center}.flash-card{max-height:650px;max-width:100%;border-radius:26px;box-shadow:0 13px 25px rgba(17,55,95,.18);background:white}.side-panel{background:#f4f9ff;border:3px solid #cfe5fa;border-radius:23px;padding:18px}.side-panel h2{margin:0 0 8px}.word-big{font-size:clamp(44px,6vw,92px);font-weight:1000;color:#0c478d;text-align:center;margin:12px 0}.counter{text-align:center;font-weight:1000;color:#68749a;margin-top:10px}.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:15px}.tab{border:2px solid #d6deea;background:#fff;color:var(--ink);font-weight:1000;border-radius:999px;padding:9px 16px;cursor:pointer}.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.thumb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.thumb{border:3px solid #d8e6f2;background:white;border-radius:15px;padding:6px;cursor:pointer}.thumb img{width:100%;aspect-ratio:3/4;object-fit:contain;display:block;border-radius:9px}.thumb b{display:block;text-align:center;margin-top:4px;font-size:14px}.thumb.active{border-color:#1a8deb;box-shadow:0 0 0 3px #bfe6ff}
+/* PLAY */
+.play-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.draw-card{background:#fff;border:4px solid #ddd4c4;border-radius:24px;padding:18px;text-align:center;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center}.draw-card img{max-height:400px;max-width:100%;border-radius:20px;box-shadow:var(--soft)}.prompt{font-size:clamp(24px,3vw,40px);font-weight:1000;margin:13px 0 4px}.steps{display:grid;gap:11px}.step{display:flex;align-items:center;gap:12px;background:white;border:3px solid #e5d8c0;border-radius:18px;padding:13px;box-shadow:var(--soft)}.step i{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:white;font-style:normal;font-weight:1000;font-size:24px;background:#168be5}.step b{font-size:19px}.step p{margin:3px 0 0;color:#657092;font-weight:700}
+/* PRACTICE */
+.quiz-wrap{display:grid;grid-template-columns:minmax(300px,580px) 1fr;gap:20px;align-items:center}.quiz-card{background:white;border:4px solid #dce8f5;border-radius:25px;padding:16px;text-align:center}.quiz-card img{max-width:100%;height:440px;object-fit:contain;border-radius:20px}.quiz-q{font-size:clamp(24px,3vw,39px);font-weight:1000;margin:8px 0 15px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.answer{border:3px solid #dce4ef;background:#fff;border-radius:18px;padding:13px 10px;font-weight:1000;font-size:20px;color:var(--ink);cursor:pointer;box-shadow:0 5px 9px rgba(20,38,75,.08)}.answer.correct{background:#e9fff1;border-color:#32bc73}.answer.wrong{background:#fff0f0;border-color:#ff7f86}.feedback{min-height:32px;margin-top:12px;font-size:20px;font-weight:1000}.ok{color:#078c4d}.try{color:#b75d00}
+/* SPEAK */
+.speak-main{display:grid;grid-template-columns:minmax(310px,620px) 1fr;gap:20px;align-items:center}.speak-image{background:white;border:4px solid #e5d8c1;border-radius:25px;padding:15px;text-align:center}.speak-image img{max-height:520px;max-width:100%;border-radius:20px}.speech-card{background:linear-gradient(145deg,#fff,#f5fbff);border:4px solid #cce8fa;border-radius:25px;padding:24px;box-shadow:var(--soft)}.speech-q{font-size:clamp(25px,3vw,42px);font-weight:1000}.speech-a{font-size:clamp(24px,2.7vw,38px);font-weight:1000;color:#138c55;margin-top:12px}.mode-row{display:flex;gap:8px;flex-wrap:wrap;margin:13px 0}.mode-row button{border:2px solid #d8e2ef;background:#fff;border-radius:999px;padding:8px 14px;font-weight:1000;cursor:pointer}.mode-row button.active{background:#178ee8;color:#fff;border-color:#178ee8}
+/* FINISH */
+.finish-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.finish-card{background:white;border:4px solid #e2d4bb;border-radius:25px;padding:20px;box-shadow:var(--soft)}.finish-card h2{margin:0 0 10px}.checklist{display:grid;gap:10px}.check{border:3px solid #dce7f0;border-radius:17px;padding:12px 14px;font-weight:900;cursor:pointer;background:#fff;text-align:left}.check.done{background:#e9fff2;border-color:#44be7d}.stars{font-size:54px;text-align:center;letter-spacing:7px}.celebrate{text-align:center;font-size:clamp(30px,4vw,54px);font-weight:1000;color:#0d5da9;margin:14px 0}
+/* SLIDES */
+.slide-view{display:grid;grid-template-columns:minmax(0,1fr) 235px;gap:16px}.slide-stage{background:#151f36;border-radius:24px;padding:12px;display:grid;place-items:center;min-height:650px}.slide-stage img{max-height:74vh;max-width:100%;border-radius:12px;box-shadow:0 12px 24px rgba(0,0,0,.32)}.slide-side{background:white;border:3px solid #e5d7bf;border-radius:20px;padding:13px;max-height:75vh;overflow:auto}.slide-side button{width:100%;border:2px solid #dbe3ef;background:#fff;border-radius:12px;padding:8px;margin-bottom:7px;font-weight:900;color:#254b7b;cursor:pointer;text-align:left}.slide-side button.active{background:#178ee8;color:white;border-color:#178ee8}
+@media(max-width:960px){.home-grid{grid-template-columns:1fr 1fr}.flash-layout,.play-grid,.quiz-wrap,.speak-main,.finish-grid,.slide-view{grid-template-columns:1fr}.slide-side{max-height:280px}.thumb-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.home-grid{grid-template-columns:1fr}.topbar{align-items:flex-start}.brand{display:none}.thumb-grid{grid-template-columns:repeat(2,1fr)}.answers{grid-template-columns:1fr}.home-img{height:170px}}
+</style>
+
+<link rel="preload" href="assets/audio/voice-sprite-stephane-v1.mp3" as="audio" type="audio/mpeg" crossorigin>
+</head>
+<body class="calm">
+<div class="app">
+<header class="topbar">
+  <button class="iconbtn" id="homeBtn" title="Home">🏠</button>
+  <div class="brand">Grade 3 Week 6 — <span>My Family & Pets</span></div>
+  <nav class="navchips">
+    <button class="chip c1" data-go="start">1 START</button><button class="chip c2" data-go="learn">2 LEARN</button><button class="chip c3" data-go="play">3 PLAY</button><button class="chip c4" data-go="practice">4 PRACTICE</button><button class="chip c5" data-go="speak">5 SPEAK</button><button class="chip c6" data-go="finish">6 FINISH</button><button class="chip c7" data-go="slides">7 PRESENTATION</button>
+  </nav>
+  <button class="iconbtn" id="soundBtn" title="Sound on/off">🔊</button><button class="iconbtn" id="motionBtn" title="Calm mode">🌿</button><button class="iconbtn" id="fullBtn" title="Full screen">⛶</button>
+</header>
+<main>
+<section class="screen active" id="home">
+  <div class="home-board"><div class="home-inner">
+    <div class="title-plank"><h1>My <b>Family</b> & Pets</h1><p>Grade 3 • Week 6 • Look • Say • Play</p></div>
+    <div class="home-grid">
+      <button class="home-card" style="--color:#ef3e4e" data-go="start"><div class="home-head"><span class="home-num">1</span>START</div><img class="home-img" src="assets/home_thumbs/slide_02.webp" decoding="async" alt=""><div class="home-label">Meet My Family</div></button>
+      <button class="home-card" style="--color:#168ce7" data-go="learn"><div class="home-head"><span class="home-num">2</span>LEARN</div><img class="home-img" src="assets/home_thumbs/slide_20.webp" decoding="async" alt=""><div class="home-label">Family + Pets</div></button>
+      <button class="home-card" style="--color:#27b762" data-go="play"><div class="home-head"><span class="home-num">3</span>PLAY</div><img class="home-img" src="assets/home_thumbs/slide_29.webp" decoding="async" alt=""><div class="home-label">Ask • Swap • Move</div></button>
+      <button class="home-card" style="--color:#f3a20d" data-go="practice"><div class="home-head"><span class="home-num">4</span>PRACTICE</div><img class="home-img" src="assets/home_thumbs/slide_24.webp" decoding="async" alt=""><div class="home-label">Who? What?</div></button>
+      <button class="home-card" style="--color:#844ade" data-go="speak"><div class="home-head"><span class="home-num">5</span>SPEAK</div><img class="home-img" src="assets/home_thumbs/slide_28.webp" decoding="async" alt=""><div class="home-label">Build Sentences</div></button>
+      <button class="home-card" style="--color:#ed4b8b" data-go="finish"><div class="home-head"><span class="home-num">6</span>FINISH</div><img class="home-img" src="assets/home_thumbs/slide_34.webp" decoding="async" alt=""><div class="home-label">My Family Photo</div></button>
+    </div>
+    <div class="home-note">Exact lesson focus: 8 family words + dog, cat, bird, fish, rabbit • one task at a time • retry is always allowed</div>
+  </div></div>
+</section>
+
+<section class="screen" id="start">
+  <div class="section-title"><div class="badge c1">1</div><div><h1>START — Meet My Family</h1><p>Quick visual warm-up • core family first • then the big family</p></div></div>
+  <div class="board"><div class="flash-layout">
+    <div class="flash-card-wrap"><img class="flash-card" id="startImg" alt="family flashcard"></div>
+    <div class="side-panel"><h2>Look → Say → Hear</h2><div class="word-big" id="startWord">mother</div><p><b>Round 1:</b> class says the word together.<br><b>Round 2:</b> teacher hides the word and students recall it.<br><b>Round 3:</b> ask: “Who is he?” / “Who is she?”</p>
+      <div class="controls"><button class="btn gray" id="startPrev">← Previous</button><button class="btn blue" id="startHear">🔊 Hear</button><button class="btn green" id="startNext">Next →</button></div><div class="counter" id="startCount"></div>
+    </div>
+  </div></div>
+  <div class="language-bar"><span>mother • father • brother • sister</span><span>grandfather • grandmother • uncle • aunt</span></div>
+</section>
+
+<section class="screen" id="learn">
+  <div class="section-title"><div class="badge c2">2</div><div><h1>LEARN — Family, Pets & Concepts</h1><p>Flashcards from your lesson • switch between labelled and picture-only cards</p></div></div>
+  <div class="board">
+    <div class="tabs"><button class="tab active" data-cat="family">👨‍👩‍👧‍👦 FAMILY</button><button class="tab" data-cat="pets">🐾 PETS</button><button class="tab" data-cat="concepts">💡 HE / SHE / THIS / THAT</button><button class="tab" data-cat="sentences">💬 SENTENCE CARDS</button></div>
+    <div class="stage" id="learnStage"></div>
+  </div>
+  <div class="language-bar"><span>Who is he? → He is my ___.</span><span>Who is she? → She is my ___.</span><span>What is this? → This is a ___.</span><span>What is that? → That is a ___.</span></div>
+</section>
+
+<section class="screen" id="play">
+  <div class="section-title"><div class="badge c3">3</div><div><h1>PLAY — Ask • Swap • Move</h1><p>Teacher draws a card • student says the sentence • swap • move to a new partner</p></div></div>
+  <div class="board"><div class="play-grid">
+    <div class="draw-card"><img id="playImg" data-src="assets/flashcards/picture_text/mother.webp" decoding="async" alt="family or pet card"><div class="prompt" id="playPrompt">This is my mother.</div><div class="controls"><button class="btn green" id="drawBtn">🎴 Draw a new card</button><button class="btn blue" id="playHear">🔊 Hear sentence</button></div></div>
+    <div class="steps">
+      <div class="step"><i>1</i><div><b>Take a card</b><p>One family or pet card.</p></div></div>
+      <div class="step"><i>2</i><div><b>Find a partner</b><p>Stand face-to-face.</p></div></div>
+      <div class="step"><i>3</i><div><b>Show your card</b><p>Partner looks carefully.</p></div></div>
+      <div class="step"><i>4</i><div><b>Say the sentence</b><p>Family: “This is my ___.” Pet: “This is a ___.”</p></div></div>
+      <div class="step"><i>5</i><div><b>Swap cards</b><p>Exchange cards with your partner.</p></div></div>
+      <div class="step"><i>6</i><div><b>Move</b><p>Find a new partner and repeat.</p></div></div>
+    </div>
+  </div></div>
+  <div class="language-bar"><span>Family: This is my ___.</span><span>Pet: This is a ___.</span></div>
+</section>
+
+<section class="screen" id="practice">
+  <div class="section-title"><div class="badge c4">4</div><div><h1>PRACTICE — Who? What? Near? Far?</h1><p>One question at a time • clear choices • retry allowed</p></div></div>
+  <div class="board"><div class="tabs"><button class="tab active" data-quiz="words">🔤 WORDS</button><button class="tab" data-quiz="pronouns">👤 HE / SHE</button><button class="tab" data-quiz="distance">📍 THIS / THAT</button></div><div id="quizStage"></div></div>
+  <div class="language-bar"><span>he = boy/man</span><span>she = girl/woman</span><span>this = near</span><span>that = far</span></div>
+</section>
+
+<section class="screen" id="speak">
+  <div class="section-title"><div class="badge c5">5</div><div><h1>SPEAK — Build the Sentence</h1><p>Random visual prompt • teacher can reveal the model answer</p></div></div>
+  <div class="board"><div class="mode-row"><button class="active" data-speakmode="family">Family</button><button data-speakmode="pets">Pets</button><button data-speakmode="questions">Who / What</button></div><div class="speak-main">
+    <div class="speak-image"><img id="speakImg"></div>
+    <div class="speech-card"><div class="speech-q" id="speakQ"></div><div class="speech-a" id="speakA" style="visibility:hidden"></div><div class="controls"><button class="btn green" id="newSpeak">New prompt</button><button class="btn purple" id="revealSpeak">Reveal answer</button><button class="btn blue" id="hearSpeak">🔊 Hear answer</button></div></div>
+  </div></div>
+  <div class="language-bar"><span>This is my ___.</span><span>This is a ___.</span><span>He is my ___.</span><span>She is my ___.</span></div>
+</section>
+
+<section class="screen" id="finish">
+  <div class="section-title"><div class="badge c6">6</div><div><h1>FINISH — My Family Photo & Exit Check</h1><p>Use a real or imaginary family photo • finish with a short confidence check</p></div></div>
+  <div class="board"><div class="finish-grid">
+    <div class="finish-card"><h2>My Family Photo</h2><img data-src="assets/slides/slide_31.webp" loading="lazy" decoding="async" style="width:100%;border-radius:18px;box-shadow:var(--soft)" alt="My Family Photo presentation prompt"><p style="font-weight:800">Ask: <b>Who is he?</b> • <b>Who is she?</b> • <b>Who is this?</b></p><div class="controls"><button class="btn blue" data-go="slides">Open presentation slides</button></div></div>
+    <div class="finish-card"><h2>Exit Check</h2><div class="checklist" id="checklist"><button class="check">I can name family members.</button><button class="check">I can name the 5 pets.</button><button class="check">I can use HE and SHE.</button><button class="check">I can use THIS and THAT.</button><button class="check">I can say “This is my ___.”</button><button class="check">I can say “This is a ___.”</button></div><div class="stars">⭐ ⭐ ⭐</div><div class="celebrate" id="finishMsg">Great job!</div></div>
+  </div></div>
+</section>
+
+<section class="screen" id="slides">
+  <div class="section-title"><div class="badge c7">7</div><div><h1>SLIDES — Full Presentation</h1><p>All 34 pages from your My Family & Pets presentation</p></div></div>
+  <div class="board"><div class="slide-view"><div><div class="slide-stage"><img id="slideImg" decoding="async" alt="presentation slide"></div><div class="controls"><button class="btn gray" id="slidePrev">← Previous</button><button class="btn blue" id="slideHear">🔊 Read key text</button><button class="btn green" id="slideNext">Next →</button></div><div class="counter" id="slideCount"></div></div><div class="slide-side" id="slideList"></div></div></div>
+</section>
+</main></div>
+<script>
+/* 100-user classroom optimization: only the active screen loads full-size lesson images. */
+const FAMILY=['mother','father','brother','sister','grandfather','grandmother','uncle','aunt'];
+const PETS=['dog','cat','bird','fish','rabbit'];
+const MALE=new Set(['father','brother','grandfather','uncle']);
+const FEMALE=new Set(['mother','sister','grandmother','aunt']);
+const ALL=[...FAMILY,...PETS];
+const $=id=>document.getElementById(id);
+let soundOn=true;
+function hydrateScreen(id){const screen=$(id);if(!screen)return;screen.querySelectorAll('img[data-src]').forEach(img=>{if(!img.src){img.src=img.dataset.src;img.removeAttribute('data-src');}});}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');hydrateScreen(id);window.scrollTo({top:0,behavior:'smooth'});if(id==='start')renderStart();if(id==='learn')renderLearn();if(id==='practice')renderQuiz();if(id==='speak')newSpeak();if(id==='slides')renderSlides();}
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));$('homeBtn').onclick=()=>go('home');
+$('soundBtn').onclick=()=>{soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊':'🔇';if(!soundOn)stopVoice();};
+$('motionBtn').onclick=()=>{document.body.classList.toggle('calm');$('motionBtn').textContent=document.body.classList.contains('calm')?'🌿':'✨';};
+$('fullBtn').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.();};
+// Instant prerecorded voice sprite for online use.
+// One small file is fetched and decoded once; every Hear button then plays from RAM.
+const VOICE_SPRITE_URL='assets/audio/voice-sprite-stephane-v1.mp3';
+const VOICE_SPRITE_MAP={"mother":[0.055,0.39],"father":[0.565,0.36],"brother":[1.045,0.37],"sister":[1.535,0.475],"grandfather":[2.13,0.605],"grandmother":[2.855,0.56],"uncle":[3.535,0.455],"aunt":[4.11,0.29],"dog":[4.52,0.33],"cat":[4.969,0.235],"bird":[5.324,0.295],"fish":[5.739,0.35],"rabbit":[6.209,0.365],"he":[6.694,0.275],"she":[7.089,0.365],"this":[7.574,0.285],"that":[7.979,0.265],"Who is he? He is my _____.":[8.364,2.28],"Who is she? She is my _____.":[10.764,2.385],"This is my _____. This is a _____.":[13.269,2.65],"What is this? This is a _____.":[16.039,2.41],"What is that? That is a _____.":[18.569,2.39],"This is my mother.":[21.079,0.86],"This is my father.":[22.059,0.94],"This is my brother.":[23.119,0.962],"This is my sister.":[24.201,0.96],"This is my grandfather.":[25.281,1.145],"This is my grandmother.":[26.546,1.085],"This is my uncle.":[27.75,0.905],"This is my aunt.":[28.775,0.7],"This is a dog.":[29.595,0.755],"This is a cat.":[30.47,0.735],"This is a bird.":[31.325,0.73],"This is a fish.":[32.175,0.885],"This is a rabbit.":[33.18,0.78],"Correct":[34.08,0.305],"The answer is THIS":[34.505,0.935],"The answer is THAT":[35.56,0.9],"The answer is HE":[36.58,0.895],"The answer is SHE":[37.595,1.27],"The answer is mother":[38.985,1.015],"The answer is father":[40.12,1.04],"The answer is brother":[41.28,1.025],"The answer is sister":[42.425,1.04],"The answer is grandfather":[43.585,1.265],"The answer is grandmother":[44.97,1.185],"The answer is uncle":[46.275,1.035],"The answer is aunt":[47.43,0.855],"The answer is dog":[48.405,0.97],"The answer is cat":[49.494,1.157],"The answer is bird":[50.771,0.94],"The answer is fish":[51.831,1.045],"The answer is rabbit":[52.996,0.975],"He is my father.":[54.091,0.86],"He is my brother.":[55.071,0.815],"He is my grandfather.":[56.006,1.04],"He is my uncle.":[57.166,0.835],"She is my mother.":[58.121,0.83],"She is my sister.":[59.071,0.945],"She is my grandmother.":[60.136,1.025],"She is my aunt.":[61.281,0.67],"That is a dog.":[62.071,0.785],"That is a cat.":[62.976,0.74],"That is a bird.":[63.836,0.75],"That is a fish.":[64.706,0.88],"That is a rabbit.":[65.706,0.785],"Title":[66.611,0.365],"Meet My Family":[67.096,0.885],"Mother":[68.1,0.4],"Father":[68.62,0.36],"Brother":[69.1,0.365],"Sister":[69.585,0.47],"Family Review":[70.175,0.825],"Point and Tap":[71.12,0.675],"Who Is It?":[71.915,0.498],"Mother + Father sentences":[72.533,1.45],"Brother + Sister sentences":[74.103,1.48],"Family sentence review":[75.703,1.155],"Ask-Swap-Move overview":[76.978,1.785],"How to Play":[78.883,0.675],"Ask-Swap-Move model":[79.678,1.71],"Family recall":[81.508,0.83],"Grandparents":[82.458,0.555],"Uncle + Aunt":[83.133,0.73],"Big Family Review":[83.983,1.055],"Who are they?":[85.158,0.57],"Meet My Pets":[85.848,0.72],"More Pets":[86.688,0.565],"My Pets review":[87.372,0.89],"What is this?":[88.382,0.565],"Two Sentences":[89.067,0.835],"Examples":[90.022,0.66],"Family or Pet?":[90.802,0.765],"Let’s Speak":[91.687,0.57],"Ask-Swap-Move pets":[92.377,1.585],"Family / Pet swap":[94.082,1.2],"My Family Photo":[95.402,1.01],"Model Presentation":[96.532,1.125],"Your Turn":[97.777,0.565],"Great Job":[98.462,0.671]};
+let voiceCtx=null,voiceBuffer=null,voiceSource=null,voiceReady=false;
+let voiceLoadPromise=null,offlineAudio=null,offlineStopTimer=null;
+
+function voiceKey(t){return String(t??'').trim().replace(/\s+/g,' ');}
+function ensureVoiceContext(){
+  if(!voiceCtx){const C=window.AudioContext||window.webkitAudioContext;if(C)voiceCtx=new C();}
+  return voiceCtx;
+}
+function ensureOfflineAudio(){
+  if(!offlineAudio){offlineAudio=new Audio(VOICE_SPRITE_URL);offlineAudio.preload='auto';offlineAudio.playsInline=true;}
+  return offlineAudio;
+}
+async function loadVoiceSprite(){
+  if(voiceBuffer)return voiceBuffer;
+  if(voiceLoadPromise)return voiceLoadPromise;
+  voiceLoadPromise=(async()=>{
+    try{
+      // file:// pages cannot reliably use fetch(); the local HTMLAudioElement path below handles offline folders.
+      if(location.protocol==='file:'){ensureOfflineAudio().load();document.documentElement.dataset.voiceReady='local';return null;}
+      const r=await fetch(VOICE_SPRITE_URL,{cache:'force-cache',credentials:'same-origin'});
+      if(!r.ok)throw new Error('voice '+r.status);
+      const ab=await r.arrayBuffer();
+      const ctx=ensureVoiceContext();
+      if(!ctx)throw new Error('No AudioContext');
+      voiceBuffer=await ctx.decodeAudioData(ab.slice(0));
+      voiceReady=true;document.documentElement.dataset.voiceReady='1';
+      return voiceBuffer;
+    }catch(e){
+      // Never substitute a computer/TTS voice. Keep the same prerecorded voice via media playback fallback.
+      console.warn('AudioBuffer preload unavailable; using prerecorded media fallback.',e);
+      ensureOfflineAudio().load();document.documentElement.dataset.voiceReady='media';return null;
+    }
+  })();
+  return voiceLoadPromise;
+}
+function stopVoice(){
+  if(voiceSource){try{voiceSource.stop();}catch(e){} voiceSource=null;}
+  if(offlineStopTimer){clearTimeout(offlineStopTimer);offlineStopTimer=null;}
+  if(offlineAudio){try{offlineAudio.pause();}catch(e){}}
+}
+async function playMediaSegment(seg){
+  const a=ensureOfflineAudio();
+  stopVoice();
+  const start=seg[0],dur=seg[1];
+  try{
+    if(a.readyState<1)await new Promise(resolve=>{const done=()=>{a.removeEventListener('loadedmetadata',done);resolve();};a.addEventListener('loadedmetadata',done,{once:true});a.load();setTimeout(done,1200);});
+    a.currentTime=start;
+    const p=a.play();if(p&&p.catch)await p.catch(()=>{});
+    offlineStopTimer=setTimeout(()=>{try{a.pause();}catch(e){} offlineStopTimer=null;},Math.ceil((dur+0.035)*1000));
+  }catch(e){console.warn('Prerecorded voice playback failed.',e);}
+}
+async function speak(t){
+  if(!soundOn||!t)return;
+  const key=voiceKey(t),seg=VOICE_SPRITE_MAP[key];
+  if(!seg){console.warn('No prerecorded voice segment for:',key);return;}
+  const ctx=ensureVoiceContext();
+  if(ctx&&ctx.state==='suspended')try{await ctx.resume();}catch(e){}
+  const buf=voiceBuffer||await loadVoiceSprite();
+  if(!buf){await playMediaSegment(seg);return;}
+  stopVoice();
+  const src=ctx.createBufferSource();src.buffer=buf;src.connect(ctx.destination);voiceSource=src;
+  src.onended=()=>{if(voiceSource===src)voiceSource=null;};
+  src.start(0,seg[0],Math.min(seg[1],buf.duration-seg[0]));
+}
+// Warm the one compact sprite early. After decoding, every click plays from RAM with no network round-trip.
+loadVoiceSprite();
+['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,()=>{
+  const c=ensureVoiceContext();if(c&&c.state==='suspended')c.resume().catch(()=>{});
+  const a=ensureOfflineAudio();if(location.protocol==='file:'&&a.readyState<2)a.load();
+  loadVoiceSprite();
+},{once:true,passive:true}));
+function ptxt(name){return `assets/flashcards/picture_text/${name}.webp`}function ponly(name){return `assets/flashcards/picture_only/${name}.webp`}
+function sentenceFor(name){if(FAMILY.includes(name))return `This is my ${name}.`;return `This is a ${name}.`;}
+function idlePreload(url){if(!url)return;const conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(conn?.saveData||/2g/.test(conn?.effectiveType||''))return;const run=()=>{const img=new Image();img.decoding='async';img.src=url;};if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:1500});else setTimeout(run,900);}
+
+/* Start */
+let startI=0;function renderStart(){let n=FAMILY[startI];$('startImg').src=ptxt(n);$('startWord').textContent=n;$('startCount').textContent=`${startI+1} / ${FAMILY.length}`;}$('startNext').onclick=()=>{startI=(startI+1)%FAMILY.length;renderStart()};$('startPrev').onclick=()=>{startI=(startI-1+FAMILY.length)%FAMILY.length;renderStart()};$('startHear').onclick=()=>speak(FAMILY[startI]);
+/* Learn */
+let learnCat='family', learnView='label', learnI=0;
+document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-cat]').forEach(x=>x.classList.remove('active'));b.classList.add('active');learnCat=b.dataset.cat;learnI=0;renderLearn();});
+function renderLearn(){const st=$('learnStage');if(learnCat==='sentences'){const cards=[['who_he','Who is he? / He is my _____.'],['who_she','Who is she? / She is my _____.'],['this_my_or_a','This is my _____. / This is a _____.'],['what_this','What is this? / This is a _____.'],['what_that','What is that? / That is a _____.']];st.innerHTML=`<div class="thumb-grid">${cards.map(([f,l])=>`<button class="thumb" onclick="openSentence('${f}','${l.replaceAll("'","&apos;")}')"><img src="assets/cards/${f}.webp" loading="lazy" decoding="async"><b>${l}</b></button>`).join('')}</div><div id="sentenceOpen" style="margin-top:18px;text-align:center"></div>`;return;}
+ let list=learnCat==='family'?FAMILY:learnCat==='pets'?PETS:['he','she','this','that'];let n=list[learnI];let img=learnCat==='concepts'?ptxt(n):(learnView==='picture'?ponly(n):ptxt(n));st.innerHTML=`<div class="flash-layout"><div class="flash-card-wrap"><img class="flash-card" src="${img}" decoding="async" alt="${n}"></div><div class="side-panel"><h2>${learnCat==='concepts'?'Concept Card':'Flashcard'}</h2><div class="word-big">${n.toUpperCase()}</div>${learnCat!=='concepts'?`<div class="tabs"><button class="tab ${learnView==='label'?'active':''}" onclick="setLearnView('label')">Picture + English</button><button class="tab ${learnView==='picture'?'active':''}" onclick="setLearnView('picture')">Picture only</button></div>`:''}<div class="controls"><button class="btn gray" onclick="learnPrev()">← Previous</button><button class="btn blue" onclick="speak('${n}')">🔊 Hear</button><button class="btn green" onclick="learnNext()">Next →</button></div><div class="counter">${learnI+1} / ${list.length}</div></div></div>`;}
+window.setLearnView=v=>{learnView=v;renderLearn()};window.learnNext=()=>{let list=learnCat==='family'?FAMILY:learnCat==='pets'?PETS:['he','she','this','that'];learnI=(learnI+1)%list.length;renderLearn()};window.learnPrev=()=>{let list=learnCat==='family'?FAMILY:learnCat==='pets'?PETS:['he','she','this','that'];learnI=(learnI-1+list.length)%list.length;renderLearn()};window.openSentence=(f,l)=>{$('sentenceOpen').innerHTML=`<img src="assets/cards/${f}.webp" decoding="async" style="max-width:900px;width:100%;border-radius:20px;box-shadow:var(--soft)"><div class="controls"><button class="btn blue" onclick="speak('${l.replaceAll('/',' ')}')">🔊 Hear pattern</button></div>`;};
+/* Play */
+let playName='mother';function drawPlay(){playName=ALL[Math.floor(Math.random()*ALL.length)];$('playImg').src=ptxt(playName);$('playPrompt').textContent=sentenceFor(playName);}$('drawBtn').onclick=drawPlay;$('playHear').onclick=()=>speak(sentenceFor(playName));
+/* Practice */
+let quizMode='words',quizCurrent=null;document.querySelectorAll('[data-quiz]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-quiz]').forEach(x=>x.classList.remove('active'));b.classList.add('active');quizMode=b.dataset.quiz;renderQuiz();});
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function renderQuiz(){let stage=$('quizStage');if(quizMode==='distance'){let isThis=Math.random()<.5;quizCurrent={answer:isThis?'THIS':'THAT'};stage.innerHTML=`<div class="quiz-wrap"><div class="quiz-card"><img src="${ptxt(isThis?'this':'that')}" decoding="async"><div class="quiz-q">Near or far?</div></div><div><div class="quiz-q">Choose the correct word.</div><div class="answers"><button class="answer" onclick="answerQuiz(this,'THIS')">THIS</button><button class="answer" onclick="answerQuiz(this,'THAT')">THAT</button></div><div class="feedback" id="quizFeedback"></div><div class="controls"><button class="btn green" onclick="renderQuiz()">Next question</button></div></div></div>`;return;}
+ if(quizMode==='pronouns'){let name=FAMILY[Math.floor(Math.random()*FAMILY.length)];let answer=MALE.has(name)?'HE':'SHE';quizCurrent={answer};stage.innerHTML=`<div class="quiz-wrap"><div class="quiz-card"><img src="${ponly(name)}" decoding="async"><div class="quiz-q">Who is this?</div></div><div><div class="quiz-q">Choose HE or SHE.</div><div class="answers"><button class="answer" onclick="answerQuiz(this,'HE')">HE</button><button class="answer" onclick="answerQuiz(this,'SHE')">SHE</button></div><div class="feedback" id="quizFeedback"></div><div class="controls"><button class="btn green" onclick="renderQuiz()">Next question</button></div></div></div>`;return;}
+ let name=ALL[Math.floor(Math.random()*ALL.length)];let pool=shuffle([name,...shuffle(ALL.filter(x=>x!==name)).slice(0,3)]);quizCurrent={answer:name};stage.innerHTML=`<div class="quiz-wrap"><div class="quiz-card"><img src="${ponly(name)}" decoding="async"><div class="quiz-q">What is the word?</div></div><div><div class="answers">${pool.map(x=>`<button class="answer" onclick="answerQuiz(this,'${x}')">${x}</button>`).join('')}</div><div class="feedback" id="quizFeedback"></div><div class="controls"><button class="btn green" onclick="renderQuiz()">Next question</button></div></div></div>`;}
+window.answerQuiz=(btn,val)=>{document.querySelectorAll('.answer').forEach(x=>x.disabled=true);let ok=val===quizCurrent.answer;btn.classList.add(ok?'correct':'wrong');$('quizFeedback').innerHTML=ok?`<span class="ok">✓ Correct!</span>`:`<span class="try">Try again next time. Answer: ${quizCurrent.answer}</span>`;speak(ok?'Correct':`The answer is ${quizCurrent.answer}`)};
+/* Speak */
+let speakMode='family',speakAnswer='';document.querySelectorAll('[data-speakmode]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-speakmode]').forEach(x=>x.classList.remove('active'));b.classList.add('active');speakMode=b.dataset.speakmode;newSpeak();});
+function newSpeak(){let name,q,a;if(speakMode==='family'){name=FAMILY[Math.floor(Math.random()*FAMILY.length)];q='Say the sentence.';a=`This is my ${name}.`;}else if(speakMode==='pets'){name=PETS[Math.floor(Math.random()*PETS.length)];q='Say the sentence.';a=`This is a ${name}.`;}else{let family=Math.random()<.55;if(family){name=FAMILY[Math.floor(Math.random()*FAMILY.length)];if(MALE.has(name)){q='Who is he?';a=`He is my ${name}.`;}else{q='Who is she?';a=`She is my ${name}.`;}}else{name=PETS[Math.floor(Math.random()*PETS.length)];q=Math.random()<.5?'What is this?':'What is that?';a=(q.includes('this')?'This':'That')+` is a ${name}.`;}}speakAnswer=a;$('speakImg').src=ponly(name);$('speakQ').textContent=q;$('speakA').textContent=a;$('speakA').style.visibility='hidden';}
+$('newSpeak').onclick=newSpeak;$('revealSpeak').onclick=()=>$('speakA').style.visibility='visible';$('hearSpeak').onclick=()=>speak(speakAnswer);
+/* Finish */
+document.querySelectorAll('.check').forEach(b=>b.onclick=()=>{b.classList.toggle('done');let done=document.querySelectorAll('.check.done').length;$('finishMsg').textContent=done===6?'Excellent — all six goals checked!':'Great job!';});
+/* Slides */
+let slideI=1;const slideNames=['Title','Meet My Family','Mother','Father','Brother','Sister','Family Review','Point and Tap','Who Is It?','Mother + Father sentences','Brother + Sister sentences','Family sentence review','Ask-Swap-Move overview','How to Play','Ask-Swap-Move model','Family recall','Grandparents','Uncle + Aunt','Big Family Review','Who are they?','Meet My Pets','More Pets','My Pets review','What is this?','Two Sentences','Examples','Family or Pet?','Let’s Speak','Ask-Swap-Move pets','Family / Pet swap','My Family Photo','Model Presentation','Your Turn','Great Job'];
+function renderSlides(){let list=$('slideList');list.innerHTML=slideNames.map((n,i)=>`<button class="${i+1===slideI?'active':''}" onclick="setSlide(${i+1})">${i+1}. ${n}</button>`).join('');$('slideImg').src=`assets/slides/slide_${String(slideI).padStart(2,'0')}.webp`;$('slideCount').textContent=`Slide ${slideI} / 34 — ${slideNames[slideI-1]}`;const next=slideI===34?1:slideI+1;idlePreload(`assets/slides/slide_${String(next).padStart(2,'0')}.webp`);}
+window.setSlide=n=>{slideI=n;renderSlides()};$('slidePrev').onclick=()=>{slideI=slideI===1?34:slideI-1;renderSlides()};$('slideNext').onclick=()=>{slideI=slideI===34?1:slideI+1;renderSlides()};$('slideHear').onclick=()=>speak(slideNames[slideI-1]);
+
+
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+
+<script>
+/* Pawn to Professor — Inline Lesson Protection
+   Blocks normal right-click "Save image as...", image dragging,
+   Ctrl/Cmd+S, Ctrl/Cmd+P and Ctrl/Cmd+U inside this lesson.
+   This is deterrence only; screenshots/devtools cannot be fully prevented.
+*/
+(() => {
+  'use strict';
+
+  const PROTECTED = 'img,picture,canvas,svg,video,[data-protect-media]';
+
+  function showNotice(message) {
+    let box = document.getElementById('ptp-protection-message');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'ptp-protection-message';
+      Object.assign(box.style, {
+        position:'fixed',
+        left:'50%',
+        bottom:'18px',
+        transform:'translateX(-50%)',
+        zIndex:'2147483647',
+        padding:'9px 14px',
+        borderRadius:'999px',
+        background:'rgba(8,47,37,.94)',
+        color:'#fff',
+        font:'700 12px system-ui,sans-serif',
+        boxShadow:'0 8px 25px rgba(0,0,0,.25)',
+        opacity:'0',
+        transition:'opacity .15s ease',
+        pointerEvents:'none'
+      });
+      document.body.appendChild(box);
+    }
+    box.textContent = message;
+    box.style.opacity = '1';
+    clearTimeout(box._timer);
+    box._timer = setTimeout(() => { box.style.opacity = '0'; }, 1400);
+  }
+
+  function protectMedia(root = document) {
+    try {
+      root.querySelectorAll(PROTECTED).forEach(el => {
+        el.setAttribute('draggable','false');
+        el.style.webkitUserDrag = 'none';
+        el.style.userSelect = 'none';
+        el.style.webkitUserSelect = 'none';
+        el.style.webkitTouchCallout = 'none';
+      });
+    } catch {}
+  }
+
+  document.addEventListener('contextmenu', event => {
+    if (event.target instanceof Element && event.target.closest(PROTECTED)) {
+      event.preventDefault();
+      event.stopPropagation();
+      showNotice('Saving lesson images is disabled.');
+    }
+  }, true);
+
+  document.addEventListener('dragstart', event => {
+    if (event.target instanceof Element && event.target.closest(PROTECTED)) {
+      event.preventDefault();
+      event.stopPropagation();
+      showNotice('Dragging lesson images is disabled.');
+    }
+  }, true);
+
+  document.addEventListener('keydown', event => {
+    const mod = event.ctrlKey || event.metaKey;
+    const key = String(event.key || '').toLowerCase();
+
+    if (mod && ['s','p','u'].includes(key)) {
+      event.preventDefault();
+      event.stopPropagation();
+      showNotice('Saving or printing this lesson is disabled.');
+    }
+  }, true);
+
+  protectMedia(document);
+
+  const observer = new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (node instanceof Element) protectMedia(node);
+      }
+    }
+  });
+
+  observer.observe(document.documentElement, {
+    childList:true,
+    subtree:true
+  });
+
+  globalThis.PTP_LESSON_PROTECTION = { version:'inline-1.0' };
+})();
+</script>
+
+</body></html>
