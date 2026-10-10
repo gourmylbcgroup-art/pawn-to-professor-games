@@ -30,7 +30,7 @@ body{overflow-x:hidden}.hidden{display:none!important}
 .boardWrap{max-width:1380px;margin:auto}.board{position:relative;width:100%;aspect-ratio:3/2;background:url('background.webp') center/100% 100% no-repeat;border:6px solid #9d6940;border-radius:28px;overflow:hidden;box-shadow:var(--shadow)}
 .promptBar{position:absolute;left:31%;top:2.2%;width:38%;z-index:40;background:rgba(255,252,244,.95);border:4px solid #264a7d;border-radius:18px;padding:8px 12px;text-align:center;font-weight:1000;font-size:clamp(13px,1.5vw,21px);box-shadow:0 6px 14px rgba(0,0,0,.16)}
 .promptSub{display:block;font-size:.72em;color:#687085;margin-top:2px}.feedback{position:absolute;left:31%;top:10.7%;width:38%;z-index:39;text-align:center;font-weight:1000;font-size:clamp(11px,1.2vw,16px);padding:5px 10px;border-radius:12px;background:rgba(255,255,255,.85);min-height:28px}.feedback.good{color:#137f38;background:rgba(224,249,232,.94)}.feedback.bad{color:#c13547;background:rgba(255,230,233,.94)}
-.platform{position:absolute;z-index:20;border:4px solid rgba(255,255,255,.0);border-radius:18px;cursor:pointer;transition:.17s;padding:3px;display:flex;align-items:center;justify-content:center}.platform:hover{background:rgba(255,255,255,.08)}.platform.selected{border-color:#45b6ff;background:rgba(116,205,255,.16);box-shadow:0 0 0 6px rgba(99,190,255,.22),0 0 24px rgba(53,163,235,.55)}.platform.full{cursor:not-allowed}.platformLabel{position:absolute;left:5px;top:4px;background:rgba(16,42,85,.75);color:#fff;border-radius:9px;padding:3px 7px;font-size:10px;font-weight:1000;z-index:5}.platform.selected .platformLabel{background:#238cda}.stack{width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;gap:2px;padding:12px 3px 2px}.card{position:relative;height:min(12.9vw,134px);aspect-ratio:3/4;flex:0 0 auto;border-radius:10px;background:#fff;box-shadow:0 5px 12px rgba(0,0,0,.20);transition:.18s}.card img{width:100%;height:100%;object-fit:contain;border-radius:10px;display:block}.card{cursor:pointer}.card.top{outline:3px solid rgba(255,255,255,.92)}.card:hover{transform:translateY(-6px) scale(1.04);outline:3px solid #ffd32d}.card.notTop{opacity:1}.card.mystery img{filter:grayscale(1) brightness(.42) blur(1px)}.card.mystery:after{content:'?';position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(28px,4vw,58px);font-weight:1000;color:white;text-shadow:0 4px 10px #000;background:rgba(38,45,74,.18);border-radius:10px}.topTag{position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:#ffd42d;color:#433100;border-radius:8px;padding:3px 6px;font-size:10px;font-weight:1000;white-space:nowrap}
+.platform{position:absolute;z-index:20;border:4px solid rgba(255,255,255,.0);border-radius:18px;cursor:pointer;transition:.17s;padding:3px;display:flex;align-items:center;justify-content:center}.platform:hover{background:rgba(255,255,255,.08)}.platform.selected{border-color:#45b6ff;background:rgba(116,205,255,.16);box-shadow:0 0 0 6px rgba(99,190,255,.22),0 0 24px rgba(53,163,235,.55)}.platform.full{cursor:not-allowed}.platformLabel{position:absolute;left:6px;top:-11px;background:rgba(16,42,85,.75);color:#fff;border-radius:9px;padding:3px 7px;font-size:10px;font-weight:1000;z-index:5}.platform.selected .platformLabel{background:#238cda}.stack{width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;gap:4px;padding:15px 3px 3px}.card{position:relative;height:min(10.6vw,110px);aspect-ratio:3/4;flex:0 0 auto;border-radius:10px;background:#fff;box-shadow:0 5px 12px rgba(0,0,0,.20);transition:.18s}.card img{width:100%;height:100%;object-fit:contain;border-radius:10px;display:block}.card{cursor:pointer}.card.top{outline:3px solid rgba(255,255,255,.92)}.card:hover{transform:translateY(-6px) scale(1.04);outline:3px solid #ffd32d}.card.notTop{opacity:1}.card.mystery img{filter:grayscale(1) brightness(.42) blur(1px)}.card.mystery:after{content:'?';position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(28px,4vw,58px);font-weight:1000;color:white;text-shadow:0 4px 10px #000;background:rgba(38,45,74,.18);border-radius:10px}.topTag{position:absolute;top:-9px;right:-5px;background:#ffd42d;color:#433100;border-radius:7px;padding:2px 5px;font-size:8px;font-weight:1000;white-space:nowrap;box-shadow:0 2px 5px rgba(0,0,0,.18)}
 .card.top.legalMove{outline:4px solid #45df78;box-shadow:0 0 0 5px rgba(69,223,120,.22),0 7px 18px rgba(0,0,0,.20);cursor:pointer;animation:legalPulse 1.05s ease-in-out infinite}
 .card.top.illegalMove{opacity:.33;filter:grayscale(.45);cursor:not-allowed;outline:2px solid rgba(255,255,255,.35)}
 .card.top.legalMove:hover{transform:translateY(-7px) scale(1.06);outline-color:#55f38a}
@@ -68,8 +68,8 @@ body{overflow-x:hidden}.hidden{display:none!important}
 
 .card img{width:100%;height:100%;object-fit:contain!important;object-position:center!important;background:#fff}
 /* shelf positions */
-.p0{left:2.7%;top:14.5%;width:23.7%;height:14.0%}.p1{left:2.7%;top:31.3%;width:23.7%;height:14.0%}.p2{left:2.7%;top:48.0%;width:23.7%;height:14.0%}
-.p3{left:73.6%;top:14.5%;width:23.7%;height:14.0%}.p4{left:73.6%;top:31.3%;width:23.7%;height:14.0%}.p5{left:73.6%;top:48.0%;width:23.7%;height:14.0%}
+.p0{left:2.7%;top:14.0%;width:23.7%;height:15.5%}.p1{left:2.7%;top:31.0%;width:23.7%;height:15.5%}.p2{left:2.7%;top:48.0%;width:23.7%;height:15.5%}
+.p3{left:73.6%;top:14.0%;width:23.7%;height:15.5%}.p4{left:73.6%;top:31.0%;width:23.7%;height:15.5%}.p5{left:73.6%;top:48.0%;width:23.7%;height:15.5%}
 /* Two clearly empty sorting pads on the carpet so the first move is always possible. */
 .p6{left:40.75%;top:72.0%;width:18.5%;height:15.0%;border:4px dashed rgba(255,221,100,.78);border-radius:28px;background:rgba(255,249,220,.16)}
 .p6.legalDestination{border-style:solid;background:rgba(93,230,128,.22)}
@@ -99,13 +99,38 @@ body{overflow-x:hidden}.hidden{display:none!important}
 @keyframes burstUp{from{opacity:1;transform:translate(-50%,0) scale(.7)}to{opacity:0;transform:translate(-50%,-120px) scale(1.4)}}
 .modeBadge{font-weight:1000}
 
+
+/* FULL-SCREEN CLASSROOM MODE */
+body.fullscreenMode{overflow:hidden;background:#17152a}
+body.fullscreenMode .game{padding:4px;min-height:100vh}
+body.fullscreenMode .hud{
+  max-width:none;
+  width:min(99vw,calc((100vh - 92px)*1.5));
+  margin:0 auto 4px;
+  padding:6px 9px;
+}
+body.fullscreenMode .boardWrap{
+  max-width:none;
+  width:min(99vw,calc((100vh - 92px)*1.5));
+  margin:auto;
+}
+body.fullscreenMode .board{
+  width:100%;
+  max-height:calc(100vh - 92px);
+}
+body.fullscreenMode .card{height:min(7.1vw,11.2vh,116px)}
+body.fullscreenMode .hudTitle{font-size:18px}
+body.fullscreenMode .miniBtn{padding:7px 9px}
+body.fullscreenMode .promptBar{top:1.6%}
+body.fullscreenMode .feedback{top:10.2%}
+
 </style>
 </head>
 <body>
 <div class="app">
 <section class="setup" id="setupScreen">
  <div class="setupPanel">
-  <div class="title"><h1>👾 MONSTER SORT MISSION</h1><p>Bird-Sort Style Puzzle • Speak Before You Move</p></div>
+  <div class="title"><h1>👾 MONSTER SORT MISSION</h1><p>Bird-Sort Style Puzzle • Speak Before You Move • Full-Screen Ready</p></div>
   <div class="goal">🎯 GOAL: Group matching monsters on the same platform. A complete group flies away!</div>
   <div class="setupGrid">
    <div class="setupCard">
@@ -129,7 +154,7 @@ body{overflow-x:hidden}.hidden{display:none!important}
  <div class="hud">
   <div class="hudTitle">👾 MONSTER SORT MISSION</div>
   <div class="hudCenter"><span class="pill" id="levelPill">Level 1</span><span class="pill" id="teamPill">Classic</span><span class="pill timerPill hidden" id="timerPill">⏱ <span id="timerText">0:00.0</span></span><span class="pill">Moves: <span id="movesText">0</span></span></div>
-  <div class="hudTools"><button class="miniBtn" id="listenBtn">🔊 LISTEN</button><button class="miniBtn" id="lyricsBtn">🎵 LYRICS</button><button class="miniBtn" id="musicToggle">🎶 ON</button><button class="miniBtn" id="undoBtn">↶ UNDO</button><button class="miniBtn" id="restartTeam">↻ RESTART</button><button class="miniBtn" id="exitBtn">⌂ EXIT</button></div>
+  <div class="hudTools"><button class="miniBtn" id="listenBtn">🔊 LISTEN</button><button class="miniBtn" id="lyricsBtn">🎵 LYRICS</button><button class="miniBtn" id="musicToggle">🎶 ON</button><button class="miniBtn" id="undoBtn">↶ UNDO</button><button class="miniBtn" id="restartTeam">↻ RESTART</button><button class="miniBtn" id="fullscreenBtn">⛶ FULL SCREEN</button><button class="miniBtn" id="exitBtn">⌂ EXIT</button></div>
  </div>
  <div class="boardWrap">
   <div class="board" id="board">
@@ -273,6 +298,26 @@ $('songIntro').onclick=()=>{openModal('songModal');music.play().catch(()=>{})};$
 $('songPlay').onclick=()=>music.play().catch(()=>{});$('songPause').onclick=()=>music.pause();$('songRestart').onclick=()=>{music.currentTime=0;music.play().catch(()=>{})};$('volumeSlider').oninput=e=>music.volume=+e.target.value/100;
 $('musicToggle').onclick=()=>{musicOn=!musicOn;if(musicOn){music.play().catch(()=>{});$('musicToggle').textContent='🎶 ON'}else{music.pause();$('musicToggle').textContent='🎶 OFF'}};
 $('listenBtn').onclick=()=>say(currentPrompt);
+
+const fullscreenBtn=$('fullscreenBtn');
+function updateFullscreenUI(){
+ const active=!!document.fullscreenElement;
+ document.body.classList.toggle('fullscreenMode',active);
+ fullscreenBtn.textContent=active?'⛶ EXIT FULL SCREEN':'⛶ FULL SCREEN';
+}
+fullscreenBtn.onclick=async()=>{
+ try{
+   if(!document.fullscreenElement){
+     await document.documentElement.requestFullscreen();
+   }else{
+     await document.exitFullscreen();
+   }
+ }catch(err){
+   setFeedback('Full screen is blocked by the browser. Open the game directly and try again.','bad');
+ }
+};
+document.addEventListener('fullscreenchange',updateFullscreenUI);
+
 $('exitBtn').onclick=()=>{stopTimer();music.pause();$('gameScreen').classList.remove('active');$('setupScreen').classList.remove('hidden')};
 function startCompetition(){
  results=[];teamIndex=0;teamNames=teamNames.slice(0,teamCount).map((n,i)=>n||`Team ${i+1}`);template=TEMPLATES[Math.floor(Math.random()*TEMPLATES.length)].map(s=>[...s]);
