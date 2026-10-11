@@ -1,0 +1,60 @@
+WORLD FOOD TRAVEL — VERIFIED LOCAL VOICE MAP
+
+All spoken prompts are LOCAL audio files. The game does not use online/browser
+text-to-speech, so the voice does not depend on an internet connection.
+
+PLACE TO FIND
+find-taiwan.mp3          = Find Taiwan!
+find-korea.mp3           = Find Korea!
+find-japan.mp3           = Find Japan!
+find-usa.mp3             = Find the USA!
+find-xiao-long-bao.mp3   = Find Xiao Long Bao!
+find-kimchi.mp3          = Find Kimchi!
+find-burgers.mp3         = Find burgers!
+find-famous-sushi.mp3    = Find Famous Sushi!
+
+CARD REVEAL
+label-taiwan.mp3         = Taiwan!
+label-korea.mp3          = Korea!
+label-japan.mp3          = Japan!
+label-usa.mp3            = USA!
+label-xiao-long-bao.mp3  = Xiao Long Bao!
+label-kimchi.mp3         = Kimchi!
+label-burgers.mp3        = Burgers!
+label-famous-sushi.mp3   = Famous Sushi!
+
+PLAYER / POSITIVE RESULTS
+turn-p1.mp3 ... turn-p4.mp3 = Player 1–4 turn announcements
+correct.mp3                 = Correct! Great job!
+keep-going.mp3              = Keep going!
+
+NEW WRONG-ANSWER / RESCUE VOICE
+travel-delay.mp3            = Oh no! Travel delay!
+rescue-challenge.mp3         = Rescue challenge!
+great-keep-traveling.mp3    = Great! Keep traveling!
+good-try-next-traveler.mp3  = Good try! Next traveler!
+
+There is intentionally NO “Don’t worry. Stay here!” line.
+The old “Go back one space” voice is removed and is not used.
+
+BONUS EVENTS
+passport-bonus.mp3       = Passport bonus! Move one more space!
+jet-boost.mp3            = Jet boost! Great job! Move two spaces!
+country-challenge.mp3    = Country challenge!
+extra-turn.mp3           = Extra turn!
+amazing.mp3              = Amazing! Keep traveling!
+
+The Speed Challenge is NOT included or used.
+
+COUNTRY QUESTIONS / ANSWERS
+where-xiao-long-bao-from.mp3
+where-kimchi-from.mp3
+where-famous-sushi-from.mp3
+where-burgers-from.mp3
+yes-taiwan.mp3
+yes-korea.mp3
+yes-japan.mp3
+yes-usa.mp3
+
+WINNER
+winner-p1.mp3 ... winner-p4.mp3

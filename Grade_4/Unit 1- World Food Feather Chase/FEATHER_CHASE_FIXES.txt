@@ -1,0 +1,9 @@
+WORLD FOOD FEATHER CHASE — FIXED EDITION
+- Clearer Kimchi and other speaking cards, with pictures and sentence in separate areas.
+- Correct match: spoken confirmation, animate forward by one space, same player continues.
+- Wrong match: 2.6-second memory reveal before turn switches.
+- Wider 16:9 game board and larger track, pieces, and scoreboard.
+- Removed mixed country+food cards; food and countries are now independent cards.
+- 12 memory slots retained (4 food pictures repeat twice; 4 country cards appear once).
+- 24 race spaces retained. Hidden cards shuffled at the start only.
+To play: open index.html in extracted folder, or host the entire folder.

@@ -1,0 +1,9 @@
+WORLD FOOD CHICKEN FEATHER CHASE
+1. Select 2–4 differently colored chicken tokens.
+2. Six highlighted feather squares (+1 feather on landing).
+3. First to reach 5 feathers wins; all players start with 0.
+4. Correct match + speaking = move one space and continue same turn.
+5. Wrong match = next player after 2.6 sec reveal.
+6. Overtake by landing on another chicken: steal 1 feather if available.
+7. On every restart, shuffle all 24 track spaces and all 12 mystery cards independently, plus the feather squares.
+8. A revealed card returns face-down after the turn; card locations remain fixed until restart.

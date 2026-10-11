@@ -1,0 +1,10 @@
+World Food Feather Chase – 100 concurrent visitor optimization
+
+Static client-side HTML5 game, no game server needed for local matches.
+Card art converted from PNG to WebP (900x1125 maximum), background to WebP.
+Shared audio player and beep AudioContext reduce browser allocations.
+Preloads key board and card-back images; voice audio remains on demand.
+All game rules, board layout, mystery card arrangement, and movement unchanged.
+
+For production: host on CDN (Cloudflare Pages or equivalent); set long Cache-Control immutable for versioned /assets/ paths, use compression on HTML, and keep the site behind HTTPS.
+100 simultaneously loaded users is an infrastructure target, not independently load-tested here.

@@ -1,0 +1,1 @@
+Audio optimization: 44 MP3 files are prefetched once (5 concurrent requests) and played from in-memory Blob URLs. Game starts after preloading. On file:// fetch failure, original audio paths are used. Clear CDN cache or deploy as fresh folder if old index.html is still served. Full browser and 100-client load tests have not been performed.
