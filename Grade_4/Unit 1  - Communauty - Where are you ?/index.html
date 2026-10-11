@@ -6,6 +6,30 @@
 <title>Where Are You? — My Community Interactive EFL Lesson</title>
 <link rel="preload" href="assets/menu.webp" as="image" type="image/webp" fetchpriority="high" />
 <link rel="stylesheet" href="style.css" />
+
+<!-- Pawn to Professor: inline browser-saving deterrents (no external dependency) -->
+<style id="ptp-protection-style">
+  img, picture, svg image { -webkit-user-drag: none; user-drag: none; }
+  #ptp-watermark {
+    position: fixed; right: 12px; bottom: 10px; z-index: 2147483640;
+    font: 600 clamp(10px, 1.1vw, 13px)/1.25 Arial, sans-serif;
+    letter-spacing: .02em; color: rgba(24, 35, 55, .16);
+    text-shadow: 0 1px 2px rgba(255,255,255,.32);
+    background: transparent; border: 0; padding: 0; margin: 0;
+    pointer-events: none; user-select: none; -webkit-user-select: none;
+    white-space: nowrap;
+  }
+  #ptp-save-message {
+    position: fixed; left: 50%; bottom: 44px; transform: translateX(-50%);
+    z-index: 2147483641; pointer-events: none;
+    background: rgba(20,31,49,.88); color: #fff;
+    padding: 9px 14px; border-radius: 9px;
+    font: 500 13px/1.35 Arial, sans-serif;
+    opacity: 0; visibility: hidden; transition: opacity .18s ease, visibility .18s;
+    max-width: calc(100vw - 24px); text-align: center;
+  }
+  #ptp-save-message.ptp-show { opacity: 1; visibility: visible; }
+</style>
 </head>
 <body>
 <div class="app">
@@ -209,6 +233,52 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     navigator.serviceWorker.register('./sw.js', {scope:'./'}).catch(() => {});
   });
 }
+</script>
+
+<script id="ptp-protection-script">
+(() => {
+  'use strict';
+  const notice = document.createElement('div');
+  notice.id = 'ptp-save-message';
+  notice.setAttribute('role', 'status');
+  notice.setAttribute('aria-live', 'polite');
+  notice.textContent = 'Saving lesson content is disabled.';
+  const watermark = document.createElement('div');
+  watermark.id = 'ptp-watermark';
+  watermark.setAttribute('aria-hidden', 'true');
+  watermark.textContent = 'pawntoprofessor.com';
+  document.body.append(notice, watermark);
+  let noticeTimeout;
+  const warn = () => {
+    notice.classList.add('ptp-show');
+    clearTimeout(noticeTimeout);
+    noticeTimeout = setTimeout(() => notice.classList.remove('ptp-show'), 2000);
+  };
+  document.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+    warn();
+  }, true);
+  document.addEventListener('dragstart', (event) => {
+    const target = event.target;
+    if (target instanceof Element && target.closest('img, picture, svg image, a[download]')) {
+      event.preventDefault();
+      warn();
+    }
+  }, true);
+  document.addEventListener('keydown', (event) => {
+    const key = event.key.toLowerCase();
+    if ((event.ctrlKey || event.metaKey) && ['s', 'p', 'u'].includes(key)) {
+      event.preventDefault();
+      event.stopPropagation();
+      warn();
+    }
+  }, true);
+  // A fullscreen element becomes its own top layer. Keep the watermark visible
+  // inside same-document fullscreen presentation/game containers when possible.
+  document.addEventListener('fullscreenchange', () => {
+    (document.fullscreenElement || document.body).append(watermark, notice);
+  });
+})();
 </script>
 </body>
 </html>
