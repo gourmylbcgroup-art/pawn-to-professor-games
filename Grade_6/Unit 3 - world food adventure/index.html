@@ -19,6 +19,29 @@
 .hs7{left:71.4%;top:60.7%;width:19.8%;height:30.5%}
 @media(max-width:700px){.screen#home{width:100%;margin:8px auto 18px}.index-map-wrap{border-radius:12px}.index-hotspot{border-radius:10px}}
 </style><!-- User voice: 93 short MP3 clips are embedded in the page so playback does not wait for separate online audio downloads. -->
+
+<style id="ptp-lesson-protection-style">
+  html, body { -webkit-touch-callout: none; }
+  img, picture, svg, canvas, video {
+    -webkit-user-drag: none !important; user-drag:none !important;
+    -webkit-touch-callout: none !important;
+  }
+  #ptp-protection-watermark {
+    position:fixed;bottom:9px;right:12px;z-index:2147483645;
+    font:700 12px/1.2 Arial,sans-serif;letter-spacing:.2px;
+    color:#1b3853;opacity:.16;text-shadow:0 1px 2px #fff;
+    pointer-events:none;user-select:none;-webkit-user-select:none;
+  }
+  #ptp-protection-notice {
+    position:fixed;bottom:42px;left:50%;transform:translateX(-50%);
+    z-index:2147483646;padding:10px 15px;border-radius:12px;
+    background:rgba(18,34,63,.93);color:#fff;font:600 13px/1.3 Arial,sans-serif;
+    opacity:0;transition:opacity .18s ease;pointer-events:none;
+    max-width:calc(100vw - 24px);text-align:center;
+  }
+  #ptp-protection-notice.ptp-visible {opacity:1}
+  @media print { body {visibility:hidden !important} }
+</style>
 </head><body>
 <div class="topbar"><div class="brand">🌍 Grade 6 · Food & Souvenirs</div><div class="navchips">
 <button class="chip c1" onclick="goHome()">HOME</button><button class="chip c1" onclick="openSection('start')">START</button><button class="chip c2" onclick="openSection('learn')">LEARN</button><button class="chip c3" onclick="openSection('play')">PLAY</button><button class="chip c4" onclick="openSection('speak')">SPEAK</button><button class="chip c5" onclick="openSection('practice')">PRACTICE</button><button class="chip c6" onclick="openSection('finish')">FINISH</button><button class="chip c7" onclick="openGames()">7 GAMES</button></div>
@@ -169,4 +192,65 @@ function renderFoodoku(){const c=foodokuConfig;foodokuBoard.style.gridTemplateCo
 function placeFood(k){if(foodokuLocked){gameStatus.textContent='Say the sentence first.';return}if(!selectedCell){gameStatus.textContent='Choose an empty square first.';return}const {r,c}=selectedCell;if(foodokuSolution[r][c]!==k){gameStatus.textContent='Try again.';speakText('Try again.');return}foodokuPuzzle[r][c]=k;selectedCell=null;renderFoodoku();gameStatus.textContent='Correct!';speakText('Correct!');checkLines(r,c,k);if(foodokuPuzzle.flat().every(Boolean)&&!foodokuLocked){gameStatus.textContent='Foodoku complete! Great job!';speakText('Foodoku complete. Great job!')}}
 function checkLines(r,c,k){const n=foodokuConfig.size;const news=[];if(foodokuPuzzle[r].every(Boolean)&&!completedLines.has('r'+r))news.push('r'+r);if(foodokuPuzzle.every(row=>row[c])&&!completedLines.has('c'+c))news.push('c'+c);if(news.length){news.forEach(x=>completedLines.add(x));foodokuLocked=true;const s=foodokuConfig.sentence(k);linePrompt.innerHTML=`<b>Line complete!</b><br>Say this aloud:<br><span style="font-size:20px;color:#103f74">${s}</span>`;lineLock.classList.add('show');gameStatus.textContent='Say the sentence before continuing.';speakText(s)}}function confirmSpokenLine(){foodokuLocked=false;lineLock.classList.remove('show');gameStatus.textContent='Great speaking! Continue.'}
 setWeek(1);warmVoiceCache();
-</script></body></html>
+</script>
+<script id="ptp-lesson-protection-script">
+(function(){
+  'use strict';
+  var timer, touchTimer, touchX, touchY;
+  function init(){
+    if(!document.body)return;
+    if(!document.getElementById('ptp-protection-watermark')){
+      var wm=document.createElement('div');wm.id='ptp-protection-watermark';
+      wm.setAttribute('aria-hidden','true');wm.textContent='pawntoprofessor.com';
+      document.body.appendChild(wm);
+    }
+    if(!document.getElementById('ptp-protection-notice')){
+      var n=document.createElement('div');n.id='ptp-protection-notice';
+      n.setAttribute('role','status');n.setAttribute('aria-live','polite');
+      n.textContent='Saving lesson content is disabled.';document.body.appendChild(n);
+    }
+    document.querySelectorAll('img').forEach(function(img){img.draggable=false;});
+  }
+  function notice(){
+    var n=document.getElementById('ptp-protection-notice');if(!n)return;
+    n.classList.add('ptp-visible');clearTimeout(timer);
+    timer=setTimeout(function(){n.classList.remove('ptp-visible')},1900);
+  }
+  function onImage(el){return el && el.closest && el.closest('img,picture,svg,canvas,video');}
+  document.addEventListener('contextmenu',function(e){e.preventDefault();notice()},true);
+  document.addEventListener('dragstart',function(e){
+    if(onImage(e.target)){e.preventDefault();notice();}
+  },true);
+  document.addEventListener('keydown',function(e){
+    var key=(e.key||'').toLowerCase();
+    if((e.ctrlKey||e.metaKey) && ['s','p','u'].indexOf(key)!==-1){
+      e.preventDefault();e.stopImmediatePropagation();notice();
+    }
+  },true);
+  document.addEventListener('touchstart',function(e){
+    clearTimeout(touchTimer);
+    if(!onImage(e.target)||e.touches.length!==1)return;
+    touchX=e.touches[0].clientX;touchY=e.touches[0].clientY;
+    touchTimer=setTimeout(function(){notice()},750);
+  },{passive:true,capture:true});
+  document.addEventListener('touchmove',function(e){
+    if(!e.touches.length)return;
+    if(Math.abs(e.touches[0].clientX-touchX)>12||Math.abs(e.touches[0].clientY-touchY)>12)clearTimeout(touchTimer);
+  },{passive:true,capture:true});
+  document.addEventListener('touchend',function(){clearTimeout(touchTimer)},{passive:true,capture:true});
+  document.addEventListener('touchcancel',function(){clearTimeout(touchTimer)},{passive:true,capture:true});
+  document.addEventListener('DOMContentLoaded',init,{once:true});
+  if(document.readyState!=='loading')init();
+  if(window.MutationObserver){
+    var mo=new MutationObserver(function(records){
+      records.forEach(function(r){r.addedNodes.forEach(function(node){
+        if(node.nodeType!==1)return;
+        if(node.matches&&node.matches('img'))node.draggable=false;
+        if(node.querySelectorAll)node.querySelectorAll('img').forEach(function(img){img.draggable=false;});
+      });});
+    });
+    document.addEventListener('DOMContentLoaded',function(){mo.observe(document.body,{childList:true,subtree:true});},{once:true});
+  }
+})();
+</script>
+</body></html>
