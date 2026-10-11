@@ -140,4 +140,54 @@ function speak7(){builderUI(match7data)}function final7(){finalUI(7,[
 {q:'Where does your grandmother take a nap?',h:'My grandmother takes a nap at ______.',a:'My grandmother takes a nap at home.'},
 {q:'Who am I? I am an older woman. I take a nap at home.',h:'She is my ______.',a:'She is my grandmother.'}
 ])}
-</script></body></html>
+</script>
+<!-- PTP DISPLAY PROTECTION START -->
+<style id="ptp-display-protection">
+  img, picture, svg, canvas { -webkit-user-drag:none !important; -webkit-touch-callout:none !important; }
+  img { user-select:none !important; -webkit-user-select:none !important; }
+  #ptp-save-notice {position:fixed;bottom:44px;left:50%;transform:translate(-50%,12px);opacity:0;transition:opacity .18s,transform .18s;z-index:2147483647;pointer-events:none;background:rgba(25,45,45,.94);color:white;padding:10px 16px;border-radius:14px;font:600 13px/1.3 Arial,sans-serif;max-width:95vw;text-align:center;}
+  #ptp-save-notice.show {opacity:1;transform:translate(-50%,0)}
+  #ptp-watermark {position:fixed;right:10px;bottom:10px;pointer-events:none;z-index:2147483646;opacity:.16;font:700 13px/1.2 Arial,sans-serif;color:#233f39;text-shadow:0 1px 2px #fff;white-space:nowrap;user-select:none;-webkit-user-select:none;}
+  @media print { html, body {visibility:hidden !important;} }
+</style>
+<script id="ptp-save-deterrence">
+(function(){
+ 'use strict';
+ var message='Saving lesson content is disabled.';
+ var hideTimer;
+ function notice(){
+   var el=document.getElementById('ptp-save-notice');
+   if(!el){el=document.createElement('div');el.id='ptp-save-notice';el.setAttribute('role','status');el.textContent=message;document.body.appendChild(el);}
+   el.classList.add('show');clearTimeout(hideTimer);hideTimer=setTimeout(function(){el.classList.remove('show');},1900);
+ }
+ function block(e){e.preventDefault();e.stopImmediatePropagation();notice();}
+ document.addEventListener('contextmenu',block,true);
+ document.addEventListener('dragstart',function(e){
+   var node=e.target;
+   if(node && node.nodeType===1 && (node.closest('img,picture,svg,canvas') || (node.closest('.flashitem,.viewer,.presgrid,.card,.dashboardHome'))))block(e);
+ },true);
+ document.addEventListener('keydown',function(e){
+   if((e.ctrlKey||e.metaKey) && !e.altKey && ['s','p','u'].includes(String(e.key).toLowerCase()))block(e);
+ },true);
+ // Preserve lesson click/tap actions. Suppress only the native image long-press menu.
+ document.addEventListener('touchstart',function(e){
+   var el=e.target;
+   if(el && el.tagName==='IMG')el.setAttribute('draggable','false');
+ },{passive:true,capture:true});
+ function disableImageDrag(root){
+   if(root.nodeType!==1)return;
+   if(root.matches('img'))root.draggable=false;
+   if(root.querySelectorAll)root.querySelectorAll('img').forEach(function(img){img.draggable=false;});
+ }
+ function ready(){
+   disableImageDrag(document.documentElement);
+   var mark=document.getElementById('ptp-watermark');
+   if(!mark){mark=document.createElement('span');mark.id='ptp-watermark';mark.textContent='pawntoprofessor.com';document.body.appendChild(mark);}
+   var observer=new MutationObserver(function(records){records.forEach(function(r){r.addedNodes.forEach(disableImageDrag);});});
+   observer.observe(document.documentElement,{childList:true,subtree:true});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready,{once:true});else ready();
+})();
+</script>
+<!-- PTP DISPLAY PROTECTION END -->
+</body></html>
