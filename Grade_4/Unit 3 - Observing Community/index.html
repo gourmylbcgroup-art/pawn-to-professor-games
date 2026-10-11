@@ -43,7 +43,15 @@ let __voiceCtx=null,__voiceBuffer=null,__voiceReady=null,__voiceDecodeStarted=pe
 <!-- Pawn to Professor: local lesson protection (no external dependencies) -->
 <style id="ptp-lesson-protection-style">
   img, picture, svg, video, canvas { -webkit-user-drag:none; user-drag:none; }
-  img { -webkit-touch-callout:none; }
+  /* Keep image touches/clicks on their interactive parent cards, not the raw file. */
+  img, picture, svg, video, canvas {
+    -webkit-touch-callout:none !important;
+    -webkit-user-select:none !important;
+    user-select:none !important;
+  }
+  img { pointer-events:none !important; }
+  html, body { -webkit-touch-callout:none; }
+  @media print { body > * { visibility:hidden !important; } }
   #ptp-watermark {position:fixed;right:8px;bottom:7px;z-index:2147483645;pointer-events:none;
     user-select:none;-webkit-user-select:none;font:600 12px/1.15 Arial,sans-serif;
     color:#17385f;opacity:.16;text-shadow:0 1px 2px rgba(255,255,255,.85);
@@ -172,43 +180,68 @@ renderPlaces();
   var toastTimer;
   function prepare() {
     if (!document.getElementById('ptp-watermark')) {
-      var mark=document.createElement('div');
-      mark.id='ptp-watermark';
+      var mark = document.createElement('div');
+      mark.id = 'ptp-watermark';
       mark.setAttribute('aria-hidden','true');
-      mark.textContent='pawntoprofessor.com';
+      mark.textContent = 'pawntoprofessor.com';
       document.body.appendChild(mark);
     }
     if (!document.getElementById('ptp-protection-message')) {
-      var note=document.createElement('div');
-      note.id='ptp-protection-message';
+      var note = document.createElement('div');
+      note.id = 'ptp-protection-message';
       note.setAttribute('role','status');
       note.setAttribute('aria-live','polite');
-      note.textContent='Saving lesson content is disabled.';
+      note.textContent = 'Saving lesson content is disabled.';
       document.body.appendChild(note);
     }
+    // Dynamic flashcards and slides are covered as soon as they are inserted.
+    document.querySelectorAll('img').forEach(function(img) {
+      img.draggable = false;
+      img.setAttribute('draggable','false');
+    });
   }
   function warn() {
-    var note=document.getElementById('ptp-protection-message');
-    if(!note) return;
+    var note = document.getElementById('ptp-protection-message');
+    if (!note) return;
     note.classList.add('ptp-visible');
     clearTimeout(toastTimer);
-    toastTimer=setTimeout(function(){ note.classList.remove('ptp-visible'); },1800);
+    toastTimer = setTimeout(function(){ note.classList.remove('ptp-visible'); }, 1800);
   }
-  // Capture phase protects dynamically generated flashcards and images too.
-  document.addEventListener('contextmenu',function(e){e.preventDefault();warn();},true);
+  document.addEventListener('contextmenu',function(e){ e.preventDefault();warn(); },true);
+  // Never allow a native file drag; interactive card clicks still reach their button parent.
   document.addEventListener('dragstart',function(e){
-    // Don't interfere with any legitimate drag-and-drop game objects.
-    var target=e.target;
-    if(target && target.closest && target.closest('img,picture,svg,video,canvas')) {
+    if (e.target && e.target.closest && e.target.closest('img,picture,svg,video,canvas')) {
       e.preventDefault();warn();
     }
   },true);
   document.addEventListener('keydown',function(e){
     if (!(e.ctrlKey || e.metaKey) || e.altKey) return;
-    var key=(e.key||'').toLowerCase();
-    if(key==='s'||key==='p'||key==='u') {e.preventDefault();e.stopPropagation();warn();}
+    var key = (e.key || '').toLowerCase();
+    if (key === 's' || key === 'p' || key === 'u') {
+      e.preventDefault(); e.stopImmediatePropagation(); warn();
+    }
   },true);
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',prepare,{once:true});
+  document.addEventListener('copy',function(e){
+    var selection = window.getSelection && window.getSelection();
+    if(selection && selection.toString().trim()) return; // ordinary text copy is allowed
+    if(e.target && e.target.closest && e.target.closest('img,picture,svg,canvas')) {
+      e.preventDefault();warn();
+    }
+  },true);
+  // Cover new flashcard images without altering their src, layout, or audio.
+  if (typeof MutationObserver !== 'undefined') {
+    var observer = new MutationObserver(function(records){
+      records.forEach(function(record){
+        record.addedNodes.forEach(function(node){
+          if(node.nodeType !== 1) return;
+          if(node.matches && node.matches('img')) {node.draggable=false;node.setAttribute('draggable','false');}
+          if(node.querySelectorAll) node.querySelectorAll('img').forEach(function(img){img.draggable=false;img.setAttribute('draggable','false');});
+        });
+      });
+    });
+    if(document.documentElement) observer.observe(document.documentElement,{subtree:true,childList:true});
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',prepare,{once:true});
   else prepare();
 })();
 </script>
