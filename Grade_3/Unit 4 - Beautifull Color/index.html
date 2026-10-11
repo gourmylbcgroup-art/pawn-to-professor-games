@@ -170,6 +170,28 @@ button{font:inherit}.bg{position:fixed;inset:0;z-index:-2;background:linear-grad
 @keyframes learnPulse{from{transform:scale(1);opacity:.72}to{transform:scale(1.035);opacity:1}}
 
 </style>
+
+<!-- Pawn to Professor: inline lesson-content protection; no external dependency -->
+<style id="ptp-lesson-protection-style">
+  img, picture, svg image { -webkit-user-drag: none; user-drag: none; }
+  #ptp-lesson-watermark {
+    position: fixed; bottom: max(9px, env(safe-area-inset-bottom)); right: max(12px, env(safe-area-inset-right));
+    z-index: 2147483645; pointer-events: none; user-select: none; -webkit-user-select: none;
+    font: 600 clamp(11px, 1.15vw, 15px)/1.2 Arial, sans-serif;
+    letter-spacing: .01em; color: rgba(20, 30, 45, .16); text-shadow: 0 1px 1px rgba(255,255,255,.28);
+    background: none; border: 0; padding: 0; margin: 0; white-space: nowrap;
+  }
+  #ptp-lesson-save-notice {
+    position: fixed; left: 50%; bottom: max(40px, env(safe-area-inset-bottom));
+    transform: translateX(-50%); z-index: 2147483647;
+    background: rgba(24, 34, 52, .91); color: #fff; border-radius: 10px;
+    padding: 9px 15px; font: 500 13px/1.3 Arial, sans-serif;
+    box-shadow: 0 3px 12px rgba(0,0,0,.18); pointer-events: none;
+    opacity: 0; transition: opacity .16s ease; max-width: 92vw; text-align: center;
+  }
+  #ptp-lesson-save-notice.ptp-visible { opacity: 1; }
+  @media print { #ptp-lesson-watermark { display: block !important; } }
+</style>
 </head>
 <body>
 <div class="bg"></div>
@@ -772,6 +794,62 @@ const cats=["ALL","COLOR PICTURES","COLOR WORDS","OBJECTS","MONSTERS","MYSTERY"]
 function renderFlashTabs(){$("flashTabs").innerHTML=cats.map(c=>`<button class="fltab ${c===flashCat?"active":""}" data-c="${c}">${c}</button>`).join("");$("flashTabs").querySelectorAll(".fltab").forEach(b=>b.onclick=()=>{flashCat=b.dataset.c;renderFlashTabs();renderFlashGrid()})}
 function renderFlashGrid(){let cards=flashCat==="ALL"?DATA.flashcards:DATA.flashcards.filter(x=>x.cat===flashCat);$("flashGrid").innerHTML=cards.map(x=>`<button class="flashThumb" data-src="${x.src}"><img src="${x.src}" decoding="async" loading="lazy"><span>${x.label}</span></button>`).join("");$("flashGrid").querySelectorAll(".flashThumb").forEach(b=>b.onclick=()=>{$("viewerImg").src=b.dataset.src;$("flashViewer").classList.add("open")})}
 $("flashBtn").onclick=()=>{$("flashOverlay").classList.add("open");flashCat="ALL";renderFlashTabs();renderFlashGrid()};$("flashClose").onclick=()=>$("flashOverlay").classList.remove("open");$("viewerBack").onclick=()=>$("flashViewer").classList.remove("open");$("flashOverlay").onclick=e=>{if(e.target===$("flashOverlay"))$("flashOverlay").classList.remove("open")};renderFlashTabs();renderFlashGrid();
+</script>
+
+<script id="ptp-lesson-protection">
+/* Normal browser save deterrence only; this does not prevent screenshots or developer tools. */
+(function () {
+  'use strict';
+  const message = 'Saving lesson content is disabled.';
+  const watermark = document.createElement('div');
+  watermark.id = 'ptp-lesson-watermark';
+  watermark.textContent = 'pawntoprofessor.com';
+  watermark.setAttribute('aria-hidden', 'true');
+  const notice = document.createElement('div');
+  notice.id = 'ptp-lesson-save-notice';
+  notice.setAttribute('role', 'status');
+  notice.setAttribute('aria-live', 'polite');
+  notice.textContent = message;
+  document.body.append(watermark, notice);
+  let noticeTimer;
+  function warn() {
+    notice.classList.add('ptp-visible');
+    clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(() => notice.classList.remove('ptp-visible'), 1800);
+  }
+  document.addEventListener('contextmenu', function (event) {
+    event.preventDefault();
+    warn();
+  }, true);
+  document.addEventListener('dragstart', function (event) {
+    const target = event.target;
+    // Stop dragging protected images while leaving educational drag/drop game mechanics intact.
+    if (target instanceof Element && (target.closest('img, picture, svg image') ||
+        (typeof getComputedStyle === 'function' && getComputedStyle(target).backgroundImage !== 'none'))) {
+      event.preventDefault();
+      warn();
+    }
+  }, true);
+  document.addEventListener('keydown', function (event) {
+    if ((event.ctrlKey || event.metaKey) && !event.altKey &&
+        ['s', 'p', 'u'].includes(event.key.toLowerCase())) {
+      event.preventDefault();
+      event.stopPropagation();
+      warn();
+    }
+  }, true);
+  // Fullscreen elements sit above the document; show the same watermark there as well.
+  document.addEventListener('fullscreenchange', function () {
+    const old = document.getElementById('ptp-fullscreen-watermark');
+    if (old) old.remove();
+    if (document.fullscreenElement) {
+      const clone = watermark.cloneNode(true);
+      clone.id = 'ptp-fullscreen-watermark';
+      clone.style.position = 'fixed';
+      document.fullscreenElement.appendChild(clone);
+    }
+  });
+})();
 </script>
 </body>
 </html>
