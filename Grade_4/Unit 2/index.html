@@ -898,7 +898,8 @@
     user-select: none;
     -webkit-user-drag: none;
   }
-  img { -webkit-touch-callout:none; -webkit-user-drag:none; user-drag:none; }
+  img, picture, .slide-stage, .slide-card, .thumb { -webkit-touch-callout:none; -webkit-user-drag:none; }
+  img { pointer-events:auto; }
   #ptp-protection-watermark {
     position: fixed; right: 10px; bottom: 9px; z-index: 2147483645;
     color:#102a50; opacity:.16; font: 700 clamp(11px, 1.2vw, 15px)/1.2 Arial,sans-serif;
@@ -1680,42 +1681,61 @@ function burstConfetti(){
 <div id="ptp-protection-watermark" aria-hidden="true">pawntoprofessor.com</div>
 <div id="ptp-protection-notice" role="status" aria-live="polite">Saving lesson content is disabled.</div>
 <script id="ptp-lesson-protection">
-/* Blocks normal browser save/drag gestures; does not secure public image URLs. */
+/* Browser UI deterrence only. Files delivered publicly remain retrievable by URL. */
 (function () {
   'use strict';
   const notice = document.getElementById('ptp-protection-notice');
-  let noticeTimer;
+  let noticeTimer = null;
   function warn() {
     if (!notice) return;
     notice.classList.add('ptp-visible');
     clearTimeout(noticeTimer);
-    noticeTimer = setTimeout(() => notice.classList.remove('ptp-visible'), 1900);
+    noticeTimer = setTimeout(() => notice.classList.remove('ptp-visible'), 1800);
   }
-  window.addEventListener('contextmenu', function (event) {
-    event.preventDefault(); warn();
+  function deny(event) {
+    if (event.cancelable) event.preventDefault();
+    event.stopImmediatePropagation();
+    warn();
+  }
+  // Capture before lesson handlers, across flashcards, slide pictures and backgrounds.
+  document.addEventListener('contextmenu', deny, {capture:true, passive:false});
+  document.addEventListener('dragstart', deny, {capture:true, passive:false});
+  document.addEventListener('selectstart', function (event) {
+    if (event.target && event.target.closest && event.target.closest('img, picture, svg, canvas, .slide-stage, .slide-card, .thumb')) deny(event);
   }, true);
-  window.addEventListener('dragstart', function (event) {
-    event.preventDefault(); warn();
+  document.addEventListener('keydown', function (event) {
+    const modifier = event.ctrlKey || event.metaKey;
+    const key = (event.key || '').toLowerCase();
+    const code = (event.code || '').toLowerCase();
+    if (modifier && !event.altKey && (
+        ['s','p','u'].includes(key) || ['keys','keyp','keyu'].includes(code))) deny(event);
   }, true);
-  window.addEventListener('keydown', function (event) {
-    if ((event.ctrlKey || event.metaKey) && !event.altKey &&
-        ['s','p','u'].includes(event.key.toLowerCase())) {
-      event.preventDefault(); event.stopImmediatePropagation(); warn();
+  // Block a middle-button click on an image from opening it in a new tab.
+  document.addEventListener('auxclick', function (event) {
+    if (event.button === 1 && event.target && event.target.closest &&
+        event.target.closest('img, picture, .slide-stage, .thumb')) deny(event);
+  }, true);
+  // Avoid browser native image menus on touch devices; do not prevent ordinary taps.
+  document.addEventListener('touchstart', function (event) {
+    const el = event.target;
+    if (el && el.closest && el.closest('img')) {
+      el.closest('img').setAttribute('draggable','false');
     }
-  }, true);
+  }, {capture:true, passive:true});
   function protectImages(root) {
     if (!root || root.nodeType !== 1) return;
-    if (root.matches('img')) { root.draggable = false; root.setAttribute('draggable','false'); }
-    root.querySelectorAll('img').forEach(img => {
+    const images = root.matches('img') ? [root] : Array.from(root.querySelectorAll('img'));
+    images.forEach(function (img) {
       img.draggable = false;
-      img.setAttribute('draggable','false');
+      img.setAttribute('draggable', 'false');
+      img.style.setProperty('-webkit-user-drag','none');
+      img.style.setProperty('-webkit-touch-callout','none');
     });
   }
   protectImages(document.documentElement);
-  new MutationObserver(records => records.forEach(record => {
-    record.addedNodes.forEach(protectImages);
-  })).observe(document.documentElement, {childList:true, subtree:true});
-  window.addEventListener('load', () => protectImages(document.documentElement), {once:true});
+  new MutationObserver(function (records) {
+    records.forEach(function (record) { record.addedNodes.forEach(protectImages); });
+  }).observe(document.documentElement, {childList:true, subtree:true});
 })();
 </script>
 </body>
