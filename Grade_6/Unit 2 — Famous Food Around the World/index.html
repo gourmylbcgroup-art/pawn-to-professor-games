@@ -5,6 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title>Famous Food Around the World - Grade 6 Interactive Lesson</title>
 <link rel="stylesheet" href="styles.css"/>
+
+<!-- Pawn to Professor — inline browser saving deterrence -->
+<style id="ptp-protection-css">
+  img, picture, svg image { -webkit-user-drag:none!important; user-drag:none!important; -webkit-touch-callout:none!important; }
+  img, .slide-frame, .quiz-visual, .flash-grid, .prompt-card, .final-grid, .interface-map { -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; }
+  #ptp-watermark { position:fixed;bottom:9px;right:12px;z-index:2147483645;pointer-events:none;
+    font:700 12px/1.2 Arial,sans-serif;color:rgba(20,48,70,.16);text-shadow:0 1px 1px rgba(255,255,255,.7);
+    user-select:none;-webkit-user-select:none;white-space:nowrap; }
+  #ptp-save-notice { position:fixed;left:50%;bottom:38px;transform:translateX(-50%);z-index:2147483646;
+    background:rgba(20,28,48,.92);color:white;border-radius:10px;padding:10px 15px;
+    font:600 13px/1.3 Arial,sans-serif;max-width:95vw;text-align:center;pointer-events:none;
+    opacity:0;visibility:hidden;transition:opacity .18s,visibility .18s; }
+  #ptp-save-notice.ptp-show {opacity:1;visibility:visible;}
+  @media print { body > :not(#ptp-save-notice) { display:none!important; } }
+</style>
 </head>
 <body>
 <div class="app">
@@ -26,7 +41,7 @@
 <section class="screen active" id="home">
  <div class="home-shell interface-home-shell">
   <div class="interface-map">
-   <img class="interface-image" src="assets/custom_interface_home.webp" alt="Famous Food Around the World interactive interface" fetchpriority="high"/ decoding="async">
+   <img class="interface-image" src="assets/custom_interface_home.webp" alt="Famous Food Around the World interactive interface" fetchpriority="high" decoding="async" />>
    <button class="hotspot hs-start" data-go="start" aria-label="Open Start"></button>
    <button class="hotspot hs-learn" data-go="learn" aria-label="Open Learn"></button>
    <button class="hotspot hs-play" data-go="play" aria-label="Open Play"></button>
@@ -112,6 +127,62 @@
 <div class="language-bar"><span>❓ What is _____ famous for?</span><span>💬 _____ is famous for _____.</span><span>🇬🇧 The UK is famous for Fish and Chips.</span></div>
 <div id="toast" class="toast"></div>
 </div>
+
+<div id="ptp-watermark" aria-hidden="true">pawntoprofessor.com</div>
+<div id="ptp-save-notice" role="status" aria-live="polite">Saving lesson content is disabled.</div>
+<script id="ptp-protection-js">
+(function () {
+  'use strict';
+  var noticeTimeout;
+  function warn() {
+    var el = document.getElementById('ptp-save-notice');
+    if (!el) return;
+    el.classList.add('ptp-show');
+    clearTimeout(noticeTimeout);
+    noticeTimeout = setTimeout(function () { el.classList.remove('ptp-show'); }, 1800);
+  }
+  function prevent(event) { event.preventDefault(); warn(); }
+  // Capture normal right-click menus on image, slide, background, and lesson content.
+  document.addEventListener('contextmenu', prevent, true);
+  document.addEventListener('dragstart', function (event) {
+    var element = event.target;
+    if (element && element.closest && element.closest('img, picture, svg image, a[download]')) prevent(event);
+  }, true);
+  document.addEventListener('keydown', function (event) {
+    var key = String(event.key || '').toLowerCase();
+    if ((event.ctrlKey || event.metaKey) && !event.altKey && ['s','p','u'].includes(key)) {
+      event.preventDefault(); event.stopImmediatePropagation(); warn();
+    }
+  }, true);
+  // Stop native long-press image menus where supported; do not interfere with tapping cards.
+  document.addEventListener('touchstart', function (event) {
+    var target = event.target;
+    if (!target || !target.closest || !target.closest('img')) return;
+    target.setAttribute('draggable', 'false');
+  }, {capture:true,passive:true});
+  document.querySelectorAll('img').forEach(function (img) { img.draggable = false; });
+  // Observe images inserted dynamically by app.js (practice flashcards, quizzes, slides).
+  var observer = new MutationObserver(function (changes) {
+    changes.forEach(function (change) {
+      change.addedNodes.forEach(function (node) {
+        if (node.nodeType !== 1) return;
+        if (node.matches && node.matches('img')) node.draggable = false;
+        if (node.querySelectorAll) node.querySelectorAll('img').forEach(function (img) { img.draggable = false; });
+      });
+    });
+  });
+  observer.observe(document.documentElement, {childList:true,subtree:true});
+  // Keep watermark visible when this page enters browser fullscreen.
+  function syncFullscreen() {
+    var wm = document.getElementById('ptp-watermark');
+    var nt = document.getElementById('ptp-save-notice');
+    var host = document.fullscreenElement || document.body;
+    if (wm && wm.parentNode !== host) host.appendChild(wm);
+    if (nt && nt.parentNode !== host) host.appendChild(nt);
+  }
+  document.addEventListener('fullscreenchange', syncFullscreen);
+})();
+</script>
 <script src="app.js"></script>
 </body>
 </html>
