@@ -890,6 +890,33 @@
   .local-voice-note { font-size:14px; font-weight:800; color:#176c34; }
 
 </style>
+
+<!-- PTP lesson protection: display-only deterrence; original assets remain unchanged. -->
+<style id="ptp-lesson-protection-style">
+  html, body, img, picture, svg, canvas, .slide-stage, .slide-card, .character-card {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  img { -webkit-touch-callout:none; -webkit-user-drag:none; user-drag:none; }
+  #ptp-protection-watermark {
+    position: fixed; right: 10px; bottom: 9px; z-index: 2147483645;
+    color:#102a50; opacity:.16; font: 700 clamp(11px, 1.2vw, 15px)/1.2 Arial,sans-serif;
+    letter-spacing: .01em; text-shadow: 0 1px 2px #fff;
+    background:none; padding:0; border:0; white-space:nowrap;
+    pointer-events:none; -webkit-user-select:none; user-select:none;
+  }
+  #ptp-protection-notice {
+    position:fixed; z-index:2147483646; bottom:38px; left:50%;
+    transform:translate(-50%,10px); opacity:0; pointer-events:none;
+    background:rgba(18,35,78,.92); color:#fff; padding:9px 15px;
+    border-radius:12px; font:600 13px/1.3 Arial,sans-serif;
+    white-space:nowrap; max-width:95vw; overflow:hidden; text-overflow:ellipsis;
+    transition:opacity .18s ease,transform .18s ease;
+  }
+  #ptp-protection-notice.ptp-visible { opacity:1; transform:translate(-50%,0); }
+  @media print { body { visibility:hidden !important; } }
+</style>
 </head>
 <body>
 <div class="bg"></div>
@@ -1648,6 +1675,48 @@ function burstConfetti(){
   for(let i=0;i<36;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=(Math.random()*100)+'vw';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.animationDelay=(Math.random()*.2)+'s';p.style.transform=`rotate(${Math.random()*360}deg)`;box.appendChild(p);setTimeout(()=>p.remove(),1900);}
 }
 
+</script>
+
+<div id="ptp-protection-watermark" aria-hidden="true">pawntoprofessor.com</div>
+<div id="ptp-protection-notice" role="status" aria-live="polite">Saving lesson content is disabled.</div>
+<script id="ptp-lesson-protection">
+/* Blocks normal browser save/drag gestures; does not secure public image URLs. */
+(function () {
+  'use strict';
+  const notice = document.getElementById('ptp-protection-notice');
+  let noticeTimer;
+  function warn() {
+    if (!notice) return;
+    notice.classList.add('ptp-visible');
+    clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(() => notice.classList.remove('ptp-visible'), 1900);
+  }
+  window.addEventListener('contextmenu', function (event) {
+    event.preventDefault(); warn();
+  }, true);
+  window.addEventListener('dragstart', function (event) {
+    event.preventDefault(); warn();
+  }, true);
+  window.addEventListener('keydown', function (event) {
+    if ((event.ctrlKey || event.metaKey) && !event.altKey &&
+        ['s','p','u'].includes(event.key.toLowerCase())) {
+      event.preventDefault(); event.stopImmediatePropagation(); warn();
+    }
+  }, true);
+  function protectImages(root) {
+    if (!root || root.nodeType !== 1) return;
+    if (root.matches('img')) { root.draggable = false; root.setAttribute('draggable','false'); }
+    root.querySelectorAll('img').forEach(img => {
+      img.draggable = false;
+      img.setAttribute('draggable','false');
+    });
+  }
+  protectImages(document.documentElement);
+  new MutationObserver(records => records.forEach(record => {
+    record.addedNodes.forEach(protectImages);
+  })).observe(document.documentElement, {childList:true, subtree:true});
+  window.addEventListener('load', () => protectImages(document.documentElement), {once:true});
+})();
 </script>
 </body>
 </html>
