@@ -36,11 +36,28 @@ const VOICE_PROMPTS=[
 let voiceMap={};try{voiceMap=JSON.parse(localStorage.getItem(VOICE_STORAGE_KEY)||'{}')||{}}catch(e){}
 const voicePlayers=TEACHER_VOICE_CLIPS.map((clip)=>{let a=new Audio('assets/teacher_voice/'+clip.name);a.preload='none';return a});
 let currentRecordedAudio=null;
-// Prioritize only configured teacher-voice files to avoid 19 simultaneous MP3 requests.
-function warmAssignedVoice(){for(const i of [...new Set(Object.values(voiceMap))].slice(0,4)){
- const a=voicePlayers[Number(i)];if(a&&a.preload==='none'){a.preload='auto';a.load()}
-}}
-document.addEventListener('pointerdown',warmAssignedVoice,{once:true,passive:true});
+// Prepare only mapped clips, in small groups, so the online lesson does not
+// wait for the first click to download the teacher's recording.
+const voiceWarmSet=new Set();
+function warmAssignedVoice(){
+ const ids=[...new Set(Object.values(voiceMap).map(Number))].filter(i=>Number.isInteger(i)&&voicePlayers[i]);
+ for(const i of ids){
+  if(voiceWarmSet.has(i))continue;
+  voiceWarmSet.add(i);
+  const a=voicePlayers[i];a.preload='auto';a.load();
+ }
+}
+// Local installed speech voices avoid network-dependent cloud TTS where available.
+let localEnglishVoice=null;
+function chooseLocalEnglishVoice(){
+ if(!('speechSynthesis' in window))return;
+ const vs=speechSynthesis.getVoices()||[];
+ localEnglishVoice=vs.find(v=>v.localService&&/^en[-_]/i.test(v.lang))||vs.find(v=>v.localService&&/^en$/i.test(v.lang))||null;
+}
+chooseLocalEnglishVoice();
+if('speechSynthesis' in window)speechSynthesis.addEventListener?.('voiceschanged',chooseLocalEnglishVoice);
+window.addEventListener('load',()=>setTimeout(warmAssignedVoice,100),{once:true});
+document.addEventListener('pointerdown',warmAssignedVoice,{passive:true});
 
 function normalizeVoiceText(t){return String(t).trim().toLowerCase().replace(/[’]/g,"'").replace(/\s+/g,' ').replace(/[.!?]+$/,'')}
 function stopRecordedVoice(){if(currentRecordedAudio){currentRecordedAudio.pause();currentRecordedAudio.currentTime=0;currentRecordedAudio=null}}
@@ -48,7 +65,7 @@ function recordedVoice(text,done){const key=normalizeVoiceText(text);const slot=
  const a=voicePlayers[slot];stopRecordedVoice();try{window.speechSynthesis?.cancel()}catch(e){}
  currentRecordedAudio=a;a.currentTime=0;a.onended=()=>{if(currentRecordedAudio===a)currentRecordedAudio=null;done?.()};a.onerror=()=>{if(currentRecordedAudio===a)currentRecordedAudio=null;done?.()};
  a.play().catch(()=>{if(currentRecordedAudio===a)currentRecordedAudio=null;done?.()});return true}
-function saveVoiceMap(){try{localStorage.setItem(VOICE_STORAGE_KEY,JSON.stringify(voiceMap))}catch(e){}}
+function saveVoiceMap(){try{localStorage.setItem(VOICE_STORAGE_KEY,JSON.stringify(voiceMap))}catch(e){}warmAssignedVoice()}
 function initVoicePanel(){let rows=document.getElementById('voiceRows');if(!rows)return;rows.replaceChildren();VOICE_PROMPTS.forEach(prompt=>{const row=document.createElement('div');row.className='voiceRow';const label=document.createElement('strong');label.textContent=prompt;const select=document.createElement('select');select.setAttribute('aria-label','Recording for '+prompt);select.innerHTML='<option value="">Use existing slow voice</option>';TEACHER_VOICE_CLIPS.forEach((clip,i)=>{let opt=document.createElement('option');opt.value=String(i);opt.textContent='Recording '+String(i+1).padStart(2,'0')+' — '+clip.original;select.append(opt)});let id=voiceMap[normalizeVoiceText(prompt)];select.value=id===undefined?'':String(id);select.onchange=()=>{if(select.value==='')delete voiceMap[normalizeVoiceText(prompt)];else{const idx=Number(select.value);voiceMap[normalizeVoiceText(prompt)]=idx;const clip=voicePlayers[idx];if(clip){clip.preload='auto';clip.load()}}saveVoiceMap()};const listen=document.createElement('button');listen.textContent='▶ Preview';listen.onclick=()=>{if(select.value!==''){stopRecordedVoice();const a=voicePlayers[Number(select.value)];currentRecordedAudio=a;a.currentTime=0;a.play().catch(()=>{})}};row.append(label,select,listen);rows.append(row)})}
 document.getElementById('closeVoicePanel').onclick=()=>{stopRecordedVoice();document.getElementById('voicePanel').classList.remove('show')};
 document.getElementById('voiceWarm').onclick=()=>{const assigned=[...new Set(Object.values(voiceMap).filter(i=>Number.isInteger(i)&&voicePlayers[i]))];assigned.forEach(i=>{voicePlayers[i].preload='auto';voicePlayers[i].load()});document.getElementById('voiceStatus').textContent=assigned.length+' assigned recordings prepared for playback. Unused recordings are not downloaded.'};
@@ -79,8 +96,8 @@ function lessonImg(n){let im=document.createElement('img');im.src=PICTURE[n];im.
 // Classroom speech: adjustable speed and explicit pauses between prompts.
 const LABELS=['spring','summer','autumn','winter','sunny','rainy','cloudy','windy','hot','cold'];
 let ttsSpeed=.65,ttsPause=1500,audioGeneration=0,lessonQuestion=0,lessonAnswered=false,learnPage=0;
-function say(t){stopRecordedVoice();audioGeneration++;if(recordedVoice(t))return;if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=ttsSpeed;window.speechSynthesis.speak(u)}
-function saySequence(parts){audioGeneration++;const g=audioGeneration;if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();let i=0;function next(){if(g!==audioGeneration||i>=parts.length)return;let item=parts[i++];if(recordedVoice(item,()=>setTimeout(next,ttsPause)))return;let u=new SpeechSynthesisUtterance(item);u.lang='en-US';u.rate=ttsSpeed;u.onend=()=>setTimeout(next,ttsPause);window.speechSynthesis.speak(u)}next()}
+function say(t){stopRecordedVoice();audioGeneration++;if(recordedVoice(t))return;if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang='en-US';if(localEnglishVoice)u.voice=localEnglishVoice;u.rate=ttsSpeed;window.speechSynthesis.speak(u)}
+function saySequence(parts){audioGeneration++;const g=audioGeneration;if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();let i=0;function next(){if(g!==audioGeneration||i>=parts.length)return;let item=parts[i++];if(recordedVoice(item,()=>setTimeout(next,ttsPause)))return;let u=new SpeechSynthesisUtterance(item);u.lang='en-US';if(localEnglishVoice)u.voice=localEnglishVoice;u.rate=ttsSpeed;u.onend=()=>setTimeout(next,ttsPause);window.speechSynthesis.speak(u)}next()}
 function correct(){say('Correct!');let x=$('correctSign');x.classList.remove('pop');void x.offsetHeight;x.classList.add('pop')}
 function newParagraph(part,t,cls=''){let e=document.createElement('p');e.textContent=t;if(cls)e.className=cls;part.append(e);return e}
 function pic(part,n,onClick){let b=newBtn('',onClick);b.className='picbtn';b.append(lessonImg(n));part.append(b);return b}
