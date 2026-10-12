@@ -1,0 +1,12 @@
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+/spinny_seasons/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+/assets/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
+/slides/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
+/cards/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
+/spinny_seasons/assets/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000

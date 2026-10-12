@@ -1,0 +1,284 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Four Seasons & Weather — Grade 2</title><style>*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:'Trebuchet MS',system-ui,sans-serif;color:#553c21;background:#f9f7f1}button{font:inherit;font-weight:800;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:4px solid #2580ff;outline-offset:3px}img{-webkit-user-drag:none;user-select:none;-webkit-user-select:none}main.section{display:none;min-height:100dvh}main.shown{display:block}#homepage.shown{height:100dvh;min-height:0;background:#101d2b}#homeCanvas{width:100%;height:100%;position:relative;overflow:hidden}#homeCanvas>img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.hotspot{position:absolute;background:transparent;border:0;border-radius:14px}.hotspot:hover{background:#ffffff2b;outline:3px solid #fff9;outline-offset:-3px}body:has(main.section:not(#homepage).shown){background:linear-gradient(#f7f9fbea,#ffffffdf),url('assets/background.webp') center center/cover fixed no-repeat}.bar{background:#fffef4e8;border-bottom:4px solid #ffcf6a;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:10px 16px;position:sticky;top:0;z-index:3}.bar h1{font-size:clamp(18px,2.6vw,29px);margin:0}.btn{border:2px solid #e4b653;border-radius:15px;padding:10px 13px;background:#fffaf0;color:#5b3e18;margin:3px;box-shadow:0 3px 0 #daa449}.btn.active{background:#ffe182}.actions{display:flex;gap:5px;flex-wrap:wrap}.paper{max-width:1180px;margin:20px auto;padding:20px;background:#fffcf0ed;border:3px solid #f2ca71;border-radius:25px;box-shadow:0 10px 27px #55422926}.steps{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0}.exercise{background:#fffffff2;border:2px solid #e8c678;border-radius:17px;padding:18px;min-height:220px;position:relative}.exercise p{line-height:1.55}.picbtn{border:2px solid #f1c26d;background:#fffbef;border-radius:16px;padding:9px;margin:7px;display:inline-flex;align-items:center;justify-content:center;vertical-align:top}.picbtn img{max-width:170px;height:190px;object-fit:contain}.cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;padding:15px;max-width:1300px;margin:auto}.thumb{border:3px solid #ebc064;border-radius:14px;background:#fff9e9;padding:6px}.thumb img{width:100%;height:200px;object-fit:contain}.hidden{display:none!important}.large{height:calc(100dvh - 115px);display:flex;align-items:center;justify-content:center;gap:8px}.large img{max-height:100%;max-width:calc(100vw - 165px);object-fit:contain;border-radius:12px}.counter{font-weight:900}.gameframe{width:100%;height:calc(100dvh - 69px);border:0;background:white}.correctSign{position:fixed;top:37%;left:50%;transform:translate(-50%,-50%) scale(.2);font-size:min(21vw,190px);color:#2da331;text-shadow:4px 5px 0 white;opacity:0;pointer-events:none;z-index:15}.correctSign.pop{animation:pop .9s ease-out forwards}@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}35%{opacity:1;transform:translate(-50%,-50%) scale(1.45)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.98)}}#pdfEmbed{display:none}.presStage{text-align:center}.presStage img{display:block;max-height:calc(100dvh - 210px);max-width:100%;object-fit:contain;margin:12px auto;border-radius:15px;box-shadow:0 6px 24px #2223}.preset{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.thumb.selected{border-color:#2395df;box-shadow:0 0 0 4px #83d5fa}.tools{display:flex;flex-wrap:wrap;gap:8px;margin:10px auto;max-width:1300px;padding:0 14px;align-items:center}.tools input{padding:11px;border-radius:12px;border:2px solid #e4b653;max-width:220px}.tools select{padding:10px;border-radius:12px;border:2px solid #e4b653;background:white}.smallhint{font-size:14px;color:#714c27}.thumb.ghost{opacity:.35}.saveStatus{font-weight:700}.presControls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}.presControls button{font-size:17px}.notice{background:#fff1d5;border-radius:12px;padding:16px;line-height:1.5}@media(max-width:700px){.paper{margin:8px;padding:10px}.btn{padding:7px;font-size:13px}.cardgrid{grid-template-columns:repeat(2,minmax(0,1fr));padding:8px}.thumb img{height:150px}.picbtn img{width:120px;height:140px}.large{height:calc(100dvh - 140px)}.large img{max-width:calc(100vw - 92px)}}
+.learningProgress{background:#fff3d4;border:2px solid #ecc26b;padding:12px;border-radius:15px;margin:12px 0;font-weight:800}.audioControl{display:inline-flex;gap:7px;align-items:center;margin:8px;background:#fffaf2;border-radius:14px;padding:8px}.audioControl select{padding:7px;border-radius:8px}.questionOptions{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}.questionOptions .picbtn{margin:2px}.successText{font-size:23px;color:#218735;font-weight:900}.hintText{color:#76502d;font-weight:700;margin:8px 0}
+
+/* Grade 2 classroom-first one-card viewer */
+.learnStage{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;min-height:64vh;padding:14px 6px}.learnStage .learnPic{display:flex;align-items:center;justify-content:center;width:min(100%,650px);height:min(51vh,570px);border:4px solid #f3c865;border-radius:24px;background:#fffbef;box-shadow:0 8px 21px #7f633126}.learnPic img{max-width:100%;max-height:100%;object-fit:contain}.learnWord{font-size:clamp(40px,5vw,80px);font-weight:1000;line-height:1.14;text-transform:capitalize;color:#573317}.learnSentence{font-size:clamp(31px,3.5vw,56px);font-weight:900;color:#245b84;line-height:1.22}.learnActions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:10px}.learnActions .btn{font-size:clamp(18px,2vw,26px);padding:12px 21px}.bigPrompt{font-size:clamp(34px,4vw,62px);font-weight:1000;line-height:1.2;text-align:center;color:#245b84;background:#eff8ff;padding:19px;border-radius:23px;margin:16px 0}.practiceHero{display:flex;justify-content:center}.practiceHero .picbtn img{height:min(35vh,360px);max-width:min(60vw,360px)}.questionOptions .picbtn img{height:clamp(110px,19vh,220px);max-width:200px}.practiceInstruction{font-size:clamp(23px,2.5vw,34px);text-align:center;font-weight:800}.learningProgress{text-align:center;font-size:20px}@media(max-width:650px){.learnStage .learnPic{height:44vh}.learnActions .btn{padding:9px 13px}}
+.spokenText{font-size:clamp(37px,4.5vw,66px);font-weight:1000;line-height:1.25;text-align:center;color:#214f7a;background:#f0f9ff;border:3px solid #b5dff8;border-radius:22px;padding:20px 15px;margin:15px auto;max-width:980px}.spokenText.revealed{background:#eefbe9;border-color:#a6d895;color:#276626}.spokenInstruction{font-size:clamp(27px,3vw,43px);font-weight:850;text-align:center;line-height:1.3;margin:14px auto}.spokenSmall{font-size:clamp(24px,2.6vw,40px);font-weight:850;text-align:center;color:#65441c;margin:10px auto}</style><style id="teacherVoiceCss">
+#voicePanel{position:fixed;inset:0;z-index:999;background:#eff9ff;color:#12334b;padding:18px;overflow:auto;display:none}#voicePanel.show{display:block}#voicePanel button,#voicePanel select{cursor:pointer;padding:9px;border:2px solid #c4aa64;border-radius:12px;background:white}#voicePanel .voiceRow{display:grid;grid-template-columns:minmax(170px,1fr) minmax(170px,1fr) auto;align-items:center;gap:10px;margin:7px 0;padding:10px;background:white;border-radius:12px}#voicePanel .voiceHeader{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px}#voicePanel .voiceHint{padding:12px;background:#fff3c9;border-radius:12px;margin:12px 0}#voicePanel .voiceList{max-width:1100px;margin:auto}#voicePanel .voiceRow button{white-space:nowrap}@media(max-width:600px){#voicePanel .voiceRow{grid-template-columns:1fr 1fr}#voicePanel .voiceRow strong{grid-column:1/-1}}
+</style>
+<style id="ptpWatermarkCss">
+#ptpWatermark{position:fixed;right:10px;bottom:8px;z-index:9998;pointer-events:none;user-select:none;
+font:800 clamp(10px,1vw,14px)/1.1 system-ui,sans-serif;color:rgba(55,55,55,.16);
+letter-spacing:.02em;text-shadow:0 1px rgba(255,255,255,.25)}
+@media(max-width:700px){#ptpWatermark{font-size:10px;right:6px;bottom:5px}}
+</style>
+</head><body><div id="ptpWatermark" aria-hidden="true">pawntoprofessor.com</div>
+<audio id="songAudio" preload="none" src="assets/song.mp3"></audio><div id="correctSign" class="correctSign">✓</div>
+<main id="homepage" class="section shown"><div id="homeCanvas"><img src="assets/home.webp" alt="Four Seasons and Weather menu" fetchpriority="high" decoding="async"><button id="fullHome" class="hotspot" style="left:95%;top:1%;width:4%;height:5%;opacity:.01" aria-label="Full screen"></button></div></main>
+<main id="lesson" class="section"><header class="bar"><h1 id="lessonName">Spring</h1><div class="actions"><button class="btn" id="goHomeLesson">🏠 HOME</button><button class="btn" id="songLesson">🎵 SONG</button><button class="btn" id="fullLesson">⛶ FULL SCREEN</button></div></header><div class="paper"><div class="steps" id="stepNav"></div><div id="task" class="exercise"></div><div class="actions"><button class="btn" id="prevStep">❮ PREVIOUS</button><button class="btn" id="nextStep">NEXT ❯</button><button class="btn" id="openAll">ALL FLASHCARDS</button><button class="btn" id="openPicture">PICTURE FLASHCARDS</button><button class="btn" id="openMime">MIME CARDS</button><button class="btn" id="openGameLesson">WHEEL GAME</button></div></div></main>
+<main id="viewer" class="section"><header class="bar"><h1 id="viewerTitle"></h1><div class="actions"><span class="counter" id="cardCounter"></span><button class="btn" id="gridBtn">▦ GRID</button><button class="btn" id="organizeBtn">✏️ ORGANIZE</button><button class="btn" id="fullViewer">⛶ FULL SCREEN</button><button class="btn" id="goHomeViewer">✕ HOME</button></div></header><div id="organizer" class="hidden"><div class="tools"><strong>My Flashcard Sets (3 maximum, 40 cards per set)</strong><select id="setSelect" aria-label="Saved sets"></select><button class="btn" id="loadSet">OPEN SAVED</button><button class="btn" id="deleteSet">DELETE SAVED</button><button class="btn" id="resetSet">RESET ORDER</button></div><div class="tools"><input id="setName" maxlength="50" placeholder="Set name, e.g. Spring review"><button class="btn" id="saveSet">💾 SAVE MY SET</button><button class="btn" id="playSet">▶ PRESENT ORDER</button><span id="saveStatus" class="saveStatus"></span></div><div class="tools smallhint">Select a card, then use the arrows to move it. Hide cards you do not want in the slideshow. On computers, you can also drag cards to rearrange them.</div><div class="tools"><button class="btn" id="moveLeft">⬅ MOVE LEFT</button><button class="btn" id="moveRight">MOVE RIGHT ➡</button><button class="btn" id="hideCard">HIDE / SHOW</button><span id="selectedCardInfo" class="smallhint"></span></div></div><div class="cardgrid" id="cardsGrid"></div><div class="large hidden" id="cardLarge"><button class="btn" id="cardPrev">❮</button><img id="cardLargeImg" alt="Flashcard picture"><button class="btn" id="cardNext">❯</button></div></main>
+<main id="gameView" class="section"><header class="bar"><h1>Spinny Seasons</h1><div class="actions"><button class="btn" id="fullGame">⛶ FULL SCREEN</button><button class="btn" id="goHomeGame">✕ HOME</button></div></header><iframe class="gameframe" id="gameframe" src="about:blank" title="Spinny Seasons Game"></iframe></main>
+<main id="presentation" class="section"><header class="bar"><h1>Four Seasons · Presentation</h1><div class="actions"><button class="btn" id="fullPres">⛶ FULL SCREEN</button><button class="btn" id="goHomePres">✕ HOME</button></div></header><div class="paper"><div class="preset" id="seasonPres"></div><div class="presControls"><button class="btn" id="presPrev">❮ PREVIOUS</button><strong id="presCounter">1 / 68</strong><button class="btn" id="presNext">NEXT ❯</button></div><div class="presStage"><img id="presImg" alt="Four Seasons lesson slide 1"></div><p class="smallhint">Use the arrow keys or the Previous / Next buttons. All original 68 slides are included.</p></div></main>
+<script>
+window.PTP_FLASHCARD_CONFIG = {
+  unitKey: 'grade2_unit3_seasons',
+  lessonKey: 'main'
+};
+
+/* Teacher voice library — local MP3 playback; no new APIs, SQL, or backend calls. */
+const TEACHER_VOICE_CLIPS=[{"name": "clip_01.mp3", "original": "ttsmaker-file-2026-10-12-20-32-43.mp3"}, {"name": "clip_02.mp3", "original": "ttsmaker-file-2026-10-12-20-33-17.mp3"}, {"name": "clip_03.mp3", "original": "ttsmaker-file-2026-10-12-20-33-53.mp3"}, {"name": "clip_04.mp3", "original": "ttsmaker-file-2026-10-12-20-34-21.mp3"}, {"name": "clip_05.mp3", "original": "ttsmaker-file-2026-10-12-20-35-10.mp3"}, {"name": "clip_06.mp3", "original": "ttsmaker-file-2026-10-12-20-35-33.mp3"}, {"name": "clip_07.mp3", "original": "ttsmaker-file-2026-10-12-20-35-56.mp3"}, {"name": "clip_08.mp3", "original": "ttsmaker-file-2026-10-12-20-36-53.mp3"}, {"name": "clip_09.mp3", "original": "ttsmaker-file-2026-10-12-20-36-7.mp3"}, {"name": "clip_10.mp3", "original": "ttsmaker-file-2026-10-12-20-37-58.mp3"}, {"name": "clip_11.mp3", "original": "ttsmaker-file-2026-10-12-20-37-7.mp3"}, {"name": "clip_12.mp3", "original": "ttsmaker-file-2026-10-12-20-38-53.mp3"}, {"name": "clip_13.mp3", "original": "ttsmaker-file-2026-10-12-20-41-33.mp3"}, {"name": "clip_14.mp3", "original": "ttsmaker-file-2026-10-12-20-44-16.mp3"}, {"name": "clip_15.mp3", "original": "ttsmaker-file-2026-10-12-20-45-12.mp3"}, {"name": "clip_16.mp3", "original": "ttsmaker-file-2026-10-12-20-47-16.mp3"}, {"name": "clip_17.mp3", "original": "ttsmaker-file-2026-10-12-20-49-26.mp3"}, {"name": "clip_18.mp3", "original": "ttsmaker-file-2026-10-12-20-49-6.mp3"}, {"name": "clip_19.mp3", "original": "ttsmaker-file-2026-10-12-20-50-3.mp3"}];
+const VOICE_STORAGE_KEY='ptp-g2u3-teacher-voice-mapping-v1';
+const VOICE_PROMPTS=[
+ 'spring','summer','autumn','winter','sunny','rainy','cloudy','windy','hot','cold',
+ 'It’s spring.','It’s summer.','It’s autumn.','It’s winter.',
+ 'It’s sunny.','It’s rainy.','It’s cloudy.','It’s windy.','It’s hot.','It’s cold.',
+ 'What season is it?','How’s the weather?','Correct!'];
+let voiceMap={};try{voiceMap=JSON.parse(localStorage.getItem(VOICE_STORAGE_KEY)||'{}')||{}}catch(e){}
+const voicePlayers=TEACHER_VOICE_CLIPS.map((clip)=>{let a=new Audio('assets/teacher_voice/'+clip.name);a.preload='none';return a});
+let currentRecordedAudio=null;
+function normalizeVoiceText(t){return String(t).trim().toLowerCase().replace(/[’]/g,"'").replace(/\s+/g,' ').replace(/[.!?]+$/,'')}
+function stopRecordedVoice(){if(currentRecordedAudio){currentRecordedAudio.pause();currentRecordedAudio.currentTime=0;currentRecordedAudio=null}}
+function recordedVoice(text,done){const key=normalizeVoiceText(text);const slot=voiceMap[key];if(slot===undefined||slot===null||!voicePlayers[slot])return false;
+ const a=voicePlayers[slot];stopRecordedVoice();try{window.speechSynthesis?.cancel()}catch(e){}
+ currentRecordedAudio=a;a.currentTime=0;a.onended=()=>{if(currentRecordedAudio===a)currentRecordedAudio=null;done?.()};a.onerror=()=>{if(currentRecordedAudio===a)currentRecordedAudio=null;done?.()};
+ a.play().catch(()=>{if(currentRecordedAudio===a)currentRecordedAudio=null;done?.()});return true}
+function saveVoiceMap(){try{localStorage.setItem(VOICE_STORAGE_KEY,JSON.stringify(voiceMap))}catch(e){}}
+function initVoicePanel(){let rows=document.getElementById('voiceRows');if(!rows)return;rows.replaceChildren();VOICE_PROMPTS.forEach(prompt=>{const row=document.createElement('div');row.className='voiceRow';const label=document.createElement('strong');label.textContent=prompt;const select=document.createElement('select');select.setAttribute('aria-label','Recording for '+prompt);select.innerHTML='<option value="">Use existing slow voice</option>';TEACHER_VOICE_CLIPS.forEach((clip,i)=>{let opt=document.createElement('option');opt.value=String(i);opt.textContent='Recording '+String(i+1).padStart(2,'0')+' — '+clip.original;select.append(opt)});let id=voiceMap[normalizeVoiceText(prompt)];select.value=id===undefined?'':String(id);select.onchange=()=>{if(select.value==='')delete voiceMap[normalizeVoiceText(prompt)];else voiceMap[normalizeVoiceText(prompt)]=Number(select.value);saveVoiceMap()};const listen=document.createElement('button');listen.textContent='▶ Preview';listen.onclick=()=>{if(select.value!==''){stopRecordedVoice();const a=voicePlayers[Number(select.value)];currentRecordedAudio=a;a.currentTime=0;a.play().catch(()=>{})}};row.append(label,select,listen);rows.append(row)})}
+document.getElementById('closeVoicePanel').onclick=()=>{stopRecordedVoice();document.getElementById('voicePanel').classList.remove('show')};
+document.getElementById('voiceWarm').onclick=()=>{voicePlayers.forEach(a=>a.load());document.getElementById('voiceStatus').textContent='Audio files prepared. They will be cached by the browser when available.'};
+function showTeacherVoicePanel(){initVoicePanel();document.getElementById('voicePanel').classList.add('show')}
+const voiceOpenButton=document.createElement('button');voiceOpenButton.className='btn';voiceOpenButton.textContent='🎙 My Voice Setup';voiceOpenButton.onclick=showTeacherVoicePanel;
+const existingSpeed=document.getElementById('speedControl')||document.getElementById('speed');
+if(existingSpeed?.parentNode)existingSpeed.parentNode.appendChild(voiceOpenButton);
+else{voiceOpenButton.style.position='fixed';voiceOpenButton.style.right='12px';voiceOpenButton.style.bottom='12px';voiceOpenButton.style.zIndex='8';document.body.appendChild(voiceOpenButton)}
+</script>
+<script src="./ptp-flashcard-storage.js" defer></script>
+<script>const $=x=>document.getElementById(x);
+const ALL=Array.from({length:70},(_,i)=>`cards/all/${String(i+1).padStart(3,'0')}.webp`);
+const PICTURE=ALL.slice(10,20);
+const MIME=Array.from({length:10},(_,i)=>`cards/mime/${String(i+1).padStart(3,'0')}.webp`);
+const SEASONS=['Spring','Summer','Autumn','Winter','Review & Challenge'];
+const WEATHERS=[['sunny','rainy','cloudy'],['sunny','hot','rainy'],['windy','cloudy','rainy'],['cold','windy','cloudy'],['sunny','rainy','cloudy','windy','hot','cold']];
+const STEPS=['LEARN','PRACTICE','LISTEN','PLAY','SPEAK','GAME','FINISH'];
+let currentSeason=0,currentStep=0,deck=[],index=0,mode='',slide=1,organizing=false,chosen=-1,hiddenCards=new Set(),dragged=-1;
+function active(name){document.querySelectorAll('main.section').forEach(x=>x.classList.remove('shown'));$(name).classList.add('shown')}
+function hideSong(){let a=$('songAudio');if(!a.paused)a.pause();}
+function home(){active('homepage');$('gameframe').src='about:blank';hideSong()}
+function full(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen?.().catch(()=>{})}
+function toggleSong(){const a=$('songAudio');if(a.paused)a.play().catch(()=>{});else a.pause()}
+function setSeason(i){currentSeason=i;currentStep=0;lessonQuestion=0;lessonAnswered=false;renderLesson();active('lesson')}
+function setStep(i){currentStep=Math.max(0,Math.min(STEPS.length-1,i));lessonQuestion=0;lessonAnswered=false;learnPage=0;audioGeneration++;window.speechSynthesis?.cancel();renderLesson()}
+function newBtn(text,click){let b=document.createElement('button');b.className='btn';b.textContent=text;b.onclick=click;return b}
+function lessonImg(n){let im=document.createElement('img');im.src=PICTURE[n];im.alt='Season or weather picture';im.loading='eager';im.decoding='async';return im}
+// Classroom speech: adjustable speed and explicit pauses between prompts.
+const LABELS=['spring','summer','autumn','winter','sunny','rainy','cloudy','windy','hot','cold'];
+let ttsSpeed=.65,ttsPause=1500,audioGeneration=0,lessonQuestion=0,lessonAnswered=false,learnPage=0;
+function say(t){stopRecordedVoice();audioGeneration++;if(recordedVoice(t))return;if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=ttsSpeed;window.speechSynthesis.speak(u)}
+function saySequence(parts){audioGeneration++;const g=audioGeneration;if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();let i=0;function next(){if(g!==audioGeneration||i>=parts.length)return;let item=parts[i++];if(recordedVoice(item,()=>setTimeout(next,ttsPause)))return;let u=new SpeechSynthesisUtterance(item);u.lang='en-US';u.rate=ttsSpeed;u.onend=()=>setTimeout(next,ttsPause);window.speechSynthesis.speak(u)}next()}
+function correct(){say('Correct!');let x=$('correctSign');x.classList.remove('pop');void x.offsetHeight;x.classList.add('pop')}
+function newParagraph(part,t,cls=''){let e=document.createElement('p');e.textContent=t;if(cls)e.className=cls;part.append(e);return e}
+function pic(part,n,onClick){let b=newBtn('',onClick);b.className='picbtn';b.append(lessonImg(n));part.append(b);return b}
+function audioSettings(part){let d=document.createElement('label');d.className='audioControl';d.textContent='🔊 Voice speed ';let sel=document.createElement('select');[['0.55','Very slow'],['0.65','Slow'],['0.80','Normal']].forEach(([v,t])=>{let o=new Option(t,v);sel.append(o)});sel.value=String(ttsSpeed);sel.onchange=()=>{ttsSpeed=Number(sel.value)};d.append(sel);part.append(d);let d2=document.createElement('label');d2.className='audioControl';d2.textContent='Pause ';let ps=document.createElement('select');[['1000','1 second'],['1500','1.5 seconds'],['2000','2 seconds']].forEach(([v,t])=>ps.append(new Option(t,v)));ps.value=String(ttsPause);ps.onchange=()=>{ttsPause=Number(ps.value)};d2.append(ps);part.append(d2)}
+function learningPool(w){const ww=WEATHERS[w].map(t=>LABELS.indexOf(t));if(w===4)return [...Array(10).keys()];return [w,...ww]}
+function lessonQuestions(w,step){const weather=WEATHERS[w].map(t=>LABELS.indexOf(t));const seasons=w===4?[0,1,2,3]:[w];
+if(step===1){let arr=[];const pool=learningPool(w);for(let i=0;i<6;i++){let target=pool[(i+1)%pool.length];let opts=[...new Set([target,...pool.filter(x=>x!==target).slice((i%2),i%2+3)])];if(opts.length<2)opts=[target,(target+1)%10];arr.push({target,opts,voice:i<2?LABELS[target]:(i<4?'It is '+LABELS[target]+'.':(target<4?'What season is it? '+LABELS[target]+'.':'How is the weather? It is '+LABELS[target]+'.')),question:i<2?'Find the picture.':i<4?'Which picture matches the sentence?':'Listen and identify the answer.'})}return arr}
+if(step===2){let arr=[];const pool=learningPool(w);for(let i=0;i<8;i++){let target=pool[(i+w)%pool.length];let opts=[target,...pool.filter(x=>x!==target)].slice(0,w===4?5:4);arr.push({target,opts,voice:i<3?LABELS[target]:i<6?'It is '+LABELS[target]+'.':target<4?'What season is it? It is '+LABELS[target]+'.':'How is the weather? It is '+LABELS[target]+'.',question:i<3?'Listen to the word.':i<6?'Listen to the sentence.':'Listen to the question and answer.'})}return arr}
+return []}
+function renderLesson(){let w=currentSeason,step=currentStep,part=$('task');$('lessonName').textContent=SEASONS[w];$('stepNav').innerHTML='';STEPS.forEach((st,i)=>{let b=newBtn(st,()=>setStep(i));if(i===step)b.classList.add('active');$('stepNav').append(b)});part.innerHTML='';let h=document.createElement('h2');h.textContent=STEPS[step]+' · '+SEASONS[w];part.append(h);
+if(step===0){
+const seasons=w===4?[0,1,2,3]:[w];const weather=WEATHERS[w].map(x=>LABELS.indexOf(x));
+const pages=[...seasons.map(i=>({n:i,kind:'season'})),...weather.map(i=>({n:i,kind:'weather'})),{n:w===4?0:w,kind:'combine'}];
+learnPage=Math.max(0,Math.min(learnPage,pages.length-1));const pg=pages[learnPage];
+const stage=document.createElement('div');stage.className='learnStage';part.append(stage);
+newParagraph(stage,'Page '+(learnPage+1)+' of '+pages.length+' · '+(pg.kind==='season'?'1 · DISCOVER THE SEASON':pg.kind==='weather'?'2 · DISCOVER THE WEATHER':'3 · SEASON + WEATHER'),'learningProgress');
+const picWrap=document.createElement('div');picWrap.className='learnPic';const im=lessonImg(pg.n);im.loading='eager';picWrap.append(im);stage.append(picWrap);
+if(pg.kind!=='combine'){
+let name=document.createElement('div');name.className='learnWord';name.textContent=LABELS[pg.n];stage.append(name);
+let sentence=document.createElement('div');sentence.className='learnSentence';sentence.textContent='It’s '+LABELS[pg.n]+'.';stage.append(sentence);
+}else{
+let sentence=document.createElement('div');sentence.className='learnSentence';sentence.textContent='It’s '+LABELS[pg.n]+'. It’s '+LABELS[weather[0]]+'.';stage.append(sentence);
+}
+const controls=document.createElement('div');controls.className='learnActions';stage.append(controls);
+let prev=newBtn('❮ PREVIOUS PAGE',()=>{learnPage--;renderLesson()});prev.disabled=learnPage===0;controls.append(prev);
+controls.append(newBtn('🔊 HEAR SLOWLY',()=>pg.kind==='combine'?saySequence(['It’s '+LABELS[pg.n]+'.','It’s '+LABELS[weather[0]]+'.']):saySequence([LABELS[pg.n],'It’s '+LABELS[pg.n]+'.'])));
+controls.append(newBtn('SAY IT! 🎤',()=>say('Your turn.')));
+let next=newBtn(learnPage===pages.length-1?'GO TO PRACTICE ❯':'NEXT PAGE ❯',()=>{if(learnPage===pages.length-1)setStep(1);else{learnPage++;renderLesson()}});controls.append(next);
+newParagraph(stage,pg.kind==='combine'?'Look, listen, and say both sentences.':'Look → Listen → Say. Mime the picture with your teacher.','hintText');
+audioSettings(stage);
+}
+else if(step===1||step===2){
+const questions=lessonQuestions(w,step);const q=questions[lessonQuestion%questions.length];
+newParagraph(part,'Question '+(lessonQuestion%questions.length+1)+' of '+questions.length,'learningProgress');
+const prompt=document.createElement('div');prompt.className='bigPrompt';prompt.textContent=step===1?(q.target<4?'It’s '+LABELS[q.target]+'.':lessonQuestion%3===0?'How’s the weather?':'It’s '+LABELS[q.target]+'.'):'🔊 Listen and choose the picture';part.append(prompt);
+if(step===1){prompt.textContent=q.voice.replace(/^It is /,'It’s ').replace(/\b(What season is it\?|How is the weather\?)\s*.*/,'$1');}
+else{prompt.textContent=q.target<4&&lessonQuestion>=6?'What season is it?':lessonQuestion>=6?'How’s the weather?':'Listen and choose the picture.';}
+prompt.classList.add('spokenText');
+newParagraph(part,step===1?['Look and choose the correct picture.','Read the sentence and find the scene.','Listen, then match the sentence.','Compare the pictures and choose.','Look at the picture and say the word.','Say a complete sentence after choosing.'][lessonQuestion%6]:q.question,'practiceInstruction');
+part.append(newBtn('🔊 HEAR / REPLAY SLOWLY',()=>saySequence(step===1?[q.voice]:[q.voice])));
+let opts=[...q.opts];const rotate=lessonQuestion%opts.length;opts=opts.slice(rotate).concat(opts.slice(0,rotate));
+const zone=document.createElement('div');zone.className='questionOptions';zone.style.justifyContent='center';part.append(zone);
+opts.forEach(n=>pic(zone,n,()=>{if(lessonAnswered)return;if(n===q.target){lessonAnswered=true;correct();status.textContent='✓ Correct! Now press NEXT QUESTION.';status.className='successText';let revealed=newParagraph(part,'It’s '+LABELS[q.target]+'.','spokenText revealed');next.disabled=false}else{status.textContent='Try again. Press HEAR and choose another picture.';say('Try again.')}}));
+const status=newParagraph(part,'Choose one picture.','hintText');status.style.textAlign='center';
+const next=newBtn(lessonQuestion===questions.length-1?'↻ RESTART ROUND':'NEXT QUESTION ❯',()=>{lessonQuestion=(lessonQuestion+1)%questions.length;lessonAnswered=false;renderLesson()});next.disabled=true;part.append(next);audioSettings(part)
+}
+else if(step===3){let text=['Find the spring picture.','Compare spring and summer.','Find windy weather.','Find cold weather.','Choose a season and say its name.'][w];newParagraph(part,text,'spokenText');part.append(newBtn('🎭 Show mime flashcards',()=>openViewer('mime')));part.append(newBtn('🎡 Spinny Seasons',openGame))}
+else if(step===4){newParagraph(part,'What season is it?','spokenText');newParagraph(part,'How’s the weather?','spokenText');part.append(newBtn('🔊 Ask questions',()=>saySequence(['What season is it?','How is the weather?'])));part.append(newBtn('Show sentence frame',()=>newParagraph(part,'It’s '+(w===4?'____':SEASONS[w].toLowerCase())+'. It’s ____.','spokenText revealed')));audioSettings(part)}
+else if(step===5){newParagraph(part,'Mime, listen, and guess!','spokenText');part.append(newBtn('🎡 OPEN GAME',openGame))}
+else{newParagraph(part,'What season is it?','spokenText');newParagraph(part,'How’s the weather?','spokenText');part.append(newBtn('✓ Finished',correct))}}
+function openViewer(t,list=null,at=0){mode=t;deck=[...(list|| (t==='all'?ALL:t==='picture'?PICTURE:MIME))];index=at;chosen=-1;hiddenCards=new Set();organizing=false;active('viewer');$('organizer').classList.add('hidden');$('organizeBtn').textContent='✏️ ORGANIZE';$('viewerTitle').textContent=t==='all'?'All Flashcards (70)':t==='mime'?'Mime Flashcards — Pictures Only':'Picture Flashcards — 10 Pictures';refreshSaved();grid()}
+function visibleDeck(){return deck.filter(x=>!hiddenCards.has(x))}
+function grid(){let target=$('cardsGrid');target.innerHTML='';target.classList.remove('hidden');$('cardLarge').classList.add('hidden');$('cardCounter').textContent=organizing?`${visibleDeck().length} shown / ${deck.length} cards`:'';deck.forEach((path,i)=>{let b=document.createElement('button');b.className='thumb'+(chosen===i?' selected':'')+(hiddenCards.has(path)?' ghost':'');let im=document.createElement('img');im.src=path;im.loading='lazy';im.alt='Flashcard '+(i+1);b.append(im);b.setAttribute('aria-label','Card '+(i+1));if(organizing){b.draggable=true;b.ondragstart=()=>{dragged=i};b.ondragover=e=>e.preventDefault();b.ondrop=e=>{e.preventDefault();if(dragged>=0&&dragged!==i){const val=deck.splice(dragged,1)[0];deck.splice(i,0,val);chosen=i;grid()}};b.onclick=()=>{chosen=i;grid();$('selectedCardInfo').textContent='Selected card '+(i+1)+(hiddenCards.has(path)?' (hidden)':'')}}else b.onclick=()=>big(i);target.append(b)})}
+function big(i){const showing=organizing?visibleDeck():deck;if(!showing.length){setStatus('No visible cards. Show at least one card.');return}index=(i+showing.length)%showing.length;$('cardLargeImg').src=showing[index];$('cardsGrid').classList.add('hidden');$('cardLarge').classList.remove('hidden');$('cardCounter').textContent=(index+1)+' / '+showing.length}
+function moveChosen(direction){if(chosen<0)return;let j=chosen+direction;if(j<0||j>=deck.length)return;[deck[j],deck[chosen]]=[deck[chosen],deck[j]];chosen=j;grid()}
+// Shared Pawn to Professor storage. The shared script is supplied by the host website.
+// Browser-only fallback preserves offline classroom use; it is not synchronized.
+const PTP_LIMIT_SETS=3, PTP_LIMIT_CARDS=40;
+const KEY='ptp_grade2_unit3_seasons_main_offline_v1';
+let savedSetsCache=[];
+const storageReady=()=>typeof window.PTPFlashcardStorage!=='undefined' &&
+  ['listSets','saveSet','deleteSet'].every(k=>typeof window.PTPFlashcardStorage[k]==='function');
+function setStatus(message){$('saveStatus').textContent=message}
+function offlineRead(){try{let x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x:[]}catch{return []}}
+function offlineWrite(rows){try{localStorage.setItem(KEY,JSON.stringify(rows));return true}catch{return false}}
+function normalizedRows(result){
+  let rows=Array.isArray(result)?result:(Array.isArray(result?.data)?result.data:(Array.isArray(result?.sets)?result.sets:[]));
+  return rows.filter(x=>x&&typeof x==='object').map(x=>({
+    ...x,id:x.id||x.set_id||x.name||x.set_name,
+    set_name:x.set_name||x.name||'Untitled set',
+    card_ids:x.card_ids||x.selected_card_ids||x.cardIds||x.cards||[],
+    hidden_card_ids:x.hidden_card_ids||x.hiddenCardIds||x.hidden||[],
+    card_order:x.card_order||x.cardOrder||x.order||x.metadata?.order||x.card_ids||[],
+    kind:x.kind||x.card_type||x.metadata?.kind||'all'
+  }));
+}
+function payloadFromCurrent(name){
+  let selected=deck.filter(x=>!hiddenCards.has(x));
+  return {
+    setName:name,
+    cardIds:[...selected],
+    hiddenCardIds:[...hiddenCards],
+    metadata:{
+      order:[...deck],
+      kind:mode
+    }
+  };
+}
+async function fetchSaved(){
+  if(storageReady()){
+    try{let response=await window.PTPFlashcardStorage.listSets();if(response?.error)throw response.error;return normalizedRows(response)}
+    catch(e){setStatus('Cloud unavailable. Using this device only.');return offlineRead()}
+  }
+  return offlineRead();
+}
+async function refreshSaved(){
+  let x=await fetchSaved();savedSetsCache=x;
+  const select=$('setSelect'), previous=select.value;select.innerHTML='';
+  x.forEach((set,i)=>{let o=document.createElement('option');o.value=String(i);o.textContent=set.set_name+(set.kind?' · '+set.kind:'');select.append(o)});
+  if(!select.options.length){let o=document.createElement('option');o.textContent='No saved sets';o.value='';select.append(o)}
+  if([...select.options].some(o=>o.value===previous)) select.value=previous;
+}
+async function saveCurrent(){
+  let name=$('setName').value.trim();if(!name){setStatus('Enter a set name first.');return}
+  let selected=deck.filter(x=>!hiddenCards.has(x));
+  if(selected.length>PTP_LIMIT_CARDS){setStatus('A saved set can contain a maximum of 40 flashcards.');return}
+  if(!selected.length){setStatus('Select at least one flashcard.');return}
+  $('saveSet').disabled=true;
+  try{
+    let rows=await fetchSaved();
+    let existing=rows.find(x=>x.set_name===name);
+    if(!existing&&rows.length>=PTP_LIMIT_SETS){setStatus('You already have 3 saved sets for this lesson. Delete one before saving another.');return}
+    const payload=payloadFromCurrent(name);
+    if(storageReady()){
+      // Shared library owns auth, Supabase table, lesson scoping and database operations.
+      // Preserve id when replacing a named set.
+      if(existing?.id)payload.id=existing.id;
+      await window.PTPFlashcardStorage.saveSet(payload);
+      setStatus('✓ Saved to your Pawn to Professor account.');
+    }else{
+      let record={
+        id:existing?.id||'offline_'+Date.now(),
+        set_name:name,
+        card_ids:[...selected],
+        hidden_card_ids:[...hiddenCards],
+        metadata:{order:[...deck],kind:mode},
+        created_at:existing?.created_at||new Date().toISOString(),
+        updated_at:new Date().toISOString()
+      };
+      let updated=existing?rows.map(x=>x.id===existing.id?record:x):[...rows,record];
+      if(!offlineWrite(updated))throw Error('Browser storage unavailable');
+      setStatus('✓ Saved on this device (offline).');
+    }
+    await refreshSaved();
+    const selectedIndex=savedSetsCache.findIndex(x=>x.set_name===name);
+    if(selectedIndex>=0)$('setSelect').value=String(selectedIndex);
+  }catch(e){setStatus('Could not save: '+(e?.message||'Please sign in or retry.'))}
+  finally{$('saveSet').disabled=false}
+}
+async function loadCurrent(){
+  let i=Number($('setSelect').value),set=savedSetsCache[i];if(!set)return;
+  const valid=new Set([...ALL,...PICTURE,...MIME]);
+  const order=(Array.isArray(set.card_order)?set.card_order:set.card_ids).filter(x=>typeof x==='string'&&valid.has(x));
+  if(!order.length){setStatus('This saved set has no available cards.');return}
+  mode=['all','picture','mime'].includes(set.kind)?set.kind:'all';
+  deck=[...new Set(order)];
+  hiddenCards=new Set((Array.isArray(set.hidden_card_ids)?set.hidden_card_ids:[]).filter(x=>deck.includes(x)));
+  chosen=-1;organizing=true;$('organizer').classList.remove('hidden');$('organizeBtn').textContent='✓ DONE';
+  $('viewerTitle').textContent=set.set_name;$('setName').value=set.set_name;
+  setStatus('Opened saved set');grid();
+}
+async function deleteCurrent(){
+  let i=Number($('setSelect').value),set=savedSetsCache[i];if(!set)return;
+  $('deleteSet').disabled=true;
+  try{
+    if(storageReady()){
+      await window.PTPFlashcardStorage.deleteSet(set.id);
+    }else{
+      if(!offlineWrite(savedSetsCache.filter((_,j)=>j!==i)))throw Error('Offline storage unavailable');
+    }
+    await refreshSaved();setStatus('Saved set deleted');
+  }catch(e){setStatus('Could not delete: '+(e?.message||'Try again.'))}
+  finally{$('deleteSet').disabled=false}
+}
+function organizeToggle(){organizing=!organizing;$('organizer').classList.toggle('hidden',!organizing);$('organizeBtn').textContent=organizing?'✓ DONE':'✏️ ORGANIZE';chosen=-1;grid()}
+function closeViewer(){if(!$('cardLarge').classList.contains('hidden'))grid();else home()}
+function openGame(){hideSong();active('gameView');$('gameframe').src='spinny_seasons/index.html'}
+function openPresentation(start=1){hideSong();active('presentation');slide=start;renderSlide()}
+function renderSlide(){slide=Math.max(1,Math.min(68,slide));$('presImg').src='slides/'+String(slide).padStart(3,'0')+'.webp';if(slide<68){let nextImg=new Image();nextImg.src='slides/'+String(slide+1).padStart(3,'0')+'.webp'};$('presImg').alt='Presentation slide '+slide;$('presCounter').textContent=slide+' / 68';$('presPrev').disabled=slide===1;$('presNext').disabled=slide===68}
+function buildSlideSections(){let sections=[['Welcome',1],['Spring',2],['Summer',15],['Autumn',31],['Winter',43],['Review & Game',54]];sections.forEach(([label,start])=>{let btn=newBtn(label,()=>{slide=start;renderSlide()});$('seasonPres').append(btn)})}
+function hotspot(label,x,y,w,h,click){let b=document.createElement('button');b.className='hotspot';b.setAttribute('aria-label',label);b.title=label;b.style.cssText=`left:${x/1599*100}%;top:${y/900*100}%;width:${w/1599*100}%;height:${h/900*100}%`;b.onclick=click;$('homeCanvas').append(b)}
+hotspot('Song',1390,18,199,92,toggleSong);
+hotspot('Presentation',316,268,302,96,openPresentation);
+hotspot('All Flashcards',624,266,301,97,()=>openViewer('all'));
+hotspot('Mime Flashcards',925,264,307,97,()=>openViewer('mime'));
+hotspot('Spinny Seasons game',1240,265,323,97,openGame);
+[[380,89],[471,90],[564,90],[655,91],[747,115]].forEach(([y,h],i)=>hotspot(SEASONS[i],25,y,303,h,()=>setSeason(i)));
+hotspot('Learn',368,609,166,76,()=>{setSeason(currentSeason);setStep(0)});
+hotspot('Practice',540,609,206,76,()=>{setSeason(currentSeason);setStep(1)});
+hotspot('Speak',765,609,157,76,()=>{setSeason(currentSeason);setStep(4)});
+hotspot('Play',923,609,162,76,()=>{setSeason(currentSeason);setStep(3)});
+hotspot('Presentation slides',347,687,456,172,openPresentation);
+hotspot('Picture-only flashcards',799,691,308,167,()=>openViewer('picture'));
+hotspot('Wheel picture',1130,397,455,340,openGame);
+hotspot('Level 1',1117,736,157,113,openGame);hotspot('Level 2',1276,736,150,113,openGame);hotspot('Level 3',1424,736,161,113,openGame);
+$('goHomeLesson').onclick=home;$('goHomeViewer').onclick=home;$('goHomeGame').onclick=home;$('goHomePres').onclick=home;
+$('fullLesson').onclick=$('fullHome').onclick=$('fullViewer').onclick=$('fullGame').onclick=$('fullPres').onclick=full;
+$('songLesson').onclick=toggleSong;
+$('openAll').onclick=()=>openViewer('all');$('openPicture').onclick=()=>openViewer('picture');$('openMime').onclick=()=>openViewer('mime');$('openGameLesson').onclick=openGame;
+$('prevStep').onclick=()=>setStep(currentStep-1);$('nextStep').onclick=()=>setStep(currentStep+1);
+$('organizeBtn').onclick=organizeToggle;$('saveSet').onclick=saveCurrent;$('loadSet').onclick=loadCurrent;$('deleteSet').onclick=deleteCurrent;$('resetSet').onclick=()=>{deck=[...(mode==='all'?ALL:mode==='picture'?PICTURE:MIME)];hiddenCards.clear();chosen=-1;grid()};$('playSet').onclick=()=>{if(visibleDeck().length)big(0)};$('moveLeft').onclick=()=>moveChosen(-1);$('moveRight').onclick=()=>moveChosen(1);$('hideCard').onclick=()=>{if(chosen<0)return;const path=deck[chosen];if(hiddenCards.has(path))hiddenCards.delete(path);else hiddenCards.add(path);grid()};$('presPrev').onclick=()=>{slide--;renderSlide()};$('presNext').onclick=()=>{slide++;renderSlide()};buildSlideSections();$('gridBtn').onclick=grid;$('cardPrev').onclick=()=>big(index-1);$('cardNext').onclick=()=>big(index+1);
+
+function protectionNotice(msg='Saving lesson content is disabled.'){
+  let n=document.getElementById('ptpProtectionNotice');
+  if(!n){n=document.createElement('div');n.id='ptpProtectionNotice';n.style.cssText='position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;background:rgba(20,45,35,.94);color:#fff;padding:9px 14px;border-radius:999px;font:700 12px system-ui;pointer-events:none;opacity:0;transition:opacity .15s';document.body.appendChild(n)}
+  n.textContent=msg;n.style.opacity='1';clearTimeout(n._t);n._t=setTimeout(()=>n.style.opacity='0',1400);
+}
+document.addEventListener('contextmenu',e=>{e.preventDefault();protectionNotice()},true);
+document.addEventListener('dragstart',e=>{if(e.target instanceof Element&&e.target.closest('img,picture,canvas,svg,video')){e.preventDefault();protectionNotice('Dragging lesson images is disabled.')}},true);
+document.addEventListener('keydown',e=>{
+  const mod=e.ctrlKey||e.metaKey,key=String(e.key||'').toLowerCase();
+  if(mod&&['s','p','u'].includes(key)){e.preventDefault();e.stopPropagation();protectionNotice('Saving or printing this lesson is disabled.');return}
+  if($('presentation').classList.contains('shown')){if(e.key==='ArrowRight'){slide++;renderSlide()}if(e.key==='ArrowLeft'){slide--;renderSlide()}}
+  if(e.key==='Escape'){if($('viewer').classList.contains('shown'))closeViewer();else home()}
+  if($('viewer').classList.contains('shown')&&!$('cardLarge').classList.contains('hidden')){if(e.key==='ArrowRight')big(index+1);if(e.key==='ArrowLeft')big(index-1)}
+},true);
+</script><section id="voicePanel" role="dialog" aria-label="Teacher voice setup"><div class="voiceList"><div class="voiceHeader"><h2>🎙 My Voice — Assign Audio Clips</h2><button type="button" id="closeVoicePanel">✕ Back to lesson</button></div><p class="voiceHint">19 provided TTSMaker recordings are included. Preview each clip and match it with a spoken prompt below. Assignments save in this browser; unmatched prompts keep the existing slow voice. For reliable online playback, upload the complete audio folder with this lesson.</p><p><button id="voiceWarm" type="button">▶ Prepare audio for this lesson</button> <span id="voiceStatus" role="status"></span></p><div id="voiceRows"></div></div></section></body></html>
