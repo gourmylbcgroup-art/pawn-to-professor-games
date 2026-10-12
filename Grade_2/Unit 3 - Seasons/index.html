@@ -16,7 +16,7 @@ letter-spacing:.02em;text-shadow:0 1px rgba(255,255,255,.25)}
 <audio id="songAudio" preload="none" src="assets/song.mp3"></audio><div id="correctSign" class="correctSign">✓</div>
 <main id="homepage" class="section shown"><div id="homeCanvas"><img src="assets/home.webp" alt="Four Seasons and Weather menu" fetchpriority="high" decoding="async"><button id="fullHome" class="hotspot" style="left:95%;top:1%;width:4%;height:5%;opacity:.01" aria-label="Full screen"></button></div></main>
 <main id="lesson" class="section"><header class="bar"><h1 id="lessonName">Spring</h1><div class="actions"><button class="btn" id="goHomeLesson">🏠 HOME</button><button class="btn" id="songLesson">🎵 SONG</button><button class="btn" id="fullLesson">⛶ FULL SCREEN</button></div></header><div class="paper"><div class="steps" id="stepNav"></div><div id="task" class="exercise"></div><div class="actions"><button class="btn" id="prevStep">❮ PREVIOUS</button><button class="btn" id="nextStep">NEXT ❯</button><button class="btn" id="openAll">ALL FLASHCARDS</button><button class="btn" id="openPicture">PICTURE FLASHCARDS</button><button class="btn" id="openMime">MIME CARDS</button><button class="btn" id="openGameLesson">WHEEL GAME</button></div></div></main>
-<main id="viewer" class="section"><header class="bar"><h1 id="viewerTitle"></h1><div class="actions"><span class="counter" id="cardCounter"></span><button class="btn" id="gridBtn">▦ GRID</button><button class="btn" id="organizeBtn">✏️ ORGANIZE</button><button class="btn" id="fullViewer">⛶ FULL SCREEN</button><button class="btn" id="goHomeViewer">✕ HOME</button></div></header><div id="organizer" class="hidden"><div class="tools"><strong>My Flashcard Sets (3 maximum, 40 cards per set)</strong><select id="setSelect" aria-label="Saved sets"></select><button class="btn" id="loadSet">OPEN SAVED</button><button class="btn" id="deleteSet">DELETE SAVED</button><button class="btn" id="resetSet">RESET ORDER</button></div><div class="tools"><input id="setName" maxlength="50" placeholder="Set name, e.g. Spring review"><button class="btn" id="saveSet">💾 SAVE MY SET</button><button class="btn" id="playSet">▶ PRESENT ORDER</button><span id="saveStatus" class="saveStatus"></span></div><div class="tools smallhint">Select a card, then use the arrows to move it. Hide cards you do not want in the slideshow. On computers, you can also drag cards to rearrange them.</div><div class="tools"><button class="btn" id="moveLeft">⬅ MOVE LEFT</button><button class="btn" id="moveRight">MOVE RIGHT ➡</button><button class="btn" id="hideCard">HIDE / SHOW</button><span id="selectedCardInfo" class="smallhint"></span></div></div><div class="cardgrid" id="cardsGrid"></div><div class="large hidden" id="cardLarge"><button class="btn" id="cardPrev">❮</button><img id="cardLargeImg" alt="Flashcard picture"><button class="btn" id="cardNext">❯</button></div></main>
+<main id="viewer" class="section"><header class="bar"><h1 id="viewerTitle"></h1><div class="actions"><span class="counter" id="cardCounter"></span><button class="btn" id="gridBtn">▦ GRID</button><button class="btn" id="organizeBtn">✏️ ORGANIZE</button><button class="btn" id="fullViewer">⛶ FULL SCREEN</button><button class="btn" id="goHomeViewer">✕ HOME</button></div></header><div id="organizer" class="hidden"><div class="tools"><strong>My Flashcard Sets (3 maximum, 40 cards per set)</strong><select id="setSelect" aria-label="Saved sets"></select><button class="btn" id="loadSet">OPEN SAVED</button><button class="btn" id="deleteSet">DELETE SAVED</button><button class="btn" id="resetSet">RESET ORDER</button></div><div class="tools"><input id="setName" maxlength="50" placeholder="Set name, e.g. Spring review"><button class="btn" id="saveSet">💾 SAVE MY SET</button><label class="smallhint" for="cardShowCount">Cards to show:</label><select id="cardShowCount" aria-label="Number of flashcards to present"></select><button class="btn" id="playSet">▶ PRESENT ORDER</button><span id="saveStatus" class="saveStatus"></span></div><div class="tools smallhint">Select a card, then use the arrows to move it. Hide cards you do not want in the slideshow. On computers, you can also drag cards to rearrange them.</div><div class="tools"><button class="btn" id="moveLeft">⬅ MOVE LEFT</button><button class="btn" id="moveRight">MOVE RIGHT ➡</button><button class="btn" id="hideCard">HIDE / SHOW</button><span id="selectedCardInfo" class="smallhint"></span></div></div><div class="cardgrid" id="cardsGrid"></div><div class="large hidden" id="cardLarge"><button class="btn" id="cardPrev">❮</button><img id="cardLargeImg" alt="Flashcard picture"><button class="btn" id="cardNext">❯</button></div></main>
 <main id="gameView" class="section"><header class="bar"><h1>Spinny Seasons</h1><div class="actions"><button class="btn" id="fullGame">⛶ FULL SCREEN</button><button class="btn" id="goHomeGame">✕ HOME</button></div></header><iframe class="gameframe" id="gameframe" src="about:blank" title="Spinny Seasons Game"></iframe></main>
 <main id="presentation" class="section"><header class="bar"><h1>Four Seasons · Presentation</h1><div class="actions"><button class="btn" id="fullPres">⛶ FULL SCREEN</button><button class="btn" id="goHomePres">✕ HOME</button></div></header><div class="paper"><div class="preset" id="seasonPres"></div><div class="presControls"><button class="btn" id="presPrev">❮ PREVIOUS</button><strong id="presCounter">1 / 68</strong><button class="btn" id="presNext">NEXT ❯</button></div><div class="presStage"><img id="presImg" alt="Four Seasons lesson slide 1"></div><p class="smallhint">Use the arrow keys or the Previous / Next buttons. All original 68 slides are included.</p></div></main>
 <script>
@@ -60,7 +60,7 @@ const MIME=Array.from({length:10},(_,i)=>`cards/mime/${String(i+1).padStart(3,'0
 const SEASONS=['Spring','Summer','Autumn','Winter','Review & Challenge'];
 const WEATHERS=[['sunny','rainy','cloudy'],['sunny','hot','rainy'],['windy','cloudy','rainy'],['cold','windy','cloudy'],['sunny','rainy','cloudy','windy','hot','cold']];
 const STEPS=['LEARN','PRACTICE','LISTEN','PLAY','SPEAK','GAME','FINISH'];
-let currentSeason=0,currentStep=0,deck=[],index=0,mode='',slide=1,organizing=false,chosen=-1,hiddenCards=new Set(),dragged=-1;
+let currentSeason=0,currentStep=0,deck=[],index=0,mode='',slide=1,organizing=false,chosen=-1,hiddenCards=new Set(),dragged=-1,cardShowCount=20,presentingSet=false;
 function active(name){document.querySelectorAll('main.section').forEach(x=>x.classList.remove('shown'));$(name).classList.add('shown')}
 function hideSong(){let a=$('songAudio');if(!a.paused)a.pause();}
 function home(){active('homepage');$('gameframe').src='about:blank';hideSong()}
@@ -125,10 +125,13 @@ else if(step===3){let text=['Find the spring picture.','Compare spring and summe
 else if(step===4){newParagraph(part,'What season is it?','spokenText');newParagraph(part,'How’s the weather?','spokenText');part.append(newBtn('🔊 Ask questions',()=>saySequence(['What season is it?','How is the weather?'])));part.append(newBtn('Show sentence frame',()=>newParagraph(part,'It’s '+(w===4?'____':SEASONS[w].toLowerCase())+'. It’s ____.','spokenText revealed')));audioSettings(part)}
 else if(step===5){newParagraph(part,'Mime, listen, and guess!','spokenText');part.append(newBtn('🎡 OPEN GAME',openGame))}
 else{newParagraph(part,'What season is it?','spokenText');newParagraph(part,'How’s the weather?','spokenText');part.append(newBtn('✓ Finished',correct))}}
-function openViewer(t,list=null,at=0){mode=t;deck=[...(list|| (t==='all'?ALL:t==='picture'?PICTURE:MIME))];index=at;chosen=-1;hiddenCards=new Set();organizing=false;active('viewer');$('organizer').classList.add('hidden');$('organizeBtn').textContent='✏️ ORGANIZE';$('viewerTitle').textContent=t==='all'?'All Flashcards (70)':t==='mime'?'Mime Flashcards — Pictures Only':'Picture Flashcards — 10 Pictures';refreshSaved();grid()}
+function openViewer(t,list=null,at=0){mode=t;presentingSet=false;deck=[...(list|| (t==='all'?ALL:t==='picture'?PICTURE:MIME))];index=at;chosen=-1;hiddenCards=new Set();organizing=false;active('viewer');$('organizer').classList.add('hidden');$('organizeBtn').textContent='✏️ ORGANIZE';$('viewerTitle').textContent=t==='all'?'All Flashcards (70)':t==='mime'?'Mime Flashcards — Pictures Only':'Picture Flashcards — 10 Pictures';refreshSaved();grid()}
 function visibleDeck(){return deck.filter(x=>!hiddenCards.has(x))}
-function grid(){let target=$('cardsGrid');target.innerHTML='';target.classList.remove('hidden');$('cardLarge').classList.add('hidden');$('cardCounter').textContent=organizing?`${visibleDeck().length} shown / ${deck.length} cards`:'';deck.forEach((path,i)=>{let b=document.createElement('button');b.className='thumb'+(chosen===i?' selected':'')+(hiddenCards.has(path)?' ghost':'');let im=document.createElement('img');im.src=path;im.loading='lazy';im.alt='Flashcard '+(i+1);b.append(im);b.setAttribute('aria-label','Card '+(i+1));if(organizing){b.draggable=true;b.ondragstart=()=>{dragged=i};b.ondragover=e=>e.preventDefault();b.ondrop=e=>{e.preventDefault();if(dragged>=0&&dragged!==i){const val=deck.splice(dragged,1)[0];deck.splice(i,0,val);chosen=i;grid()}};b.onclick=()=>{chosen=i;grid();$('selectedCardInfo').textContent='Selected card '+(i+1)+(hiddenCards.has(path)?' (hidden)':'')}}else b.onclick=()=>big(i);target.append(b)})}
-function big(i){const showing=organizing?visibleDeck():deck;if(!showing.length){setStatus('No visible cards. Show at least one card.');return}index=(i+showing.length)%showing.length;$('cardLargeImg').src=showing[index];$('cardsGrid').classList.add('hidden');$('cardLarge').classList.remove('hidden');$('cardCounter').textContent=(index+1)+' / '+showing.length}
+function presentationDeck(){return visibleDeck().slice(0,Math.min(cardShowCount,40))}
+function updateCountSelector(){const selector=$('cardShowCount');selector.value=String(cardShowCount);}
+function changeCardCount(n){cardShowCount=Math.max(1,Math.min(40,Number(n)||20));updateCountSelector();if(organizing)grid()}
+function grid(){let target=$('cardsGrid');target.innerHTML='';target.classList.remove('hidden');$('cardLarge').classList.add('hidden');$('cardCounter').textContent=organizing?`${presentationDeck().length} to present / ${deck.length} available`:'';deck.forEach((path,i)=>{let b=document.createElement('button');b.className='thumb'+(chosen===i?' selected':'')+(hiddenCards.has(path)?' ghost':'');let im=document.createElement('img');im.src=path;im.loading='lazy';im.alt='Flashcard '+(i+1);b.append(im);b.setAttribute('aria-label','Card '+(i+1));if(organizing){b.draggable=true;b.ondragstart=()=>{dragged=i};b.ondragover=e=>e.preventDefault();b.ondrop=e=>{e.preventDefault();if(dragged>=0&&dragged!==i){const val=deck.splice(dragged,1)[0];deck.splice(i,0,val);chosen=i;grid()}};b.onclick=()=>{chosen=i;grid();$('selectedCardInfo').textContent='Selected card '+(i+1)+(hiddenCards.has(path)?' (hidden)':'')}}else b.onclick=()=>big(i);target.append(b)})}
+function big(i){const showing=(organizing||presentingSet)?presentationDeck():deck;if(!showing.length){setStatus('No visible cards. Show at least one card.');return}index=(i+showing.length)%showing.length;$('cardLargeImg').src=showing[index];$('cardsGrid').classList.add('hidden');$('cardLarge').classList.remove('hidden');$('cardCounter').textContent=(index+1)+' / '+showing.length}
 function moveChosen(direction){if(chosen<0)return;let j=chosen+direction;if(j<0||j>=deck.length)return;[deck[j],deck[chosen]]=[deck[chosen],deck[j]];chosen=j;grid()}
 // Shared Pawn to Professor storage. The shared script is supplied by the host website.
 // Browser-only fallback preserves offline classroom use; it is not synchronized.
@@ -148,18 +151,20 @@ function normalizedRows(result){
     card_ids:x.card_ids||x.selected_card_ids||x.cardIds||x.cards||[],
     hidden_card_ids:x.hidden_card_ids||x.hiddenCardIds||x.hidden||[],
     card_order:x.card_order||x.cardOrder||x.order||x.metadata?.order||x.card_ids||[],
-    kind:x.kind||x.card_type||x.metadata?.kind||'all'
+    kind:x.kind||x.card_type||x.metadata?.kind||'all',
+    display_count:x.display_count||x.displayCount||x.metadata?.displayCount||x.card_ids?.length||20
   }));
 }
 function payloadFromCurrent(name){
-  let selected=deck.filter(x=>!hiddenCards.has(x));
+  let selected=presentationDeck();
   return {
     setName:name,
     cardIds:[...selected],
     hiddenCardIds:[...hiddenCards],
     metadata:{
       order:[...deck],
-      kind:mode
+      kind:mode,
+      displayCount:cardShowCount
     }
   };
 }
@@ -200,7 +205,7 @@ async function saveCurrent(){
         set_name:name,
         card_ids:[...selected],
         hidden_card_ids:[...hiddenCards],
-        metadata:{order:[...deck],kind:mode},
+        metadata:{order:[...deck],kind:mode,displayCount:cardShowCount},
         created_at:existing?.created_at||new Date().toISOString(),
         updated_at:new Date().toISOString()
       };
@@ -222,7 +227,7 @@ async function loadCurrent(){
   mode=['all','picture','mime'].includes(set.kind)?set.kind:'all';
   deck=[...new Set(order)];
   hiddenCards=new Set((Array.isArray(set.hidden_card_ids)?set.hidden_card_ids:[]).filter(x=>deck.includes(x)));
-  chosen=-1;organizing=true;$('organizer').classList.remove('hidden');$('organizeBtn').textContent='✓ DONE';
+  cardShowCount=Math.max(1,Math.min(40,Number(set.display_count)||20));updateCountSelector();presentingSet=false;chosen=-1;organizing=true;$('organizer').classList.remove('hidden');$('organizeBtn').textContent='✓ DONE';
   $('viewerTitle').textContent=set.set_name;$('setName').value=set.set_name;
   setStatus('Opened saved set');grid();
 }
@@ -239,7 +244,7 @@ async function deleteCurrent(){
   }catch(e){setStatus('Could not delete: '+(e?.message||'Try again.'))}
   finally{$('deleteSet').disabled=false}
 }
-function organizeToggle(){organizing=!organizing;$('organizer').classList.toggle('hidden',!organizing);$('organizeBtn').textContent=organizing?'✓ DONE':'✏️ ORGANIZE';chosen=-1;grid()}
+function organizeToggle(){presentingSet=false;organizing=!organizing;$('organizer').classList.toggle('hidden',!organizing);$('organizeBtn').textContent=organizing?'✓ DONE':'✏️ ORGANIZE';chosen=-1;grid()}
 function closeViewer(){if(!$('cardLarge').classList.contains('hidden'))grid();else home()}
 function openGame(){hideSong();active('gameView');$('gameframe').src='spinny_seasons/index.html'}
 function openPresentation(start=1){hideSong();active('presentation');slide=start;renderSlide()}
@@ -265,7 +270,7 @@ $('fullLesson').onclick=$('fullHome').onclick=$('fullViewer').onclick=$('fullGam
 $('songLesson').onclick=toggleSong;
 $('openAll').onclick=()=>openViewer('all');$('openPicture').onclick=()=>openViewer('picture');$('openMime').onclick=()=>openViewer('mime');$('openGameLesson').onclick=openGame;
 $('prevStep').onclick=()=>setStep(currentStep-1);$('nextStep').onclick=()=>setStep(currentStep+1);
-$('organizeBtn').onclick=organizeToggle;$('saveSet').onclick=saveCurrent;$('loadSet').onclick=loadCurrent;$('deleteSet').onclick=deleteCurrent;$('resetSet').onclick=()=>{deck=[...(mode==='all'?ALL:mode==='picture'?PICTURE:MIME)];hiddenCards.clear();chosen=-1;grid()};$('playSet').onclick=()=>{if(visibleDeck().length)big(0)};$('moveLeft').onclick=()=>moveChosen(-1);$('moveRight').onclick=()=>moveChosen(1);$('hideCard').onclick=()=>{if(chosen<0)return;const path=deck[chosen];if(hiddenCards.has(path))hiddenCards.delete(path);else hiddenCards.add(path);grid()};$('presPrev').onclick=()=>{slide--;renderSlide()};$('presNext').onclick=()=>{slide++;renderSlide()};buildSlideSections();$('gridBtn').onclick=grid;$('cardPrev').onclick=()=>big(index-1);$('cardNext').onclick=()=>big(index+1);
+for(let n=1;n<=40;n++){$('cardShowCount').add(new Option(n+' cards',String(n)))}updateCountSelector();$('organizeBtn').onclick=organizeToggle;$('saveSet').onclick=saveCurrent;$('loadSet').onclick=loadCurrent;$('deleteSet').onclick=deleteCurrent;$('resetSet').onclick=()=>{deck=[...(mode==='all'?ALL:mode==='picture'?PICTURE:MIME)];hiddenCards.clear();chosen=-1;grid()};$('playSet').onclick=()=>{if(presentationDeck().length){presentingSet=true;big(0)}};$('cardShowCount').onchange=e=>changeCardCount(e.target.value);$('moveLeft').onclick=()=>moveChosen(-1);$('moveRight').onclick=()=>moveChosen(1);$('hideCard').onclick=()=>{if(chosen<0)return;const path=deck[chosen];if(hiddenCards.has(path))hiddenCards.delete(path);else hiddenCards.add(path);grid()};$('presPrev').onclick=()=>{slide--;renderSlide()};$('presNext').onclick=()=>{slide++;renderSlide()};buildSlideSections();$('gridBtn').onclick=grid;$('cardPrev').onclick=()=>big(index-1);$('cardNext').onclick=()=>big(index+1);
 
 function protectionNotice(msg='Saving lesson content is disabled.'){
   let n=document.getElementById('ptpProtectionNotice');
