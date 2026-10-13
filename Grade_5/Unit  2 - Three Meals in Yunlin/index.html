@@ -83,6 +83,23 @@ button{font:inherit}
 .final-card .big{font-size:58px;margin-bottom:8px}.final-card h3{margin:0 0 7px}.final-card p{color:#65738c;font-weight:800}
 @media(max-width:950px){.slide-wrap{grid-template-columns:1fr}.sidepanel{display:none}.flash-grid{grid-template-columns:repeat(2,1fr)}.grid3,.final-grid{grid-template-columns:1fr}.prompt-card{grid-template-columns:1fr}}
 @media(max-width:650px){.brand{font-size:15px}.section-title h1{font-size:30px}.answers{grid-template-columns:1fr}.topbar{padding:8px}}
+
+/* Pawn to Professor: browser-level image-saving deterrents. */
+img { -webkit-user-drag:none; -webkit-touch-callout:none; user-select:none; -webkit-user-select:none; }
+.slide-frame, .flash, .prompt-card, .ptp-card-image { -webkit-touch-callout:none; }
+.ptp-image-viewer {position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(11,28,46,.96)}
+.ptp-image-viewer.open {display:flex}
+.ptp-image-panel {position:relative;width:min(940px,95vw);height:min(92dvh,930px);display:flex;flex-direction:column;align-items:center;gap:10px}
+.ptp-image-display {flex:1;min-height:0;max-width:100%;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ptp-image-display img {display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:12px;pointer-events:none}
+.ptp-image-display:after {content:'pawntoprofessor.com';position:absolute;right:15px;bottom:14px;color:#203653;opacity:.22;font:bold clamp(12px,1.8vw,19px) Arial,sans-serif;text-shadow:0 1px 2px white;pointer-events:none}
+.ptp-image-controls{display:flex;align-items:center;justify-content:center;gap:14px;width:100%}
+.ptp-image-controls button{background:#fff7e8;border:0;color:#173a50;border-radius:14px;padding:10px 18px;font-weight:900;cursor:pointer}
+.ptp-image-controls .ptp-image-close{background:#ef5b58;color:#fff}
+.ptp-image-count{color:#fff;font-weight:900}
+#ptp-brand-watermark{position:fixed;bottom:12px;right:12px;pointer-events:none;z-index:9998;font:bold 14px Arial,sans-serif;opacity:.16;color:#0c2940;text-shadow:0 1px 2px #fff}
+#ptp-protect-toast{position:fixed;left:50%;bottom:42px;transform:translateX(-50%);background:#142d46;color:white;border-radius:12px;padding:10px 16px;font:700 14px Arial,sans-serif;display:none;z-index:10001;pointer-events:none}
+@media print {body > * {display:none!important}body:before{content:'Printing of lesson materials is disabled';display:block;padding:30px;font:20px Arial}}
 </style>
 </head>
 <body>
@@ -206,6 +223,20 @@ button{font:inherit}
 </section>
 </main>
 </div>
+
+<div class="ptp-image-viewer" id="ptpImageViewer" role="dialog" aria-modal="true" aria-label="Flashcard viewer">
+  <div class="ptp-image-panel">
+    <div class="ptp-image-display"><img id="ptpViewerImage" alt="Selected flashcard" draggable="false"></div>
+    <div class="ptp-image-controls">
+      <button type="button" id="ptpViewerPrev" aria-label="Previous flashcard">◀ Previous</button>
+      <span id="ptpViewerCount" class="ptp-image-count"></span>
+      <button type="button" id="ptpViewerNext" aria-label="Next flashcard">Next ▶</button>
+      <button type="button" id="ptpViewerClose" class="ptp-image-close">✕ Close</button>
+    </div>
+  </div>
+</div>
+<div id="ptp-brand-watermark" aria-hidden="true">pawntoprofessor.com</div>
+<div id="ptp-protect-toast" role="status" aria-live="polite">Saving lesson content is disabled.</div>
 <script>
 const slides=["assets/slides/slide-01.webp", "assets/slides/slide-02.webp", "assets/slides/slide-03.webp", "assets/slides/slide-04.webp", "assets/slides/slide-05.webp", "assets/slides/slide-06.webp", "assets/slides/slide-07.webp", "assets/slides/slide-08.webp", "assets/slides/slide-09.webp", "assets/slides/slide-10.webp", "assets/slides/slide-11.webp", "assets/slides/slide-12.webp", "assets/slides/slide-13.webp", "assets/slides/slide-14.webp", "assets/slides/slide-15.webp", "assets/slides/slide-16.webp", "assets/slides/slide-17.webp", "assets/slides/slide-18.webp", "assets/slides/slide-19.webp", "assets/slides/slide-20.webp", "assets/slides/slide-21.webp", "assets/slides/slide-22.webp", "assets/slides/slide-23.webp", "assets/slides/slide-24.webp", "assets/slides/slide-25.webp", "assets/slides/slide-26.webp", "assets/slides/slide-27.webp", "assets/slides/slide-28.webp", "assets/slides/slide-29.webp", "assets/slides/slide-30.webp", "assets/slides/slide-31.webp", "assets/slides/slide-32.webp", "assets/slides/slide-33.webp", "assets/slides/slide-34.webp", "assets/slides/slide-35.webp", "assets/slides/slide-36.webp", "assets/slides/slide-37.webp", "assets/slides/slide-38.webp", "assets/slides/slide-39.webp", "assets/slides/slide-40.webp", "assets/slides/slide-41.webp", "assets/slides/slide-42.webp", "assets/slides/slide-43.webp", "assets/slides/slide-44.webp", "assets/slides/slide-45.webp", "assets/slides/slide-46.webp", "assets/slides/slide-47.webp", "assets/slides/slide-48.webp", "assets/slides/slide-49.webp", "assets/slides/slide-50.webp"];
 const cardWeeks={1:["assets/flashcards/meal-card.webp", "assets/flashcards/breakfast-sentence-with-picture.webp", "assets/flashcards/breakfast-sentence-with-no-picture.webp", "assets/flashcards/breakfast-with-help.webp", "assets/flashcards/lunche-sentence-with-piicture.webp", "assets/flashcards/luncj-sentence-with-no-picture.webp", "assets/flashcards/diner-sentence-with-picture.webp", "assets/flashcards/dinner-sentence-with-no-picture.webp"],2:["assets/flashcards/food-card-noodles.webp", "assets/flashcards/diner-card-chicken-and-rice.webp", "assets/flashcards/breakfast-question-sentence.webp", "assets/flashcards/answer-sentence-breaskast.webp", "assets/flashcards/question-sentence-whatwould-you-like-for-breakfast.webp", "assets/flashcards/answer-sentence-i-would-like.webp", "assets/flashcards/lunch-sentence-with-no-picture.webp", "assets/flashcards/diner-sentence-with-no-picture.webp"],3:["assets/flashcards/yunlin-card-night-market.webp", "assets/flashcards/night-market-sentence-with-picture.webp", "assets/flashcards/night-market-sentence-with-no-picture.webp", "assets/flashcards/nightmarket-sentence-with-no-picture.webp", "assets/flashcards/yunlin-sentence-with-picture.webp", "assets/flashcards/yunlin-sentence-with-no-picture.webp", "assets/flashcards/yulin-sentnece-with-no-picture.webp"]};
@@ -245,8 +276,26 @@ function renderCards(){
  cardWeeks[cardWeek].forEach((src,i)=>{let d=document.createElement('div');d.className='flash';d.innerHTML=`<img src="${src}" alt="Flashcard"><small>Tap to enlarge</small>`;d.onclick=()=>openCard(src);grid.appendChild(d)});
 }
 function openCard(src){
- let w=window.open('','_blank','width=700,height=900'); if(w)w.document.write(`<body style="margin:0;background:#132b3b;display:grid;place-items:center"><img src="${location.href.replace(/index\.html.*$/,'')}${src}" style="max-width:96vw;max-height:96vh"></body>`);
+ const arr=cardWeeks[cardWeek];
+ let at=arr.indexOf(src);
+ if(at<0)at=0;
+ ptpViewerIndex=at;
+ updatePtpViewer();
+ document.getElementById('ptpImageViewer').classList.add('open');
 }
+let ptpViewerIndex=0;
+function updatePtpViewer(){
+ const arr=cardWeeks[cardWeek];
+ document.getElementById('ptpViewerImage').src=arr[ptpViewerIndex];
+ document.getElementById('ptpViewerCount').textContent=(ptpViewerIndex+1)+' / '+arr.length;
+}
+function closePtpViewer(){document.getElementById('ptpImageViewer').classList.remove('open')}
+function movePtpViewer(step){ptpViewerIndex=(ptpViewerIndex+step+cardWeeks[cardWeek].length)%cardWeeks[cardWeek].length;updatePtpViewer()}
+document.getElementById('ptpViewerPrev').onclick=()=>movePtpViewer(-1);
+document.getElementById('ptpViewerNext').onclick=()=>movePtpViewer(1);
+document.getElementById('ptpViewerClose').onclick=closePtpViewer;
+document.getElementById('ptpImageViewer').addEventListener('click',e=>{if(e.target.id==='ptpImageViewer')closePtpViewer()});
+
 document.querySelectorAll('[data-cardweek]').forEach(b=>b.onclick=()=>{cardWeek=+b.dataset.cardweek;document.querySelectorAll('[data-cardweek]').forEach(x=>x.classList.toggle('active',x===b));renderCards()});
 
 function startQuiz(start=0){quizIndex=start;renderQuiz()}
@@ -272,5 +321,26 @@ document.getElementById('reloadGame').onclick=()=>{document.getElementById('game
 document.getElementById('openGame').onclick=()=>window.open('games/three-meals/index.html','_blank');
 
 renderCards(); showSlide(); renderSpeak();
+</script>
+
+<script id="ptp-image-protection">
+(() => {
+  let toastTimer;
+  function warn(){const t=document.getElementById('ptp-protect-toast');if(!t)return;t.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display='none',1600)}
+  const protectedArea = target => !!(target && target.closest && target.closest('img,.flash,.slide-frame,.prompt-card,.home-shell,.ptp-image-viewer'));
+  document.addEventListener('contextmenu',e=>{if(protectedArea(e.target)){e.preventDefault();warn()}},true);
+  document.addEventListener('dragstart',e=>{if(protectedArea(e.target)){e.preventDefault();warn()}},true);
+  document.addEventListener('selectstart',e=>{if(protectedArea(e.target))e.preventDefault()},true);
+  document.addEventListener('keydown',e=>{
+    const k=e.key.toLowerCase();
+    if(e.key==='Escape' && document.getElementById('ptpImageViewer')?.classList.contains('open')){closePtpViewer();return}
+    if((e.ctrlKey||e.metaKey)&&['s','p','u'].includes(k)){e.preventDefault();warn()}
+    if(document.getElementById('ptpImageViewer')?.classList.contains('open') && (k==='arrowleft'||k==='arrowright')){e.preventDefault();movePtpViewer(k==='arrowleft'?-1:1)}
+  },true);
+  document.addEventListener('copy',e=>{if(protectedArea(document.activeElement)){e.preventDefault();warn()}},true);
+  document.querySelectorAll('img').forEach(im=>im.draggable=false);
+  const observer=new MutationObserver(list=>{for(const rec of list){for(const n of rec.addedNodes){if(n.nodeType!==1)continue;if(n.matches?.('img'))n.draggable=false;n.querySelectorAll?.('img').forEach(im=>im.draggable=false)}}});
+  observer.observe(document.body,{subtree:true,childList:true});
+})();
 </script>
 </body></html>
