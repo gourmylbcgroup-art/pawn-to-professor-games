@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const AS = '../../assets/';
+  const AS = 'assets/';
   const CARD = AS + 'cards/';
   const TOKEN = AS + 'tokens/';
 
@@ -152,35 +152,19 @@
     return fx;
   })();
 
-  // Jia-Jia voice audio sprite.
+  // Jia-Jia voice audio sprite: one compressed file keeps loading fast.
   const VOICE_CUES = {"yourTurn":{"start":0.12,"end":1.22},"rollDie":{"start":1.31,"end":2.21},"one":{"start":2.3,"end":2.83},"two":{"start":2.92,"end":3.51},"three":{"start":3.6,"end":4.08},"four":{"start":4.17,"end":4.74},"five":{"start":4.83,"end":5.46},"six":{"start":5.55,"end":6.27},"correct":{"start":6.36,"end":7.42},"playAgain":{"start":7.51,"end":9.2},"wrong":{"start":9.29,"end":10.43},"missNextTurn":{"start":10.52,"end":12.54},"tryAgain":{"start":12.63,"end":13.53},"repeatSentence":{"start":13.62,"end":15.5},"greatJob":{"start":15.59,"end":16.71},"breakfastCard":{"start":16.8,"end":18.19},"lookPicture":{"start":18.28,"end":19.66},"completeSentence":{"start":19.75,"end":21.87},"eatBreakfast":{"start":21.96,"end":25.26},"breakfastExample":{"start":25.35,"end":29.27},"questionBreakfast":{"start":29.36,"end":31.47},"wouldLikeSome":{"start":31.56,"end":32.97},"lunchCard":{"start":33.06,"end":33.96},"eatLunch":{"start":34.05,"end":37.23},"questionLunch":{"start":37.32,"end":39.33},"dinnerCard":{"start":39.42,"end":40.39},"eatDinner":{"start":40.48,"end":43.6},"dinnerExample":{"start":43.69,"end":46.75},"questionDinner":{"start":46.84,"end":48.74},"yunlinCard":{"start":48.83,"end":50.05},"completeYunlin":{"start":50.14,"end":53.15},"eatYunlin":{"start":53.24,"end":57.35},"nightMarketCard":{"start":57.44,"end":59.65},"readSentence":{"start":59.74,"end":61.78},"nightMarketSentence":{"start":61.87,"end":65.06},"threeMealsCard":{"start":65.15,"end":66.74},"nameThreeMeals":{"start":66.83,"end":69.43},"threeMealsAnswer":{"start":69.52,"end":73.03},"foodCard":{"start":73.12,"end":73.95},"noodles":{"start":74.04,"end":75.27},"dialogueCard":{"start":75.36,"end":76.68},"askPartnerQuestion":{"start":76.77,"end":79.25},"answerQuestion":{"start":79.34,"end":81.39},"robotVoice":{"start":81.48,"end":84.47},"robotInstruction":{"start":84.56,"end":87.67},"whisperMode":{"start":87.76,"end":89.58},"whisperInstruction":{"start":89.67,"end":92.06},"tvPresenter":{"start":92.15,"end":94.28},"tvInstruction":{"start":94.37,"end":97.26},"superSlow":{"start":97.35,"end":102.36},"superSlowInstruction":{"start":102.45,"end":106.26},"chefVoice":{"start":106.35,"end":107.19},"chefInstruction":{"start":107.28,"end":110.13},"dramaMode":{"start":110.22,"end":112.35},"dramaInstruction":{"start":112.44,"end":115.24},"rest":{"start":115.33,"end":116.02},"missOneTurn":{"start":116.11,"end":117.85},"yunlinStarBoost":{"start":117.94,"end":120.8},"moveExtra":{"start":120.89,"end":122.98},"snackBoost":{"start":123.07,"end":124.76},"moveExtra2":{"start":124.85,"end":127.36},"luckyDice":{"start":127.45,"end":129.59},"rollTwice":{"start":129.68,"end":132.92},"restShield":{"start":133.01,"end":134.02},"doNotMissTurn":{"start":134.11,"end":136.06},"luckyMealPass":{"start":136.15,"end":137.97},"extraTurn":{"start":138.06,"end":140.11},"mealBonus":{"start":140.2,"end":141.75},"mealChallenge":{"start":141.84,"end":144.42},"correct2":{"start":144.51,"end":145.35},"playAgain2":{"start":145.44,"end":146.28},"surprise":{"start":146.37,"end":147.65},"finish":{"start":147.74,"end":148.73},"youWin":{"start":148.82,"end":150.13},"fantasticEnglish":{"start":150.22,"end":152.92},"playAgain3":{"start":153.01,"end":153.85}};
-  // Jia-Jia voice audio sprite — original MP3 quality preserved.
-  // 100-user online optimization:
-  // - download the 770 KB voice file once when the game opens
-  // - keep it in a local Blob URL
-  // - all later cue seeking happens locally, avoiding network seek lag
   const voice = (()=>{
-    const sourceUrl = AS + 'audio/jiajia-voice.mp3';
-    const audio = new Audio();
+    const audio = new Audio(AS + 'audio/jiajia-voice.mp3');
     audio.preload = 'auto';
-
-    let runId = 0;
-    let timer = null;
-    let activeResolve = null;
-    let blobUrl = null;
-    let warmPromise = null;
-
+    let runId = 0, timer = null, activeResolve = null;
     const wait = ms => new Promise(r=>setTimeout(r,ms));
 
     function enabled(){ return state.settings.sound !== false; }
 
     function finishActive(){
       if(timer){ clearTimeout(timer); timer=null; }
-      if(activeResolve){
-        const r=activeResolve;
-        activeResolve=null;
-        r();
-      }
+      if(activeResolve){ const r=activeResolve; activeResolve=null; r(); }
     }
 
     function stop(){
@@ -190,90 +174,43 @@
       finishActive();
     }
 
-    function warm(){
-      if(warmPromise) return warmPromise;
-
-      warmPromise = fetch(sourceUrl, {cache:'force-cache'})
-        .then(res=>{
-          if(!res.ok) throw new Error('Voice file could not be loaded.');
-          return res.blob();
-        })
-        .then(blob=>{
-          blobUrl = URL.createObjectURL(blob);
-          audio.src = blobUrl;
-          audio.preload = 'auto';
-          try{ audio.load(); }catch{}
-          return new Promise(resolve=>{
-            if(audio.readyState >= 1) return resolve();
-            const done=()=>{
-              audio.removeEventListener('loadedmetadata', done);
-              resolve();
-            };
-            audio.addEventListener('loadedmetadata', done, {once:true});
-            setTimeout(done, 1800);
-          });
-        })
-        .catch(()=>{
-          // Safe fallback: same original MP3 URL, same quality.
-          audio.src = sourceUrl;
-          audio.preload = 'auto';
-          try{ audio.load(); }catch{}
-        });
-
-      return warmPromise;
-    }
-
-    async function ensureReady(){
-      await warm();
-      if(audio.readyState >= 1) return;
-      await new Promise(resolve=>{
-        const done=()=>{
-          audio.removeEventListener('loadedmetadata', done);
-          resolve();
-        };
-        audio.addEventListener('loadedmetadata', done, {once:true});
-        try{ audio.load(); }catch{ resolve(); }
-        setTimeout(done, 1800);
+    function ensureReady(){
+      if(audio.readyState >= 1) return Promise.resolve();
+      return new Promise(resolve=>{
+        const done=()=>{audio.removeEventListener('loadedmetadata',done); resolve();};
+        audio.addEventListener('loadedmetadata',done,{once:true});
+        try{audio.load();}catch{resolve();}
+        setTimeout(done,1500);
       });
     }
 
     async function playOne(name,myRun){
       const c=VOICE_CUES[name];
       if(!c || !enabled() || myRun!==runId) return;
-
       await ensureReady();
       if(myRun!==runId || !enabled()) return;
-
       return new Promise(resolve=>{
         activeResolve=resolve;
         try{
           audio.pause();
-
-          // Seeking is now against the locally downloaded Blob in normal use.
           audio.currentTime=Math.max(0,c.start);
           audio.volume=1;
-
           const ms=Math.max(120,(c.end-c.start)*1000+55);
           timer=setTimeout(()=>{
             try{audio.pause();}catch{}
             finishActive();
           },ms);
-
           const p=audio.play();
           if(p?.catch) p.catch(()=>finishActive());
-        }catch{
-          finishActive();
-        }
+        }catch{ finishActive(); }
       });
     }
 
     async function play(names){
       stop();
       if(!enabled()) return;
-
       const myRun=runId;
       const list=(Array.isArray(names)?names:[names]).filter(Boolean);
-
       for(const name of list){
         if(myRun!==runId || !enabled()) return;
         await playOne(name,myRun);
@@ -283,21 +220,12 @@
     }
 
     function unlock(){
-      // Trigger/continue the one-time voice download on a user gesture.
-      warm();
+      // Start loading on a user gesture. Subsequent clips are played from the same file.
+      try{audio.load();}catch{}
     }
 
-    // Begin warming the unchanged MP3 as soon as the game page is opened.
-    // The lesson home page does NOT load this game until the GAME section is chosen.
-    if(document.readyState === 'loading'){
-      document.addEventListener('DOMContentLoaded', warm, {once:true});
-    }else{
-      warm();
-    }
-
-    return {play,stop,unlock,warm};
+    return {play,stop,unlock};
   })();
-
 
   function playerTemplate(name, i){
     return {

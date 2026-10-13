@@ -25,7 +25,7 @@
     <main class="game-layout">
       <section class="board-card" aria-label="Three Meals in Yunlin board">
         <div id="boardWrap" class="board-wrap">
-          <img decoding="async" class="board-image" src="../../assets/board.webp" alt="Three Meals in Yunlin board game" draggable="false" />
+          <img class="board-image" src="assets/board.webp" alt="Three Meals in Yunlin board game" draggable="false" />
           <div id="tokenLayer" class="token-layer" aria-live="polite"></div>
           <div id="boardStatus" class="board-status">Choose a level and start the race!</div>
         </div>
@@ -35,7 +35,7 @@
         <section class="turn-card">
           <div class="eyebrow">CURRENT PLAYER</div>
           <div class="current-player-row">
-            <img decoding="async" id="currentToken" class="current-token" src="../../assets/tokens/token-red.webp" alt="Current puppet token" />
+            <img id="currentToken" class="current-token" src="assets/tokens/token-red.webp" alt="Current puppet token" />
             <div>
               <h2 id="currentPlayerName">Player 1</h2>
               <p id="turnInstruction">Roll the die to begin.</p>
@@ -76,7 +76,7 @@
             <span>🔊 Sound effects</span>
           </label>
           <button id="cardsBtn" class="secondary-btn" type="button">🃏 View card deck</button>
-          <p class="teacher-note">Teacher judges speaking. No microphone or speech recognition is used. Sound effects are generated locally. Jia-Jia’s original voice file loads once when the game opens, then plays locally.</p>
+          <p class="teacher-note">Teacher judges speaking. No microphone or speech recognition is used. Sounds are generated locally in the browser — no audio streaming or downloads.</p>
         </section>
       </aside>
     </main>
@@ -113,10 +113,10 @@
           <button class="player-count-option selected" data-count="4" type="button">4 Players</button>
         </div>
         <div class="name-grid">
-          <label class="player-name-label"><img decoding="async" src="../../assets/tokens/token-red.webp" alt="Red puppet"><input class="player-name-input" value="Red Team" maxlength="18"></label>
-          <label class="player-name-label"><img decoding="async" src="../../assets/tokens/token-blue.webp" alt="Blue puppet"><input class="player-name-input" value="Blue Team" maxlength="18"></label>
-          <label class="player-name-label"><img decoding="async" src="../../assets/tokens/token-pink.webp" alt="Pink puppet"><input class="player-name-input" value="Pink Team" maxlength="18"></label>
-          <label class="player-name-label"><img decoding="async" src="../../assets/tokens/token-green.webp" alt="Green puppet"><input class="player-name-input" value="Green Team" maxlength="18"></label>
+          <label class="player-name-label"><img src="assets/tokens/token-red.webp" alt="Red puppet"><input class="player-name-input" value="Red Team" maxlength="18"></label>
+          <label class="player-name-label"><img src="assets/tokens/token-blue.webp" alt="Blue puppet"><input class="player-name-input" value="Blue Team" maxlength="18"></label>
+          <label class="player-name-label"><img src="assets/tokens/token-pink.webp" alt="Pink puppet"><input class="player-name-input" value="Pink Team" maxlength="18"></label>
+          <label class="player-name-label"><img src="assets/tokens/token-green.webp" alt="Green puppet"><input class="player-name-input" value="Green Team" maxlength="18"></label>
         </div>
       </div>
 
