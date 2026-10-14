@@ -1,0 +1,1 @@
+Updated board, larger top-left dice panel, slower readable dice result, 3-second landing pause, and big flashcard popup for each community square.

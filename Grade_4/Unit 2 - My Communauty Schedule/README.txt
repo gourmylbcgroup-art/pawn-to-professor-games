@@ -1,27 +1,21 @@
-MY COMMUNITY SCHEDULE — Grade 4 Interactive Lesson
+WHERE ARE YOU? — MY COMMUNITY — INTERACTIVE EFL LESSON
 
-Designed to follow the interaction pattern of the supplied How Old Am I / Numbers 1–10 interface.
+Open: index.html
 
-SECTIONS
-1 START — Interactive Week 3 + Week 4 presentation
-2 LEARN — Exact community flashcards, time cards, sentence frames
-3 PLAY — Touchscreen place/time/mixed quizzes
-4 PRACTICE — Missing Information Mission + Schedule Match-Up
-5 SPEAK — Hidden-answer oral prompts
-6 FINISH — Time, place and full-routine exit checks
-7 GAMES — Embedded attached Clock Challenge
+The lesson works as a local static HTML5 lesson. It includes:
+1 START — community vocabulary warm-up
+2 LEARN — 24-slide interactive presentation
+3 PLAY — six picture-choice questions from the lesson plan
+4 PRACTICE — six-round Community Mission
+5 SPEAK — random full-sentence speaking practice
+6 FINISH — Mystery Place exit challenge
+7 GAMES — embedded Where Are You? Snakes & Ladders game
 
-TARGET COMMUNITY PLACES
+Core vocabulary:
 hospital, park, library, bank, school, supermarket, store, night market, tea shop, café
 
-TARGET LANGUAGE
-What time is it?
-It’s ___ o’clock.
+Core language:
 Where are you?
-I am at the ___.
-I go to the ___ at ___.
+I am at the ______.
 
-The exact community-card artwork previously supplied by the user is reused.
-The attached Clock Challenge game is copied unchanged under games/clock-challenge/.
-
-For GitHub Pages upload the ENTIRE extracted folder, not just index.html.
+No internet connection is required for the lesson files. Browser speech synthesis availability depends on the device/browser. The supplied place-name recordings and game audio are local.
