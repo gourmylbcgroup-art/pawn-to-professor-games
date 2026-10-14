@@ -1,0 +1,24 @@
+PAWN TO PROFESSOR — GRADE 4 MY COMMUNITY — 100 USER OPTIMIZATION
+
+This build is optimized for many simultaneous users without adding a Vercel Function.
+
+Changes:
+- Converted the heavy Picture Only PNG flashcards to WebP.
+- Converted the heavy Text Only PNG flashcards to WebP.
+- Reused the existing Picture + Word WebP cards instead of storing a duplicate copy.
+- Removed the unused board_original.png file.
+- Flashcard gallery images remain lazy-loaded and asynchronously decoded.
+- Audio remains on-demand; it is not preloaded for every user.
+- Existing lesson, flashcard storage, image protection, games and navigation are preserved.
+- Zero new /api routes.
+- Zero new Vercel Functions.
+
+Approximate uncompressed lesson payload:
+Before: 37.5 MB
+After:  6.3 MB
+
+Important:
+This optimization reduces bandwidth and browser decoding load. Vercel/CDN still serves the
+same static files to users, so 100 simultaneous users do not create 100 server functions.
+
+For deployment, upload the complete lesson folder so all converted .webp files are included.

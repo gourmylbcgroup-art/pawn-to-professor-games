@@ -16,9 +16,9 @@
     {id:'cafe', label:'café', display:'Café'}
   ];
   const byId = Object.fromEntries(places.map(p => [p.id,p]));
-  const cardSrc = p => `assets/flashcards/picture-word/${p.id}.webp`;
-  const noTextSrc = p => `assets/flashcards/picture-only/${p.id}.png`;
-  const textOnlySrc = p => `assets/flashcards/text-only/${p.id}.png`;
+  const cardSrc = p => `games/where-are-you-game/assets/flashcards/${p.id}.webp`;
+  const noTextSrc = p => `assets/flashcards/picture-only/${p.id}.webp`;
+  const textOnlySrc = p => `assets/flashcards/text-only/${p.id}.webp`;
   const soundSrc = p => `${gameRoot}sounds/${p.id}.mp3`;
   let soundOn = true;
   let learnCardMode = 'picture_word';

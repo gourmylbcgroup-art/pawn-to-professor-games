@@ -80,6 +80,10 @@ body.ptp-fc-opened{overflow:hidden}
 @media(max-width:650px){.ptp-fc-modal{padding:6px}.ptp-fc-panel{padding:10px;border-radius:17px}.ptp-fc-head{flex-direction:column}.ptp-fc-head-actions{width:100%;justify-content:space-between}.ptp-fc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.ptp-fc-help{min-width:100%}.ptp-fc-focus-card{height:auto;width:min(90vw,460px)}}
 </style>
 
+
+  <!-- 100-user optimization: static assets only, no new Vercel Function -->
+  <meta http-equiv="Cache-Control" content="public, max-age=3600">
+
 </head>
 <body>
 <div class="app">
@@ -366,7 +370,7 @@ window.PTP_FLASHCARD_CONFIG = {
     {id:'tea_shop',label:'Tea Shop'},{id:'cafe',label:'Café'}
   ];
   const MAP=Object.fromEntries(CARDS.map(c=>[c.id,c]));
-  const image=(id,mode='picture_word')=>mode==='picture_only'?`assets/flashcards/picture-only/${id}.png`:(mode==='text_only'?`assets/flashcards/text-only/${id}.png`:`assets/flashcards/picture-word/${id}.webp`);
+  const image=(id,mode='picture_word')=>mode==='picture_only'?`assets/flashcards/picture-only/${id}.webp`:(mode==='text_only'?`assets/flashcards/text-only/${id}.webp`:`games/where-are-you-game/assets/flashcards/${id}.webp`);
   const sound=id=>`games/where-are-you-game/sounds/${id}.mp3`;
   const $=s=>document.querySelector(s);
 
@@ -398,7 +402,7 @@ window.PTP_FLASHCARD_CONFIG = {
           <button class="ptp-fc-drag" type="button" draggable="true" data-drag="${id}" title="Drag to reorder">↕</button>
         </div>
         <button class="ptp-fc-card-image" type="button" data-open="${id}" aria-label="Open ${c.label} full screen">
-          <img src="${image(id,galleryMode)}" alt="${c.label} flashcard" loading="lazy" decoding="async" draggable="false">
+          <img src="${image(id,galleryMode)}" alt="${c.label} flashcard" loading="lazy" decoding="async" fetchpriority="low" draggable="false">
         </button>
         <div class="ptp-fc-card-name">${galleryMode==='picture_word'?c.label:'&nbsp;'}</div>
         <div class="ptp-fc-card-actions">
