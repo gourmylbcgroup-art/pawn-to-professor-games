@@ -1,0 +1,32 @@
+PAWN TO PROFESSOR — GRADE 4 MY COMMUNITY — THREE FLASHCARD SETS
+
+The lesson now contains:
+1. Picture + Word — 10 cards
+2. Picture Only / No Text — 10 cards
+3. Text Only — 10 cards
+
+The uploaded Picture Only ZIP contained 8 cards. Park and Supermarket were completed
+without changing their artwork by using the same blank lower card panel as the uploaded
+Picture Only set.
+
+Whole-lesson exercise update:
+- START Hide Word now switches to the real Picture Only card.
+- LEARN card mode cycles Picture + Word → Picture Only → Text Only.
+- LEARN choice challenges use Picture Only cards instead of a word-cover overlay.
+- Your Turn uses Picture Only cards.
+- PLAY clue cards use Picture Only cards, so the answer is not visible.
+- PRACTICE uses Picture Only before reveal, Picture + Word after reveal.
+- SPEAK uses Picture Only before Show Model, Picture + Word after reveal.
+- FINISH uses Picture Only before Show Answer, Picture + Word after reveal.
+- Existing black/word masks are no longer needed for those challenge cards.
+
+Flashcard Gallery:
+- Three set buttons: Picture + Word / Picture Only / Text Only
+- Same stable location IDs for saving
+- Saved set also remembers the selected visual card style
+- Maximum 3 saved sets per user per lesson
+- Maximum 40 cards per set
+- Zero new Vercel Functions
+
+All existing lesson navigation, audio, games, image protection, storage bridge, and
+performance behavior remain in place.

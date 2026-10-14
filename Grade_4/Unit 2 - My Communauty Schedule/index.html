@@ -26,6 +26,60 @@
   }
   #ptp-save-message.ptp-show { opacity:1; visibility:visible; }
 </style>
+
+<style id="ptp-flashcard-organizer-style">
+.ptp-fc-open{border:0;border-radius:999px;padding:9px 13px;font-weight:1000;background:#ffd65a;color:#173a67;box-shadow:0 4px 0 rgba(122,84,0,.22);cursor:pointer;white-space:nowrap;font-family:inherit}
+.ptp-fc-open:hover{transform:translateY(-1px)}
+body.ptp-fc-opened{overflow:hidden}
+.ptp-fc-modal,.ptp-fc-focus{position:fixed;inset:0;z-index:2147482500;background:rgba(10,25,45,.84);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:14px}
+.ptp-fc-modal.hidden,.ptp-fc-focus.hidden{display:none!important}
+.ptp-fc-panel{width:min(1220px,97vw);max-height:95vh;overflow:auto;background:#fff8e8;border:4px solid #fff;border-radius:26px;box-shadow:0 24px 70px rgba(0,0,0,.38);padding:18px}
+.ptp-fc-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:12px}
+.ptp-fc-head h2{margin:0;color:#173a67;font-size:clamp(26px,3vw,42px)}
+.ptp-fc-head p{margin:4px 0 0;color:#5a6680;font-weight:800}
+.ptp-fc-kicker{font-size:12px;font-weight:1000;letter-spacing:.08em;color:#c98300}
+.ptp-fc-head-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.ptp-fc-set-switch{display:flex;gap:6px;flex-wrap:wrap}.ptp-fc-set-btn{border:2px solid #b9c9df;border-radius:999px;padding:8px 11px;background:#fff;color:#173a67;font-weight:1000;cursor:pointer}.ptp-fc-set-btn.active{background:#173a67;color:#fff;border-color:#173a67}
+.ptp-fc-close,.ptp-fc-focus-close{width:46px;height:46px;border:0;border-radius:50%;background:#ef4444;color:#fff;font-size:28px;font-weight:1000;cursor:pointer;box-shadow:0 5px 0 rgba(130,20,20,.2)}
+.ptp-fc-organizer{background:#f2f7ff;border:3px solid #bed7fb;border-radius:18px;padding:12px;margin-bottom:14px}
+.ptp-fc-row{display:flex;align-items:end;gap:9px;flex-wrap:wrap}
+.ptp-fc-name{display:flex;flex-direction:column;gap:4px;min-width:min(310px,100%);flex:1}
+.ptp-fc-name span{font-weight:1000;color:#173a67}
+.ptp-fc-name input,.ptp-fc-saved-row select{min-height:42px;border:2px solid #b9c9df;border-radius:10px;padding:8px 10px;font:800 15px/1.2 inherit;background:#fff;color:#173a67}
+.ptp-fc-count{display:grid;place-items:center;min-width:80px;min-height:42px;padding:0 12px;border-radius:999px;background:#173a67;color:#fff;font-size:17px}
+.ptp-fc-saved-row{margin-top:10px;align-items:center}
+.ptp-fc-saved-row select{flex:1;min-width:220px}
+.ptp-fc-tools{margin-top:10px;align-items:center}
+.ptp-fc-help{font-size:12px;font-weight:800;color:#5a6680;flex:1;min-width:260px}
+.ptp-fc-status{min-height:20px;margin-top:8px;font-weight:900;color:#173a67}
+.ptp-fc-status.error{color:#b42318}.ptp-fc-status.ok{color:#087a44}
+.ptp-fc-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:start}
+.ptp-fc-card{position:relative;background:#fff;border:3px solid #efd57e;border-radius:17px;padding:8px;box-shadow:0 7px 18px rgba(18,57,103,.13);min-width:0}
+.ptp-fc-card.is-hidden{opacity:.5;filter:grayscale(.25)}
+.ptp-fc-card:not(.is-selected){border-color:#d7dbe4;background:#f7f7f8}
+.ptp-fc-card-top{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:6px}
+.ptp-fc-check{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:1000;color:#173a67}
+.ptp-fc-check input{width:19px;height:19px}
+.ptp-fc-drag{cursor:grab;border:0;background:#eef4ff;border-radius:8px;padding:5px 7px;font-weight:1000;color:#173a67}
+.ptp-fc-card-image{position:relative;width:100%;aspect-ratio:3/4;border:0;border-radius:12px;overflow:hidden;background:#eef7ff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.ptp-fc-card-image img{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
+.ptp-fc-word-mask{position:absolute;left:0;right:0;bottom:0;height:23%;background:#fff8e8;border-top:3px solid #efd57e}
+.ptp-fc-word-mask.hidden{display:none}
+.ptp-fc-card-name{text-align:center;color:#173a67;font-weight:1000;font-size:15px;padding:6px 2px 2px}
+.ptp-fc-card-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:5px}
+.ptp-fc-mini{border:0;border-radius:8px;padding:6px 4px;background:#eaf1ff;color:#173a67;font-weight:1000;cursor:pointer;min-width:0}
+.ptp-fc-mini.hide{background:#fff0ca}.ptp-fc-mini:hover{filter:brightness(.96)}
+.ptp-fc-card.dragging{opacity:.35}.ptp-fc-card.drag-over{outline:4px solid #32a8ff;outline-offset:2px}
+.ptp-fc-focus{flex-direction:column;gap:8px;padding:12px}
+.ptp-fc-focus-close{position:absolute;top:14px;right:14px;z-index:2}
+.ptp-fc-focus-card{position:relative;height:min(78vh,780px);max-width:92vw;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center}
+.ptp-fc-focus-card img{width:100%;height:100%;object-fit:contain;object-position:center;background:#fff;border-radius:20px;box-shadow:0 24px 65px rgba(0,0,0,.38)}
+.ptp-fc-focus-label{min-height:34px;color:#fff;font-size:clamp(24px,3vw,42px);font-weight:1000}
+.ptp-fc-focus-controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.ptp-fc-focus-count{color:#fff;font-weight:1000;min-width:72px;text-align:center}
+@media(max-width:980px){.ptp-fc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.ptp-fc-open{padding:8px 10px;font-size:12px}}
+@media(max-width:650px){.ptp-fc-modal{padding:6px}.ptp-fc-panel{padding:10px;border-radius:17px}.ptp-fc-head{flex-direction:column}.ptp-fc-head-actions{width:100%;justify-content:space-between}.ptp-fc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.ptp-fc-help{min-width:100%}.ptp-fc-focus-card{height:auto;width:min(90vw,460px)}}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -44,7 +98,77 @@
     <button class="menu-btn" data-go="home">MENU ▾</button>
     <button class="iconbtn" id="soundBtn" title="Sound on/off">🔊</button>
     <button class="iconbtn" id="motionBtn" title="Calm mode">🌿</button>
+    <button class="ptp-fc-open" id="ptpFlashcardsBtn" type="button" title="Open Flashcard Gallery">🃏 FLASHCARDS</button>
   </header>
+
+
+  <!-- Pawn to Professor Flashcard Viewer & Organizer -->
+  <div class="ptp-fc-modal hidden" id="ptpFlashcardModal" role="dialog" aria-modal="true" aria-labelledby="ptpFcTitle">
+    <div class="ptp-fc-panel">
+      <div class="ptp-fc-head">
+        <div>
+          <div class="ptp-fc-kicker">GRADE 4 · MY COMMUNITY</div>
+          <h2 id="ptpFcTitle">Flashcard Gallery & Organizer</h2>
+          <p>Select cards, hide cards, change the order, or tap a card to present it full screen.</p>
+        </div>
+        <div class="ptp-fc-head-actions">
+          <div class="ptp-fc-set-switch" role="group" aria-label="Flashcard set">
+            <button class="ptp-fc-set-btn active" type="button" data-fc-set="picture_word">Picture + Word</button>
+            <button class="ptp-fc-set-btn" type="button" data-fc-set="picture_only">Picture Only</button>
+            <button class="ptp-fc-set-btn" type="button" data-fc-set="text_only">Text Only</button>
+          </div>
+          <button class="ptp-fc-close" id="ptpFcClose" type="button" aria-label="Close flashcard gallery">×</button>
+        </div>
+      </div>
+
+      <div class="ptp-fc-organizer">
+        <div class="ptp-fc-row ptp-fc-row-main">
+          <label class="ptp-fc-name">
+            <span>Set name</span>
+            <input id="ptpFcSetName" type="text" maxlength="100" placeholder="Example: Community Review" />
+          </label>
+          <strong class="ptp-fc-count" id="ptpFcCount">10 / 40</strong>
+          <button class="btn green" id="ptpFcSave" type="button">💾 Save Set</button>
+          <button class="btn blue" id="ptpFcSaved" type="button">📂 My Saved Sets</button>
+          <button class="btn gray" id="ptpFcNew" type="button">＋ New Set</button>
+        </div>
+
+        <div class="ptp-fc-row ptp-fc-saved-row hidden" id="ptpFcSavedRow">
+          <select id="ptpFcSavedSelect" aria-label="Saved flashcard sets">
+            <option value="">Choose a saved set…</option>
+          </select>
+          <button class="btn blue" id="ptpFcLoad" type="button">Load Set</button>
+          <button class="btn orange" id="ptpFcRename" type="button">Rename Set</button>
+          <button class="btn red" id="ptpFcDelete" type="button">Delete Set</button>
+        </div>
+
+        <div class="ptp-fc-row ptp-fc-tools">
+          <button class="btn small blue" id="ptpFcSelectAll" type="button">Select All</button>
+          <button class="btn small gray" id="ptpFcClear" type="button">Clear</button>
+          <span class="ptp-fc-help">Drag the ↕ handle or use ◀ ▶ to reorder. Hidden cards stay saved but are skipped during presentation.</span>
+        </div>
+
+        <div class="ptp-fc-status" id="ptpFcStatus" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="ptp-fc-grid" id="ptpFcGrid" aria-label="Community flashcards"></div>
+    </div>
+  </div>
+
+  <div class="ptp-fc-focus hidden" id="ptpFcFocus" role="dialog" aria-modal="true" aria-label="Full screen flashcard">
+    <button class="ptp-fc-focus-close" id="ptpFcFocusClose" type="button" aria-label="Close full screen flashcard">×</button>
+    <div class="ptp-fc-focus-card">
+      <img id="ptpFcFocusImage" alt="Community flashcard" draggable="false" />
+      
+    </div>
+    <div class="ptp-fc-focus-label" id="ptpFcFocusLabel"></div>
+    <div class="ptp-fc-focus-controls">
+      <button class="btn gray" id="ptpFcPrev" type="button">← Previous</button>
+      <button class="btn blue" id="ptpFcHear" type="button">🔊 Hear</button>
+      <span class="ptp-fc-focus-count" id="ptpFcFocusCount">1 / 10</span>
+      <button class="btn green" id="ptpFcNext" type="button">Next →</button>
+    </div>
+  </div>
 
   <main>
     <section class="screen active" id="home">
@@ -223,6 +347,175 @@
 </div>
 
 <script src="app.js"></script>
+
+<script>
+window.PTP_FLASHCARD_CONFIG = {
+  unitKey: 'grade4_unit2_my_community_schedule',
+  lessonKey: 'main'
+};
+</script>
+<script src="./ptp-flashcard-storage.js" defer></script>
+
+<script id="ptp-flashcard-organizer-script">
+(() => {
+  'use strict';
+  const CARDS=[
+    {id:'hospital',label:'Hospital'},{id:'park',label:'Park'},{id:'library',label:'Library'},
+    {id:'bank',label:'Bank'},{id:'school',label:'School'},{id:'supermarket',label:'Supermarket'},
+    {id:'store',label:'Store'},{id:'night_market',label:'Night Market'},
+    {id:'tea_shop',label:'Tea Shop'},{id:'cafe',label:'Café'}
+  ];
+  const MAP=Object.fromEntries(CARDS.map(c=>[c.id,c]));
+  const image=(id,mode='picture_word')=>mode==='picture_only'?`assets/flashcards/picture-only/${id}.png`:(mode==='text_only'?`assets/flashcards/text-only/${id}.png`:`assets/flashcards/picture-word/${id}.webp`);
+  const sound=id=>`games/where-are-you-game/sounds/${id}.mp3`;
+  const $=s=>document.querySelector(s);
+
+  const modal=$('#ptpFlashcardModal'),focus=$('#ptpFcFocus'),grid=$('#ptpFcGrid');
+  const status=$('#ptpFcStatus'),count=$('#ptpFcCount'),nameInput=$('#ptpFcSetName');
+  const savedRow=$('#ptpFcSavedRow'),savedSelect=$('#ptpFcSavedSelect');
+
+  let order=CARDS.map(c=>c.id),selected=new Set(order),hidden=new Set();
+  let galleryMode='picture_word',currentSetId=null,savedSets=[],focusId=null,draggingId=null;
+
+  const selectedOrder=()=>order.filter(id=>selected.has(id));
+  const presentationOrder=()=>{
+    const visible=selectedOrder().filter(id=>!hidden.has(id));
+    return visible.length?visible:selectedOrder();
+  };
+  function setStatus(msg='',kind=''){status.textContent=msg;status.className='ptp-fc-status'+(kind?` ${kind}`:'')}
+  function updateCount(){count.textContent=`${selected.size} / 40`}
+  function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+
+  function renderGrid(){
+    grid.innerHTML='';
+    order.forEach(id=>{
+      const c=MAP[id],card=document.createElement('article');
+      card.className='ptp-fc-card'+(selected.has(id)?' is-selected':'')+(hidden.has(id)?' is-hidden':'');
+      card.dataset.id=id;
+      card.innerHTML=`
+        <div class="ptp-fc-card-top">
+          <label class="ptp-fc-check"><input type="checkbox" ${selected.has(id)?'checked':''} data-select="${id}"> Use</label>
+          <button class="ptp-fc-drag" type="button" draggable="true" data-drag="${id}" title="Drag to reorder">↕</button>
+        </div>
+        <button class="ptp-fc-card-image" type="button" data-open="${id}" aria-label="Open ${c.label} full screen">
+          <img src="${image(id,galleryMode)}" alt="${c.label} flashcard" loading="lazy" decoding="async" draggable="false">
+        </button>
+        <div class="ptp-fc-card-name">${galleryMode==='picture_word'?c.label:'&nbsp;'}</div>
+        <div class="ptp-fc-card-actions">
+          <button class="ptp-fc-mini" type="button" data-left="${id}">◀</button>
+          <button class="ptp-fc-mini hide" type="button" data-hide="${id}">${hidden.has(id)?'Show':'Hide'}</button>
+          <button class="ptp-fc-mini" type="button" data-right="${id}">▶</button>
+        </div>`;
+      grid.appendChild(card);
+    });
+    updateCount();wireGrid();
+  }
+
+  function move(id,delta){const i=order.indexOf(id),j=i+delta;if(i<0||j<0||j>=order.length)return;[order[i],order[j]]=[order[j],order[i]];renderGrid()}
+  function reorderBefore(source,target){if(source===target)return;const next=order.filter(id=>id!==source),i=next.indexOf(target);next.splice(i<0?next.length:i,0,source);order=next;renderGrid()}
+
+  function wireGrid(){
+    grid.querySelectorAll('[data-select]').forEach(el=>el.addEventListener('change',()=>{
+      const id=el.dataset.select;
+      if(el.checked){if(selected.size>=40){el.checked=false;setStatus('A saved set can contain a maximum of 40 flashcards.','error');return}selected.add(id)}
+      else{selected.delete(id);hidden.delete(id)}
+      renderGrid();
+    }));
+    grid.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',()=>openFocus(el.dataset.open)));
+    grid.querySelectorAll('[data-hide]').forEach(el=>el.addEventListener('click',()=>{const id=el.dataset.hide;if(!selected.has(id))selected.add(id);hidden.has(id)?hidden.delete(id):hidden.add(id);renderGrid()}));
+    grid.querySelectorAll('[data-left]').forEach(el=>el.addEventListener('click',()=>move(el.dataset.left,-1)));
+    grid.querySelectorAll('[data-right]').forEach(el=>el.addEventListener('click',()=>move(el.dataset.right,1)));
+    grid.querySelectorAll('[data-drag]').forEach(handle=>{
+      handle.addEventListener('dragstart',e=>{draggingId=handle.dataset.drag;e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain',draggingId)}catch{}handle.closest('.ptp-fc-card')?.classList.add('dragging')});
+      handle.addEventListener('dragend',()=>{grid.querySelectorAll('.ptp-fc-card').forEach(c=>c.classList.remove('dragging','drag-over'));draggingId=null});
+    });
+    grid.querySelectorAll('.ptp-fc-card').forEach(card=>{
+      card.addEventListener('dragover',e=>{if(!draggingId)return;e.preventDefault();card.classList.add('drag-over')});
+      card.addEventListener('dragleave',()=>card.classList.remove('drag-over'));
+      card.addEventListener('drop',e=>{if(!draggingId)return;e.preventDefault();card.classList.remove('drag-over');reorderBefore(draggingId,card.dataset.id)});
+    });
+  }
+
+  function openGallery(){renderGrid();modal.classList.remove('hidden');document.body.classList.add('ptp-fc-opened');setStatus('')}
+  function closeGallery(){modal.classList.add('hidden');if(focus.classList.contains('hidden'))document.body.classList.remove('ptp-fc-opened')}
+  function focusOrder(){const a=presentationOrder();return a.length?a:order}
+  function renderFocus(){const arr=focusOrder();if(!arr.includes(focusId))focusId=arr[0];const i=Math.max(0,arr.indexOf(focusId)),c=MAP[focusId];$('#ptpFcFocusImage').src=image(focusId,galleryMode);$('#ptpFcFocusImage').alt=`${c.label} flashcard`;$('#ptpFcFocusLabel').textContent=galleryMode==='picture_word'?c.label:'';$('#ptpFcFocusCount').textContent=`${i+1} / ${arr.length}`}
+  function openFocus(id){if(hidden.has(id)){setStatus(`${MAP[id].label} is hidden. Tap Show first to present it.`,'error');return}if(!selected.has(id))selected.add(id);focusId=id;renderFocus();focus.classList.remove('hidden');document.body.classList.add('ptp-fc-opened')}
+  function closeFocus(){focus.classList.add('hidden');if(modal.classList.contains('hidden'))document.body.classList.remove('ptp-fc-opened')}
+  function stepFocus(delta){const arr=focusOrder();if(!arr.length)return;let i=arr.indexOf(focusId);if(i<0)i=0;i=(i+delta+arr.length)%arr.length;focusId=arr[i];renderFocus()}
+  function hearFocus(){if(!focusId)return;const c=MAP[focusId];try{const a=new Audio(sound(focusId));a.play().catch(()=>speak(c.label))}catch{speak(c.label)}}
+  function speak(text){if('speechSynthesis'in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.82;speechSynthesis.speak(u)}}
+
+  function storage(){
+    if(!window.PTPFlashcardStorage)throw new Error('Flashcard saving is available when this lesson is opened through Pawn to Professor.');
+    return window.PTPFlashcardStorage;
+  }
+  async function refreshSavedSets(open=true){
+    savedSets=await storage().listSets();
+    savedSelect.innerHTML='<option value="">Choose a saved set…</option>'+savedSets.map(s=>`<option value="${s.id}">${escapeHtml(s.set_name)} (${Array.isArray(s.card_ids)?s.card_ids.length:0} cards)</option>`).join('');
+    if(currentSetId)savedSelect.value=currentSetId;
+    if(open)savedRow.classList.remove('hidden');
+    return savedSets;
+  }
+  function payload(){
+    const cardIds=selectedOrder();
+    if(cardIds.length>40)throw new Error('A saved set can contain a maximum of 40 flashcards.');
+    return {id:currentSetId,setName:nameInput.value.trim(),cardIds,hiddenCardIds:cardIds.filter(id=>hidden.has(id)),metadata:{order:[...cardIds],cardStyle:galleryMode}};
+  }
+  async function saveCurrent(){
+    try{
+      const api=storage(),data=payload();
+      if(!data.setName)throw new Error('Please enter a set name.');
+      if(!currentSetId){
+        const sets=await api.listSets();
+        if(sets.length>=3)throw new Error('You already have 3 saved sets for this lesson. Delete one before saving another.');
+      }
+      const saved=await api.saveSet(data);
+      currentSetId=saved?.id||currentSetId;nameInput.value=saved?.set_name||data.setName;
+      setStatus('Set saved successfully.','ok');await refreshSavedSets(false);
+    }catch(err){setStatus(err?.message||'Could not save this set.','error')}
+  }
+  async function loadSelectedSet(){
+    try{
+      if(!savedSelect.value)throw new Error('Choose a saved set first.');
+      if(!savedSets.length)await refreshSavedSets(false);
+      const set=savedSets.find(s=>s.id===savedSelect.value);if(!set)throw new Error('Saved set not found.');
+      currentSetId=set.id;nameInput.value=set.set_name||'';
+      selected=new Set((set.card_ids||[]).filter(id=>MAP[id]));hidden=new Set((set.hidden_card_ids||[]).filter(id=>MAP[id]));
+      if(['picture_word','picture_only','text_only'].includes(set.metadata?.cardStyle)){galleryMode=set.metadata.cardStyle;updateSetButtons();}
+      const savedOrder=Array.isArray(set.metadata?.order)?set.metadata.order.filter(id=>MAP[id]):[];
+      const selectedRest=[...selected].filter(id=>!savedOrder.includes(id));
+      const unselectedRest=CARDS.map(c=>c.id).filter(id=>!savedOrder.includes(id)&&!selectedRest.includes(id));
+      order=[...savedOrder,...selectedRest,...unselectedRest];renderGrid();setStatus(`Loaded “${set.set_name}”.`,'ok');
+    }catch(err){setStatus(err?.message||'Could not load the set.','error')}
+  }
+  async function renameCurrent(){try{if(!currentSetId)throw new Error('Load a saved set before renaming it.');if(!nameInput.value.trim())throw new Error('Enter the new set name.');await saveCurrent();setStatus('Set renamed and saved.','ok')}catch(err){setStatus(err?.message||'Could not rename the set.','error')}}
+  async function deleteCurrent(){
+    try{
+      const id=currentSetId||savedSelect.value;if(!id)throw new Error('Choose a saved set first.');
+      const set=savedSets.find(s=>s.id===id);if(!confirm(`Delete “${set?.set_name||'this set'}”?`))return;
+      await storage().deleteSet(id);currentSetId=null;nameInput.value='';savedSelect.value='';setStatus('Set deleted.','ok');await refreshSavedSets(false);
+    }catch(err){setStatus(err?.message||'Could not delete the set.','error')}
+  }
+  function newSet(){currentSetId=null;nameInput.value='';order=CARDS.map(c=>c.id);selected=new Set(order);hidden=new Set();savedSelect.value='';renderGrid();setStatus('New set ready. Choose cards and enter a name.')}
+
+  $('#ptpFlashcardsBtn').addEventListener('click',openGallery);$('#ptpFcClose').addEventListener('click',closeGallery);$('#ptpFcFocusClose').addEventListener('click',closeFocus);
+  $('#ptpFcPrev').addEventListener('click',()=>stepFocus(-1));$('#ptpFcNext').addEventListener('click',()=>stepFocus(1));$('#ptpFcHear').addEventListener('click',hearFocus);
+  function updateSetButtons(){document.querySelectorAll('[data-fc-set]').forEach(b=>b.classList.toggle('active',b.dataset.fcSet===galleryMode));}
+  document.querySelectorAll('[data-fc-set]').forEach(b=>b.addEventListener('click',()=>{galleryMode=b.dataset.fcSet;updateSetButtons();renderGrid();if(!focus.classList.contains('hidden'))renderFocus();}));
+  $('#ptpFcSelectAll').addEventListener('click',()=>{selected=new Set(order.slice(0,40));hidden=new Set([...hidden].filter(id=>selected.has(id)));renderGrid()});
+  $('#ptpFcClear').addEventListener('click',()=>{selected.clear();hidden.clear();renderGrid()});
+  $('#ptpFcSave').addEventListener('click',saveCurrent);
+  $('#ptpFcSaved').addEventListener('click',async()=>{try{setStatus('Loading your saved sets…');await refreshSavedSets(true);setStatus(savedSets.length?`${savedSets.length} saved set${savedSets.length===1?'':'s'} found.`:'No saved sets yet.','ok')}catch(err){savedRow.classList.remove('hidden');setStatus(err?.message||'Could not load saved sets.','error')}});
+  $('#ptpFcLoad').addEventListener('click',loadSelectedSet);$('#ptpFcRename').addEventListener('click',renameCurrent);$('#ptpFcDelete').addEventListener('click',deleteCurrent);$('#ptpFcNew').addEventListener('click',newSet);
+  savedSelect.addEventListener('change',()=>{const set=savedSets.find(s=>s.id===savedSelect.value);if(set){currentSetId=set.id;nameInput.value=set.set_name||''}});
+  modal.addEventListener('click',e=>{if(e.target===modal)closeGallery()});focus.addEventListener('click',e=>{if(e.target===focus)closeFocus()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!focus.classList.contains('hidden'))closeFocus();else if(!modal.classList.contains('hidden'))closeGallery()}if(!focus.classList.contains('hidden')){if(e.key==='ArrowLeft')stepFocus(-1);if(e.key==='ArrowRight')stepFocus(1)}});
+  updateSetButtons();
+  renderGrid();
+})();
+</script>
+
 
 <script id="ptp-protection-script">
 (() => {

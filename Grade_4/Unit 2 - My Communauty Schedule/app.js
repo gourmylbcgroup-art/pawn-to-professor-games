@@ -16,10 +16,13 @@
     {id:'cafe', label:'café', display:'Café'}
   ];
   const byId = Object.fromEntries(places.map(p => [p.id,p]));
-  const cardSrc = p => `${gameRoot}assets/flashcards/${p.id}.webp`;
+  const cardSrc = p => `assets/flashcards/picture-word/${p.id}.webp`;
+  const noTextSrc = p => `assets/flashcards/picture-only/${p.id}.png`;
+  const textOnlySrc = p => `assets/flashcards/text-only/${p.id}.png`;
   const soundSrc = p => `${gameRoot}sounds/${p.id}.mp3`;
   let soundOn = true;
-  let pictureOnly = false;
+  let learnCardMode = 'picture_word';
+  const learnCardSrc = p => learnCardMode === 'picture_only' ? noTextSrc(p) : (learnCardMode === 'text_only' ? textOnlySrc(p) : cardSrc(p));
 
   function go(id){
     $$('.screen').forEach(s => s.classList.toggle('active', s.id === id));
@@ -76,9 +79,9 @@
   function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
   function renderWarm(){
     const p=warmOrder[warmIndex]; if(!p) return;
-    $('#warmCard').src=cardSrc(p); $('#warmCard').alt=p.display;
+    $('#warmCard').src=warmHidden?noTextSrc(p):cardSrc(p); $('#warmCard').alt=p.display;
     $('#warmWord').textContent=warmHidden?'What place?':p.display;
-    $('#warmMask').classList.toggle('hidden',!warmHidden);
+    $('#warmMask').classList.add('hidden');
     $('#warmToggle').textContent=warmHidden?'Show word':'Hide word';
     $('#warmProgress').style.width=`${((warmIndex+1)/warmOrder.length)*100}%`;
     $('#warmFeedback').textContent=`Place ${warmIndex+1} of ${warmOrder.length} · Look. Point. Say.`;
@@ -110,7 +113,7 @@
   ];
   let modelPlaceIndex=0, yourTurnIndex=0;
   function miniGrid(group){
-    return `<div class="mini-grid">${group.map(p=>`<button class="mini-place" data-mini="${p.id}"><img src="${cardSrc(p)}" alt="${p.display}"><span>${pictureOnly?'?':p.display}</span></button>`).join('')}</div>`;
+    return `<div class="mini-grid">${group.map(p=>`<button class="mini-place" data-mini="${p.id}"><img src="${learnCardSrc(p)}" alt="${p.display}"><span>${learnCardMode==='picture_only'?'?':(learnCardMode==='text_only'?'Read':p.display)}</span></button>`).join('')}</div>`;
   }
   function renderSlide(){
     const s=slides[slideIndex], stage=$('#slideStage');
@@ -121,13 +124,13 @@
     if(s.type==='welcome') html=`<div class="slide-title">Welcome to My Community</div><div class="slide-sub">Look around. What places can you see?</div>${miniGrid([byId.hospital,byId.school,byId.park,byId.store,byId.library])}`;
     if(s.type==='goals') html=`<div class="slide-title">Today’s Goal</div><div class="goal-row"><div class="goal-chip">👀 LOOK</div><div class="goal-chip">🗣️ SAY</div><div class="goal-chip">💬 ASK & ANSWER</div></div><div class="slide-sub" style="margin-top:25px">We will identify 10 community places and use one complete sentence.</div>`;
     if(s.type==='question') html=`<div class="slide-title">Main Question</div><div class="conversation"><div class="speech q">Where are you?</div><div class="speech a">I am at the park.</div></div><img class="slide-img" src="${cardSrc(byId.park)}" alt="Park" style="margin-top:18px">`;
-    if(s.type==='vocab') html=`<div class="slide-title">${pictureOnly?'What place?':s.p.display}</div><div class="slide-img-wrap"><img class="slide-img" src="${cardSrc(s.p)}" alt="${s.p.display}">${pictureOnly?'<div class="slide-word-mask">?</div>':''}</div><div class="slide-sub">${pictureOnly?'Say the word before revealing it.':'Look · point · repeat twice'}</div>`;
+    if(s.type==='vocab') html=`<div class="slide-title">${learnCardMode==='picture_only'?'What place?':s.p.display}</div><div class="slide-img-wrap"><img class="slide-img" src="${learnCardSrc(s.p)}" alt="${s.p.display}"></div><div class="slide-sub">${learnCardMode==='picture_only'?'Say the word from the picture.':(learnCardMode==='text_only'?'Read the word · say it aloud':'Look · point · repeat twice')}</div>`;
     if(s.type==='review') html=`<div class="slide-title">${s.title}</div><div class="slide-sub">Tap a card to hear the word.</div>${miniGrid(s.group)}`;
     if(s.type==='questionOnly') html=`<div class="slide-title">Question</div><div class="speech q" style="font-size:clamp(34px,5vw,70px)">Where are you?</div><div class="slide-sub">Ask together. Point to a location.</div>`;
     if(s.type==='answerFrame') html=`<div class="slide-title">Answer Frame</div><div class="slide-answer" id="frameAnswer">I am at the ______.</div><div class="answer-pills">${places.map(p=>`<button class="place-pill" data-fill="${p.id}">${p.display}</button>`).join('')}</div>`;
     if(s.type==='model') { const p=places[modelPlaceIndex%places.length]; html=`<div class="slide-title">Model Conversation</div><div class="conversation"><div class="speech q">Where are you?</div><div class="speech a">I am at the ${p.label}.</div></div><img class="slide-img" src="${cardSrc(p)}" alt="${p.display}" style="margin-top:16px"><div class="controls"><button class="btn small green" id="nextModelPlace">Next place ➜</button></div>`; }
-    if(s.type==='choice'){ const ans=byId[s.answer]; html=`<div class="slide-title">What Place?</div><div class="clue-pill">${s.prompt}</div><div class="slide-img-wrap"><img class="slide-img" src="${cardSrc(ans)}" alt="Clue picture"><div class="slide-word-mask neutral"></div></div><div class="quiz-choice-row">${s.choices.map(id=>`<button class="quiz-choice" data-slide-choice="${id}">${byId[id].display}</button>`).join('')}</div><div class="feedback" id="slideFeedback"></div>`; }
-    if(s.type==='yourTurn'){ const p=places[yourTurnIndex%places.length]; html=`<div class="slide-title">Your Turn!</div><img class="slide-img" src="${cardSrc(p)}" alt="${p.display}"><div class="conversation" style="margin-top:16px"><div class="speech q">Where are you?</div><div class="speech a" id="yourAnswer">I am at the ______.</div></div><div class="controls"><button class="btn small orange" id="showYourAnswer">Show answer</button><button class="btn small green" id="nextYourPlace">Next place ➜</button></div>`; }
+    if(s.type==='choice'){ const ans=byId[s.answer]; html=`<div class="slide-title">What Place?</div><div class="clue-pill">${s.prompt}</div><div class="slide-img-wrap"><img class="slide-img" src="${noTextSrc(ans)}" alt="Clue picture"></div><div class="quiz-choice-row">${s.choices.map(id=>`<button class="quiz-choice" data-slide-choice="${id}">${byId[id].display}</button>`).join('')}</div><div class="feedback" id="slideFeedback"></div>`; }
+    if(s.type==='yourTurn'){ const p=places[yourTurnIndex%places.length]; html=`<div class="slide-title">Your Turn!</div><img class="slide-img" src="${noTextSrc(p)}" alt="${p.display}"><div class="conversation" style="margin-top:16px"><div class="speech q">Where are you?</div><div class="speech a" id="yourAnswer">I am at the ______.</div></div><div class="controls"><button class="btn small orange" id="showYourAnswer">Show answer</button><button class="btn small green" id="nextYourPlace">Next place ➜</button></div>`; }
     stage.innerHTML=html;
     stage.querySelectorAll('[data-mini]').forEach(b=>b.addEventListener('click',()=>speakPlace(byId[b.dataset.mini])));
     stage.querySelectorAll('[data-fill]').forEach(b=>b.addEventListener('click',()=>{const p=byId[b.dataset.fill];$('#frameAnswer').textContent=`I am at the ${p.label}.`;speakSentence(p)}));
@@ -141,7 +144,7 @@
   }
   $('#prevSlide').addEventListener('click',()=>{if(slideIndex>0){slideIndex--;renderSlide()}});
   $('#nextSlide').addEventListener('click',()=>{if(slideIndex<slides.length-1){slideIndex++;renderSlide()}else go('practice')});
-  $('#pictureOnlyBtn').addEventListener('click',()=>{pictureOnly=!pictureOnly;$('#pictureOnlyBtn').textContent=pictureOnly?'Picture Only':'Picture + Word';renderSlide()});
+  $('#pictureOnlyBtn').addEventListener('click',()=>{learnCardMode=learnCardMode==='picture_word'?'picture_only':(learnCardMode==='picture_only'?'text_only':'picture_word');$('#pictureOnlyBtn').textContent=learnCardMode==='picture_word'?'Picture + Word':(learnCardMode==='picture_only'?'Picture Only':'Text Only');renderSlide()});
   $('#hearSlide').addEventListener('click',()=>{
     const s=slides[slideIndex];
     if(s.type==='vocab') speakPlace(s.p);
@@ -165,7 +168,7 @@
   let quizIndex=0, quizStars=0, quizLocked=false;
   function renderQuiz(){
     const q=quiz[quizIndex]; if(!q) return;
-    quizLocked=false; $('#quizRound').textContent=`Round ${quizIndex+1} / ${quiz.length}`;$('#quizStars').textContent=`Stars: ${quizStars}`;$('#quizProgress').style.width=`${((quizIndex+1)/quiz.length)*100}%`;$('#quizClue').textContent=q.clue;$('#quizImage').src=cardSrc(byId[q.answer]);$('#quizFeedback').textContent='Choose A, B, or C.';$('#quizNext').classList.add('hidden');
+    quizLocked=false; $('#quizRound').textContent=`Round ${quizIndex+1} / ${quiz.length}`;$('#quizStars').textContent=`Stars: ${quizStars}`;$('#quizProgress').style.width=`${((quizIndex+1)/quiz.length)*100}%`;$('#quizClue').textContent=q.clue;$('#quizImage').src=noTextSrc(byId[q.answer]);$('#quizFeedback').textContent='Choose A, B, or C.';$('#quizNext').classList.add('hidden');
     $('#quizAnswers').innerHTML=q.choices.map((id,i)=>`<button class="answer-btn" data-quiz-choice="${id}">${String.fromCharCode(65+i)}. ${byId[id].display}</button>`).join('');
     $$('#quizAnswers [data-quiz-choice]').forEach(b=>b.addEventListener('click',()=>{
       if(quizLocked) return;
@@ -181,7 +184,7 @@
   let missionIndex=0, missionShown=false;
   function renderMission(){
     $('#missionTrack').innerHTML=missionIds.map((id,i)=>`<span class="mission-dot ${i<missionIndex?'done':''} ${i===missionIndex?'current':''}">${i+1}. ${byId[id].display}</span>`).join('');
-    const p=byId[missionIds[missionIndex]];$('#missionImage').src=cardSrc(p);$('#missionAnswer').textContent=missionShown?`I am at the ${p.label}.`:'I am at the ______.';$('#missionFeedback').textContent=`Round ${missionIndex+1}: Ask, answer, then switch roles.`;$('#missionDone').textContent=missionIndex===missionIds.length-1?'✓ Finish mission':'✓ Complete round';
+    const p=byId[missionIds[missionIndex]];$('#missionImage').src=missionShown?cardSrc(p):noTextSrc(p);$('#missionAnswer').textContent=missionShown?`I am at the ${p.label}.`:'I am at the ______.';$('#missionFeedback').textContent=`Round ${missionIndex+1}: Ask, answer, then switch roles.`;$('#missionDone').textContent=missionIndex===missionIds.length-1?'✓ Finish mission':'✓ Complete round';
   }
   $('#missionHearQ').addEventListener('click',speakQuestion);
   $('#missionShow').addEventListener('click',()=>{missionShown=true;renderMission();speakSentence(byId[missionIds[missionIndex]])});
@@ -190,7 +193,7 @@
 
   // SPEAK
   let speakOrder=shuffle(places), speakIndex=0, speakStars=0, speakShown=false;
-  function renderSpeak(){const p=speakOrder[speakIndex];$('#speakRound').textContent=`Card ${speakIndex+1} / ${speakOrder.length}`;$('#speakStars').textContent=`Spoken: ${speakStars}`;$('#speakProgress').style.width=`${((speakIndex+1)/speakOrder.length)*100}%`;$('#speakImage').src=cardSrc(p);$('#speakModel').textContent=speakShown?`I am at the ${p.label}.`:'I am at the ______.';$('#speakMask').classList.toggle('hidden',speakShown);$('#speakFeedback').textContent=speakShown?'Repeat the complete sentence.':'Try from the picture first. Tap “Show model” only if needed.';}
+  function renderSpeak(){const p=speakOrder[speakIndex];$('#speakRound').textContent=`Card ${speakIndex+1} / ${speakOrder.length}`;$('#speakStars').textContent=`Spoken: ${speakStars}`;$('#speakProgress').style.width=`${((speakIndex+1)/speakOrder.length)*100}%`;$('#speakImage').src=speakShown?cardSrc(p):noTextSrc(p);$('#speakModel').textContent=speakShown?`I am at the ${p.label}.`:'I am at the ______.';$('#speakMask').classList.add('hidden');$('#speakFeedback').textContent=speakShown?'Repeat the complete sentence.':'Try from the picture first. Tap “Show model” only if needed.';}
   $('#speakQuestion').addEventListener('click',speakQuestion);
   $('#speakShow').addEventListener('click',()=>{speakShown=true;renderSpeak()});
   $('#speakHear').addEventListener('click',()=>speakSentence(speakOrder[speakIndex]));
@@ -203,7 +206,7 @@
     const bag=$('#mysteryBag'),wrap=$('#exitCardWrap'),dialog=$('#exitDialogue');
     if(exitIndex>=10){bag.classList.add('hidden');wrap.classList.add('hidden');dialog.classList.add('hidden');$('#drawCard').classList.add('hidden');$('#exitShow').classList.add('hidden');$('#exitHear').classList.add('hidden');$('#exitGood').classList.add('hidden');$('#exitRetry').classList.remove('hidden');$('#exitFeedback').innerHTML=`<span class="ok">Challenge complete! ${exitStars} / 10 stars.</span>`;$('#exitProgress').style.width='100%';return;}
     const p=exitOrder[exitIndex];
-    bag.classList.toggle('hidden',exitDrawn);wrap.classList.toggle('hidden',!exitDrawn);dialog.classList.toggle('hidden',!exitDrawn);$('#exitImage').src=cardSrc(p);$('#exitAnswer').textContent=exitShown?`I am at the ${p.label}.`:'I am at the ______.';$('#drawCard').classList.toggle('hidden',exitDrawn);$('#exitShow').classList.toggle('hidden',!exitDrawn||exitShown);$('#exitHear').classList.toggle('hidden',!exitShown);$('#exitGood').classList.toggle('hidden',!exitDrawn);$('#exitRetry').classList.add('hidden');$('#exitFeedback').textContent=exitDrawn?'Name the place. Then answer: “Where are you?”':'Tap the bag to draw a card.';
+    bag.classList.toggle('hidden',exitDrawn);wrap.classList.toggle('hidden',!exitDrawn);dialog.classList.toggle('hidden',!exitDrawn);$('#exitImage').src=exitShown?cardSrc(p):noTextSrc(p);$('#exitAnswer').textContent=exitShown?`I am at the ${p.label}.`:'I am at the ______.';$('#drawCard').classList.toggle('hidden',exitDrawn);$('#exitShow').classList.toggle('hidden',!exitDrawn||exitShown);$('#exitHear').classList.toggle('hidden',!exitShown);$('#exitGood').classList.toggle('hidden',!exitDrawn);$('#exitRetry').classList.add('hidden');$('#exitFeedback').textContent=exitDrawn?'Name the place. Then answer: “Where are you?”':'Tap the bag to draw a card.';
   }
   function drawExit(){if(exitIndex>=10)return;exitDrawn=true;exitShown=false;renderExit();speakQuestion()}
   $('#drawCard').addEventListener('click',drawExit);$('#mysteryBag').addEventListener('click',drawExit);

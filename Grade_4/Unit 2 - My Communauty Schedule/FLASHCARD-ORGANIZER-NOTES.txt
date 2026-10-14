@@ -1,0 +1,34 @@
+PAWN TO PROFESSOR — GRADE 4 MY COMMUNITY FLASHCARD VIEWER & ORGANIZER
+
+Viewer:
+- Uses the 10 existing Grade 4 community flashcards
+- Full 3:4 cards; no cropping
+- Responsive gallery
+- Full-screen presentation
+- Previous / Hear / Next
+- Picture + Word / Picture Only
+
+Organizer:
+- Select / unselect cards
+- Hide / show cards
+- Reorder with drag handle or ◀ ▶ buttons
+- Save Set
+- My Saved Sets
+- Load Set
+- Rename Set
+- Delete Set
+- Selected-card count / 40
+- Saved order restored
+
+Storage:
+- public.user_flashcard_sets
+- unitKey: grade4_unit2_my_community_schedule
+- lessonKey: main
+- Maximum 3 saved sets per user per lesson
+- Maximum 40 cards per set
+- Teachers + learners
+- ZERO new Vercel Functions
+
+Offline:
+The lesson and viewer still work offline.
+Cloud Save/Load requires opening the lesson through the authenticated Pawn to Professor Learning Hub.
