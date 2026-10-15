@@ -169,4 +169,124 @@ function renderFoodoku(){const c=foodokuConfig;foodokuBoard.style.gridTemplateCo
 function placeFood(k){if(foodokuLocked){gameStatus.textContent='Say the sentence first.';return}if(!selectedCell){gameStatus.textContent='Choose an empty square first.';return}const {r,c}=selectedCell;if(foodokuSolution[r][c]!==k){gameStatus.textContent='Try again.';speakText('Try again.');return}foodokuPuzzle[r][c]=k;selectedCell=null;renderFoodoku();gameStatus.textContent='Correct!';speakText('Correct!');checkLines(r,c,k);if(foodokuPuzzle.flat().every(Boolean)&&!foodokuLocked){gameStatus.textContent='Foodoku complete! Great job!';speakText('Foodoku complete. Great job!')}}
 function checkLines(r,c,k){const n=foodokuConfig.size;const news=[];if(foodokuPuzzle[r].every(Boolean)&&!completedLines.has('r'+r))news.push('r'+r);if(foodokuPuzzle.every(row=>row[c])&&!completedLines.has('c'+c))news.push('c'+c);if(news.length){news.forEach(x=>completedLines.add(x));foodokuLocked=true;const s=foodokuConfig.sentence(k);linePrompt.innerHTML=`<b>Line complete!</b><br>Say this aloud:<br><span style="font-size:20px;color:#103f74">${s}</span>`;lineLock.classList.add('show');gameStatus.textContent='Say the sentence before continuing.';speakText(s)}}function confirmSpokenLine(){foodokuLocked=false;lineLock.classList.remove('show');gameStatus.textContent='Great speaking! Continue.'}
 setWeek(1);warmVoiceCache();
-</script></body></html>
+</script>
+<!-- PTP LESSON PROTECTION START -->
+<style id="ptp-lesson-protection-style">
+  html, body {
+    -webkit-touch-callout: none;
+  }
+
+  img,
+  picture,
+  canvas,
+  video,
+  svg {
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+  }
+
+  /* Keep normal lesson controls usable while discouraging direct image actions. */
+  img {
+    pointer-events: none;
+  }
+
+  /* Subtle website watermark on the lesson viewport. */
+  body::after {
+    content: "pawntoprofessor.com";
+    position: fixed;
+    right: 14px;
+    bottom: 10px;
+    z-index: 2147483000;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    font: 800 13px/1.2 Arial, sans-serif;
+    letter-spacing: .04em;
+    color: rgba(16, 36, 94, .16);
+    text-shadow: 0 1px 0 rgba(255,255,255,.55);
+  }
+</style>
+
+<script id="ptp-lesson-protection-script">
+(() => {
+  'use strict';
+
+  // Stop the browser context menu (including "Save Image As…") inside the lesson.
+  document.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+  }, { capture: true });
+
+  // Stop dragging images/assets out of the lesson.
+  document.addEventListener('dragstart', (event) => {
+    const target = event.target;
+    if (
+      target instanceof HTMLImageElement ||
+      target instanceof HTMLCanvasElement ||
+      target instanceof HTMLVideoElement ||
+      target instanceof SVGElement
+    ) {
+      event.preventDefault();
+    }
+  }, { capture: true });
+
+  // Stop common browser save / print / view-source shortcuts.
+  document.addEventListener('keydown', (event) => {
+    const key = String(event.key || '').toLowerCase();
+    const cmd = event.ctrlKey || event.metaKey;
+
+    if (cmd && ['s', 'p', 'u'].includes(key)) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    // Also block F12 as a light deterrent. This is not a security boundary.
+    if (event.key === 'F12') {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, { capture: true });
+
+  // Prevent dragging through native element attributes as well.
+  const protectMedia = (root = document) => {
+    root.querySelectorAll('img, video, canvas, svg').forEach((el) => {
+      el.setAttribute('draggable', 'false');
+      el.style.webkitUserDrag = 'none';
+      el.style.userSelect = 'none';
+      el.style.webkitUserSelect = 'none';
+    });
+  };
+
+  protectMedia();
+
+  // Protect images added later by the lesson JavaScript.
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (!(node instanceof Element)) continue;
+        if (node.matches?.('img, video, canvas, svg')) {
+          node.setAttribute('draggable', 'false');
+          node.style.webkitUserDrag = 'none';
+          node.style.userSelect = 'none';
+          node.style.webkitUserSelect = 'none';
+        }
+        protectMedia(node);
+      }
+    }
+  });
+
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+
+  window.PTP_LESSON_PROTECTION = {
+    enabled: true,
+    version: 'inline-1.0'
+  };
+})();
+</script>
+<!-- PTP LESSON PROTECTION END -->
+
+</body></html>
