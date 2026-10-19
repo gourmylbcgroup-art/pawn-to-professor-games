@@ -1,0 +1,28 @@
+GRADE 4 UNIT 4 — V34 SPATIAL MATCH INTEGRATION
+SOURCE: Grade4_Unit4_Flashcard_Viewer_Integrated_V33.zip
+
+Created a functional picture-card board game under the interactive lesson GAME button.
+The matching cards are the 16 original picture-only images from the prior Set 3 tabletop kit.
+
+GAME
+- Week 1: 8 cards; GRANDPA/GRANDMA x IN/ON
+- Week 2: 8 cards; GRANDPA/GRANDMA x UNDER/NEXT TO
+- Week 3: 16 cards; GRANDPA/GRANDMA x all four prepositions
+- Shuffle question order on start/restart, click-or-drag cards into matching grid cells
+- 1 or 2 teams; switch after each correctly placed card
+- One star only for first-attempt placement; mistakes offer retries without points
+- Spoken full sentences after correct answers (browser text-to-speech)
+- HOME link to parent lesson; bilingual English/Traditional Chinese HOW TO PLAY modal
+- Original Quick Pick final challenge still available in Week 3
+- GAME opens directly from the existing interactive lesson home screen.
+- Embed as srcdoc: no extra server navigation required; separate spatial-match.html retained.
+
+Automated audit: 219 checks passed; no failures; no JavaScript runtime errors.
+Tested in Chromium: 1672x941 desktop, 1280x720, 1024x768, 768x1024 tablet.
+Automated completion for all 3 weeks, with error/retry, first-attempt scoring, board
+placements, rules modal, team toggles, navigation and regression checks.
+JavaScript syntax check: 3 inline scripts passed.
+All 193 non-index V33 files verified unchanged by SHA-256.
+All 16 new picture cards exist and are mapped to the printed teacher answer key.
+
+Not tested: native Safari voice/audio performance, concurrent Vercel traffic, physical printer calibration.

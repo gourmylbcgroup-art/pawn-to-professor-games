@@ -1,0 +1,25 @@
+GRADE 4 UNIT 4 — V31 FINISH REINTEGRATION AUDIT
+Source: Grade4_Unit4_SPEAK_Week3_Integrated_V29(1).zip
+Three user-supplied images have been used without changing their pixels.
+Week 1: image(20261016-032451).png — IN / ON
+Week 2: image(20261016-032457).png — UNDER / NEXT TO
+Week 3: image(20261016-032432).png — SENTENCE PATTERN
+
+Changes:
+- Three dedicated FINISH full-screen backgrounds in the correct week
+- Transparent clickable areas for HOME, HOW TO PLAY, PRESENTATION, FLASHCARDS, START CHECK
+- Obsolete invisible hotspots removed (week tabs/audio/fullscreen not illustrated in new artworks)
+- Existing FINISH quiz questions, correctness rules, first-try scoring, navigation preserved
+- Corrected inherited homepage hotspot geometry after finishing a quiz
+- No additional visible buttons, artwork, or overlapping controls
+
+Automated browser audit:
+Functional FINISH audit: 681 checks; 0 failed
+Cross-section navigation audit: 117 checks; 0 failed
+TOTAL: 798 checks; 0 failures; 0 JS runtime errors
+Viewports: 1672x941 and 1280x720 for full assessment rounds,
+ plus 1024x768 and 768x1024 for cross-section navigation, background alignment and clipping.
+All three backgrounds decoded in browser and compared bit-for-bit with uploaded images.
+All 183 unchanged V29 files were checked for preservation by the functional audit.
+
+NOT TESTED: Native Safari voice playback, 100 concurrent Vercel users, screen-reader quality.

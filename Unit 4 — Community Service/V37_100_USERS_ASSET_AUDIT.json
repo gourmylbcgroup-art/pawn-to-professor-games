@@ -1,0 +1,129 @@
+{
+  "source": "Grade4_Unit4_Interactive_Lesson_Presentation_Audio_V36.zip",
+  "converted_png": 23,
+  "png_before_bytes": 61867800,
+  "background_webp_after_bytes": 6982102,
+  "background_conversion": [
+    {
+      "file": "assets/index_interface.png",
+      "original": 3658626,
+      "optimized": 351130
+    },
+    {
+      "file": "assets/learn_interface.png",
+      "original": 3470619,
+      "optimized": 321664
+    },
+    {
+      "file": "assets/finish_week2_background_v31.png",
+      "original": 3495051,
+      "optimized": 318606
+    },
+    {
+      "file": "assets/finish_week3_background_v31.png",
+      "original": 3494212,
+      "optimized": 319886
+    },
+    {
+      "file": "assets/finish_check_week2_background_v32.png",
+      "original": 1252520,
+      "optimized": 203660
+    },
+    {
+      "file": "assets/background.png",
+      "original": 2812366,
+      "optimized": 390956
+    },
+    {
+      "file": "assets/finish_check_week1_background_v32.png",
+      "original": 1241179,
+      "optimized": 198890
+    },
+    {
+      "file": "assets/play_quick_pick_week2_v28.png",
+      "original": 3316232,
+      "optimized": 268372
+    },
+    {
+      "file": "assets/finish_week1_background_v31.png",
+      "original": 3555114,
+      "optimized": 340622
+    },
+    {
+      "file": "assets/speak_week3_background_v29.png",
+      "original": 2244615,
+      "optimized": 279218
+    },
+    {
+      "file": "assets/interface.png",
+      "original": 2821354,
+      "optimized": 462084
+    },
+    {
+      "file": "assets/background_v15.png",
+      "original": 2812366,
+      "optimized": 390956
+    },
+    {
+      "file": "assets/flashcard_viewer_background_v33.png",
+      "original": 2201853,
+      "optimized": 299868
+    },
+    {
+      "file": "assets/interface_v15.png",
+      "original": 2821354,
+      "optimized": 462084
+    },
+    {
+      "file": "assets/play_quick_pick_week1_v28.png",
+      "original": 3209683,
+      "optimized": 257820
+    },
+    {
+      "file": "assets/practice_week3_bg.png",
+      "original": 2189091,
+      "optimized": 271988
+    },
+    {
+      "file": "assets/finish_check_week3_background_v32.png",
+      "original": 1250812,
+      "optimized": 210958
+    },
+    {
+      "file": "assets/practice_week1_bg.png",
+      "original": 2182353,
+      "optimized": 267674
+    },
+    {
+      "file": "assets/practice_week2_bg.png",
+      "original": 2237316,
+      "optimized": 277392
+    },
+    {
+      "file": "assets/play_quick_pick_week3_v28.png",
+      "original": 3381529,
+      "optimized": 284978
+    },
+    {
+      "file": "assets/spatial_match/spatial_match_week2_v35.png",
+      "original": 2969872,
+      "optimized": 253348
+    },
+    {
+      "file": "assets/spatial_match/spatial_match_week1_v35.png",
+      "original": 1969872,
+      "optimized": 241192
+    },
+    {
+      "file": "assets/spatial_match/spatial_match_week3_v35.png",
+      "original": 3279811,
+      "optimized": 308756
+    }
+  ],
+  "organizer_thumbnail_count": 169,
+  "thumbnail_bytes": 4840668,
+  "spatial_game": "separate iframe loaded only on GAME, unloaded on exit",
+  "presentation": "one-slide lookahead, reduced-data respected",
+  "audio": "original V36 local speech synth and effects maintained",
+  "verified_webp_count": 404
+}

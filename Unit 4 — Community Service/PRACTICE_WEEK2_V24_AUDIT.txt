@@ -1,0 +1,24 @@
+Grade 4 Unit 4 – Week 2 PRACTICE Background Integration (V24)
+
+Base: V23 success application, original Week 1 asset preserved.
+Added: assets/practice_week2_bg.png, visually matches Week 1 layout, labelled
+Week 2 – UNDER / NEXT TO, button labels UNDER and NEXT TO.
+
+Implementation:
+- Weeks 1 and 2 use the same integrated PRACTICE shell (card, progress, score, navigation and speaker).
+- Background switches to dedicated Week 2 image only in Week 2.
+- Left answer hotspot selects 'under' and right selects 'next to' in Week 2.
+- Week 1 remains 'in' and 'on'; Week 3 remains on the legacy layout.
+- Dynamic card content / answers use existing lesson data, no new questions fabricated.
+- Existing feedback, audio, score, and clickable hotspots preserved.
+- Week 2 score uses compact numeric overlay without hiding the printed instructions.
+
+Browser audit completed using Chromium 1672x941 screen and locally served app assets:
+- 34 of 34 functional checks PASSED; 0 page runtime errors.
+- Week 1 image and IN/ON answer logic remain unchanged.
+- Week 2 question images load; five questions cycle and score correctly.
+- Incorrect choices show retry feedback, correct choices show answer card.
+- Presentation, Flashcards, How to Play, Home, Week 3 legacy route verified.
+- Week 2 visual screenshot manually reviewed; score overlay adjusted to avoid duplicated instructions.
+- JavaScript syntax and ZIP integrity verified.
+- Live speech synthesis output is browser/system dependent; audio hotspot and speech trigger are connected, but audible quality was not instrumentally measured.
