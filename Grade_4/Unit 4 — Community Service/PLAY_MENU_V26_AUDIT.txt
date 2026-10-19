@@ -1,0 +1,28 @@
+GRADE 4 UNIT 4 — V26 PLAY MENU INTEGRATION / QA AUDIT
+
+SOURCE: Grade4_Unit4_Practice_Week3_Integrated_V25(1).zip (user uploaded)
+CHANGE: Redesigned PLAY > QUICK PICK selection menu with matching illustrated background and actual clickable HTML hotspots.
+ADDED: assets/play_menu_3d.webp (1672 x 941, 345 KiB).
+CHANGED: index.html (new clickable menu, responsive sizing, dynamic Weeks 1–3 label, ten-question round selection).
+UNCHANGED: Original V25 flashcards, learning content, Week 1–3 PRACTICE background/images, voice function, and other assets.
+
+CONTENT RULES
+- Four clickable entries: SET 1, SET 2, SET 3, RANDOM 10.
+- Ten unique shuffled questions per PLAY round; correct on first try earns 1 point; a wrong first answer makes that question ineligible for a point.
+- Week 1 has 10 unique questions in its pool; all three named sets and Random 10 reshuffle these same questions (not 3 distinct content sets).
+- Week 2 has 10 unique questions; same reshuffle behavior.
+- Week 3 has 20 total questions; each 10-question round is shuffled and includes IN, ON, UNDER, NEXT TO.
+
+AUDITS (Chromium headless, three viewports: 1672x941 desktop, 1280x720, 1024x768 tablet)
+- Main menu interaction and 10-question completion with scored response: 393 / 393 automated checks pass.
+- Expanded image and regression tests: 751 / 751 automated checks pass.
+- Combined total: 1144 / 1144 passing checks; 0 failures.
+- JavaScript syntax: both inline scripts passed node --check.
+- All original content files compared by SHA-256: only index.html modified. All original media assets unchanged.
+- Original source ZIP integrity verified; final ZIP independently verified.
+- Menu image reduced to WebP (~345 KiB) to support faster transfers and browser caching.
+
+TESTING LIMITS
+- Verified in Chromium, not Safari or iOS; please visually confirm on actual classroom devices.
+- Headless browser speech calls cannot verify the loudspeaker or voice latency.
+- This is not a concurrent 100-user load test or Vercel deployment verification.

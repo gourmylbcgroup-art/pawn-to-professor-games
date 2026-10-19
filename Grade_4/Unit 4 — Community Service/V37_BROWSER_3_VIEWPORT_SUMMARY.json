@@ -1,0 +1,55 @@
+{
+  "version": "V37",
+  "viewports": [
+    "1440x900",
+    "1280x720",
+    "820x1180"
+  ],
+  "total_browser_checks": 231,
+  "passed_browser_checks": 231,
+  "failed_browser_checks": 0,
+  "original_reports": [
+    {
+      "summary": {
+        "tested": 77,
+        "passed": 77,
+        "failed": 0
+      },
+      "viewports": [
+        {
+          "size": "1440x900",
+          "errors": [],
+          "failed_resources": []
+        }
+      ]
+    },
+    {
+      "summary": {
+        "tested": 77,
+        "passed": 77,
+        "failed": 0
+      },
+      "viewports": [
+        {
+          "size": "1280x720",
+          "errors": [],
+          "failed_resources": []
+        }
+      ]
+    },
+    {
+      "summary": {
+        "tested": 77,
+        "passed": 77,
+        "failed": 0
+      },
+      "viewports": [
+        {
+          "size": "820x1180",
+          "errors": [],
+          "failed_resources": []
+        }
+      ]
+    }
+  ]
+}

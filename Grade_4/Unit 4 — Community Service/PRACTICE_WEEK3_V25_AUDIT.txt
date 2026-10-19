@@ -1,0 +1,40 @@
+GRADE 4 - UNIT 4 - PRACTICE WEEK 3 - VERSION 25
+AUDIT REPORT | 15 October 2026
+
+SOURCE: Grade4_Unit4_Practice_Week2_Integrated_V24(1).zip
+NEW WEEK 3 BACKGROUND: assets/practice_week3_bg.png
+MODIFIED SOURCE: index.html only. ALL original source images/scripts unchanged.
+
+UPDATES
+- Week 3 uses the same illustrated, full-screen PRACTICE interface as Weeks 1 and 2.
+- Week 3 scene-specific background: Week 3 - Sentence Pattern.
+- 14 existing Week 3 questions (all four prepositions: in, on, under, next to).
+- Three shuffled FULL-SENTENCE answer choices per question.
+- Full question ('Where is Grandma/Grandpa?') visible in prompt bar and spoken on speaker tap.
+- Answer cards appear on correct answers; wrong answers show Try Again without points.
+- Dynamic 1/14 counter, five grouped progress dots, and score placed over background text.
+- Clickable background HOME, Presentation, Flashcards, How To Play, bottom lesson navigation.
+- Responsive no-scroll Week 3 full-screen layout for landscape and portrait viewports.
+- Week 1 and Week 2 sources, backgrounds, and answer mechanics preserved.
+
+BROWSER AND AUTOMATED REGRESSION AUDIT
+Total: 195 individual assertions PASSED.
+- 118 initial browser/navigation/scoring/layout checks, no runtime JS errors.
+- 77 additional checks on grammar, images, full answer choices, audio invocation, and week 1/2 regression.
+- Tested rendering at 1672x941, 1280x720, 1440x800, 1024x768, 900x550, 768x1024.
+- Week 3: tested all 14 picture images, all 14 answer images, grammar correctness of all displayed answer choices, and text overflow for 1280x720.
+- Tested all 14 correct answers for score increment and next-card progression.
+- Tested incorrect Week 3 answer (no score) and correct-answer feedback card.
+- Week 1 and Week 2 verified independently, with correct answer + scoring + progression.
+- JS syntax verified with Node JavaScript parser.
+
+LIMITATIONS
+- Browser checks performed in automated Chromium environment, NOT Safari hardware.
+- Speaker click checked against Web Speech API invocation. Audible voice quality / latency on your Safari/device remains to be checked by you.
+- The Week 3 progress panel uses five milestone dots across 14 questions; numeric 1/14 is exact.
+
+HANDOFF
+1. Unzip the ZIP into a folder, keeping all assets beside index.html in the same relative layout.
+2. Open index.html and choose Week 3 -> PRACTICE.
+3. Check on Safari using your actual screen; all 14 cards should fit without scrolling.
+4. Test the speaker audio on your computer.

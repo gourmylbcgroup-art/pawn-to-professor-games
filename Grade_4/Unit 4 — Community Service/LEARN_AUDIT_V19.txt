@@ -1,0 +1,20 @@
+QUICK PICK V19 — LEARN SECTION AUDIT
+
+ZOOM-OUT CHANGE
+- All Week 1 and Week 2 Learn pictures now use object-fit: contain instead of cover.
+- Picture artwork is scaled to 94% with padding so the full scene is visible.
+- On short screens the artwork scales to 90% to prevent cropping.
+
+AUDITED
+- Week 1: IN and ON only; 3 learning cards per preposition.
+- Week 2: UNDER and NEXT TO only; 3 learning cards per preposition.
+- Subject, preposition, reference object, sentence text, and image asset paths for all 12 learning cards.
+- Visual review of all 12 Learn pictures: Grandpa/Grandma and spatial relationship match the sentence.
+- Week 3: all 20 question-card and answer-card asset pairs exist and map to the DATA sentences.
+- Visual review of Week 3 question/answer cards across both weeks.
+- Picture click audio = target preposition only.
+- Sentence speaker audio = full sentence.
+- Week 3 guided flow = Question Card → Show Answer → Answer Card → Next.
+- Previous/Next Learn navigation hooks are present.
+
+RESULT: PASS — no automated mapping/asset/interaction errors found.

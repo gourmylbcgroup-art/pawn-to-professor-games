@@ -1,0 +1,35 @@
+GRADE 4 UNIT 4 — V28 PLAY BACKGROUND INTEGRATION AUDIT
+
+INPUT: Grade4_Unit4_Play_Menu_Integrated_V26(3).zip
+SCOPE: PLAY game stage only, Weeks 1-3. V26 game menu, LEARN/PRACTICE/PRESENTATION/FLASHCARDS/FINISH/GAME preserved.
+
+BACKGROUND ART: Exact three approved uploads (1672 x 941 pixels) copied into assets.
+  Week 1: play_quick_pick_week1_v28.png  [IN / ON]
+  Week 2: play_quick_pick_week2_v28.png  [UNDER / NEXT TO]
+  Week 3: play_quick_pick_week3_v28.png  [IN / ON / UNDER / NEXT TO]
+No newly generated backgrounds. Illustrated buttons in images have transparent DOM hit targets with aria labels.
+
+LIVE ELEMENTS: question-card image with object-fit:contain, question prompt and audio control;
+countdown (45s initial), score (first-try only), 10-question progress, correct/try again visual feedback,
+previous/next navigation and game-result screen.
+
+AUDIT A: 258 of 258 browser checks passed at 1672x941 and 1280x720:
+ - all 3 weeks, 10-question full PLAY rounds, correct/incorrect responses, no repeat score;
+ - menu set access, all navigation hotspots, audio controls, image loading;
+ - correct/incorrect feedback, hit-target positions, frame fit and no document scrolling.
+
+AUDIT B: 2,353 of 2,353 browser checks passed at 1536x1024, 1024x768, 768x1024:
+ - every Week 1/2/3 question for SET 1/2/3/RANDOM 10, 10 distinct questions;
+ - Week 3 each set includes IN/ON/UNDER/NEXT TO;
+ - visual flashcard loaded, object-fit:contain, all prompts not clipped;
+ - week-specific button counts, old lesson sections and finish mode preserved;
+ - SHA256 original V26 files preserved apart from index.html; zero JavaScript runtime errors.
+
+Audited total: 2,611 / 2,611 checks passed (some overlapping tests).
+JavaScript: node --check passed for all inline scripts.
+ZIP CRC and presence checked after packaging.
+
+KNOWN LIMITATIONS: Browser tests ran in headless Chromium, not Safari.
+Speech-synthesis triggers were tested, but audible playback quality and latency cannot be confirmed remotely.
+Concurrent users / Vercel load performance have not been load-tested.
+Week 1-2 SPEAK intentionally returns to HOME in original content; Week 3 SPEAK remains available.

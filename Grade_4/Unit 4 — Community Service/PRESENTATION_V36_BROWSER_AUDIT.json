@@ -1,0 +1,283 @@
+{
+  "total": 55,
+  "passed": 55,
+  "failed": [],
+  "results": [
+    {
+      "name": "load at 1600x900",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "Week 1 presentation at 1600x900",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "image loads at 1600x900",
+      "pass": true,
+      "detail": "{'complete': True, 'w': 1505, 'h': 847, 'src': 'data:image/webp;base64,UklGRjLwAwBXRUJQVlA4ICbwAwBwPAydASrhBU8DPlEgjUQjoiEiLPQdyHAKCWxt59ddT6LE//e6Uv43CP1Hwq5PfNP/L6D3ofZ512PkB/0qeA33CsBxJdlczz/mv+t47/lv+J6SX+v753tHqB/0L/Eep5mrOEuaK0rfZFzVb59v/o9N3HPq/9T/jf8//uv8N/8v998qnF/V/58+3f5L/U/3z/6/7r7rP2H/k"
+    },
+    {
+      "name": "no unwanted scroll at 1600x900",
+      "pass": true,
+      "detail": "{'stage': [87.484375, 7.1875, 1425.03125, 799.03125], 'toolbar': [7.1875, 812.515625, 1585.625, 56], 'viewport': [1600, 900], 'scroll': [1600, 900]}"
+    },
+    {
+      "name": "next slide at 1600x900",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "previous slide at 1600x900",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "week 2 jump at 1600x900",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "week 3 jump at 1600x900",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "slide 50 correct at 1600x900",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "end slide at 1600x900",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "presentation home",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "learn still opens",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "practice still opens",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "playsets still opens",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "speak week 1 gate",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "speak week 3 opens",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "finish still opens",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "flashcards still open",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Spatial Match iframe still loads",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "PLAY renders question",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "PLAY clue formatted on two lines",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "js errors 1600x900",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "load at 1280x720",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "Week 1 presentation at 1280x720",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "image loads at 1280x720",
+      "pass": true,
+      "detail": "{'complete': True, 'w': 1505, 'h': 847, 'src': 'data:image/webp;base64,UklGRjLwAwBXRUJQVlA4ICbwAwBwPAydASrhBU8DPlEgjUQjoiEiLPQdyHAKCWxt59ddT6LE//e6Uv43CP1Hwq5PfNP/L6D3ofZ512PkB/0qeA33CsBxJdlczz/mv+t47/lv+J6SX+v753tHqB/0L/Eep5mrOEuaK0rfZFzVb59v/o9N3HPq/9T/jf8//uv8N/8v998qnF/V/58+3f5L/U/3z/6/7r7rP2H/k"
+    },
+    {
+      "name": "no unwanted scroll at 1280x720",
+      "pass": true,
+      "detail": "{'stage': [87.390625, 5.75, 1105.203125, 624.4375], 'toolbar': [5.75, 635.21875, 1268.5, 56], 'viewport': [1280, 720], 'scroll': [1280, 720]}"
+    },
+    {
+      "name": "next slide at 1280x720",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "previous slide at 1280x720",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "week 2 jump at 1280x720",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "week 3 jump at 1280x720",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "slide 50 correct at 1280x720",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "end slide at 1280x720",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "js errors 1280x720",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "load at 1024x768",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "Week 1 presentation at 1024x768",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "image loads at 1024x768",
+      "pass": true,
+      "detail": "{'complete': True, 'w': 1505, 'h': 847, 'src': 'data:image/webp;base64,UklGRjLwAwBXRUJQVlA4ICbwAwBwPAydASrhBU8DPlEgjUQjoiEiLPQdyHAKCWxt59ddT6LE//e6Uv43CP1Hwq5PfNP/L6D3ofZ512PkB/0qeA33CsBxJdlczz/mv+t47/lv+J6SX+v753tHqB/0L/Eep5mrOEuaK0rfZFzVb59v/o9N3HPq/9T/jf8//uv8N/8v998qnF/V/58+3f5L/U/3z/6/7r7rP2H/k"
+    },
+    {
+      "name": "no unwanted scroll at 1024x768",
+      "pass": true,
+      "detail": "{'stage': [6.140625, 6.140625, 1011.71875, 670.96875], 'toolbar': [6.140625, 682.484375, 1011.71875, 56], 'viewport': [1024, 768], 'scroll': [1024, 768]}"
+    },
+    {
+      "name": "next slide at 1024x768",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "previous slide at 1024x768",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "week 2 jump at 1024x768",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "week 3 jump at 1024x768",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "slide 50 correct at 1024x768",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "end slide at 1024x768",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "js errors 1024x768",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "load at 800x600",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "Week 1 presentation at 800x600",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "image loads at 800x600",
+      "pass": true,
+      "detail": "{'complete': True, 'w': 1505, 'h': 847, 'src': 'data:image/webp;base64,UklGRjLwAwBXRUJQVlA4ICbwAwBwPAydASrhBU8DPlEgjUQjoiEiLPQdyHAKCWxt59ddT6LE//e6Uv43CP1Hwq5PfNP/L6D3ofZ512PkB/0qeA33CsBxJdlczz/mv+t47/lv+J6SX+v753tHqB/0L/Eep5mrOEuaK0rfZFzVb59v/o9N3HPq/9T/jf8//uv8N/8v998qnF/V/58+3f5L/U/3z/6/7r7rP2H/k"
+    },
+    {
+      "name": "no unwanted scroll at 800x600",
+      "pass": true,
+      "detail": "{'stage': [4.796875, 15.3125, 790.40625, 467], 'toolbar': [4.796875, 486.5, 790.40625, 76], 'viewport': [800, 600], 'scroll': [800, 600]}"
+    },
+    {
+      "name": "next slide at 800x600",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "previous slide at 800x600",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "week 2 jump at 800x600",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "week 3 jump at 800x600",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "slide 50 correct at 800x600",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "end slide at 800x600",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "js errors 800x600",
+      "pass": true,
+      "detail": "[]"
+    }
+  ],
+  "console": []
+}
