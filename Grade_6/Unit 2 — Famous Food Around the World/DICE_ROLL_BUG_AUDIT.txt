@@ -1,0 +1,6 @@
+Amazing Food Race dice-roll / progression audit
+
+Confirmed defect: JiaVoice.sequence was defined but omitted from the returned JiaVoice interface. Airport Gate routes and winner celebration called JiaVoice.sequence and could throw TypeError. Fixed by exposing sequence.
+Further robustness: invalidated delayed dice-roll callbacks when a game restarts or setup is opened; guarded token animation against game reset.
+Original voice sprite preserved. Game rules, card assets, and scoring preserved.
+Node JS syntax verified. Browser automated test attempted but timed out in this environment; full device playthrough NOT verified.

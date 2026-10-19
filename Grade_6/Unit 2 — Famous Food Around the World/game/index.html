@@ -42,7 +42,8 @@
           <label class="toggle"><input id="soundToggle" type="checkbox" checked><span>Fast local game sounds</span></label>
           <label class="toggle"><input id="ttsToggle" type="checkbox" checked><span>Question voice (recommended)</span></label>
           <label class="toggle"><input id="rotateToggle" type="checkbox" checked><span>Different speaker each turn</span></label>
-          <div class="audio-note">Jia-Jia’s original voice quality is preserved. One voice sprite is cached when the game opens, so turns do not fetch separate voice files.</div>
+          <button type="button" id="voiceTestBtn" class="secondary">🔊 Test question voice</button>
+          <div id="voiceTestStatus" role="status" aria-live="polite" class="muted"></div>
         </article>
       </div>
 

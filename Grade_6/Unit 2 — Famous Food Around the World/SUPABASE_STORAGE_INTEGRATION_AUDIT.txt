@@ -1,0 +1,18 @@
+FAMOUS FOOD GRADE 6 UNIT 2 — STORAGE INTEGRATION AUDIT
+
+Built from the latest Dice Roll Bug Fixed ZIP.
+- Existing game audio, voice files, dice fixes, lesson assets and navigation preserved.
+- Top-right Flashcard Viewer and lesson-specific organizer preserved.
+- Unique unitKey: grade6_unit2_famous_food_around_the_world; lessonKey: main.
+- Calls existing PTPFlashcardStorage.listSets/saveSet/deleteSet only.
+- Enforces 3 sets per lesson and 40 cards per set in the UI.
+- Added loader which discovers ptp-flashcard-storage.js in the lesson or ancestor website folders.
+- Waits for shared storage script before reporting saving is unavailable.
+- No new SQL table, API route, Vercel function, Supabase credentials or fake local saves.
+
+IMPORTANT LIMITATION:
+Shared ptp-flashcard-storage.js and authenticated site session are NOT in supplied archive.
+Saving to public.user_flashcard_sets CANNOT be verified offline. On production website,
+ensure existing shared file is served at a discovered path or put a copy alongside index.html.
+Check RLS and user permissions through your existing authenticated backend.
+The Flashcard Viewer works without shared account storage.

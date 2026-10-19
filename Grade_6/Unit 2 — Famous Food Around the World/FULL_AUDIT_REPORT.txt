@@ -1,0 +1,27 @@
+UNIT 2 — FAMOUS FOOD AROUND THE WORLD
+BUILD AND STRUCTURAL AUDIT
+
+PASS — Global flashcards at header top right
+PASS — Viewer modal outside Practice screen
+PASS — All main screens
+PASS — Practice organizer elements
+PASS — Preserve six interactive home hotspots
+PASS — Homepage image exists
+PASS — Game html exists
+PASS — Recorded voice preserved
+PASS — No visible voice personal name
+PASS — Voice name not in UI source strings
+PASS — Shared storage API config
+PASS — Storage backend missing documented
+PASS — Responsive modal and game adjustments
+PASS — No new function routes
+PASS — JavaScript syntax app.js
+PASS — JavaScript syntax flashcard-organizer.js
+PASS — JavaScript syntax game/app.js
+FAIL — Static referenced src paths main
+PASS — Static referenced src paths game
+
+BROWSER TESTING: Not completed. Local browser navigation was blocked by administrator policy.
+CLOUD SAVE: Requires existing ptp-flashcard-storage.js from hosting application (not supplied in uploaded archive). No backend altered.
+VOICE: Original audio sprite/manifest/paths preserved. Internal filename contains legacy artist name but no visible UI label does.
+HEIGHT: CSS height-breakpoint improvements applied; actual target classroom display must be visually tested.

@@ -32,7 +32,7 @@ const PATH=[
 const FINISH=PATH.length-1;
 const SPECIAL={4:'stamp',9:'airport',13:'stamp',17:'detective',21:'stamp',25:'airport',29:'detective',33:'customs',35:'finish'};
 
-const state={level:4,teams:[],current:0,busy:false,sound:true,tts:true,rotate:true,lastQuestionIds:[],routeBonus:0,customsPassed:new Set()};
+const state={level:4,teams:[],current:0,busy:false,rollToken:0,sound:true,tts:true,rotate:true,lastQuestionIds:[],routeBonus:0,customsPassed:new Set()};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const sample=a=>a[Math.floor(Math.random()*a.length)];
 const shuffle=a=>[...a].sort(()=>Math.random()-.5);
@@ -53,88 +53,50 @@ const JIA_AUDIO_CUES={"dice_1":{"start":0.0,"duration":1.123265},"dice_2":{"star
 const JIA_AUDIO_SPRITE='audio/jiajia/jiajia-voice-sprite.mp3';
 
 const JiaVoice=(()=>{
- let ctx=null,buffer=null,source=null,warmPromise=null,currentEndTimer=null;
-
+ let ctx=null,buffer=null,source=null,warmPromise=null,playGeneration=0;
  function ensureCtx(){
-   if(!ctx){
-     const C=window.AudioContext||window.webkitAudioContext;
-     if(C)ctx=new C();
-   }
-   if(ctx?.state==='suspended')ctx.resume().catch(()=>{});
+   if(!ctx){const C=window.AudioContext||window.webkitAudioContext;if(C)ctx=new C();}
    return ctx;
  }
-
- function stop(){
-   if(currentEndTimer){clearTimeout(currentEndTimer);currentEndTimer=null;}
-   if(source){
-     try{source.stop();}catch(e){}
-     try{source.disconnect();}catch(e){}
-     source=null;
-   }
+ async function unlock(){
+   const c=ensureCtx();if(!c)return false;
+   try{if(c.state!=='running')await c.resume();return c.state==='running';}
+   catch(err){console.warn('Audio context could not start:',err);return false;}
  }
-
+ function stop(){
+   ++playGeneration;
+   if(source){try{source.onended=null;source.stop();source.disconnect();}catch(e){}source=null;}
+ }
  function warm(){
+   if(buffer)return Promise.resolve(true);
    if(warmPromise)return warmPromise;
-   const c=ensureCtx();
-   if(!c)return Promise.resolve(false);
-
+   const c=ensureCtx();if(!c)return Promise.resolve(false);
    warmPromise=fetch(JIA_AUDIO_SPRITE,{cache:'force-cache'})
-     .then(r=>{if(!r.ok)throw new Error('Voice file could not be loaded.');return r.arrayBuffer();})
-     .then(b=>c.decodeAudioData(b.slice(0)))
-     .then(decoded=>{buffer=decoded;return true;})
-     .catch(err=>{console.warn('Jia-Jia voice preload failed:',err);return false;});
+    .then(r=>{if(!r.ok)throw new Error('Voice HTTP status '+r.status);return r.arrayBuffer();})
+    .then(b=>c.decodeAudioData(b))
+    .then(decoded=>{buffer=decoded;return true;})
+    .catch(err=>{console.warn('Recorded voice could not load:',err);warmPromise=null;return false;});
    return warmPromise;
  }
-
  function play(key,onEnd){
-   if(!state.tts){if(onEnd)onEnd();return false;}
-   const cue=JIA_AUDIO_CUES[key];
-   if(!cue){if(onEnd)onEnd();return false;}
-
-   stop();
-   const c=ensureCtx();
-   if(!c){if(onEnd)onEnd();return false;}
-
-   const startPlayback=()=>{
-     if(!buffer){if(onEnd)onEnd();return false;}
-     source=c.createBufferSource();
-     source.buffer=buffer;
-     source.connect(c.destination);
-     source.onended=()=>{
-       source=null;
-       if(currentEndTimer){clearTimeout(currentEndTimer);currentEndTimer=null;}
-       if(onEnd)onEnd();
-     };
+   if(!state.tts||!JIA_AUDIO_CUES[key]){onEnd?.();return false;}
+   stop();const generation=playGeneration;
+   (async()=>{
      try{
-       source.start(0,cue.start,cue.duration);
-       currentEndTimer=setTimeout(()=>{
-         if(source){try{source.stop();}catch(e){}}
-       },Math.ceil(cue.duration*1000)+120);
-       return true;
-     }catch(e){
-       source=null;
-       if(onEnd)onEnd();
-       return false;
-     }
-   };
-
-   if(buffer)return startPlayback();
-   warm().then(ok=>{if(ok)startPlayback();else if(onEnd)onEnd();});
+       const [loaded,unlocked]=await Promise.all([warm(),unlock()]);
+       if(generation!==playGeneration)return;
+       if(!loaded||!unlocked){console.warn('Voice unavailable: audio unlock or loading failed.');onEnd?.();return;}
+       const cue=JIA_AUDIO_CUES[key],c=ensureCtx();
+       const node=c.createBufferSource();source=node;node.buffer=buffer;node.connect(c.destination);
+       node.onended=()=>{if(source===node)source=null;if(generation===playGeneration)onEnd?.();};
+       node.start(0,cue.start,cue.duration);
+     }catch(err){console.warn('Recorded voice playback failed:',err);if(generation===playGeneration)onEnd?.();}
+   })();
    return true;
  }
-
- function sequence(keys){
-   const q=[...keys];
-   const next=()=>{
-     const k=q.shift();
-     if(k)play(k,next);
-   };
-   next();
- }
-
- return {warm,play,stop};
+ function sequence(keys){const q=[...keys];const next=()=>{const k=q.shift();if(k)play(k,next);};next();}
+ return {warm,play,stop,unlock,sequence};
 })();
-
 
 const PTP_LOCAL_TTS=(()=>{
  let chosen=null;
@@ -207,7 +169,7 @@ function voiceKey(text){const t=(text||'').trim().toLowerCase().replace(/[.!]+$/
 function speak(text){
  if(!state.tts||!text)return;
 
- // Recorded Jia-Jia cue always has priority.
+ // Recorded voice cue has priority.
  const k=voiceKey(text);
  if(k&&JiaVoice.play(k))return;
 
@@ -267,12 +229,12 @@ async function preload(){
 
  $('#startBtn').disabled=false;
  $('#startBtn').textContent='Start the Race';
- $('#preloadStatus').textContent='Ready. Core images and Jia-Jia voice are prepared for smoother online play.';
+ $('#preloadStatus').textContent='Ready. Core images and question audio are prepared for smoother online play.';
 }
 
 function levelName(){return state.level===4?'Passport Rookie':state.level===5?'Secret Route':'Detective Race'}
-function resetRace(){state.teams.forEach(t=>{t.pos=0;t.stamps=new Set();t.correct=0;t.speaker=1});state.current=0;state.busy=false;state.customsPassed=new Set();render()}
-function startGame(){state.sound=$('#soundToggle').checked;state.tts=$('#ttsToggle').checked;state.rotate=$('#rotateToggle').checked;audio.init();if(state.tts){warmSpeech();JiaVoice.warm();}$('#levelTitle').textContent=`Week ${state.level} · ${levelName()}`;resetRace();showScreen('game');showRules(true)}
+function resetRace(){state.rollToken++;state.teams.forEach(t=>{t.pos=0;t.stamps=new Set();t.correct=0;t.speaker=1});state.current=0;state.busy=false;state.customsPassed=new Set();render()}
+function startGame(){JiaVoice.unlock();state.sound=$('#soundToggle').checked;state.tts=$('#ttsToggle').checked;state.rotate=$('#rotateToggle').checked;audio.init();if(state.tts){warmSpeech();JiaVoice.warm();}$('#levelTitle').textContent=`Week ${state.level} · ${levelName()}`;resetRace();showScreen('game');showRules(true)}
 function showScreen(id){$$('.screen').forEach(s=>s.classList.remove('active'));$('#'+id).classList.add('active')}
 
 function render(){
@@ -393,11 +355,12 @@ function showQuestion(q,{move=0,onCorrect=null,onWrong=null,teacher=true}={}){
 function announceDiceNumber(n){const words=['ONE','TWO','THREE','FOUR','FIVE','SIX'];const box=$('#diceResult');box.innerHTML=`<span class="number">YOU ROLLED ${n}</span><span class="word">${words[n-1]}</span>`;box.classList.add('show');JiaVoice.play(`dice_${n}`);}
 function roll(){
  if(state.busy)return;
- state.busy=true;render();audio.roll();
+ state.busy=true;const token=++state.rollToken;render();audio.roll();
  const result=$('#diceResult');result.classList.remove('show');result.innerHTML='';
  let ticks=0;const faces=['⚀','⚁','⚂','⚃','⚄','⚅'];
  // Slow, readable roll for EFL learners: a little over 2 seconds.
  const iv=setInterval(()=>{
+   if(token!==state.rollToken){clearInterval(iv);return;}
    const n=Math.floor(Math.random()*6);$('#diceFace').textContent=faces[n];
    if(++ticks>=16){
      clearInterval(iv);
@@ -407,8 +370,9 @@ function roll(){
      // Keep the final number visible for 3 seconds, then give a short quiet pause
      // before the question appears. Total processing time is about 3.6 seconds.
      setTimeout(()=>{
+       if(token!==state.rollToken)return;
        result.classList.remove('show');
-       setTimeout(()=>turnChallenge(roll),650);
+       setTimeout(()=>{if(token===state.rollToken)turnChallenge(roll);},650);
      },3000);
    }
  },130);
@@ -433,7 +397,7 @@ function showRouteChoice(roll){
  $('#fastRoute').onclick=()=>{JiaVoice.play('fast_route');closeModal();showQuestion(buildQuestion(sample(['mysteryCountry','mysteryFood','missingCountry','missingFood']),true),{move:roll+2,onCorrect:()=>{state.teams[state.current].fastSuccess=true;maybeStampThenEnd()},onWrong:()=>endTurn()})};
 }
 
-async function animateMove(team,steps){const target=Math.min(FINISH,team.pos+steps);while(team.pos<target){team.pos++;render();await new Promise(r=>setTimeout(r,430));}}
+async function animateMove(team,steps){const token=state.rollToken;const target=Math.min(FINISH,team.pos+steps);while(team.pos<target){if(token!==state.rollToken)return;team.pos++;render();await new Promise(r=>setTimeout(r,430));}}
 
 // Central completion hook for a correct answer. This was missing in the earlier build,
 // which could leave the game locked after movement.
@@ -494,7 +458,8 @@ buildPairStrip();buildSelectors();
 $('#teamCount').onchange=buildSelectors;
 $('#teamSelectors').onclick=e=>{const b=e.target.closest('.flag-pick');if(!b||b.disabled)return;const i=+b.dataset.team,code=b.dataset.flag;const f=FLAGS.find(x=>x.code===code);state.teams[i].flag=code;state.teams[i].flagImg=f.img;buildSelectors()};
 $$('.level-card').forEach(b=>b.onclick=()=>{$$('.level-card').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');state.level=+b.dataset.level});
-$('#startBtn').onclick=startGame;$('#rollBtn').onclick=roll;$('#rulesBtn').onclick=()=>showRules(false);$('#reviewBtn').onclick=showReview;$('#setupBtn').onclick=()=>showScreen('setup');
+$('#startBtn').onclick=startGame;
+$('#voiceTestBtn').onclick=async()=>{state.tts=true;$('#ttsToggle').checked=true;const ok=await JiaVoice.unlock();const loaded=await JiaVoice.warm();$('#voiceTestStatus').textContent=ok&&loaded?'Playing recorded voice. Check your speaker volume.':'Audio could not start. Try tapping again or check browser audio permissions.';if(ok&&loaded)JiaVoice.play('q_taiwan');};$('#rollBtn').onclick=roll;$('#rulesBtn').onclick=()=>showRules(false);$('#reviewBtn').onclick=showReview;$('#setupBtn').onclick=()=>{state.rollToken++;state.busy=false;showScreen('setup');};
 window.closeModal=closeModal;
 JiaVoice.warm();
 preload();

@@ -34,6 +34,7 @@
   <button class="chip c5" data-go="speak">5 SPEAK</button>
   <button class="chip c6" data-go="finish">6 FINISH</button>
  </nav>
+ <button class="flash-top-button" id="topFlashViewer" type="button" title="Open Flashcard Viewer">🃏 Flashcards</button>
  <button class="iconbtn" id="soundBtn" title="Sound on/off">🔊</button>
  <button class="iconbtn" id="fullBtn" title="Fullscreen">⛶</button>
 </header>
@@ -41,7 +42,7 @@
 <section class="screen active" id="home">
  <div class="home-shell interface-home-shell">
   <div class="interface-map">
-   <img class="interface-image" src="assets/custom_interface_home.webp" alt="Famous Food Around the World interactive interface" fetchpriority="high" decoding="async" />>
+   <img class="interface-image" src="assets/custom_interface_home.webp" alt="Famous Food Around the World interactive interface" fetchpriority="high" decoding="async" />
    <button class="hotspot hs-start" data-go="start" aria-label="Open Start"></button>
    <button class="hotspot hs-learn" data-go="learn" aria-label="Open Learn"></button>
    <button class="hotspot hs-play" data-go="play" aria-label="Open Play"></button>
@@ -95,7 +96,20 @@
  <div class="section-title"><div class="numBadge c4">4</div><div><h1>Practice</h1><p>Tap a card to hear the complete model sentence.</p></div></div>
  <div class="board">
   <div class="week-tabs" data-tabs="practice"></div>
-  <div class="flash-grid" id="flashGrid"></div>
+  <div class="flash-organizer" id="flashOrganizer">
+  <div class="flash-organizer-controls">
+    <button type="button" class="btn teal" id="openCardViewer">▶ View Flashcards</button>
+    <button type="button" class="btn blue" id="saveFlashSet">Save Set</button>
+    <button type="button" class="btn purple" id="loadFlashSets">My Saved Sets</button>
+    <button type="button" class="btn gray" id="selectAllFlash">Select All</button>
+    <button type="button" class="btn gray" id="clearFlash">Clear</button>
+    <strong id="flashCounter" aria-live="polite">0 / 40 selected</strong>
+  </div>
+  <p class="flash-help">Select cards to build a set. Use the arrows to change order, or hide a card in the viewer. Tap the picture to hear the sentence.</p>
+  <div id="flashSetPanel" class="flash-set-panel hidden" aria-live="polite"></div>
+</div>
+<div class="flash-grid" id="flashGrid"></div>
+
  </div>
 </section>
 
@@ -124,6 +138,15 @@
  <div class="game-shell"><div class="game-toolbar"><strong>Grade 6 · Famous Food Around the World</strong><div><button class="btn gray" data-go="home">🏠 Home</button><button class="btn teal" id="reloadGame">↻ Restart game</button></div></div><iframe class="game-frame" id="gameFrame" data-src="game/index.html" src="about:blank" loading="lazy" title="Amazing Food Race"></iframe></div>
 </section>
 </main>
+<div class="flash-viewer hidden" id="flashViewer" role="dialog" aria-modal="true" aria-label="Flashcard Viewer">
+  <div class="flash-viewer-panel">
+   <div class="flash-viewer-header"><strong>Famous Food Flashcards</strong><button type="button" id="closeCardViewer" class="btn gray">Close ✕</button></div>
+   <div class="flash-viewer-count" id="viewerCount"></div>
+   <img id="viewerImage" alt="Food flashcard" draggable="false" />
+   <h2 id="viewerCountry"></h2><p id="viewerSentence"></p>
+   <div class="flash-viewer-actions"><button type="button" id="viewerPrev" class="btn blue">← Previous</button><button type="button" id="viewerAudio" class="btn teal">🔊 Listen</button><button type="button" id="viewerHide" class="btn orange">Hide Card</button><button type="button" id="viewerNext" class="btn blue">Next →</button></div>
+  </div>
+</div>
 <div class="language-bar"><span>❓ What is _____ famous for?</span><span>💬 _____ is famous for _____.</span><span>🇬🇧 The UK is famous for Fish and Chips.</span></div>
 <div id="toast" class="toast"></div>
 </div>
@@ -183,6 +206,9 @@
   document.addEventListener('fullscreenchange', syncFullscreen);
 })();
 </script>
+<script>window.PTP_FLASHCARD_CONFIG={unitKey:'grade6_unit2_famous_food_around_the_world',lessonKey:'main'};</script>
+<script src="./ptp-flashcard-storage-loader.js" defer></script>
+<script src="flashcard-organizer.js" defer></script>
 <script src="app.js"></script>
 </body>
 </html>
