@@ -1,11 +1,4 @@
-
 {
-  "rewrites": [
-    {
-      "source": "/grade4-community-service",
-      "destination": "/Grade_4/Unit_4_%20Community%20Service/index.html"
-    }
-  ],
   "headers": [
     {
       "source": "/index.html",
@@ -34,7 +27,15 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/Grade_4/Unit_4_%20Community%20Service",
+      "destination": "/Grade_4/Unit_4_%20Community%20Service/index"
+    },
+    {
+      "source": "/Grade_4/Unit_4_%20Community%20Service/",
+      "destination": "/Grade_4/Unit_4_%20Community%20Service/index"
+    }
   ]
-}
-
 }
