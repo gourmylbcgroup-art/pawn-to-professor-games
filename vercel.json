@@ -1,4 +1,5 @@
 {
+  "cleanUrls": false,
   "headers": [
     {
       "source": "/index.html",
@@ -26,16 +27,6 @@
           "value": "public, max-age=604800, stale-while-revalidate=2592000"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/Grade_4/Unit_4_%20Community%20Service",
-      "destination": "/Grade_4/Unit_4_%20Community%20Service/index"
-    },
-    {
-      "source": "/Grade_4/Unit_4_%20Community%20Service/",
-      "destination": "/Grade_4/Unit_4_%20Community%20Service/index"
     }
   ]
 }
