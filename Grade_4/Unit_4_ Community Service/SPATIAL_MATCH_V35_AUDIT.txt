@@ -1,0 +1,29 @@
+GRADE 4 UNIT 4 — V35 SPATIAL MATCH INTEGRATION
+
+Source: Grade4_Unit4_Spatial_Match_Interactive_Integrated_V34 (1).zip
+
+Implemented:
+- 3 approved 3D playground backgrounds, one per teaching week.
+- Week 1 is highlighted and uses IN / ON, 8 cards.
+- Week 2 is highlighted and uses UNDER / NEXT TO, 8 cards.
+- Week 3 is highlighted and uses IN / ON / UNDER / NEXT TO, 16 cards.
+- Removed printed Week 3 example with CSS masking underneath the live flashcard, prompt and buttons.
+- Live flashcards fitted into the illustrated space with object-fit:contain; no cropping/stretching.
+- Transparent hotspots over illustrated main controls and matching squares; dynamic score, card counts, teams and status text.
+- Grandpa/Grandma portraits in approved backgrounds rather than emoji rows.
+- Slower English text-to-speech: .68 for Spatial Match (previous .82), .72 for lesson speech (previous .82).
+- Original game logic for right/wrong answers, first-try points, completed placements and teams maintained.
+- Updated the standalone spatial-match.html AND the base64-embedded in-lesson copy in index.html.
+
+BROWSER AUDIT:
+- Chromium desktop (1672×941): 121 automated gameplay checks passed; no reported JS errors.
+- Chromium 720p (1280×720): 121 automated gameplay checks passed; no reported JS errors.
+- These included 8/8 Week 1 matches, 8/8 Week 2 matches, 16/16 Week 3 matches, wrong-answer retry, first-try scores, team turn, restart, help, and 1/2-team modes.
+- Browser tablet checks: correct placement for all 3 weeks at 1024×768 and 768×1024, no document scrolling.
+- Embedded lesson navigation checked: GAME Week 2, GAME Week 3, HOME, HOW TO PLAY, CLASSIC CHALLENGE, LEARN, PRACTICE, PLAY menu, FINISH, FLASHCARDS, PRESENTATION, SPEAK restriction for Weeks 1–2 and SPEAK Week 3. No JS errors.
+- ZIP integrity and original V34 file-preservation checked.
+
+LIMITATIONS:
+- Safari-specific synthesized voice quality/speed must be tested on the teacher's Mac. The effective voice depends on OS voice availability.
+- Online concurrency/performance for 100 simultaneous users not load-tested.
+- Some backgrounds have fixed sample elements; visual overlays mask them, rather than altering the supplied images.

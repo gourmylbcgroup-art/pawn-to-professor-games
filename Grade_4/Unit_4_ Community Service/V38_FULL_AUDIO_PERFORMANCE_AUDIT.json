@@ -1,0 +1,31 @@
+{
+  "source_version": "V37",
+  "v38_version": "38",
+  "audio_source_uploaded_mp3_count": 11,
+  "audio_source_distinct_mp3_count": 5,
+  "provided_recorded_lines": 77,
+  "other_recording_lines_missing": 50,
+  "voice_clips_valid": 77,
+  "voice_mp3_total_bytes": 674524,
+  "voice_duration_range_seconds": [
+    0.65,
+    4.37
+  ],
+  "voice_average_clip_seconds": 1.42,
+  "manifest_entries": 77,
+  "manifest_missing_files": [],
+  "55_slides_exist": true,
+  "missing_presentation_files": [],
+  "spatial_match_external_lazy_loaded": true,
+  "embedded_spatial_game_removed": true,
+  "playback_sequential": true,
+  "mp3_cache_headers": true,
+  "static_local_http_100_requests": {
+    "successful": 100,
+    "total": 100,
+    "elapsed_sec": 11.54,
+    "total_bytes": 7901112
+  },
+  "browser_e2e_note": "Live browser navigation could not be tested here: Chromium is blocked from opening local or routed URLs by administrator policy. JavaScript syntax and audio-engine unit tests passed.",
+  "production_load_note": "Local static test is not a live 100-concurrent-user Vercel/Supabase load test; static audio assets are CDN-cacheable and lazy loaded."
+}

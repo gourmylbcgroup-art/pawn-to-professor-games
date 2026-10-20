@@ -1,0 +1,13 @@
+{
+  "simulation": "100 independent clients each downloading HTML, home background, and one lesson slide from local threaded HTTP server",
+  "scope_note": "Synthetic local static-file test; cannot establish Vercel production concurrency, quotas, latency, or external database capacity",
+  "clients": 100,
+  "requests": 300,
+  "passed": 300,
+  "failed": 0,
+  "transfer_MiB": 86.05,
+  "elapsed_sec": 2.7,
+  "p50_request_ms": 25.7,
+  "p95_request_ms": 1438.5,
+  "sample_errors": []
+}

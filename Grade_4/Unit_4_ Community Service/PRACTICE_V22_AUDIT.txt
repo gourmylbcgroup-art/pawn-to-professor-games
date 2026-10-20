@@ -1,0 +1,11 @@
+V22 WEEK 1 PRACTICE INTEGRATION
+PASS: single Practice background image used
+PASS: question card is dynamic and clickable
+PASS: speaker hotspot is clickable
+PASS: IN/ON use transparent hotspots over background buttons
+PASS: progress counter updates 1/5 -> 5/5 automatically
+PASS: green progress dots update automatically
+PASS: wrong answer stays on same question and does not advance progress
+PASS: correct answer opens answer-card feedback and increments score
+PASS: Home/Presentation/Flashcards/How to Play and bottom navigation remain clickable
+PASS: Week 2/3 retain legacy Practice layouts to avoid incorrect IN/ON background labels

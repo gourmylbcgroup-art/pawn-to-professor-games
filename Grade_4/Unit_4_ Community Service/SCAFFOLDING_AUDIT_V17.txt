@@ -1,0 +1,26 @@
+QUICK PICK V17 — SCAFFOLDING / CARD-ROLE AUDIT
+
+PASS — Week 3 LEARN uses question cards
+PASS — Week 3 LEARN reveals answer cards
+PASS — Practice uses question flashcards
+PASS — Practice correct reveals answer flashcard
+PASS — Play uses picture-only assets
+PASS — Play gives object in brackets
+PASS — Week 3 practice removes redundant clue
+PASS — Speak uses reduced-support picture-only cards
+PASS — Finish uses its own stage pool
+PASS — Game uses final full pool
+PASS — Finish/Game footer highlight is corrected
+PASS — All 40 question/answer card files exist
+
+Locked scaffolding:
+LEARN: maximum help. Week 3 = question card → teacher SHOW ANSWER → answer card.
+PRACTICE: question card + choices; wrong = try again; correct = answer card popup + sentence audio.
+PLAY: picture-only card + question + reference object in brackets.
+SPEAK: picture-only + sentence frame; model answer only on request.
+FINISH: picture/question, minimal help, no automatic prompt audio.
+GAME: picture only, no clue, all four prepositions mixed.
+
+Scene variety:
+Week 1/2 PRACTICE and PLAY use different scene subsets.
+Week 3 rotates different scene mixes across PRACTICE / PLAY / SPEAK / FINISH; GAME can use the full mixed bank.

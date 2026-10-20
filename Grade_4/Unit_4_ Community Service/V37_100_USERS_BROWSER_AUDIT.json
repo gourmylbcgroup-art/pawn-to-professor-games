@@ -1,0 +1,459 @@
+{
+  "version": "V37",
+  "cases": [
+    {
+      "name": "820x1180 initial homepage visible",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 game deferred",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 no document scrolling",
+      "passed": true,
+      "detail": {
+        "screens": [
+          "home"
+        ],
+        "iframe": null,
+        "width": 820,
+        "height": 1180
+      }
+    },
+    {
+      "name": "820x1180 presentation Week 1 loaded",
+      "passed": true,
+      "detail": {
+        "s": true,
+        "src": "assets/presentation_slide_01.webp",
+        "week": 1,
+        "w": 1505,
+        "rect": {
+          "x": 13.4375,
+          "y": 15.25,
+          "width": 793.125,
+          "height": 1039,
+          "top": 15.25,
+          "right": 806.5625,
+          "bottom": 1054.25,
+          "left": 13.4375
+        }
+      }
+    },
+    {
+      "name": "820x1180 presentation Week 2 loaded",
+      "passed": true,
+      "detail": {
+        "s": true,
+        "src": "assets/presentation_slide_15.webp",
+        "week": 2,
+        "w": 1505,
+        "rect": {
+          "x": 13.4375,
+          "y": 15.25,
+          "width": 793.125,
+          "height": 1039,
+          "top": 15.25,
+          "right": 806.5625,
+          "bottom": 1054.25,
+          "left": 13.4375
+        }
+      }
+    },
+    {
+      "name": "820x1180 presentation Week 3 loaded",
+      "passed": true,
+      "detail": {
+        "s": true,
+        "src": "assets/presentation_slide_29.webp",
+        "week": 3,
+        "w": 1505,
+        "rect": {
+          "x": 13.4375,
+          "y": 15.25,
+          "width": 793.125,
+          "height": 1039,
+          "top": 15.25,
+          "right": 806.5625,
+          "bottom": 1054.25,
+          "left": 13.4375
+        }
+      }
+    },
+    {
+      "name": "820x1180 Week1 button",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 NEXT button",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 PREVIOUS button",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 presentation home",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 learn navigation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 practice navigation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 play navigation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 finishcheck navigation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 flashcards navigation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 organizer uses thumbnails",
+      "passed": true,
+      "detail": "assets/thumbs/learn_in_1_v15.webp"
+    },
+    {
+      "name": "820x1180 iframe unloaded outside game",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 spatial Week2 iframe",
+      "passed": true,
+      "detail": {
+        "src": "assets/spatial_match/spatial_match_week2_v35.webp",
+        "loaded": true
+      }
+    },
+    {
+      "name": "820x1180 game unload after exit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "820x1180 no JavaScript page errors",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "820x1180 no failing assets",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Slide 1 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 2 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 3 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 4 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 5 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 6 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 7 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 8 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 9 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 10 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 11 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 12 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 13 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 14 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 15 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 16 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 17 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 18 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 19 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 20 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 21 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 22 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 23 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 24 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 25 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 26 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 27 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 28 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 29 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 30 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 31 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 32 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 33 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 34 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 35 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 36 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 37 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 38 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 39 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 40 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 41 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 42 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 43 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 44 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 45 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 46 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 47 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 48 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 49 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 50 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 51 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 52 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 53 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 54 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Slide 55 image integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All backgrounds changed to WebP",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "warnings": [],
+  "errors": [],
+  "viewports": [
+    {
+      "size": "820x1180",
+      "errors": [],
+      "failed_resources": []
+    }
+  ],
+  "summary": {
+    "tested": 77,
+    "passed": 77,
+    "failed": 0
+  }
+}
