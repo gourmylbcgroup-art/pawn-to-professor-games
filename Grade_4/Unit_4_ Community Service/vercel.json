@@ -1,67 +1,41 @@
 {
   "headers": [
     {
-      "source": "/voice-manifest.js",
+      "source": "/index.html",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=300, must-revalidate"
+          "value": "public, max-age=0, must-revalidate"
         }
       ]
     },
     {
-      "source": "/voice-player.js",
+      "source": "/spinny_seasons/index.html",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=300, must-revalidate"
+          "value": "public, max-age=0, must-revalidate"
         }
       ]
     },
     {
-      "source": "/spatial-match.html",
+      "source": "/(.*)\\.(webp|png|jpg|jpeg|mp3)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=300, must-revalidate"
+          "value": "public, max-age=604800, stale-while-revalidate=2592000"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/Grade_4/Unit_4_%20Community%20Service",
+      "destination": "/Grade_4/Unit_4_%20Community%20Service/index"
     },
     {
-      "source": "/assets/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)\\.html",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache"
-        }
-      ]
-    },
-    {
-      "source": "/ptp-flashcard-storage.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache"
-        }
-      ]
-    },
-    {
-      "source": "/assets/voice/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
+      "source": "/Grade_4/Unit_4_%20Community%20Service/",
+      "destination": "/Grade_4/Unit_4_%20Community%20Service/index"
     }
   ]
 }
