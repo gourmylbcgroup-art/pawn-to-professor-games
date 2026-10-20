@@ -1,0 +1,37 @@
+{
+  "headers": [
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/spinny_seasons/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(webp|png|jpg|jpeg|mp3)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, stale-while-revalidate=2592000"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/grade4-community-service",
+      "destination": "/Grade_4/Unit_4_%20Community%20Service/index.html"
+    }
+  ]
+}
