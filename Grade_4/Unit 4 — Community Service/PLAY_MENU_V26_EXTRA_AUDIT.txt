@@ -1,6 +1,0 @@
-Extra integration audit: 751 passed, 0 failed.
-Original V25 unchanged assets: 174 files. Only index.html modified.
-Render tests: 1672x941, 1280x720, 1024x768.
-All image assets of all questions verified, all images in all 120 PLAY question positions loaded, 10 unique questions per set, all four prepositions in Week 3.
-All original lesson modules entered without JS errors or missing asset requests.
-Browser: headless Chromium; not Safari or online concurrent user load test.
