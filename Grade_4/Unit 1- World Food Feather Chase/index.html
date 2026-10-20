@@ -16,17 +16,31 @@
   #ptp-save-notice.visible {opacity:1}
   @media print { body {visibility:hidden !important;} }
 </style>
-</head><body><main id="app"><div id="stage"><img id="back" src="assets/board/board.webp" alt=""><div id="title">World Food Feather Chase</div><div id="track"></div><div id="runners"></div><section id="center"><div id="prompt">Find the next matching travel card!</div><div id="cards"></div><div id="instruction">🧠 Match • Speak • Move • Earn 5 feathers to WIN!</div></section><div id="players"></div><div id="message"></div><div id="toolbar"><button class="tool" id="sound" title="Sound">🔊</button><button class="tool" id="rules" title="Rules">?</button><button class="tool" id="full" title="Fullscreen">⛶</button><button class="tool" id="restart" title="New game">↻</button></div><div id="dialog"><section class="panel" id="panel"></section></div><div id="live" aria-live="polite"></div></div></main><script>
+</head><body><main id="app"><div id="stage"><img id="back" src="assets/board/board.webp" alt=""><div id="title">World Food Feather Chase</div><div id="track"></div><div id="runners"></div><section id="center"><div id="prompt">Find the next matching travel card!</div><div id="cards"></div><div id="instruction">🧠 Match • Speak • Move • Choose players to see the feather target!</div></section><div id="players"></div><div id="message"></div><div id="toolbar"><button class="tool" id="sound" title="Sound">🔊</button><button class="tool" id="rules" title="Rules">?</button><button class="tool" id="full" title="Fullscreen">⛶</button><button class="tool" id="restart" title="New game">↻</button></div><div id="dialog"><section class="panel" id="panel"></section></div><div id="live" aria-live="polite"></div></div></main><script>
 (()=>{'use strict';
 const FOOD=[{id:'sushi',name:'Sushi',image:'famous-sushi',country:'Japan',countryId:'japan',phrase:'Sushi is from Japan.'},{id:'bao',name:'Xiao Long Bao',image:'xiao-long-bao',country:'Taiwan',countryId:'taiwan',phrase:'Xiao Long Bao is from Taiwan.'},{id:'kimchi',name:'Kimchi',image:'kimchi',country:'Korea',countryId:'korea',phrase:'Kimchi is from Korea.'},{id:'burger',name:'Burgers',image:'burgers',country:'USA',countryId:'usa',phrase:'Burgers are from the USA.'}];
-const COUNTRIES=[{id:'japan',name:'Japan',image:'japan',phrase:'Japan is a country.'},{id:'taiwan',name:'Taiwan',image:'taiwan',phrase:'Taiwan is a place.'},{id:'korea',name:'Korea',image:'korea',phrase:'Korea is a country.'},{id:'usa',name:'USA',image:'usa',phrase:'The USA is a country.'}];
+const COUNTRIES=[{id:'japan',name:'Japan',image:'japan',phrase:'Japan is a country.'},{id:'taiwan',name:'Taiwan',image:'taiwan',phrase:'Taiwan is a country.'},{id:'korea',name:'Korea',image:'korea',phrase:'Korea is a country.'},{id:'usa',name:'USA',image:'usa',phrase:'The USA is a country.'}];
 const ITEMS=[...FOOD.map(x=>({...x,kind:'food'})),...COUNTRIES.map(x=>({...x,kind:'country'}))];
 // Twelve hidden cards: four food cards appear twice and four country cards once.
 // Never combine a USA flag and burger into one card.
 const DECK_IDS=[...ITEMS.map(x=>x.id),...FOOD.map(x=>x.id)];
-const TOKENS=[{name:'Red Chicken',img:'chicken-red',color:'#f05b53'},{name:'Blue Chicken',img:'chicken-blue',color:'#58a9ef'},{name:'Green Chicken',img:'chicken-green',color:'#75cc70'},{name:'Purple Chicken',img:'chicken-purple',color:'#b68af1'}];
+const TOKENS=[{name:'Cluck Norris',img:'chicken-red',color:'#f05b53'},{name:'Chicken Impossible',img:'chicken-blue',color:'#58a9ef'},{name:'Cha-Cha Cluck',img:'chicken-green',color:'#75cc70'},{name:'Nugget Ninja',img:'chicken-purple',color:'#b68af1'}];
 const $=s=>document.querySelector(s);const track=$('#track'),runners=$('#runners'),deckEl=$('#cards'),panel=$('#panel'),dialog=$('#dialog'),prompt=$('#prompt');
-let players=[],current=0,deck=[],trackIds=[],featherSquares=new Set(),phase='setup',selected=[],count=0,muted=false,waiting=false,movesThisTurn=0,win=false,toastTimeout=null,gameId=0;
+let bonusFeatherAvailable=true;let players=[],current=0,deck=[],trackIds=[],featherSquares=new Set(),phase='setup',selected=[],count=0,muted=false,waiting=false,movesThisTurn=0,win=false,toastTimeout=null,gameId=0;
+
+// Background music: user-provided 34-second Cha Cha Chicken loop.
+// Separate audio channel preserves the existing voice announcements and feedback sounds.
+const music = new Audio('assets/audio/cha-cha-chicken-background.mp3');
+music.loop = true;
+music.preload = 'none';
+music.volume = 0.16;
+function startMusic(){
+ if(muted) return;
+ music.volume = 0.16;
+ const promise = music.play();
+ if(promise && promise.catch) promise.catch(()=>{}); // Browser may require a fresh click.
+}
+function stopMusic(){music.pause();try{music.currentTime=0;}catch(e){}}
 const cardImg=x=>'assets/cards/'+x+'.webp';const tokenImg=x=>'assets/tokens/'+x+'.svg';const audioPath='assets/audio/voice/';let audio=null;
 // Fetch each MP3 just once per page, retain its bytes in RAM, and play from a local blob URL.
 // This avoids per-turn network latency. Works with 100 concurrent CDN-hosted players;
@@ -74,18 +88,37 @@ function createFeatherSquares(){
 function picture(x){return `<img src="${cardImg(x.image)}" alt="${x.name}">`}
 function pos(i){let ang=2*Math.PI*(i/24)-Math.PI/2;return{x:50+45.5*Math.cos(ang),y:50+36*Math.sin(ang)}}
 function point(el,i,shift=0){const p=pos(i);el.style.left=(p.x+shift)+'%';el.style.top=p.y+'%'}
-function drawTrack(){track.innerHTML='';trackIds.forEach((id,i)=>{let x=item(id),el=document.createElement('div');el.className='space '+(featherSquares.has(i)?'featherSquare ':'')+(x.kind==='pair'?'pair':'');el.dataset.index=i;point(el,i);el.innerHTML=picture(x)+`<span class="miniLabel">${x.name}</span>`+(featherSquares.has(i)?'<span class="featherMark" title="Earn 1 feather">🪶+1</span>':'');track.appendChild(el)})}
+function drawTrack(){track.innerHTML='';trackIds.forEach((id,i)=>{let x=item(id),el=document.createElement('div');el.className='space '+(x.kind==='pair'?'pair':'');el.dataset.index=i;point(el,i);el.innerHTML=picture(x)+`<span class="miniLabel">${x.name}</span>`;track.appendChild(el)})}
 function drawDeck(){const spots=[{x:26,y:24},{x:42,y:24},{x:58,y:24},{x:74,y:24},{x:26,y:50},{x:42,y:50},{x:58,y:50},{x:74,y:50},{x:26,y:76},{x:42,y:76},{x:58,y:76},{x:74,y:76}];deckEl.innerHTML='';deck.forEach((id,i)=>{let b=document.createElement('button');b.className='card';b.type='button';b.dataset.index=i;b.setAttribute('aria-label','Hidden card '+(i+1));b.innerHTML='<span class="question"></span>';const p=spots[i]||{x:50,y:50};b.style.left=p.x+'%';b.style.top=p.y+'%';b.addEventListener('click',()=>flip(i));deckEl.appendChild(b)})}
-function drawPlayers(){runners.innerHTML='';$('#players').innerHTML='';players.forEach((p,i)=>{let el=document.createElement('div');el.className='runner'+(i===current?' active':'');point(el,p.pos,i%2===0?-.9:.9);el.innerHTML=`<span class="plabel">P${i+1}</span><img src="${tokenImg(p.token.img)}" alt="${p.token.name}"><span class="feathers">🪶${p.feathers}/5</span>`;runners.appendChild(el);let chip=document.createElement('div');chip.className='playerChip'+(i===current?' active':'');chip.innerHTML=`<img src="${tokenImg(p.token.img)}" alt="">P${i+1} • SPACE ${p.pos+1} • 🪶${p.feathers}/5`;$('#players').appendChild(chip)})}
+function drawPlayers(){runners.innerHTML='';$('#players').innerHTML='';players.forEach((p,i)=>{let el=document.createElement('div');el.className='runner'+(i===current?' active':'');point(el,p.pos,i%2===0?-.9:.9);el.innerHTML=`<span class="plabel">${p.token.name}</span><img src="${tokenImg(p.token.img)}" alt="${p.token.name}"><span class="feathers">🪶${p.feathers}/${players.length+1}</span>`;runners.appendChild(el);let chip=document.createElement('div');chip.className='playerChip'+(i===current?' active':'');chip.innerHTML=`<img src="${tokenImg(p.token.img)}" alt="">${p.token.name} • SPACE ${p.pos+1} • 🪶${p.feathers}/${players.length+1}`;$('#players').appendChild(chip)})}
 function show(html){panel.innerHTML=html;dialog.classList.remove('hidden')};function hide(){dialog.classList.add('hidden')}
 function notice(msg,d=1600){clearTimeout(toastTimeout);let el=$('#message');el.textContent=msg;el.classList.add('show');$('#live').textContent=msg;toastTimeout=setTimeout(()=>el.classList.remove('show'),d)}
-function home(){gameId++;phase='setup';win=false;players=[];selected=[];show(`<h1>🐔 WORLD FOOD FEATHER CHASE</h1><p>Remember the pictures, race your chickens, and collect five feathers!</p><p><b>How many players?</b></p><div class="choices"><button class="btn" data-count="2">2 Players</button><button class="btn" data-count="3">3 Players</button><button class="btn" data-count="4">4 Players</button></div><div style="margin:18px 0 6px"><button class="btn gold" id="menuHow" type="button">📖 HOW TO PLAY</button></div><p class="sub">Original food art and recorded voice reused from your uploaded game.</p>`);panel.querySelectorAll('[data-count]').forEach(b=>b.onclick=()=>{count=+b.dataset.count;selectToken()});$('#menuHow').onclick=()=>$('#rules').click()}
+function updateFeatherInstruction(n){
+ const el=document.getElementById('instruction');
+ if(!el)return;
+ const playersCount=Number(n);
+ el.textContent=(playersCount>=2&&playersCount<=4)
+  ? `🧠 Match • Speak • Move • Earn ${playersCount+1} feathers to WIN!`
+  : '🧠 Match • Speak • Move • Choose players to see the feather target!';
+}
+function home(){updateFeatherInstruction(0);stopMusic();gameId++;phase='setup';win=false;players=[];selected=[];show(`<h1>🐔 WORLD FOOD FEATHER CHASE</h1><p>Remember the pictures, race your chickens, claim the bonus feather, and overtake rivals!</p><p><b>How many players?</b></p><div class="choices"><button class="btn" data-count="2">2 Players</button><button class="btn" data-count="3">3 Players</button><button class="btn" data-count="4">4 Players</button></div><div style="margin:18px 0 6px"><button class="btn gold" id="menuHow" type="button">📖 HOW TO PLAY</button></div><p class="sub">Original food art and recorded voice reused from your uploaded game.</p>`);panel.querySelectorAll('[data-count]').forEach(b=>b.onclick=()=>{count=+b.dataset.count;updateFeatherInstruction(count);selectToken()});$('#menuHow').onclick=()=>$('#rules').click()}
 function selectToken(){const n=selected.length;if(n===count){start();return}show(`<h1>Player ${n+1}: Choose your Chicken</h1><div class="tokenchoices">${TOKENS.map((t,i)=>`<button data-token="${i}" ${selected.includes(i)?'disabled':''}><img src="${tokenImg(t.img)}" alt=""><div>${t.name}</div></button>`).join('')}</div>`);panel.querySelectorAll('[data-token]').forEach(b=>b.onclick=()=>{selected.push(+b.dataset.token);selectToken()})}
-async function start(){if(!soundPreloadDone){show('<h1>Preparing game sounds…</h1><p>Loading recorded voices once for smooth online play.</p>');await soundPreload;}gameId++;phase='play';win=false;waiting=false;movesThisTurn=0;trackIds=shuffle([...DECK_IDS,...DECK_IDS]);deck=shuffle([...DECK_IDS]);featherSquares=createFeatherSquares();players=selected.map((s,i)=>({token:TOKENS[s],pos:Math.floor(i*24/count),feathers:0}));current=0;drawTrack();drawDeck();drawPlayers();hide();newTurn()}
+async function start(){updateFeatherInstruction(count);startMusic();if(!soundPreloadDone){show('<h1>Preparing game sounds…</h1><p>Loading recorded voices once for smooth online play.</p>');await soundPreload;}gameId++;phase='play';win=false;waiting=false;movesThisTurn=0;trackIds=shuffle([...DECK_IDS,...DECK_IDS]);deck=shuffle([...DECK_IDS]);featherSquares=new Set();bonusFeatherAvailable=true;players=selected.map((s,i)=>({token:TOKENS[s],pos:Math.floor(i*24/count),feathers:1}));current=0;drawTrack();drawDeck();drawPlayers();hide();newTurn()}
 function newTurn(){if(win)return;waiting=false;movesThisTurn=0;drawPlayers();updatePrompt();voice('turn-p'+(current+1))}
-function updatePrompt(){if(win)return;let p=players[current],next=(p.pos+1)%24,x=item(trackIds[next]);prompt.textContent=`P${current+1} • FIND: ${x.name.toUpperCase()}`;track.querySelectorAll('.space').forEach((el,i)=>el.classList.toggle('next',i===next));}
+function nextMove(who=current){
+ const p=players[who];let step=1,passed=[];
+ // Passing other chickens requires a correct match for the landing square.
+ // At most players.length-1 opponents may be passed, so this cannot loop forever.
+ while(step<players.length&&players.some((other,k)=>k!==who&&other.pos===(p.pos+step)%24)){
+   players.forEach((other,k)=>{if(k!==who&&other.pos===(p.pos+step)%24&&!passed.includes(k))passed.push(k)});
+   step++;
+ }
+ return {from:p.pos,to:(p.pos+step)%24,passed};
+}
+function updatePrompt(){if(win)return;let move=nextMove(),x=item(trackIds[move.to]);prompt.textContent=`${players[current].token.name} • FIND: ${x.name.toUpperCase()}`;track.querySelectorAll('.space').forEach((el,i)=>el.classList.toggle('next',i===move.to));}
+
 function reveal(btn,x){btn.classList.add('revealed');btn.innerHTML=`<span class="shown ${x.kind==='pair'?'pair':''}">${picture(x)}<b>${x.name}</b></span>`}
-function flip(i){if(phase!=='play'||waiting||win)return;waiting=true;let id=deck[i],x=item(id),wanted=trackIds[(players[current].pos+1)%24],b=deckEl.children[i];reveal(b,x);if(id===wanted){beep(true);voice('correct');phase='speaking';const g=gameId;setTimeout(()=>{if(g===gameId)speaking(x,i)},1450)}else{beep(false);voice('good-try-next-traveler');notice('❌ Not a match. Remember this card!',2600);const g=gameId;setTimeout(()=>{if(g!==gameId)return;restore(i);current=(current+1)%players.length;phase='play';newTurn()},2600)}}
+function flip(i){if(phase!=='play'||waiting||win)return;waiting=true;let id=deck[i],x=item(id),wanted=trackIds[nextMove().to],b=deckEl.children[i];reveal(b,x);if(id===wanted){beep(true);voice('correct');phase='speaking';const g=gameId;setTimeout(()=>{if(g===gameId)speaking(x,i)},1450)}else{beep(false);voice('good-try-next-traveler');notice('❌ Not a match. Remember this card!',2600);const g=gameId;setTimeout(()=>{if(g!==gameId)return;restore(i);current=(current+1)%players.length;phase='play';newTurn()},2600)}}
 function restore(i){deckEl.children[i].classList.remove('revealed');deckEl.children[i].innerHTML='<span class="question"></span>'}
 function speaking(x,i){let sentence=x.phrase;show(`<h1>✅ MATCH!</h1><div class="challengePic">${picture(x)}</div><div class="challengeLabel">${x.name}</div><div class="challengeTitle">Say this English sentence:</div><div class="speak">${sentence}</div><p class="sub">Teacher or partner checks speaking. The game cannot automatically verify pronunciation.</p><div class="choices"><button class="btn gold" id="said">🗣️ I SAID IT!</button><button class="btn" id="help">🔊 HEAR THE WORD</button><button class="btn" id="skip">Not yet — next player</button></div>`);$('#said').onclick=()=>advance(i);$('#skip').onclick=()=>{hide();restore(i);current=(current+1)%players.length;phase='play';newTurn()};$('#help').onclick=()=>voice('label-'+(x.kind==='country'?x.id:x.id==='sushi'?'famous-sushi':x.id==='bao'?'xiao-long-bao':x.id))}
 function advance(i){
@@ -93,38 +126,36 @@ function advance(i){
  if(phase!=='speaking'||win)return;
  hide();phase='animating';waiting=true;
  const g=gameId,who=current,p=players[who];
- const from=p.pos,to=(from+1)%trackIds.length;
+ const move=nextMove(who),from=move.from,to=move.to;
+ let earnedBonus=false;if(bonusFeatherAvailable){bonusFeatherAvailable=false;p.feathers++;earnedBonus=true;}
  p.pos=to;
  movesThisTurn++;
  const runner=runners.children[who];
  if(runner){runner.classList.add('moving');point(runner,to,who%2===0?-.9:.9);}
- notice(`✅ P${who+1} MOVES: ${from+1} → ${to+1}!`,1700);
+ notice(earnedBonus?`🪶 BONUS FEATHER! ${p.token.name} earns 1 extra feather!`:`✅ ${p.token.name} MOVES: ${from+1} → ${to+1}!`,1700);
  beep(true);
  setTimeout(()=>{
    if(g!==gameId||phase!=='animating')return;
    let taken=0;
-   players.forEach((other,k)=>{
-     if(k!==who&&other.pos===to&&other.feathers>0){taken++;other.feathers--;}
-   });
-   if(taken){p.feathers+=taken;notice(`🪶 P${who+1} steals ${taken} feather${taken===1?'':'s'}!`,2200);voice('amazing');}
-   if(featherSquares.has(to)){p.feathers++;notice(`🪶 FEATHER SQUARE! P${who+1} earns +1 feather (${p.feathers}/5)`,2300);voice('amazing');}
+   move.passed.forEach(k=>{const other=players[k];taken+=other.feathers;p.feathers+=other.feathers;other.feathers=0;});
+   if(move.passed.length){notice(`🪶 ${p.token.name} OVERTAKES and steals ${taken} feather${taken===1?'':'s'}!`,2300);voice('amazing');}
    restore(i);
    drawPlayers();
    updatePrompt();
-   if(p.feathers>=5){
+   if(p.feathers===players.length+1){
      phase='victory-pending';
      setTimeout(()=>{if(g===gameId&&phase==='victory-pending')finish()},1200);
      return;
    }
    // Same player plays again; do not reset or rotate turns on a successful match.
    phase='play';waiting=false;
-   if(!taken)notice(`✅ P${who+1} plays AGAIN! Find ${item(trackIds[(p.pos+1)%trackIds.length]).name}.`,2200);
+   if(!taken&&!earnedBonus)notice(`✅ ${p.token.name} plays AGAIN! Find ${item(trackIds[nextMove(who).to]).name}.`,2200);
  },1150);
 }
-function finish(){win=true;phase='winner';voice('winner-p'+(current+1));show(`<div class="confetti">🏆 🎉 🪶 🎉 🏆</div><h1>PLAYER ${current+1} WINS!</h1><img class="challengePic" src="${tokenImg(players[current].token.img)}" alt="Winning Foodie"><p>Collected 5 feathers!</p><button class="btn gold" id="again">PLAY AGAIN</button><button class="btn" id="newplayers">CHANGE PLAYERS</button>`);$('#again').onclick=()=>start();$('#newplayers').onclick=home}
-$('#rules').onclick=()=>{let was=phase;show(`<h1>🐔 HOW TO PLAY</h1><div class="rules"><div>1. Choose a differently colored chicken. All chickens start with <b>0 feathers</b>.</div><div>2. Find the hidden card matching the <b>next track picture</b>.</div><div>3. Correct: say the English sentence, move forward, and <b>play again</b>. Wrong: remember the card and pass the turn.</div><div>4. Land on a <b>🪶+1 feather square</b> to collect one feather.</div><div>5. Land on another chicken to steal <b>one feather</b> if it has any.</div><div>6. The <b>first chicken with 5 feathers wins!</b></div><div>7. Play Again shuffles the board and hidden cards into a new arrangement.</div></div><button class="btn" id="close">BACK TO GAME</button>`);$('#close').onclick=()=>{if(was==='setup')home();else if(was==='winner')finish();else hide()}};
-$('#restart').onclick=()=>{if(confirm('Restart with the same chickens and reshuffle everything?'))start()};$('#sound').onclick=()=>{muted=!muted;$('#sound').textContent=muted?'🔇':'🔊';if(muted)stopVoice()};$('#full').onclick=()=>{if(!document.fullscreenElement)$('#stage').requestFullscreen?.().catch(()=>{});else document.exitFullscreen?.()};
-window.addEventListener('pagehide',()=>{stopVoice();for(const url of soundURLs.values())URL.revokeObjectURL(url)});window.addEventListener('keydown',e=>{if(e.key==='Escape'&&phase==='play')hide()});home();
+function finish(){stopMusic();win=true;phase='winner';voice('winner-p'+(current+1));show(`<div class="confetti">🏆 🎉 🪶 🎉 🏆</div><h1>${players[current].token.name} WINS!</h1><img class="challengePic" src="${tokenImg(players[current].token.img)}" alt="Winning Foodie"><p>Collected all ${players.length+1} feathers!</p><button class="btn gold" id="again">PLAY AGAIN</button><button class="btn" id="newplayers">CHANGE PLAYERS</button>`);$('#again').onclick=()=>start();$('#newplayers').onclick=home}
+$('#rules').onclick=()=>{let was=phase;show(`<h1>🐔 HOW TO PLAY</h1><div class="rules"><div>1. Choose a differently colored chicken. Each chicken starts with <b>1 feather</b>. One additional <b>bonus feather</b> goes to the first player to complete a correct center-card match and say the sentence.</div><div>2. Find the hidden card matching your next landing picture. If another chicken is directly ahead, jump over it and match the square beyond.</div><div>3. Correct: say the English sentence, move forward, and <b>play again</b>. Wrong: remember the card and pass the turn.</div><div>4. <b>Overtake</b> a chicken to steal <b>all of its feathers</b>. The overtaken chicken remains in the race with 0 feathers.</div><div>5. Passing a chicken with 0 feathers still counts as overtaking, but there is nothing to steal.</div><div>6. Collect <b>${(players.length||count)+1} feathers</b> to win (2 players: 3, 3 players: 4, 4 players: 5). The single bonus is awarded only once; no feather squares grant points.</div><div>7. Play Again reshuffles the board and hidden cards.</div></div><button class="btn" id="close">BACK TO GAME</button>`);$('#close').onclick=()=>{if(was==='setup')home();else if(was==='winner')finish();else hide()}};
+$('#restart').onclick=()=>{if(confirm('Restart with the same chickens and reshuffle everything?'))start()};$('#sound').onclick=()=>{muted=!muted;$('#sound').textContent=muted?'🔇':'🔊';if(muted){stopVoice();music.pause()}else if(phase==='play'){startMusic()}};$('#full').onclick=()=>{if(!document.fullscreenElement)$('#stage').requestFullscreen?.().catch(()=>{});else document.exitFullscreen?.()};
+window.addEventListener('pagehide',()=>{stopMusic();stopVoice();for(const url of soundURLs.values())URL.revokeObjectURL(url)});window.addEventListener('keydown',e=>{if(e.key==='Escape'&&phase==='play')hide()});home();
 })();</script>
 <script id="ptp-protection-js">
 (() => {
