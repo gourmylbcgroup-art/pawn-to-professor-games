@@ -1,0 +1,22 @@
+{
+  "source": "V15",
+  "version": "V16",
+  "changes": [
+    "Corrected 69 fast voice start timestamps to match the actual decoded voice bank",
+    "Changed key-announcement selection to explicit team and award table"
+  ],
+  "voice_cue_count": 69,
+  "reward_voices": {
+    "Blue": {
+      "3": "team_05",
+      "2": "team_06",
+      "1": "team_07"
+    },
+    "Red": {
+      "3": "team_08",
+      "2": "team_09",
+      "1": "team_10"
+    }
+  },
+  "note": "No recorded MP3 files or image assets changed."
+}

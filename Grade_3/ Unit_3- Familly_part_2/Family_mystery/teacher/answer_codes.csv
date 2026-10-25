@@ -1,0 +1,58 @@
+code,mode,level,scene_id,scene,answer
+S01,SCENERY,1,l1_brother_feeding_fish,Brother feeding a fish,He is my brother.
+S02,SCENERY,1,l1_brother_flying_kite,Brother flying a kite,He is my brother.
+S03,SCENERY,1,l1_brother_football,Brother playing football,He is my brother.
+S04,SCENERY,1,l1_father_birdhouse,Father building a birdhouse,He is my father.
+S05,SCENERY,1,l1_father_painting_bench,Father painting a bench,He is my father.
+S06,SCENERY,1,l1_father_washing_car,Father washing a car,He is my father.
+S07,SCENERY,1,l1_mother_baking_cupcakes,Mother baking cupcakes,She is my mother.
+S08,SCENERY,1,l1_mother_fruit_salad,Mother preparing fruit salad,She is my mother.
+S09,SCENERY,1,l1_mother_planting_flowers,Mother planting flowers,She is my mother.
+S10,SCENERY,1,l1_sister_painting,Sister painting a picture,She is my sister.
+S11,SCENERY,1,l1_sister_schoolbag,Sister packing a schoolbag,She is my sister.
+S12,SCENERY,1,l1_sister_scooter,Sister riding a scooter,She is my sister.
+S13,SCENERY,2,l2_aunt_flower_market,Auntie buying flowers,She is my auntie.
+S14,SCENERY,2,l2_aunt_lemonade,Auntie making lemonade,She is my auntie.
+S15,SCENERY,2,l2_aunt_photographs,Auntie taking photographs,She is my auntie.
+S16,SCENERY,2,l2_grandfather_feeding_birds,Grandfather feeding birds,He is my grandfather.
+S17,SCENERY,2,l2_grandfather_fishing_lake,Grandfather fishing by the pond,He is my grandfather.
+S18,SCENERY,2,l2_grandmother_knitting,Grandmother knitting on the porch,She is my grandmother.
+S19,SCENERY,2,l2_grandmother_tomatoes,Grandmother planting tomatoes,She is my grandmother.
+S20,SCENERY,2,l2_uncle_camping,Uncle putting up a tent,He is my uncle.
+S21,SCENERY,2,l2_uncle_picnic,Uncle carrying a picnic basket,He is my uncle.
+S22,SCENERY,2,l2_uncle_repairing_bike,Uncle repairing a bicycle,He is my uncle.
+S23,SCENERY,2,scene_grandfather_fishing,Grandfather fishing,He is my grandfather.
+S24,SCENERY,2,scene_grandmother_strawberries,Grandmother picking strawberries,She is my grandmother.
+S25,SCENERY,3,l3_that_bird_fence,Bird perched on a distant fence,That is my bird.
+S26,SCENERY,3,l3_that_bird_sky,Bird flying far above the garden,That is my bird.
+S27,SCENERY,3,l3_that_cat_tree,Cat high on a distant tree branch,That is my cat.
+S28,SCENERY,3,l3_that_cat_wall,Cat sitting on a distant wall,That is my cat.
+S29,SCENERY,3,l3_that_dog_meadow,Dog far away in a meadow,That is my dog.
+S30,SCENERY,3,l3_that_fish_across_room,Fish in a tank across the room,That is my fish.
+S31,SCENERY,3,l3_that_rabbit_carrots,Rabbit across the vegetable garden,That is my rabbit.
+S32,SCENERY,3,l3_this_cat_reading,Cat sleeping beside the boy,This is my cat.
+S33,SCENERY,3,l3_this_dog_playing,Dog playing next to the boy,This is my dog.
+S34,SCENERY,3,l3_this_dog_sleeping,Dog sleeping next to the boy,This is my dog.
+S35,SCENERY,3,l3_this_fish_porch,Fishbowl beside the boy on the porch,This is my fish.
+S36,SCENERY,3,l3_this_fish_study,Fish in a bowl beside the boy’s desk,This is my fish.
+S37,SCENERY,3,l3_this_rabbit_garden,Rabbit beside the boy,This is my rabbit.
+S38,SCENERY,3,scene_that_dog_park,Dog far from the boy,That is my dog.
+S39,SCENERY,3,scene_this_rabbit_garden,Rabbit near the boy,This is my rabbit.
+O01,ORIGINALS,,father,Original flashcard: father,He is my father.
+O02,ORIGINALS,,mother,Original flashcard: mother,She is my mother.
+O03,ORIGINALS,,brother,Original flashcard: brother,He is my brother.
+O04,ORIGINALS,,sister,Original flashcard: sister,She is my sister.
+O05,ORIGINALS,,grandmother,Original flashcard: grandmother,She is my grandmother.
+O06,ORIGINALS,,grandfather,Original flashcard: grandfather,He is my grandfather.
+O07,ORIGINALS,,uncle,Original flashcard: uncle,He is my uncle.
+O08,ORIGINALS,,aunt,Original flashcard: aunt,She is my auntie.
+O09,ORIGINALS,,this_dog,Original flashcard: this dog,This is my dog.
+O10,ORIGINALS,,that_dog,Original flashcard: that dog,That is my dog.
+O11,ORIGINALS,,this_rabbit,Original flashcard: this rabbit,This is my rabbit.
+O12,ORIGINALS,,that_rabbit,Original flashcard: that rabbit,That is my rabbit.
+O13,ORIGINALS,,this_fish,Original flashcard: this fish,This is my fish.
+O14,ORIGINALS,,that_fish,Original flashcard: that fish,That is my fish.
+O15,ORIGINALS,,this_bird,Original flashcard: this bird,This is my bird.
+O16,ORIGINALS,,that_bird,Original flashcard: that bird,That is my bird.
+O17,ORIGINALS,,this_cat,Original flashcard: this cat,This is my cat.
+O18,ORIGINALS,,that_cat,Original flashcard: that cat,That is my cat.
