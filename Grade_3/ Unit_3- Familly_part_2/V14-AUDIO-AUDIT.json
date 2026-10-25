@@ -1,0 +1,11 @@
+{
+  "passed": 52,
+  "total": 52,
+  "failed": [],
+  "js_errors": [],
+  "asset_requests": 34,
+  "audio_requests": [],
+  "recording_source": "assets/audio/voice-sprite-stephane-v1.mp3; embedded into index.html",
+  "online_mode": "zero extra audio resource requests in tested browser interactions",
+  "limitations": "Full personalized START greetings and some explanatory phrases have no matching full recording; same speaker short response substituted."
+}
