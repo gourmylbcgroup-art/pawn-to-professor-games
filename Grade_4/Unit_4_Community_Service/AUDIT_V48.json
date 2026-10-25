@@ -1,0 +1,21 @@
+{
+  "version": "V48",
+  "original_package_compressed_bytes": 73745559,
+  "original_package_files_uncompressed_bytes": 74041471,
+  "optimized_files_total_bytes": 44096704,
+  "all_files": 443,
+  "image_files": 319,
+  "voice_manifest_clips": 107,
+  "tug_card_images": 45,
+  "missing_voice_references": [],
+  "missing_tug_asset_references": [],
+  "missing_static_asset_references": [],
+  "invalid_images": [],
+  "game_choices": [
+    "Spatial Match",
+    "Grandma vs Grandpa Tug of War"
+  ],
+  "browser_smoke": "Inline DOM/JS and first-round Tug of War logic passed; full navigational/Safari load test blocked by browser policy",
+  "source_audio_limitation": "14 unsupplied recordings and 6 invalid previously supplied fill-in-the-blank clips",
+  "100_user_live_load_test": "not performed"
+}

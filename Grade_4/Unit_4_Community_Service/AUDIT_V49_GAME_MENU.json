@@ -1,0 +1,168 @@
+{
+  "release": "V49",
+  "changes": [
+    "Approved background integrated in GAME chooser",
+    "Three clickable controls aligned with pictured blue/pink game cards and HOME button",
+    "Preexisting game content unchanged"
+  ],
+  "menu_asset_size_bytes": 368172,
+  "image_size": [
+    1672,
+    941
+  ],
+  "html_javascript": [
+    {
+      "script_index": 0,
+      "ok": true,
+      "message": ""
+    },
+    {
+      "script_index": 1,
+      "ok": true,
+      "message": ""
+    }
+  ],
+  "responsive_tests": [
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "menu_visible": true,
+      "buttons": {
+        "chooseSpatial": {
+          "center_hit": true,
+          "x": 276,
+          "y": 326,
+          "width": 419,
+          "height": 353
+        },
+        "chooseTug": {
+          "center_hit": true,
+          "x": 703,
+          "y": 326,
+          "width": 456,
+          "height": 353
+        },
+        "gameHome": {
+          "center_hit": true,
+          "x": 595,
+          "y": 694,
+          "width": 252,
+          "height": 94
+        }
+      },
+      "js_errors": []
+    },
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "menu_visible": true,
+      "buttons": {
+        "chooseSpatial": {
+          "center_hit": true,
+          "x": 246,
+          "y": 250,
+          "width": 372,
+          "height": 313
+        },
+        "chooseTug": {
+          "center_hit": true,
+          "x": 625,
+          "y": 250,
+          "width": 406,
+          "height": 313
+        },
+        "gameHome": {
+          "center_hit": true,
+          "x": 529,
+          "y": 577,
+          "width": 224,
+          "height": 84
+        }
+      },
+      "js_errors": []
+    },
+    {
+      "viewport": [
+        1024,
+        768
+      ],
+      "menu_visible": true,
+      "buttons": {
+        "chooseSpatial": {
+          "center_hit": true,
+          "x": 197,
+          "y": 296,
+          "width": 298,
+          "height": 251
+        },
+        "chooseTug": {
+          "center_hit": true,
+          "x": 500,
+          "y": 296,
+          "width": 325,
+          "height": 251
+        },
+        "gameHome": {
+          "center_hit": true,
+          "x": 423,
+          "y": 557,
+          "width": 179,
+          "height": 67
+        }
+      },
+      "js_errors": []
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "menu_visible": true,
+      "buttons": {
+        "chooseSpatial": {
+          "center_hit": true,
+          "x": 75,
+          "y": 388,
+          "width": 113,
+          "height": 95
+        },
+        "chooseTug": {
+          "center_hit": true,
+          "x": 190,
+          "y": 388,
+          "width": 124,
+          "height": 95
+        },
+        "gameHome": {
+          "center_hit": true,
+          "x": 161,
+          "y": 488,
+          "width": 68,
+          "height": 25
+        }
+      },
+      "js_errors": []
+    }
+  ],
+  "navigation_test": {
+    "spatial": "spatial-match.html?week=1",
+    "tug": "tug-of-war/index.html",
+    "home": "screen homeIndexScreen active"
+  },
+  "zip_integrity": true,
+  "validated_paths": [
+    "assets/game_chooser_approved.webp",
+    "spatial-match.html",
+    "tug-of-war/index.html",
+    "index.html"
+  ],
+  "limitations": [
+    "HTML menu navigation tested with sandbox-isolated browser (no direct file:// navigation allowed by test environment).",
+    "No native Safari test performed on user device.",
+    "Gameplay is inherited from V48, not modified."
+  ]
+}
