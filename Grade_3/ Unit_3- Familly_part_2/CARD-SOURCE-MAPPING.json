@@ -1,0 +1,28 @@
+{
+  "labelled_family_and_pets": {
+    "mother": "0bac3ad4-a289-4b72-8f27-5e494a76990f.png",
+    "father": "30d7d33a-7dff-4cf3-851a-d48a442d7327.png",
+    "brother": "e976099f-7ad1-467f-874b-5667f39a6345.png",
+    "sister": "2d03bbba-e692-4377-b475-0e39526e837b.png",
+    "grandfather": "471659a0-70c5-47f6-961b-8cab12ebad41.png",
+    "grandmother": "a0d4115b-4a36-4579-88c6-c3b6f9e97972.png",
+    "uncle": "73e4d362-c93e-433f-8f05-c23e0268078e.png",
+    "aunt": "20db9916-1b2e-4248-96e1-fcd135af2f05.png",
+    "dog": "0db20ca1-08d0-4e5d-a8a1-2333735597a7.png",
+    "cat": "a3d41556-d977-49b9-8b97-32cdf30cf07c.png",
+    "bird": "eb6f6668-1d88-40d4-adcb-10d4b6f03923.png",
+    "fish": "ebdedafa-7b61-4e85-93c5-19d31e8bad2e.png",
+    "rabbit": "aadc0e7b-3565-4660-83c9-66c5a7de63f7.png"
+  },
+  "pronoun_cards": {
+    "father": "ChatGPT Image Oct 24, 2026, 03_02_25 PM-1.png",
+    "brother": "ChatGPT Image Oct 24, 2026, 03_02_27 PM-2.png",
+    "grandfather": "ChatGPT Image Oct 24, 2026, 03_02_29 PM-4.png",
+    "uncle": "ChatGPT Image Oct 24, 2026, 03_02_27 PM-3.png",
+    "grandmother": "ChatGPT Image Oct 24, 2026, 03_02_32 PM-1.png",
+    "aunt": "ChatGPT Image Oct 24, 2026, 03_02_36 PM-4.png",
+    "this": "73c7f7ab-5c75-4e1e-aa60-6e2bcd23e27b.png",
+    "that": "e0e04322-f6a7-4055-ba70-5c5a372bc099.png"
+  },
+  "female_mother_and_sister_pronoun_cards": "Use their own supplied picture-with-text flashcards, plus large SHE and explanation in HTML, because no matching mother/sister SHE artwork was supplied."
+}

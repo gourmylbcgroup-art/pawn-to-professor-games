@@ -1,0 +1,1538 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Family Adventure | Grade 3 Unit 3 — My Family & Pets</title>
+<style>
+:root{
+  --ink:#103d7b; --paper:#fffdf6; --cream:#fff8e8; --blue:#178ee8; --red:#f04452;
+  --green:#2bb86b; --orange:#f6a315; --purple:#8451df; --pink:#ef4d8f; --wood:#b97235;
+  --shadow:0 14px 30px rgba(74,43,18,.20),0 3px 0 rgba(65,37,15,.14);
+  --soft:0 9px 18px rgba(16,61,123,.13);
+}
+*{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:Nunito,"Trebuchet MS",Arial,sans-serif;color:var(--ink)}
+body{background:linear-gradient(180deg,#f7ead0,#e7b671);overflow-x:hidden}
+button{font:inherit}.app{min-height:100vh}
+.topbar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:9px;padding:9px 12px;background:rgba(255,252,245,.97);border-bottom:2px solid rgba(83,51,25,.12);box-shadow:0 6px 17px rgba(45,31,17,.11);backdrop-filter:blur(5px)}
+.brand{font-weight:1000;white-space:nowrap;font-size:clamp(15px,1.8vw,23px)}
+.brand span{color:#278dd7}.navchips{display:flex;gap:5px;overflow:auto;flex:1;padding:2px}.chip{border:0;border-radius:999px;padding:8px 11px;color:white;font-weight:1000;cursor:pointer;white-space:nowrap;box-shadow:inset 0 -3px rgba(0,0,0,.16),0 3px 8px rgba(0,0,0,.12)}
+.c1{background:var(--red)}.c2{background:var(--blue)}.c3{background:var(--green)}.c4{background:var(--purple)}.c5{background:var(--orange)}.c6{background:var(--pink)}.c7{background:linear-gradient(#25b8c9,#0a7f94)}
+.iconbtn{border:2px solid #ded7ca;background:#fff;border-radius:13px;padding:7px 10px;cursor:pointer;font-weight:1000;min-width:42px;box-shadow:0 3px 8px rgba(0,0,0,.08)}
+.screen{display:none;width:min(1500px,96vw);margin:17px auto 28px;animation:enter .18s ease}.screen.active{display:block}@keyframes enter{from{opacity:.35;transform:translateY(7px)}to{opacity:1;transform:none}}
+body.calm *{animation:none!important;transition:none!important}
+/* HOME */
+.home-board{position:relative;overflow:hidden;border-radius:30px;border:8px solid rgba(111,67,29,.55);box-shadow:0 23px 45px rgba(70,41,17,.28);padding:20px;background:#f1d49f}
+.home-board::before{content:"";position:absolute;inset:0;background:url('assets/home_thumbs/slide_01.webp') center/cover no-repeat;filter:blur(2px) saturate(.9);opacity:.24;transform:scale(1.04)}
+.home-inner{position:relative;z-index:1}.title-plank{width:min(820px,93%);margin:0 auto 17px;text-align:center;background:linear-gradient(#c27b3f,#925125);border:6px solid #754019;border-radius:28px;padding:10px 20px;box-shadow:inset 0 5px rgba(255,255,255,.17),inset 0 -7px rgba(0,0,0,.14),0 10px 17px rgba(72,40,15,.18);color:#fff9ec;text-shadow:0 3px 0 #66320d}
+.title-plank h1{margin:0;font-size:clamp(32px,5vw,68px);line-height:.98}.title-plank b{color:#ffe460}.title-plank p{margin:5px 0 0;font-weight:1000;font-size:clamp(15px,2vw,25px);text-shadow:none}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.home-card{border:5px solid var(--color);border-radius:28px;overflow:hidden;background:#fff;box-shadow:inset 0 -7px rgba(0,0,0,.05),0 10px 18px rgba(56,37,17,.18);cursor:pointer;position:relative;min-height:260px;padding:0}.home-card:hover{transform:translateY(-3px)}.home-head{height:66px;display:flex;align-items:center;gap:12px;padding:7px 16px;background:linear-gradient(180deg,color-mix(in srgb,var(--color),white 12%),var(--color));color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.24);font-weight:1000;font-size:clamp(23px,2.8vw,40px)}
+.home-num{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;border:4px solid rgba(255,255,255,.55);box-shadow:inset 0 -6px rgba(0,0,0,.13);flex:0 0 auto}.home-img{width:100%;height:205px;object-fit:cover;display:block}.home-label{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.95);border:3px solid var(--color);border-radius:999px;padding:7px 16px;font-weight:1000;box-shadow:0 6px 12px rgba(0,0,0,.13);white-space:nowrap}
+.home-note{text-align:center;margin-top:15px;background:rgba(255,255,255,.9);border-radius:16px;padding:10px 14px;font-weight:900;box-shadow:var(--soft)}
+/* COMMON */
+.section-title{display:flex;align-items:center;gap:14px;margin:8px 0 13px}.badge{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;color:white;font-size:34px;font-weight:1000;box-shadow:inset 0 -7px rgba(0,0,0,.16),inset 0 4px rgba(255,255,255,.25),0 6px 12px rgba(0,0,0,.18)}
+.section-title h1{margin:0;font-size:clamp(28px,3.1vw,48px);line-height:1}.section-title p{margin:4px 0 0;font-weight:800;color:#59658c}.board{background:linear-gradient(#fffaf0,#f8ead6);border:4px solid #e1b77f;border-radius:30px;padding:clamp(15px,2vw,27px);box-shadow:var(--shadow)}
+.stage{background:white;border:3px solid #eadbc2;border-radius:25px;padding:20px;box-shadow:var(--soft);min-height:300px}.controls{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:17px;padding:11px 18px;color:#fff;font-weight:1000;cursor:pointer;box-shadow:inset 0 -5px rgba(0,0,0,.17),0 6px 12px rgba(0,0,0,.13)}.blue{background:linear-gradient(#29a8ff,#0875d6)}.green{background:linear-gradient(#37d184,#0ba65e)}.orange{background:linear-gradient(#ffbb37,#ef8c00)}.purple{background:linear-gradient(#a164f0,#7335d4)}.pink{background:linear-gradient(#ff68aa,#dc2e75)}.red{background:linear-gradient(#ff6770,#dc2736)}.gray{background:linear-gradient(#8692ad,#626f8e)}
+.language-bar{position:sticky;bottom:8px;z-index:20;margin:18px auto 0;width:min(1180px,96%);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:9px;border-radius:17px;background:rgba(16,61,123,.94);color:white;box-shadow:0 9px 22px rgba(16,61,123,.23)}.language-bar span{background:rgba(255,255,255,.11);padding:7px 11px;border-radius:11px;font-weight:900}
+/* FLASH */
+.flash-layout{display:grid;grid-template-columns:minmax(320px,650px) minmax(250px,1fr);gap:20px;align-items:center}.flash-card-wrap{display:flex;justify-content:center}.flash-card{max-height:650px;max-width:100%;border-radius:26px;box-shadow:0 13px 25px rgba(17,55,95,.18);background:white}.side-panel{background:#f4f9ff;border:3px solid #cfe5fa;border-radius:23px;padding:18px}.side-panel h2{margin:0 0 8px}.word-big{font-size:clamp(44px,6vw,92px);font-weight:1000;color:#0c478d;text-align:center;margin:12px 0}.counter{text-align:center;font-weight:1000;color:#68749a;margin-top:10px}.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:15px}.tab{border:2px solid #d6deea;background:#fff;color:var(--ink);font-weight:1000;border-radius:999px;padding:9px 16px;cursor:pointer}.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.thumb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.thumb{border:3px solid #d8e6f2;background:white;border-radius:15px;padding:6px;cursor:pointer}.thumb img{width:100%;aspect-ratio:3/4;object-fit:contain;display:block;border-radius:9px}.thumb b{display:block;text-align:center;margin-top:4px;font-size:14px}.thumb.active{border-color:#1a8deb;box-shadow:0 0 0 3px #bfe6ff}
+/* PLAY */
+.play-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.draw-card{background:#fff;border:4px solid #ddd4c4;border-radius:24px;padding:18px;text-align:center;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center}.draw-card img{max-height:400px;max-width:100%;border-radius:20px;box-shadow:var(--soft)}.prompt{font-size:clamp(24px,3vw,40px);font-weight:1000;margin:13px 0 4px}.steps{display:grid;gap:11px}.step{display:flex;align-items:center;gap:12px;background:white;border:3px solid #e5d8c0;border-radius:18px;padding:13px;box-shadow:var(--soft)}.step i{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:white;font-style:normal;font-weight:1000;font-size:24px;background:#168be5}.step b{font-size:19px}.step p{margin:3px 0 0;color:#657092;font-weight:700}
+/* PRACTICE */
+.quiz-wrap{display:grid;grid-template-columns:minmax(300px,580px) 1fr;gap:20px;align-items:center}.quiz-card{background:white;border:4px solid #dce8f5;border-radius:25px;padding:16px;text-align:center}.quiz-card img{max-width:100%;height:440px;object-fit:contain;border-radius:20px}.quiz-q{font-size:clamp(24px,3vw,39px);font-weight:1000;margin:8px 0 15px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.answer{border:3px solid #dce4ef;background:#fff;border-radius:18px;padding:13px 10px;font-weight:1000;font-size:20px;color:var(--ink);cursor:pointer;box-shadow:0 5px 9px rgba(20,38,75,.08)}.answer.correct{background:#e9fff1;border-color:#32bc73}.answer.wrong{background:#fff0f0;border-color:#ff7f86}.feedback{min-height:32px;margin-top:12px;font-size:20px;font-weight:1000}.ok{color:#078c4d}.try{color:#b75d00}
+/* SPEAK */
+.speak-main{display:grid;grid-template-columns:minmax(310px,620px) 1fr;gap:20px;align-items:center}.speak-image{background:white;border:4px solid #e5d8c1;border-radius:25px;padding:15px;text-align:center}.speak-image img{max-height:520px;max-width:100%;border-radius:20px}.speech-card{background:linear-gradient(145deg,#fff,#f5fbff);border:4px solid #cce8fa;border-radius:25px;padding:24px;box-shadow:var(--soft)}.speech-q{font-size:clamp(25px,3vw,42px);font-weight:1000}.speech-a{font-size:clamp(24px,2.7vw,38px);font-weight:1000;color:#138c55;margin-top:12px}.mode-row{display:flex;gap:8px;flex-wrap:wrap;margin:13px 0}.mode-row button{border:2px solid #d8e2ef;background:#fff;border-radius:999px;padding:8px 14px;font-weight:1000;cursor:pointer}.mode-row button.active{background:#178ee8;color:#fff;border-color:#178ee8}
+/* FINISH */
+.finish-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.finish-card{background:white;border:4px solid #e2d4bb;border-radius:25px;padding:20px;box-shadow:var(--soft)}.finish-card h2{margin:0 0 10px}.checklist{display:grid;gap:10px}.check{border:3px solid #dce7f0;border-radius:17px;padding:12px 14px;font-weight:900;cursor:pointer;background:#fff;text-align:left}.check.done{background:#e9fff2;border-color:#44be7d}.stars{font-size:54px;text-align:center;letter-spacing:7px}.celebrate{text-align:center;font-size:clamp(30px,4vw,54px);font-weight:1000;color:#0d5da9;margin:14px 0}
+/* SLIDES */
+.slide-view{display:grid;grid-template-columns:minmax(0,1fr) 235px;gap:16px}.slide-stage{background:#151f36;border-radius:24px;padding:12px;display:grid;place-items:center;min-height:650px}.slide-stage img{max-height:74vh;max-width:100%;border-radius:12px;box-shadow:0 12px 24px rgba(0,0,0,.32)}.slide-side{background:white;border:3px solid #e5d7bf;border-radius:20px;padding:13px;max-height:75vh;overflow:auto}.slide-side button{width:100%;border:2px solid #dbe3ef;background:#fff;border-radius:12px;padding:8px;margin-bottom:7px;font-weight:900;color:#254b7b;cursor:pointer;text-align:left}.slide-side button.active{background:#178ee8;color:white;border-color:#178ee8}
+@media(max-width:960px){.home-grid{grid-template-columns:1fr 1fr}.flash-layout,.play-grid,.quiz-wrap,.speak-main,.finish-grid,.slide-view{grid-template-columns:1fr}.slide-side{max-height:280px}.thumb-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.home-grid{grid-template-columns:1fr}.topbar{align-items:flex-start}.brand{display:none}.thumb-grid{grid-template-columns:repeat(2,1fr)}.answers{grid-template-columns:1fr}.home-img{height:170px}}
+
+
+/* ============= FAMILY ADVENTURE · VISUAL UI 2026 ============= */
+body.adventure-theme {background:#85ccef;overflow:hidden}
+.adventure-theme .app{height:100dvh;min-height:0;display:flex;flex-direction:column}
+.adventure-theme .topbar{height:54px;flex:0 0 54px;position:relative;z-index:70;background:linear-gradient(180deg,#fffbe9,#fff4d7);border-bottom:3px solid #d5a864;padding:5px clamp(10px,2vw,30px);gap:10px}
+.adventure-theme .topbar .brand{font-size:clamp(14px,1.75vw,23px);flex:1;text-align:center;color:#315a7e}
+.adventure-theme .navchips{display:none!important}
+.adventure-theme .iconbtn{background:#fff9e5;border:2px solid #cb9b53;box-shadow:inset 0 -3px #f2dfb0,0 3px 6px #927b5526;border-radius:14px;min-height:39px;font-size:18px;padding:5px 12px}
+.adventure-theme .iconbtn:focus-visible,.adventure-theme button:focus-visible{outline:4px solid #fedc3a;outline-offset:3px}
+.adventure-theme main{position:relative;flex:1;min-height:0;display:flex;justify-content:center;align-items:center;overflow:hidden}
+.adventure-theme .screen{position:relative;flex:none;width:min(100vw,calc((100dvh - 54px)*16/9));height:min(calc(100vw*9/16),calc(100dvh - 54px));margin:0;border:0;overflow:hidden;animation:none;border-radius:0;background-size:cover;background-position:center;padding:12px 18px 10px;isolation:isolate}
+.adventure-theme .screen::before{content:'';z-index:-1;position:absolute;inset:0;background:linear-gradient(90deg,#ffffff2a,#ffffff08,#ffffff3b);pointer-events:none}
+.adventure-theme .screen:not(.adventure-home){display:none}
+.adventure-theme .screen.active:not(.adventure-home){display:flex;flex-direction:column}
+.adventure-theme .adventure-home{padding:0;background:#8cc9f2}
+.adventure-theme .adventure-home.active{display:block}
+.adventure-theme .adventure-home::before{display:none}
+.adventure-theme .adventure-map{position:absolute;inset:0;overflow:hidden}
+.adventure-theme .adventure-map-art{width:100%;height:100%;object-fit:fill;display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.adventure-theme .house-hotspot{position:absolute;background:transparent;border:0;border-radius:16px;cursor:pointer;touch-action:manipulation;transition:box-shadow .16s,background .16s,transform .16s;z-index:5}
+.adventure-theme .house-hotspot:hover,.adventure-theme .house-hotspot:focus-visible{outline:3px solid #ffe770;outline-offset:1px;box-shadow:0 0 0 6px #fff9db99,0 0 24px 5px #ffe14d;background:#ffffa517;transform:scale(1.025)}
+.adventure-theme .house-hotspot:active{transform:scale(.98)}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.adventure-theme #start{background-image:url("assets/adventure/start-room.webp")}
+.adventure-theme #learn{background-image:url("assets/adventure/learn-room.webp")}
+.adventure-theme #play{background-image:url("assets/adventure/play-room.webp")}
+.adventure-theme #practice{background-image:url("assets/adventure/practice-room.webp")}
+.adventure-theme #speak{background-image:url("assets/adventure/speak-room.webp")}
+.adventure-theme #finish{background-image:url("assets/adventure/finish-classroom-approved.png")}
+.adventure-theme #slides{background-image:url("assets/adventure/slides-room.webp")}
+
+/* The lesson engine is unchanged, displayed as a photo album inside each illustrated room. */
+.adventure-theme .section-title{flex:0 0 65px;height:65px;margin:0 0 7px;align-items:center;justify-content:center;border-radius:20px;background:linear-gradient(180deg,#a35e31,#7d431f);border:3px solid #ffdb98;box-shadow:0 6px 10px #44301650;gap:10px;padding:4px 14px;color:#fff;text-shadow:0 2px #683615}
+.adventure-theme .section-title .badge{width:44px;height:44px;font-size:23px;border:3px solid #ffffff80}
+.adventure-theme .section-title h1{font-size:clamp(18px,2.2vw,32px);color:#fff;margin:0}
+.adventure-theme .section-title p{font-size:clamp(11px,1vw,15px);color:#fff3cd;margin:1px 0 0}
+.adventure-theme .board{flex:1;min-height:0;padding:clamp(10px,1.5vw,18px);background:#fffdf3eb;border:4px solid #d9a65a;border-radius:24px;overflow:hidden;box-shadow:0 8px 24px #42321e4d;display:flex;flex-direction:column;justify-content:center}
+.adventure-theme .language-bar{position:relative;bottom:auto;flex:0 0 auto;margin:6px 0 0;width:100%;min-height:40px;padding:5px 10px;gap:5px;border:2px solid #fff4cf;border-radius:14px;background:#285f7ce8;box-shadow:0 3px 8px #24506944}
+.adventure-theme .language-bar span{font-size:clamp(10px,.9vw,14px);padding:5px 10px}
+.adventure-theme .btn{font-size:clamp(13px,1.22vw,19px);border:3px solid #fff9dc;border-radius:17px;padding:8px 14px;min-height:43px;box-shadow:inset 0 -4px #0002,0 4px 0 #85533177;cursor:pointer;touch-action:manipulation}
+.adventure-theme .tabs{margin:0 0 9px;flex:0 0 auto;gap:7px}
+.adventure-theme .tab,.adventure-theme .mode-row button{font-size:clamp(12px,1.1vw,17px);min-height:38px;padding:7px 12px;box-shadow:inset 0 -3px #0001,0 3px #76532620}
+.adventure-theme .stage{flex:1;min-height:0;overflow:auto;padding:12px}
+.adventure-theme .flash-layout{grid-template-columns:minmax(0,1fr) minmax(300px,.82fr);gap:12px;height:100%;min-height:0}
+.adventure-theme .flash-card-wrap{height:100%;min-height:0;align-items:center}
+.adventure-theme .flash-card{max-height:100%;max-width:100%;object-fit:contain;border:3px solid #fff;box-shadow:0 5px 14px #35516a50}
+.adventure-theme .side-panel{height:fit-content;align-self:center;min-width:0;padding:clamp(12px,1.2vw,18px)}
+.adventure-theme .side-panel h2{font-size:clamp(17px,1.45vw,23px)}
+.adventure-theme .word-big{font-size:clamp(28px,4vw,64px);margin:4px 0}
+.adventure-theme .counter{margin-top:5px;font-size:15px}
+.adventure-theme #start .board .side-panel p{font-size:clamp(13px,1.2vw,18px);line-height:1.4}
+.adventure-theme #learn .stage .thumb-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.adventure-theme .thumb{padding:4px;border-radius:12px}
+.adventure-theme .thumb img{aspect-ratio:4/3;object-fit:contain}
+.adventure-theme .thumb b{font-size:clamp(9px,.8vw,12px)}
+.adventure-theme .play-grid,.adventure-theme .quiz-wrap,.adventure-theme .speak-main,.adventure-theme .finish-grid{height:100%;min-height:0;align-items:center}
+.adventure-theme .play-grid{grid-template-columns:1fr 1fr}
+.adventure-theme .draw-card{min-height:0;height:100%;padding:10px}
+.adventure-theme .draw-card img{max-height:calc(100% - 110px);min-height:0;width:auto;object-fit:contain}
+.adventure-theme .prompt{font-size:clamp(17px,2vw,30px);margin:5px 0}
+.adventure-theme .steps{gap:5px;max-height:100%}
+.adventure-theme .step{padding:5px 9px;gap:10px;border-radius:14px;min-height:0}
+.adventure-theme .step i{height:35px;width:35px;font-size:18px;flex:0 0 35px}
+.adventure-theme .step b{font-size:clamp(12px,1.2vw,18px)}
+.adventure-theme .step p{font-size:clamp(11px,.95vw,14px);line-height:1.1;margin:1px 0}
+.adventure-theme .quiz-wrap{grid-template-columns:1fr 1fr;gap:10px}
+.adventure-theme .quiz-card{height:100%;display:flex;flex-direction:column;justify-content:center;min-height:0;padding:8px}
+.adventure-theme .quiz-card img{height:calc(100% - 55px);max-height:100%;width:auto;max-width:100%;object-fit:contain;align-self:center}
+.adventure-theme .quiz-q{font-size:clamp(17px,2.1vw,32px);margin:5px 0}
+.adventure-theme .answer{font-size:clamp(14px,1.6vw,24px);min-height:49px;padding:8px}
+.adventure-theme .feedback{font-size:clamp(14px,1.5vw,21px);margin-top:6px}
+.adventure-theme .mode-row{margin:0 0 8px;flex:0 0 auto}
+.adventure-theme .speak-image{height:100%;min-height:0;display:flex;justify-content:center;align-items:center}
+.adventure-theme .speak-image img{max-height:100%;object-fit:contain}
+.adventure-theme .speech-card{max-height:100%;padding:clamp(12px,1.4vw,24px)}
+.adventure-theme .speech-q{font-size:clamp(18px,2.5vw,37px)}
+.adventure-theme .speech-a{font-size:clamp(18px,2.3vw,32px)}
+.adventure-theme .finish-card{height:100%;min-height:0;overflow:hidden;padding:10px 16px}
+.adventure-theme .finish-card h2{font-size:clamp(17px,1.6vw,25px);margin-bottom:6px}
+.adventure-theme .finish-card>img{max-height:53%;object-fit:contain;display:block;margin:0 auto}
+.adventure-theme .finish-card p{font-size:clamp(11px,1vw,16px);margin:5px 0}
+.adventure-theme .checklist{gap:4px}
+.adventure-theme .check{font-size:clamp(12px,1.1vw,17px);padding:6px 10px;border-radius:11px;min-height:0}
+.adventure-theme .check.done::before{content:'✓ ';color:#0d8f4a;font-weight:bold}
+.adventure-theme .stars{font-size:clamp(19px,3vw,39px);line-height:1.05}
+.adventure-theme .celebrate{font-size:clamp(17px,2.2vw,30px);margin:1px 0}
+.adventure-theme #slides .board{position:relative}
+.adventure-theme .slide-view{height:100%;display:block;min-height:0}
+.adventure-theme .slide-view>div:first-child{height:100%;display:flex;flex-direction:column;align-items:stretch;justify-content:center;min-height:0}
+.adventure-theme .slide-stage{flex:1;min-height:0;padding:6px;border-radius:14px}
+.adventure-theme .slide-stage img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.adventure-theme #slides .controls{flex:0 0 auto;margin-top:5px}
+.adventure-theme #slides .counter{flex:0 0 auto;margin-top:2px}
+.adventure-theme .slide-side[hidden]{display:none!important}
+.adventure-theme .slide-side:not([hidden]){position:absolute;inset:10px;max-height:none;z-index:30;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(9,minmax(0,1fr));gap:4px;overflow:auto;background:#fffcf7fa;box-shadow:0 5px 14px #342e3055;padding:10px;border-radius:14px;border:3px solid #dca759}
+.adventure-theme .slide-side button{font-size:clamp(9px,.75vw,12px);margin:0;padding:3px 5px;min-height:0;border-radius:8px;line-height:1.14;text-align:left}
+.adventure-theme .map-text{font-size:12px;vertical-align:middle;font-weight:1000}
+@media (max-width:850px),(max-height:550px){
+ .adventure-theme .topbar{height:44px;flex-basis:44px}
+ .adventure-theme .topbar .brand{font-size:12px}
+ .adventure-theme .iconbtn{font-size:14px;min-height:32px;padding:3px 8px}
+ .adventure-theme .screen{width:min(100vw,calc((100dvh - 44px)*16/9));height:min(calc(100vw*9/16),calc(100dvh - 44px));padding:6px}
+ .adventure-theme .section-title{flex-basis:48px;height:48px;padding:3px 8px;margin-bottom:4px}
+ .adventure-theme .section-title .badge{height:34px;width:34px;font-size:17px}
+ .adventure-theme .section-title h1{font-size:16px}
+ .adventure-theme .section-title p{font-size:10px}
+ .adventure-theme .board{padding:6px;border-width:3px;border-radius:14px}
+ .adventure-theme .language-bar{display:none}
+ .adventure-theme .btn{font-size:11px;min-height:32px;padding:4px 8px;border-width:2px}
+ .adventure-theme .tabs{margin-bottom:4px}
+ .adventure-theme .tab{font-size:10px;min-height:29px;padding:3px 6px}
+ .adventure-theme .side-panel{padding:7px}
+ .adventure-theme .side-panel p{display:none}
+ .adventure-theme .word-big{font-size:24px}
+ .adventure-theme .steps{gap:1px}
+ .adventure-theme .step{padding:2px 5px;gap:5px}
+ .adventure-theme .step p{display:none}
+ .adventure-theme .check{font-size:10px;padding:3px}
+ .adventure-theme .slide-side:not([hidden]){grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr))}
+}
+@media (orientation:portrait) and (max-width:800px){
+ body.adventure-theme{overflow:auto}
+ .adventure-theme .app{height:auto;min-height:100dvh}
+ .adventure-theme main{overflow:visible;align-items:flex-start}
+ .adventure-theme .screen:not(.adventure-home){width:100%;min-height:calc(100dvh - 44px);height:auto;overflow:visible}
+ .adventure-theme .screen.active:not(.adventure-home){display:block}
+ .adventure-theme .screen.adventure-home{width:100%;height:56.25vw;min-height:0}
+ .adventure-theme .board{display:block;height:auto}
+ .adventure-theme .flash-layout,.adventure-theme .play-grid,.adventure-theme .quiz-wrap,.adventure-theme .speak-main,.adventure-theme .finish-grid{grid-template-columns:1fr;height:auto}
+ .adventure-theme .flash-card{max-height:48vh}
+ .adventure-theme .quiz-card img{height:38vh}
+ .adventure-theme .step p{display:block}
+ .adventure-theme .draw-card img{max-height:38vh}
+ .adventure-theme .speak-image img{max-height:40vh}
+ .adventure-theme .slide-stage{height:55vh}
+ .adventure-theme .slide-side:not([hidden]){grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;max-height:50vh}
+}
+
+
+/* Post-render audit refinements: keep quiz tabs and complete image within the viewport. */
+.adventure-theme #practice .board{justify-content:flex-start}
+.adventure-theme #quizStage{display:flex;flex:1;min-height:0;overflow:hidden}
+.adventure-theme #quizStage .quiz-wrap{height:100%;flex:1;min-height:0;align-items:stretch}
+.adventure-theme #quizStage .quiz-card{height:100%;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px}
+.adventure-theme #quizStage .quiz-card img{height:1px;flex:1 1 0;min-height:0;max-height:none;width:100%;object-fit:contain;align-self:center}
+.adventure-theme #quizStage .quiz-card .quiz-q{flex:0 0 auto}
+.adventure-theme #quizStage .quiz-wrap>div:nth-child(2){align-self:center;min-height:0}
+/* Sentence cards are a picture wall. Selecting one opens a full-size, one-screen card. */
+.adventure-theme #learnStage{position:relative}
+.adventure-theme #learnStage .thumb-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;gap:12px}
+.adventure-theme #learnStage .thumb img{aspect-ratio:16/9;object-fit:contain}
+.adventure-theme #sentenceOpen:not(:empty){position:absolute;inset:8px;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;margin:0!important;padding:12px;border-radius:15px;border:3px solid #d2a367;background:#fffaf0;box-shadow:0 10px 26px #342e305c}
+.adventure-theme #sentenceOpen:not(:empty)>img{width:auto!important;max-width:100%;max-height:calc(100% - 65px);object-fit:contain}
+@media (max-width:850px),(max-height:550px){.adventure-theme #learnStage .thumb-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}}
+/* HOME-only refinement: picture already has its own title; avoid repeating it in the toolbar. */
+.adventure-theme:has(#home.active) .topbar .brand{visibility:hidden}
+/* On narrow portrait devices, preserve centred, finger-sized click zones. */
+@media (orientation:portrait) and (max-width:600px){
+  .adventure-theme .adventure-home .house-hotspot{min-height:0;margin-top:0}
+}
+
+/* START: welcome photo with clickable family + personal spoken introductions.
+   These are a new interaction layer over the user's supplied START photograph. */
+.adventure-theme #start.start-story{
+  background:url('assets/adventure/start-welcome.webp') center center / 100% 100% no-repeat;
+  padding:0; isolation:isolate;
+}
+.adventure-theme #start.start-story::before{display:none}
+.start-intro-layer,.start-person-layer{display:none;position:absolute;inset:0;overflow:hidden}
+#start[data-mode="welcome"] .start-intro-layer{display:block}
+#start[data-mode="person"] .start-person-layer{display:block}
+.start-intro-title{
+  position:absolute;left:60%;top:2.5%;width:37%;text-align:center;
+  padding:8px 12px;background:#fff9eccf;border:3px solid #fff6d2;
+  border-radius:16px;color:#245174;box-shadow:0 4px 12px #43291440;
+  font-size:clamp(16px,2.2vw,30px);font-weight:1000;line-height:1.1;
+}
+.start-intro-title small{display:block;font-size:.51em;color:#465f75;margin-top:5px}
+.start-tap-target{
+ position:absolute;z-index:4;display:block;border:0;background:transparent;border-radius:26px;
+ cursor:pointer;touch-action:manipulation;
+}
+.start-tap-target:focus-visible,.start-tap-target:hover,
+.start-tap-target[aria-pressed="true"]{outline:3px solid #fff88d;outline-offset:0;box-shadow:0 0 0 7px #ffdb4985;background:#ffffb013}
+.start-tap-target:active{transform:scale(.99)}
+.start-intro-dialog{
+ position:absolute;right:2.5%;top:19%;width:27%;min-height:120px;z-index:6;
+ background:#fffdf2f2;border:3px solid #ffca65;border-radius:23px;padding:clamp(9px,1.25vw,17px);
+ box-shadow:0 8px 20px #492a1860;color:#20486e;
+}
+.start-intro-dialog strong{display:block;font-size:clamp(13px,1.55vw,23px);color:#d86536;margin-bottom:5px}
+.start-intro-dialog p{margin:0;font-weight:900;font-size:clamp(12px,1.32vw,19px);line-height:1.26}
+.start-bottom{
+ position:absolute;z-index:8;bottom:2.1%;left:26%;width:71%;display:flex;align-items:center;
+ justify-content:space-between;gap:8px;padding:8px 12px;background:#fff8e9ee;
+ border:3px solid #ffdf9b;border-radius:23px;box-shadow:0 6px 22px #3f2c1f80;
+}
+.start-bottom span{font-size:clamp(11px,1.23vw,18px);font-weight:1000;text-align:center;line-height:1.15}
+.adventure-theme .start-action{
+ font-size:clamp(12px,1.2vw,18px);padding:9px 12px;border:2px solid #fff4cf;
+ border-radius:15px;min-height:43px;color:white;font-weight:1000;cursor:pointer;
+ box-shadow:inset 0 -4px #0002,0 3px 5px #46331e40;white-space:nowrap;touch-action:manipulation;
+}
+.start-action:focus-visible{outline:3px solid #ffe65b;outline-offset:2px}
+.start-action.blue{background:linear-gradient(#23a6f5,#1670c8)}
+.start-action.green{background:linear-gradient(#31cf80,#089b59)}
+.start-action.gray{background:linear-gradient(#8d9dbc,#526684)}
+.start-person-layer{
+ background:linear-gradient(90deg,#fff7ed62,#fff6e8be 48%,#fff5e8e5);
+}
+.start-person-title{
+ position:absolute;top:2%;left:50%;transform:translateX(-50%);width:max-content;max-width:90%;
+ border-radius:18px;background:#8d552eea;border:3px solid #ffe4ae;
+ padding:7px 24px;color:#fff;text-shadow:0 2px #422;box-shadow:0 5px 13px #54351d55;
+ font-size:clamp(20px,2.4vw,36px);font-weight:1000;
+}
+.start-person-image{
+ position:absolute;left:8%;top:13%;height:66%;width:38%;padding:0;
+ background:#fffdf5;border:4px solid #f6dba8;border-radius:20px;
+ box-shadow:0 7px 20px #432a2255;cursor:pointer;overflow:hidden;
+}
+.start-person-image img{height:100%;width:100%;object-fit:contain;display:block}
+.start-person-image:focus-visible{outline:4px solid #ffce35;outline-offset:4px}
+.start-speech-panel{
+ position:absolute;left:51%;top:29%;width:43%;min-height:30%;background:#fffdf4f5;
+ border:4px solid #ffcf7d;border-radius:30px;padding:clamp(13px,2vw,28px);
+ box-shadow:0 8px 20px #4931196b;display:flex;flex-direction:column;justify-content:center;gap:12px;
+}
+.start-speech-panel h2{margin:0;font-size:clamp(21px,2.3vw,34px);color:#bf5627}
+.start-speech-panel p{font-size:clamp(19px,2.05vw,31px);line-height:1.32;font-weight:900;margin:0}
+.start-speech-panel small{font-size:clamp(12px,1.08vw,16px);color:#486585;font-weight:800}
+.start-person-bottom{
+ position:absolute;left:10%;bottom:3%;width:80%;z-index:5;
+ display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:nowrap;
+ background:#fff9ecf1;border:3px solid #f5d69f;border-radius:21px;padding:8px;
+ box-shadow:0 5px 16px #32261966;
+}
+.start-person-bottom .start-count{font-weight:1000;font-size:clamp(12px,1.1vw,17px);color:#244d71;min-width:62px;text-align:center}
+@media(max-width:850px),(max-height:550px){
+ .start-intro-dialog{top:18%;padding:7px;min-height:0}
+ .start-bottom{padding:5px;bottom:1.2%}
+ .adventure-theme .start-action{min-height:32px;padding:4px 7px;font-size:clamp(10px,1.1vw,14px)}
+ .start-person-title{padding:4px 12px}
+ .start-person-bottom{bottom:1%;padding:3px}
+ .start-speech-panel{padding:12px;border-width:3px}
+}
+@media(orientation:portrait) and (max-width:800px){
+ .adventure-theme #start.start-story{width:100%;height:56.25vw;min-height:0;}
+ .start-intro-title{padding:3px;border-width:1px;border-radius:6px;font-size:clamp(10px,2.5vw,16px)}
+ .start-intro-dialog{top:19%;padding:4px;border-width:1px;border-radius:8px;min-height:0}
+ .start-intro-dialog strong{font-size:clamp(8px,2vw,13px);margin:0}
+ .start-intro-dialog p{font-size:clamp(7px,1.75vw,13px)}
+ .start-bottom{padding:2px 3px;border-width:1px;border-radius:7px;gap:2px}
+ .start-bottom span{font-size:clamp(7px,1.6vw,12px)}
+ .adventure-theme .start-action{min-height:20px;padding:2px 3px;border-width:1px;border-radius:6px;font-size:clamp(7px,1.5vw,13px)}
+ .start-person-title{border-width:1px;font-size:clamp(10px,2.5vw,19px)}
+ .start-person-image{border-width:1px;border-radius:8px}
+ .start-speech-panel{border-width:1px;border-radius:9px;padding:5px;gap:3px}
+ .start-speech-panel h2{font-size:clamp(12px,2.6vw,20px)}
+ .start-speech-panel p{font-size:clamp(10px,2.1vw,16px)}
+ .start-speech-panel small{font-size:clamp(7px,1.5vw,11px)}
+ .start-person-bottom{padding:2px;border-width:1px;gap:4px;border-radius:7px}
+ .start-person-bottom .start-count{font-size:clamp(7px,1.4vw,11px);min-width:36px}
+}
+
+
+#slideList .slides-close{grid-column:1 / -1;background:#b54f2a;color:white;font-weight:1000;border:2px solid #ffd6a1;min-height:30px;border-radius:9px;cursor:pointer}
+/* HOME image-integrated controls: every target follows the artwork's exact 1672 x 941 geometry.
+   The picture is the visible interface; HTML buttons provide touch, keyboard, and screen-reader support. */
+.adventure-theme .level-picker{
+ position:absolute;inset:0;z-index:11;width:100%;height:100%;background:transparent;
+ border:0;border-radius:0;padding:0;margin:0;box-shadow:none;display:block;
+ pointer-events:none;
+}
+.adventure-theme .level-picker .level-prompt{display:none}
+.adventure-theme .level-options{display:contents}
+.adventure-theme .level-choice{
+ position:absolute;z-index:11;display:block;appearance:none;margin:0;padding:0;
+ border:0;border-radius:13px;background:transparent!important;box-shadow:none!important;
+ text-shadow:none!important;color:transparent!important;font-size:0!important;
+ cursor:pointer;pointer-events:auto;touch-action:manipulation;
+ filter:none!important;transform:none!important;min-width:0;min-height:0;
+}
+.adventure-theme .level-choice[data-level="1"]{left:23.5%;top:85.0%;width:18.7%;height:10.9%}
+.adventure-theme .level-choice[data-level="2"]{left:44.0%;top:85.0%;width:19.1%;height:10.9%}
+.adventure-theme .level-choice[data-level="3"]{left:64.4%;top:85.0%;width:20.1%;height:10.9%}
+.adventure-theme .level-choice:hover{background:#ffffff15!important;box-shadow:0 0 0 2px #fff9a9aa!important}
+.adventure-theme .level-choice[aria-pressed="true"]{outline:3px solid #fff6a8;outline-offset:-3px;box-shadow:0 0 13px 4px #ffe87a88!important}
+.adventure-theme .level-choice:focus-visible{outline:4px solid #ffffff;outline-offset:1px;box-shadow:0 0 0 7px #196bea!important}
+.adventure-theme .level-summary{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;padding:0;border:0}
+.top-level-badge{color:#fff!important;background:#267fc7;align-self:center;white-space:nowrap;
+ padding:5px 10px;border-radius:11px;font-weight:1000;font-size:clamp(10px,1vw,15px)}
+/* Level-aware teaching: cards show pictures only; no vocabulary printed alongside. */
+#learn .flash-card{object-fit:contain}
+#learn .side-panel .word-big.level-word-hidden{display:none}
+#learn .review-chip{font-size:clamp(15px,1.7vw,24px);font-weight:1000;color:#1675a7;margin:10px 0;text-align:center}
+#learn .review-chip.new-word{color:#219d5f}
+#learn [data-cat][hidden],#practice [data-quiz][hidden],#speak [data-speakmode][hidden]{display:none!important}
+@media(max-width:850px),(max-height:550px){
+ .level-picker{top:1.2%;height:16%;gap:1px;border-width:2px;border-radius:9px}
+ .level-options{height:75%}
+ .level-choice{font-size:clamp(8px,1.7vw,17px);border-width:1px;border-radius:6px}
+ .level-picker .level-prompt{font-size:clamp(7px,1vw,12px)}
+ .level-choice[aria-pressed="true"]{outline-width:2px;box-shadow:0 0 0 2px #ffdc5da1}
+}
+@media(orientation:portrait) and (max-width:600px){
+ .level-picker{left:29%;width:65%;height:22%;top:0.5%;border-width:1px;border-radius:5px;padding:1px;gap:0}
+ .level-picker .level-prompt{font-size:7px}
+ .level-options{height:70%;gap:2px}
+ .level-choice{min-height:0;font-size:8px;border-width:1px;border-radius:3px;box-shadow:none}
+ .level-summary{font-size:8px;padding:1px 4px;border-radius:4px}
+}
+
+
+/* Curriculum V2: teaching, concepts, and sentence cards are deliberately different from Practice. */
+.adventure-theme #learn .stage{display:flex;flex-direction:column;overflow:hidden}
+.adventure-theme #learnStage .teach-layout{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(9px,1.4vw,22px);height:100%;align-items:stretch}
+.adventure-theme #learnStage .teach-photo{min-height:0;overflow:hidden;background:#f9fcff;border:4px solid #d6e9fa;border-radius:22px;display:flex;align-items:center;justify-content:center;padding:5px}
+.adventure-theme #learnStage .teach-photo>img{max-width:100%;max-height:100%;height:100%;width:auto;object-fit:contain;border-radius:14px}
+.adventure-theme #learnStage .teach-model{background:#f3f9ff;border:3px solid #cee5ff;border-radius:20px;padding:clamp(8px,1.7vw,22px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(3px,1.2vh,13px);min-width:0;min-height:0;text-align:center}
+.adventure-theme #learnStage .teach-tag{background:#e1effd;border-radius:30px;color:#275582;letter-spacing:.05em;font-size:clamp(10px,.95vw,16px);font-weight:1000;padding:6px 13px}
+.adventure-theme #learnStage .teach-question{font-weight:1000;font-size:clamp(19px,2.6vw,43px);line-height:1.12;color:#144585}
+.adventure-theme #learnStage .teach-answer{font-weight:1000;font-size:clamp(23px,3vw,51px);line-height:1.13;color:#0c7b57}
+.adventure-theme #learnStage .teach-instruction,.adventure-theme #learnStage .teach-model p{font-size:clamp(12px,1.15vw,18px);margin:0;color:#54708f;font-weight:800}
+.adventure-theme #learnStage .lesson-nav{flex:0 0 auto;margin:6px 0 0}
+.adventure-theme #learnStage .counter{flex:0 0 auto}
+.adventure-theme #learnStage .teach-pair{display:flex;width:100%;height:100%;align-items:center;justify-content:center;gap:8px;min-height:0}
+.adventure-theme #learnStage .teach-pair>div{flex:1;min-height:0;height:100%;display:flex;justify-content:center;overflow:hidden}
+.adventure-theme #learnStage .teach-pair img{height:100%;max-width:100%;object-fit:contain}
+.adventure-theme #learnStage .teach-pronoun{font-size:clamp(43px,5vw,86px);font-weight:1000;color:#166dbe;line-height:1}
+.adventure-theme #learnStage .teach-explain{font-size:clamp(17px,1.6vw,26px);font-weight:900;color:#2b5177}
+.adventure-theme #learnStage .sentence-teach{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
+.adventure-theme #learnStage .teach-example{font-size:clamp(16px,1.8vw,31px);font-weight:1000;color:#b86d1b}
+.adventure-theme #learnStage .distance-demo,.adventure-theme #quizStage .distance-demo{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(150deg,#dff8ed,#b0dbef);border-radius:16px;overflow:hidden}
+.adventure-theme #learnStage .distance-demo img,.adventure-theme #quizStage .distance-demo img{width:auto;height:88%;max-width:95%;object-fit:contain;transition:none}
+.adventure-theme #learnStage .distance-demo.far img,.adventure-theme #quizStage .distance-demo.far img{height:32%;align-self:flex-start;margin-top:8%}
+.adventure-theme #quizStage .distance-demo{flex:1;min-height:0}
+.adventure-theme #quizStage .distance-demo img{height:85%}
+.adventure-theme #quizStage .quiz-answer-area{min-width:0;align-self:center}
+.adventure-theme #quizStage .quiz-directions{font-size:clamp(15px,1.65vw,25px);font-weight:1000;text-align:center;margin-bottom:12px}
+.adventure-theme #quizStage .quiz-q{font-size:clamp(19px,2.6vw,36px)}
+.adventure-theme #quizStage .quiz-card img{flex:1;min-height:0;object-fit:contain}
+.adventure-theme #quizStage .answer.correct{background:#dafbea;color:#106441}
+.adventure-theme #quizStage .answer.wrong{background:#ffe0e2;color:#952e37}
+@media(max-width:850px),(max-height:550px){
+ .adventure-theme #learnStage .teach-model{padding:5px;gap:3px}
+ .adventure-theme #learnStage .teach-tag{font-size:10px;padding:3px 7px}
+ .adventure-theme #learnStage .teach-question{font-size:clamp(13px,2.6vw,23px)}
+ .adventure-theme #learnStage .teach-answer{font-size:clamp(15px,3vw,28px)}
+ .adventure-theme #learnStage .teach-instruction{display:none}
+ .adventure-theme #learnStage .teach-explain{font-size:12px}
+ .adventure-theme #learnStage .teach-pronoun{font-size:28px}
+ .adventure-theme #learnStage .lesson-nav{margin-top:1px}
+ .adventure-theme #learnStage .lesson-nav .btn{font-size:10px;padding:4px 7px}
+}
+@media(orientation:portrait) and (max-width:800px){
+ .adventure-theme #learn .stage{height:auto;min-height:65vh;overflow:visible}
+ .adventure-theme #learnStage .teach-layout{display:flex;flex-direction:column;height:auto;min-height:0}
+ .adventure-theme #learnStage .teach-photo{height:43vh}
+ .adventure-theme #learnStage .teach-model{min-height:220px}
+}
+
+
+.adventure-theme #learnStage .teach-labeled-card{position:relative;aspect-ratio:3/4;height:100%;max-width:100%;min-height:0;display:flex;align-items:center;justify-content:center}
+.adventure-theme #learnStage .teach-labeled-card img{height:100%;max-width:100%;width:auto;object-fit:contain}
+.adventure-theme #learnStage .card-word{position:absolute;left:10%;width:80%;bottom:5.6%;font-size:clamp(15px,2.0vw,30px);text-align:center;font-weight:1000;color:#164c85;line-height:1.1;text-shadow:0 1px #fff;pointer-events:none}
+.adventure-theme #hearSpeak:disabled{opacity:.45;filter:saturate(.55);cursor:not-allowed}
+@media(max-width:850px),(max-height:550px){.adventure-theme #learnStage .card-word{font-size:clamp(12px,1.6vw,22px)}}
+@media(orientation:portrait) and (max-width:800px){.adventure-theme #learnStage .card-word{font-size:clamp(16px,5vw,29px)}}
+
+
+/* V3: exact user-supplied labelled cards and single-person pronoun teaching; no paired figures. */
+.adventure-theme #learnStage .teach-photo .teach-picture-button {border:0;background:transparent;padding:0;margin:0;width:100%;height:100%;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:15px;overflow:hidden;}
+.adventure-theme #learnStage .teach-photo .teach-picture-button:focus-visible{outline:4px solid #207ddd;outline-offset:-5px}
+.adventure-theme #learnStage .teach-photo .teach-picture-button img {display:block;max-width:100%;max-height:100%;height:100%;width:100%;object-fit:contain;object-position:center;border-radius:12px}
+.adventure-theme #learnStage .teach-photo .teach-picture-button.pronoun-flashcard img{object-fit:contain}
+.adventure-theme #learnStage .teach-model .teach-pronoun{line-height:1;color:#1669b6}
+.adventure-theme #learnStage .teach-model .teach-explain{line-height:1.13}
+@media(max-height:750px) and (min-width:851px){
+ .adventure-theme #learnStage .teach-model{padding:6px;gap:6px}
+ .adventure-theme #learnStage .teach-pronoun{font-size:clamp(31px,4vw,53px)}
+ .adventure-theme #learnStage .teach-explain{font-size:clamp(14px,1.2vw,20px)}
+}
+
+
+#learn .language-bar span[hidden]{display:none!important}
+/* V5: clear separation of vocabulary and concept cards. */
+.adventure-theme #learnStage .teach-vocab{font-size:clamp(31px,4vw,70px);font-weight:1000;color:#144585;text-transform:capitalize;line-height:1.08}
+.adventure-theme #learnStage .pronoun-card-composed{width:100%;height:100%;display:flex;justify-content:center;align-items:center;padding:0;}
+.adventure-theme #learnStage .pronoun-composed-wrap{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;max-height:100%;height:100%;max-width:100%;aspect-ratio:3/4;}
+.adventure-theme #learnStage .pronoun-composed-wrap img{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain}
+.adventure-theme #learnStage .pronoun-composed-label{position:absolute;bottom:3.6%;left:11%;width:78%;text-align:center;font-size:clamp(25px,3.6vw,64px);font-weight:1000;line-height:1;color:#153c77;pointer-events:none}
+@media (orientation:portrait) and (max-width:800px){.adventure-theme #learnStage .teach-vocab{font-size:clamp(25px,7vw,55px)}.adventure-theme #learnStage .pronoun-composed-label{font-size:clamp(26px,8vw,60px)}}
+
+
+/* V7 — Integrate the exact approved LEARN classroom illustration.
+   The original illustration is used as an asset. All cards, labels and actions
+   remain live DOM elements, so content follows the selected level. */
+@media (min-width:851px) and (min-height:551px) and (orientation:landscape){
+ .adventure-theme #learn{
+  background-image:url('assets/adventure/learn-classroom-approved.png');
+  background-size:100% 106%;background-position:center bottom;
+  padding:0; overflow:hidden;
+ }
+ .adventure-theme #learn::before{display:none}
+ .adventure-theme #learn .section-title{display:none}
+ .adventure-theme #learn .language-bar{display:none}
+ .adventure-theme #learn .board{
+  position:absolute;inset:0;display:block;overflow:visible;
+  background:transparent;border:0;box-shadow:none;border-radius:0;
+  margin:0;padding:0;
+ }
+ .adventure-theme #learn .tabs{
+  position:absolute;left:29%;top:14.5%;width:44%;height:8.9%;
+  z-index:5;display:flex;flex-direction:row;justify-content:center;align-items:center;
+  gap:1%;margin:0;padding:3px 6px;background:#fff1d6;border-radius:38px;box-shadow:0 2px 7px #4a351d26;
+ }
+ .adventure-theme #learn .tabs .tab{
+  flex:0 1 auto;white-space:nowrap;max-height:100%;min-height:0;
+  padding:clamp(3px,.58vw,9px) clamp(7px,1.06vw,15px);
+  border:2px solid #dae3f0;border-radius:999px;
+  background:linear-gradient(#fff,#f4f5f9);color:#184276;
+  font-size:clamp(9px,1.07vw,16px);font-weight:1000;
+  box-shadow:0 3px 0 #c0b5aa,0 1px 5px #472f1c42;
+ }
+ .adventure-theme #learn .tabs .tab.active{
+  background:linear-gradient(#26adff,#007ace);color:#fff;border-color:#9edafd;
+  box-shadow:0 3px 0 #1b5d9d,0 1px 7px #28425b55;
+ }
+ .adventure-theme #learn .stage{
+  position:absolute;left:9%;right:8.5%;top:24.3%;bottom:9.1%;
+  height:auto;min-height:0;display:block;padding:0;border:0;
+  background:transparent;border-radius:0;box-shadow:none;overflow:visible;
+ }
+ .adventure-theme #learnStage .teach-layout{
+  width:100%;height:100%;display:grid;grid-template-columns:minmax(0,46%) minmax(0,54%);
+  gap:0;overflow:visible;align-items:stretch;
+ }
+ .adventure-theme #learnStage .teach-photo{
+  width:90%;height:100%;max-width:none;min-height:0;margin:0 auto;
+  padding:4px;background:#fffdf6;border:5px solid #c1e0f7;border-radius:22px;
+  box-shadow:0 7px 13px #49372824;overflow:hidden;
+ }
+ .adventure-theme #learnStage .teach-model{
+  position:relative;margin:0 2% 0 2%;min-height:0;max-height:100%;
+  background:#fff2df;border:3px solid #e1c39e;border-radius:20px;
+  box-shadow:inset 0 3px 12px #ffffff80,0 6px 13px #5c3c1c2a;
+  padding:clamp(8px,1.15vw,17px) clamp(9px,1.5vw,23px);
+  gap:clamp(5px,1.3vh,14px);color:#163d6d;
+ }
+ .adventure-theme #learnStage .teach-vocab{font-size:clamp(28px,4.45vw,67px);color:#16467f}
+ .adventure-theme #learnStage .teach-tag{background:#dbeeff;font-size:clamp(10px,.91vw,15px)}
+ .adventure-theme #learnStage .teach-answer{font-size:clamp(21px,2.72vw,43px)}
+ .adventure-theme #learnStage .teach-question{font-size:clamp(19px,2.35vw,38px)}
+ .adventure-theme #learnStage .lesson-nav{
+  display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;
+  gap:clamp(2px,.5vw,8px);padding:clamp(5px,.55vw,9px);
+  position:absolute;left:5%;bottom:9%;width:90%;background:linear-gradient(#f4cb86,#dea75f);
+  border:2px solid #fbe2ac;border-radius:15px;
+  box-shadow:0 3px 3px #92613088;margin-top:clamp(2px,1.3vh,12px);
+ }
+ .adventure-theme #learnStage .lesson-nav .btn{
+  font-size:clamp(10px,1.02vw,16px);white-space:nowrap;
+  padding:clamp(6px,.76vw,11px) clamp(5px,.85vw,12px);
+  border:2px solid #fff6d7;
+ }
+ .adventure-theme #learnStage .counter{
+  color:#573c29;background:#ffe9bd;border-radius:30px;font-size:clamp(10px,1.18vw,17px);
+  position:absolute;left:50%;bottom:1.5%;transform:translateX(-50%);padding:2px 12px;font-weight:1000;
+ }
+ .adventure-theme #learnStage .teach-model p{font-size:clamp(10px,1vw,16px)}
+ .adventure-theme #learnStage .sentence-teach .teach-text-left{order:1}
+ .adventure-theme #learnStage .sentence-teach .teach-image-right{order:2}
+}
+/* The original responsive layout remains for portrait/tiny screens.
+   Display the same approved room as a decorative backdrop there as well. */
+@media (max-width:850px), (max-height:550px), (orientation:portrait){
+ .adventure-theme #learn{
+  background-image:url('assets/adventure/learn-classroom-approved.png');
+  background-size:cover;background-position:center center;
+ }
+ .adventure-theme #learn .board{background:#fff9edeb}
+}
+
+
+/* V8 - User-supplied PRACTICE classroom scene. Do not bake the live question,
+   answer buttons, card or nav into the background: they remain accessible DOM. */
+@media (min-width:851px) and (min-height:551px) and (orientation:landscape){
+ .adventure-theme #practice{
+   background-image:url('assets/adventure/practice-classroom-approved.png');
+   background-size:100% 106%;background-position:center bottom;
+   padding:0;overflow:hidden;
+ }
+ .adventure-theme #practice::before{display:none}
+ .adventure-theme #practice .section-title{
+   position:absolute;left:8.4%;top:1.5%;width:83.3%;height:10.5%;
+   margin:0;z-index:3;border-radius:17px;
+   background:linear-gradient(180deg,#a75e32,#80431e);
+   border:3px solid #ffd393;box-shadow:0 4px 9px #64371d40;
+   display:flex;align-items:center;justify-content:center;
+ }
+ .adventure-theme #practice .section-title h1{font-size:clamp(17px,2.1vw,31px)}
+ .adventure-theme #practice .section-title p{font-size:clamp(9px,.84vw,13px)}
+ .adventure-theme #practice .board{
+   position:absolute;inset:0;margin:0;padding:0;
+   overflow:visible;display:block;border:0;box-shadow:none;border-radius:0;
+   background:transparent;
+ }
+ .adventure-theme #practice .tabs{
+   position:absolute;top:13.8%;left:46.4%;width:38%;height:10.2%;
+   display:flex;flex-wrap:nowrap;align-items:center;justify-content:flex-start;
+   gap:1%;z-index:6;margin:0;padding:2px 10px;
+   background:linear-gradient(180deg,#fff7e9,#fff0d9);
+   border-radius:999px;box-shadow:0 3px 6px #684b2d25;
+ }
+ .adventure-theme #practice .tabs .tab{
+   white-space:nowrap;min-height:0;max-height:100%;flex:0 1 auto;
+   font-size:clamp(10px,1.05vw,17px);padding:clamp(5px,.6vw,9px) clamp(8px,.9vw,14px);
+   border:2px solid #d6e2f2;border-radius:999px;
+   background:linear-gradient(#fff,#f0f5fe);color:#154678;
+   box-shadow:0 3px 0 #c4c1b8;
+ }
+ .adventure-theme #practice .tabs .tab.active{background:linear-gradient(#2aaaff,#057bd6);color:white;border-color:#9bdafe;box-shadow:0 3px 0 #1765a4}
+ .adventure-theme #practice #quizStage{
+   position:absolute;left:8.2%;right:7.3%;top:16.5%;bottom:1.2%;
+   display:block;overflow:visible;z-index:4;
+ }
+ .adventure-theme #practice #quizStage .quiz-wrap{
+   width:100%;height:100%;display:grid;
+   grid-template-columns:minmax(0,46%) minmax(0,54%);
+   align-items:stretch;gap:0;
+ }
+ .adventure-theme #practice #quizStage .quiz-card{
+   width:94%;height:100%;margin:0 auto;min-width:0;min-height:0;
+   display:flex;flex-direction:column;align-items:center;justify-content:center;
+   padding:clamp(6px,.6vw,12px);
+   background:#fffdf6;border:5px solid #badbf4;border-radius:23px;
+   box-shadow:0 6px 13px #664b2930;
+ }
+ .adventure-theme #practice #quizStage .quiz-card img{
+   flex:1 1 0;height:1px;width:100%;min-height:0;max-height:100%;
+   object-fit:contain;border-radius:12px;
+ }
+ .adventure-theme #practice #quizStage .quiz-card .distance-demo{height:1px;flex:1 1 0;min-height:0}
+ .adventure-theme #practice #quizStage .quiz-card .quiz-q{
+   flex:0 0 auto;font-size:clamp(17px,2.45vw,36px);color:#12447d;
+   font-weight:1000;margin:3px 0 1px;text-align:center;
+ }
+ .adventure-theme #practice #quizStage .quiz-answer-area{
+   width:96%;height:84%;min-width:0;min-height:0;align-self:center;transform:translateY(3.5%);
+   margin:0 auto;display:flex;flex-direction:column;align-items:stretch;justify-content:center;
+   padding:clamp(8px,1.7vw,25px);
+   border:3px solid #f0d3a5;border-radius:24px;
+   background:#fff7ea;box-shadow:0 5px 13px #664b292b;
+ }
+ .adventure-theme #practice #quizStage .quiz-directions{font-size:clamp(18px,1.8vw,27px);color:#173f75;margin-bottom:15px}
+ .adventure-theme #practice #quizStage .answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .adventure-theme #practice #quizStage .answer{
+   min-width:0;min-height:clamp(45px,7vh,70px);white-space:normal;
+   border:3px solid #c7dff6;border-radius:18px;
+   background:#fff;color:#103f79;font-size:clamp(14px,1.5vw,22px);
+   padding:8px;box-shadow:0 3px 7px #48627a28;
+ }
+ .adventure-theme #practice #quizStage .answer.correct{background:#d5ffe9;border-color:#39bf81;color:#0d7849}
+ .adventure-theme #practice #quizStage .answer.wrong{background:#ffe2e4;border-color:#e8747b;color:#8a2832}
+ .adventure-theme #practice #quizStage .feedback{min-height:clamp(22px,3.2vh,36px);margin-top:7px;text-align:center;font-size:clamp(13px,1.35vw,19px)}
+ .adventure-theme #practice #quizStage .controls{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:clamp(4px,1vh,12px)}
+ .adventure-theme #practice #quizStage .controls .btn{font-size:clamp(11px,1.25vw,18px);padding:clamp(7px,.7vw,12px) clamp(7px,1vw,16px);white-space:nowrap}
+ .adventure-theme #practice .language-bar{display:none}
+}
+/* On small screens use the tested responsive quiz geometry. The supplied
+   artwork is still the background but the decorative baked sample is covered
+   by the opaque interactive board, to avoid ghost buttons and false answers. */
+@media (max-width:850px), (max-height:550px), (orientation:portrait){
+ .adventure-theme #practice{
+   background-image:url('assets/adventure/practice-classroom-approved.png');
+   background-size:cover;background-position:center;
+ }
+ .adventure-theme #practice .board{background:#fff9f0}
+ .adventure-theme #practice #quizStage .quiz-answer-area{background:#fff8e9;border-radius:18px;padding:8px}
+ .adventure-theme #practice #quizStage .quiz-card{background:#fffdf8}
+ .adventure-theme #practice #quizStage .quiz-card img{max-width:100%}
+}
+
+
+/* V9 PLAY — user-supplied illustrated classroom. All six directions and
+   card/voice controls remain real DOM so levels and flashcards can change.
+   Opaque panels mask the fixed example and printed controls in the artwork. */
+@media (min-width:851px) and (min-height:551px) and (orientation:landscape){
+ .adventure-theme #play{
+   background-image:url('assets/adventure/play-classroom-approved.png');
+   background-size:100% 100%;background-position:center center;
+   padding:0;overflow:hidden;
+ }
+ .adventure-theme #play::before{display:none}
+ .adventure-theme #play>.section-title{display:none}
+ .adventure-theme #play>.language-bar{display:none}
+ .adventure-theme #play>.board{
+   position:absolute;inset:0;margin:0;padding:0;display:block;
+   border:0;border-radius:0;box-shadow:none;background:transparent;
+   overflow:visible;z-index:2;
+ }
+ .adventure-theme #play .play-grid{
+   position:absolute;left:9.45%;top:11.6%;width:81%;height:80.2%;
+   display:grid;grid-template-columns:47.2% 51.8%;gap:1%;
+   align-items:stretch;min-height:0;
+ }
+ .adventure-theme #play .draw-card{
+   width:100%;height:100%;min-height:0;min-width:0;
+   padding:clamp(6px,.85vw,14px);
+   display:flex;flex-direction:column;align-items:center;justify-content:center;
+   background:#f1f9ff;border:3px solid #afd9f8;border-radius:24px;
+   box-shadow:0 5px 12px #466a9230;overflow:hidden;
+ }
+ .adventure-theme #play .draw-card img{
+   flex:1 1 0;min-height:0;max-height:calc(100% - 78px);width:100%;max-width:100%;
+   object-fit:contain;border-radius:12px;box-shadow:none;
+ }
+ .adventure-theme #play .prompt{
+   flex:0 0 auto;margin:3px 0 1px;min-height:0;
+   font-size:clamp(14px,1.6vw,25px);line-height:1.12;
+   font-weight:1000;color:#103f7e;text-align:center;
+ }
+ .adventure-theme #play .draw-card .controls{
+   flex:0 0 auto;display:flex;justify-content:center;flex-wrap:nowrap;
+   align-items:center;gap:clamp(5px,.8vw,14px);width:100%;margin-top:5px;
+ }
+ .adventure-theme #play .draw-card .btn{
+   white-space:nowrap;min-width:0;padding:clamp(6px,.75vw,11px) clamp(7px,1.15vw,17px);
+   font-size:clamp(10px,1.05vw,17px);border-radius:13px;
+ }
+ .adventure-theme #play .steps{
+   box-sizing:border-box;width:100%;height:100%;min-height:0;margin:0;
+   display:grid;grid-template-rows:repeat(6,minmax(0,1fr));gap:clamp(4px,.65vw,9px);
+   padding:clamp(10px,1.4vw,24px);
+   background:#eaf5ff;border:3px solid #b7dbf8;border-radius:23px;
+   box-shadow:0 5px 12px #466a9230;overflow:hidden;
+ }
+ .adventure-theme #play .step{
+   min-height:0;min-width:0;height:100%;box-sizing:border-box;
+   padding:clamp(3px,.6vw,10px);gap:clamp(6px,.9vw,14px);
+   border:2px solid #c2ddf9;background:#fff;border-radius:15px;
+   box-shadow:0 3px 6px #5d81982b;
+ }
+ .adventure-theme #play .step i{
+   flex:0 0 clamp(27px,2.75vw,43px);width:clamp(27px,2.75vw,43px);
+   height:clamp(27px,2.75vw,43px);font-size:clamp(14px,1.5vw,21px);
+   background:#178fe8;
+ }
+ .adventure-theme #play .step b{font-size:clamp(12px,1.35vw,20px);line-height:1.02;color:#173f78}
+ .adventure-theme #play .step p{display:block;font-size:clamp(10px,.95vw,15px);line-height:1.06;margin:2px 0 0;color:#4f6486}
+}
+/* On small / portrait screens keep the original accessible responsive layout.
+   The new classroom picture remains behind opaque content rather than
+   exposing baked-in example buttons or a second fixed Father card. */
+@media (max-width:850px), (max-height:550px), (orientation:portrait){
+ .adventure-theme #play{background-image:linear-gradient(#fff8eef5,#fff8eef5),url('assets/adventure/play-classroom-approved.png');background-size:cover;background-position:center}
+ .adventure-theme #play .board{background:#fff8edf7}
+ .adventure-theme #play .draw-card{background:#f1f9ff}
+ .adventure-theme #play .steps{background:#eaf5fff5;padding:8px;border-radius:15px}
+ .adventure-theme #play .step{background:#fff}
+}
+
+
+/* V10 SPEAK: Original user-provided illustrated classroom, not AI-regenerated.
+   The character, prompt, reveal state, and clickable controls are live DOM.
+   Solid inset panels mask the printed example card/buttons in the supplied art. */
+@media (min-width:851px) and (min-height:551px) and (orientation:landscape){
+ .adventure-theme #speak{
+   background-image:url('assets/adventure/speak-classroom-approved.png');
+   background-size:100% 100%;background-position:center center;
+   padding:0;overflow:hidden;
+ }
+ .adventure-theme #speak::before{display:none}
+ .adventure-theme #speak>.section-title,.adventure-theme #speak>.language-bar{display:none}
+ .adventure-theme #speak>.board{
+   position:absolute;inset:0;margin:0;padding:0;display:block;
+   border:0;border-radius:0;box-shadow:none;background:transparent;
+   overflow:visible;z-index:2;
+ }
+ .adventure-theme #speak .mode-row{
+   position:absolute;left:9%;top:10.4%;height:7.2%;width:55%;
+   display:flex;align-items:center;gap:clamp(5px,.65vw,10px);
+   margin:0;padding:0;z-index:5;flex-wrap:nowrap;
+ }
+ .adventure-theme #speak .mode-row button{
+   white-space:nowrap;font-size:clamp(11px,1.12vw,17px);
+   padding:clamp(5px,.6vw,9px) clamp(8px,.9vw,16px);
+   border:2px solid #a9d5f9;border-radius:999px;background:#fff;
+   box-shadow:0 3px 0 #3c719a35;color:#104477;cursor:pointer;
+ }
+ .adventure-theme #speak .mode-row button.active{
+   background:linear-gradient(#3bb2ff,#087dd7);color:#fff;
+   border-color:#a9e3ff;box-shadow:0 3px 0 #205f9b;
+ }
+ .adventure-theme #speak .speak-main{
+   position:absolute;left:9.1%;top:17.5%;width:82.6%;height:75%;
+   display:grid;grid-template-columns:minmax(0,41.5%) minmax(0,58.5%);
+   align-items:stretch;gap:0;margin:0;overflow:visible;min-height:0;
+ }
+ .adventure-theme #speak .speak-image{
+   width:104%;height:100%;min-width:0;min-height:0;
+   display:flex;justify-content:center;align-items:center;
+   padding:clamp(6px,.85vw,13px);background:#f4faff;
+   border:4px solid #bedef5;border-radius:22px;
+   box-shadow:0 7px 14px #4b78a52e;overflow:hidden;
+ }
+ .adventure-theme #speak .speak-image img{
+   max-width:100%;max-height:100%;width:auto;height:100%;
+   border-radius:14px;object-fit:contain;display:block;
+ }
+ .adventure-theme #speak .speech-card{
+   box-sizing:border-box;width:97%;height:70%;min-height:0;max-height:none;
+   margin:auto 0 auto auto;padding:clamp(12px,1.55vw,26px);
+   display:flex;flex-direction:column;align-items:center;justify-content:center;
+   border:4px solid #add5f7;border-radius:22px;
+   background:#f1f9ff;box-shadow:0 6px 17px #4b78a540;
+   overflow:hidden;
+ }
+ .adventure-theme #speak .speech-q{
+   width:100%;font-size:clamp(23px,2.75vw,41px);line-height:1.15;
+   color:#123e86;text-align:left;overflow-wrap:break-word;margin:0 auto clamp(12px,1.4vw,22px);
+ }
+ .adventure-theme #speak .speech-a{
+   width:100%;font-size:clamp(18px,2vw,30px);line-height:1.16;
+   text-align:center;color:#138b5b;margin:0 auto clamp(9px,1.05vw,17px);
+ }
+ .adventure-theme #speak .speech-card .controls{
+   display:flex;flex-wrap:nowrap;align-items:center;justify-content:center;
+   gap:clamp(5px,.55vw,10px);width:100%;min-width:0;margin:0;
+ }
+ .adventure-theme #speak .speech-card .btn{
+   flex:0 1 auto;min-width:0;min-height:clamp(38px,4.2vw,56px);
+   white-space:nowrap;padding:clamp(5px,.55vw,10px) clamp(6px,.85vw,14px);
+   border-radius:15px;border:2px solid #fff6d6;
+   font-size:clamp(10px,1.12vw,18px);
+ }
+ .adventure-theme #speak .speech-card .btn:disabled{
+   opacity:.55;cursor:not-allowed;filter:grayscale(.3);
+ }
+}
+/* Preserve the accessible vertical/mobile DOM layout for portrait and smaller
+   viewports. The approved picture remains the background but cannot expose
+   its printed example beneath the real dynamic elements. */
+@media (max-width:850px),(max-height:550px),(orientation:portrait){
+ .adventure-theme #speak{
+   background-image:linear-gradient(#fff9e9d8,#fff9e9d8),url('assets/adventure/speak-classroom-approved.png');
+   background-size:cover;background-position:center center;
+ }
+ .adventure-theme #speak .board{background:#fffaf2f5}
+ .adventure-theme #speak .speak-image{background:#f3faff;border-color:#bedef5}
+ .adventure-theme #speak .speech-card{background:#f1f9ff;border-color:#b5ddf9}
+}
+
+
+/* V12 — Level-specific interactive sentence pictures: existing artwork only. */
+.adventure-theme #learnStage .sentence-picture-inner{position:relative;width:100%;height:100%;display:flex;justify-content:center;align-items:center;min-width:0;min-height:0;overflow:hidden}
+.adventure-theme #learnStage .sentence-auntie-caption{position:absolute;z-index:2;left:14%;right:14%;bottom:4%;text-align:center;font-size:clamp(17px,2.2vw,33px);font-weight:1000;color:#143e78;background:#ffffffee;border:2px solid #b2dff6;border-radius:12px;padding:4px;pointer-events:none}
+.adventure-theme #learnStage .sentence-distance-label{position:absolute;z-index:2;left:50%;transform:translateX(-50%);top:2%;background:#dff0ff;color:#14467a;border:2px solid #98caed;padding:4px 13px;border-radius:20px;font-weight:1000;font-size:clamp(12px,1.25vw,19px);white-space:nowrap;pointer-events:none}
+.adventure-theme #learnStage .sentence-distance .teach-picture-button{transition:transform .18s ease}
+.adventure-theme #learnStage .sentence-near .teach-picture-button{transform:translateY(6%) scale(.87)}
+.adventure-theme #learnStage .sentence-far .teach-picture-button{transform:translateY(12%) scale(.53)}
+@media (orientation:portrait) and (max-width:800px){
+ .adventure-theme #learnStage .sentence-auntie-caption{font-size:clamp(17px,5vw,29px)}
+ .adventure-theme #learnStage .sentence-distance-label{font-size:clamp(12px,3.1vw,16px)}
+}
+
+/* Give the four Level 3 LEARN tabs their own single row. */
+@media (min-width:851px) and (min-height:551px) and (orientation:landscape){
+ .adventure-theme #learn[data-level="3"] .tabs{left:23%;width:54%;gap:0.65%;}
+ .adventure-theme #learn[data-level="3"] .tabs .tab{font-size:clamp(9px,.96vw,15px);padding:clamp(3px,.5vw,8px) clamp(5px,.6vw,10px);}
+}
+
+/* V13 — Full user-supplied 16:9 THIS/THAT pet cards; no generated or substitute artwork. */
+@media (min-width:851px) and (min-height:551px) and (orientation:landscape){
+ .adventure-theme #learnStage .teach-layout.distance-teach{grid-template-columns:minmax(0,55%) minmax(0,45%);background:#fff8ea;border-radius:18px;}
+ .adventure-theme #learnStage .distance-photo{width:97%;padding:5px;}
+ .adventure-theme #learnStage .distance-teach .teach-picture-button{width:100%;height:100%;}
+ .adventure-theme #learnStage .distance-teach .teach-pronoun{font-size:clamp(30px,4.3vw,63px);}
+ .adventure-theme #learnStage .distance-teach .teach-question{font-size:clamp(20px,2.1vw,34px);}
+ .adventure-theme #learnStage .distance-teach .teach-answer{font-size:clamp(20px,2.5vw,39px);}
+}
+</style>
+
+<link rel="preload" href="assets/audio/voice-sprite-stephane-v1.mp3" as="audio" type="audio/mpeg" crossorigin>
+</head>
+<body class="calm adventure-theme">
+<div class="app">
+<header class="topbar">
+  <button class="iconbtn" id="homeBtn" title="Adventure map" aria-label="Return to adventure map">🏠 <span class="map-text">MAP</span></button>
+  <div class="brand">FAMILY ADVENTURE <span>• My Family & Pets</span></div>
+  <nav class="navchips" hidden aria-hidden="true">
+    <button class="chip c1" data-go="start">1 START</button><button class="chip c2" data-go="learn">2 LEARN</button><button class="chip c3" data-go="play">3 PLAY</button><button class="chip c4" data-go="practice">4 PRACTICE</button><button class="chip c5" data-go="speak">5 SPEAK</button><button class="chip c6" data-go="finish">6 FINISH</button><button class="chip c7" data-go="slides">7 PRESENTATION</button>
+  </nav>
+  <span class="top-level-badge" id="topLevelBadge" aria-live="polite">LEVEL 1</span>
+  <button class="iconbtn" id="soundBtn" title="Sound on/off">🔊</button><button class="iconbtn" id="motionBtn" title="Calm mode">🌿</button><button class="iconbtn" id="fullBtn" title="Full screen">⛶</button>
+</header>
+<main>
+<section class="screen active adventure-home" id="home" aria-label="Family Adventure home screen">
+  <div class="adventure-map" role="group" aria-label="Choose a room from the picture">
+    <img class="adventure-map-art" src="assets/adventure/family-adventure-home-updated.webp" alt="Illustrated family house with seven colourful room signs" draggable="false" decoding="async">
+    <div class="map-hints" aria-hidden="true"></div>
+    <div class="level-picker" role="group" aria-label="Choose lesson level">
+      
+      <div class="level-options">
+        <button type="button" class="level-choice" data-level="1" aria-pressed="true" title="Level 1 — Father, Mother, Brother, Sister"><span class="sr-only">Level 1 — Father, Mother, Brother and Sister</span></button>
+        <button type="button" class="level-choice" data-level="2" aria-pressed="false" title="Level 2 — Review four, add Grandfather, Grandmother, Uncle, Aunt"><span class="sr-only">Level 2 — Review four, learn Grandfather, Grandmother, Uncle and Aunt</span></button>
+        <button type="button" class="level-choice" data-level="3" aria-pressed="false" title="Level 3 — Review eight, add five pets"><span class="sr-only">Level 3 — Review eight family members, learn five pets</span></button>
+      </div>
+    </div>
+    <div class="level-summary" id="levelSummary" aria-live="polite">LEVEL 1 • 4 FAMILY MEMBERS</div>
+    <button type="button" class="house-hotspot room-start" data-go="start" style="left:19.700%;top:48.900%;width:13.700%;height:10.600%" aria-label="START — Meet my family" title="START — Meet my family"><span class="sr-only">START — Meet my family</span></button>
+    <button type="button" class="house-hotspot room-learn" data-go="learn" style="left:34.100%;top:19.250%;width:15.900%;height:11.400%" aria-label="LEARN — Family and pets" title="LEARN — Family and pets"><span class="sr-only">LEARN — Family and pets</span></button>
+    <button type="button" class="house-hotspot room-practice" data-go="practice" style="left:56.300%;top:19.250%;width:17.800%;height:11.400%" aria-label="PRACTICE — Questions and choices" title="PRACTICE — Questions and choices"><span class="sr-only">PRACTICE — Questions and choices</span></button>
+    <button type="button" class="house-hotspot room-play" data-go="play" style="left:35.300%;top:50.600%;width:14.300%;height:10.750%" aria-label="PLAY — Ask, swap, move" title="PLAY — Ask, swap, move"><span class="sr-only">PLAY — Ask, swap, move</span></button>
+    <button type="button" class="house-hotspot room-speak" data-go="speak" style="left:51.700%;top:50.700%;width:11.600%;height:10.450%" aria-label="SPEAK — Build sentences" title="SPEAK — Build sentences"><span class="sr-only">SPEAK — Build sentences</span></button>
+    <button type="button" class="house-hotspot room-finish" data-go="finish" style="left:64.500%;top:51.100%;width:14.500%;height:10.200%" aria-label="FINISH — Great job" title="FINISH — Great job"><span class="sr-only">FINISH — Great job</span></button>
+    <button type="button" class="house-hotspot room-slides" data-go="slides" style="left:81.000%;top:51.200%;width:16.100%;height:10.600%" aria-label="PRESENTATION — Level slides" title="PRESENTATION — Level slides"><span class="sr-only">PRESENTATION — 34 slides</span></button>
+  </div>
+</section>
+
+<section class="screen start-story" id="start" data-mode="welcome" aria-label="START — Meet My Family">
+  <div class="start-intro-layer" id="startIntro">
+    <div class="start-intro-title">WELCOME TO OUR HOME!<small id="startWelcomeHint">Tap a family member to say hello</small></div>
+    <button type="button" class="start-tap-target" data-meet="father" style="left:26%;top:14%;width:19%;height:35%" aria-label="Touch father to hear his introduction" aria-pressed="false"></button>
+    <button type="button" class="start-tap-target" data-meet="mother" style="left:44%;top:24%;width:18%;height:33%" aria-label="Touch mother to hear her introduction" aria-pressed="false"></button>
+    <button type="button" class="start-tap-target" data-meet="brother" style="left:19%;top:44%;width:22%;height:36%" aria-label="Touch brother to hear his introduction" aria-pressed="false"></button>
+    <button type="button" class="start-tap-target" data-meet="sister" style="left:58%;top:43%;width:18%;height:35%" aria-label="Touch sister to hear her introduction" aria-pressed="false"></button>
+    <div class="start-intro-dialog" id="startIntroDialog" aria-live="polite"><strong id="startIntroWho">HELLO!</strong><p id="startIntroSpeech">Welcome! Touch Mother, Father, Brother or Sister. They will say hello!</p></div>
+    <div class="start-bottom">
+      <button type="button" class="start-action blue" id="startIntroHear" aria-label="Hear the selected family member again">🔊 HEAR AGAIN</button>
+      <span id="startWelcomeCounter">👆 TAP A FAMILY MEMBER</span>
+      <button type="button" class="start-action green" id="startIntroNext">MEET MOTHER →</button>
+    </div>
+  </div>
+  <div class="start-person-layer" id="startPerson">
+    <div class="start-person-title" id="startPersonTitle">Meet Mother</div>
+    <button type="button" class="start-person-image" id="startPortrait" aria-label="Touch the family member to hear the introduction again"><img id="startImg" alt="Illustrated family member" decoding="async"></button>
+    <div class="start-speech-panel" aria-live="polite"><h2 id="startWord">MOTHER</h2><p id="startGreetingText"></p><small>🔊 Tap the picture to hear the greeting</small></div>
+    <div class="start-person-bottom">
+      <button type="button" class="start-action gray" id="startPrev">← PREVIOUS</button>
+      <button type="button" class="start-action blue" id="startHear">🔊 HEAR AGAIN</button>
+      <span class="start-count" id="startCount">1 / 8</span>
+      <button type="button" class="start-action green" id="startNext">NEXT →</button>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="learn">
+  <div class="section-title"><div class="badge c2">2</div><div><h1 id="learnHeading">LEARN — Family</h1><p id="learnSubtitle">One person • picture + text • listen • say</p></div></div>
+  <div class="board">
+    <div class="tabs"><button class="tab active" data-cat="family">👨‍👩‍👧‍👦 FAMILY</button><button class="tab" data-cat="pets">🐾 PETS</button><button class="tab" data-cat="concepts" id="conceptTab">💡 HE / SHE</button><button class="tab" data-cat="sentences">💬 SENTENCE CARDS</button></div>
+    <div class="stage" id="learnStage"></div>
+  </div>
+  <div class="language-bar"><span>LOOK • LISTEN • SAY</span><span>Who is he? → He is my ___.</span><span>Who is she? → She is my ___.</span><span class="level3-only">What is this/that? → This/That is my ___.</span></div>
+</section>
+
+<section class="screen" id="play">
+  <div class="section-title"><div class="badge c3">3</div><div><h1>PLAY — Ask • Swap • Move</h1><p>Teacher draws a card • student says the sentence • swap • move to a new partner</p></div></div>
+  <div class="board"><div class="play-grid">
+    <div class="draw-card"><img id="playImg" data-src="assets/flashcards/picture_text/mother.webp" decoding="async" alt="family or pet card"><div class="prompt" id="playPrompt">Who is she? She is my mother.</div><div class="controls"><button class="btn green" id="drawBtn">🎴 Draw a new card</button><button class="btn blue" id="playHear">🔊 Hear sentence</button></div></div>
+    <div class="steps">
+      <div class="step"><i>1</i><div><b>Take a card</b><p id="playCardDescription">One family card.</p></div></div>
+      <div class="step"><i>2</i><div><b>Find a partner</b><p>Stand face-to-face.</p></div></div>
+      <div class="step"><i>3</i><div><b>Show your card</b><p>Partner looks carefully.</p></div></div>
+      <div class="step"><i>4</i><div><b>Say the sentence</b><p id="playSentenceDescription">Ask: “Who is he / she?”</p></div></div>
+      <div class="step"><i>5</i><div><b>Swap cards</b><p>Exchange cards with your partner.</p></div></div>
+      <div class="step"><i>6</i><div><b>Move</b><p>Find a new partner and repeat.</p></div></div>
+    </div>
+  </div></div>
+  <div class="language-bar"><span>Ask your partner.</span><span>He is my ___ / She is my ___.</span><span class="level3-only">This/That is my ___.</span></div>
+</section>
+
+<section class="screen" id="practice">
+  <div class="section-title"><div class="badge c4">4</div><div><h1 id="practiceHeading">PRACTICE — Family Questions</h1><p>One question at a time • clear choices • retry allowed</p></div></div>
+  <div class="board"><div class="tabs"><button class="tab active" data-quiz="words">🔤 WORDS</button><button class="tab" data-quiz="pronouns">👤 HE / SHE</button><button class="tab" data-quiz="distance">📍 THIS / THAT</button></div><div id="quizStage"></div></div>
+  <div class="language-bar"><span>he = boy/man</span><span>she = girl/woman</span><span>this = near</span><span>that = far</span></div>
+</section>
+
+<section class="screen" id="speak">
+  <div class="section-title"><div class="badge c5">5</div><div><h1>SPEAK — Build the Sentence</h1><p>Random visual prompt • teacher can reveal the model answer</p></div></div>
+  <div class="board"><div class="mode-row"><button class="active" data-speakmode="family">Family</button><button data-speakmode="pets">Pets</button><button data-speakmode="questions">Who / What</button></div><div class="speak-main">
+    <div class="speak-image"><img id="speakImg"></div>
+    <div class="speech-card"><div class="speech-q" id="speakQ"></div><div class="speech-a" id="speakA" style="visibility:hidden"></div><div class="controls"><button class="btn green" id="newSpeak">New prompt</button><button class="btn purple" id="revealSpeak">Reveal answer</button><button class="btn blue" id="hearSpeak">🔊 Hear answer</button></div></div>
+  </div></div>
+  <div class="language-bar"><span>Look at the picture • Say it yourself • Reveal the answer</span><span class="level3-only">This/That is my ___.</span></div>
+</section>
+
+<section class="screen" id="finish">
+  <div class="section-title"><div class="badge c6">6</div><div><h1>FINISH — My Family Photo & Exit Check</h1><p>Use a real or imaginary family photo • finish with a short confidence check</p></div></div>
+  <div class="board"><div class="finish-grid">
+    <div class="finish-card"><h2 id="finishPhotoTitle">My Family Photo</h2><img id="finishPhotoImg" data-src="assets/slides/slide_31.webp" loading="lazy" decoding="async" style="width:100%;border-radius:18px;box-shadow:var(--soft)" alt="My Family Photo presentation prompt"><p id="finishPrompt" style="font-weight:800">Ask: <b>Who is he?</b> • <b>Who is she?</b></p><div class="controls"><button class="btn blue" data-go="slides">Open presentation slides</button></div></div>
+    <div class="finish-card"><h2>Exit Check</h2><div class="checklist" id="checklist"><button class="check">I can name family members.</button><button class="check">I can use HE and SHE.</button><button class="check">I can say “He / She is my ___.”</button><button class="check">I can ask about family members.</button><button class="check">I can listen to a family introduction.</button><button class="check">I can speak about my family.</button></div><div class="stars">⭐ ⭐ ⭐</div><div class="celebrate" id="finishMsg">Great job!</div></div>
+  </div></div>
+</section>
+
+<section class="screen" id="slides">
+  <div class="section-title"><div class="badge c7">7</div><div><h1>SLIDES — Level Presentation</h1><p id="slideSubtitle">Slides selected for this level • original images preserved</p></div></div>
+  <div class="board"><div class="slide-view"><div><div class="slide-stage"><img id="slideImg" decoding="async" alt="presentation slide"></div><div class="controls"><button class="btn gray" id="slidePrev">← Previous</button><button class="btn purple" id="slideIndexToggle" aria-expanded="false" aria-controls="slideList">☷ All 34 slides</button><button class="btn blue" id="slideHear">🔊 Hear title</button><button class="btn green" id="slideNext">Next →</button></div><div class="counter" id="slideCount"></div></div><div class="slide-side" id="slideList" role="dialog" aria-label="Slide index" aria-modal="false" hidden></div></div></div>
+</section>
+</main></div>
+<script>
+/* 100-user classroom optimization: only the active screen loads full-size lesson images. */
+const FAMILY=['mother','father','brother','sister','grandfather','grandmother','uncle','aunt'];
+const PETS=['dog','cat','bird','fish','rabbit'];
+const MALE=new Set(['father','brother','grandfather','uncle']);
+const FEMALE=new Set(['mother','sister','grandmother','aunt']);
+const ALL=[...FAMILY,...PETS]; // Master asset catalogue: unchanged.
+const LEVEL_FAMILY={1:['father','mother','brother','sister'],2:['father','mother','brother','sister','grandfather','grandmother','uncle','aunt'],3:['father','mother','brother','sister','grandfather','grandmother','uncle','aunt']};
+const LEVEL_PETS={1:[],2:[],3:['dog','cat','bird','fish','rabbit']};
+const LEVEL_SLIDES={1:[1,2,3,4,5,6,7,8,9],2:[1,2,3,4,5,6,7,8,9,17,18,19,20],3:Array.from({length:34},(_,i)=>i+1)}; // Exclude early “This is my” slides from Levels 1–2.
+const LEVEL_GOALS={
+  1:['I can name father, mother, brother and sister.','I can recognise four picture cards.','I can use HE and SHE.','I can answer “Who is he?”','I can answer “Who is she?”','I can speak about my immediate family.'],
+  2:['I can review all four Level 1 words.','I can name grandfather and grandmother.','I can name uncle and aunt.','I can use HE and SHE.','I can answer “Who is he / she?”','I can introduce eight family members.'],
+  3:['I can review all eight family words.','I can name dog, cat, bird, fish and rabbit.','I can use HE and SHE.','I can use THIS for near and THAT for far.','I can ask “What is this / that?”','I can use “This / That is my ___.”']
+};
+let currentLevel=1;
+const familyNow=()=>LEVEL_FAMILY[currentLevel];
+const petsNow=()=>LEVEL_PETS[currentLevel];
+const wordsNow=()=>[...familyNow(),...petsNow()];
+const randomFrom=arr=>arr[Math.floor(Math.random()*arr.length)];
+function selectLevel(next){
+  currentLevel=Number(next);
+  document.querySelectorAll('.level-choice').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.level)===currentLevel)));
+  $('levelSummary').textContent=currentLevel===1?'LEVEL 1 • 4 FAMILY MEMBERS':currentLevel===2?'LEVEL 2 • 4 REVIEW + 4 NEW':'LEVEL 3 • 8 REVIEW + 5 PETS';
+  $('topLevelBadge').textContent=`LEVEL ${currentLevel}`;
+  $('learn').dataset.level=String(currentLevel);
+  learnCat='family';learnI=0;sentenceSelected=0;learnView='picture';quizMode='words';speakMode='family';startI=-1;startIntroSelected=null;slideI=LEVEL_SLIDES[currentLevel][0];
+  document.querySelectorAll('[data-cat]').forEach(b=>{
+    b.hidden=(b.dataset.cat==='pets'&&currentLevel<3);
+    b.classList.toggle('active',b.dataset.cat==='family');
+  });
+  document.querySelectorAll('[data-quiz]').forEach(b=>{
+    b.hidden=b.dataset.quiz==='distance'&&currentLevel<3;
+    b.classList.toggle('active',b.dataset.quiz==='words');
+  });
+  document.querySelectorAll('[data-speakmode]').forEach(b=>{
+    b.hidden=b.dataset.speakmode==='pets'&&currentLevel<3;
+    b.classList.toggle('active',b.dataset.speakmode==='family');
+  });
+  const goals=LEVEL_GOALS[currentLevel];
+  document.querySelectorAll('#checklist .check').forEach((b,i)=>{b.textContent=goals[i];b.classList.remove('done');});
+  $('finishMsg').textContent='Great job!';
+  const photo=$('finishPhotoImg');photo.dataset.src=`assets/slides/slide_${currentLevel===1?'02':currentLevel===2?'19':'31'}.webp`;
+  photo.src=photo.dataset.src;
+  $('finishPhotoTitle').textContent=currentLevel===1?'Meet My Family':currentLevel===2?'My Big Family':'My Family & Pets';
+  $('slideIndexToggle').textContent=`☷ Level ${currentLevel} slides`;
+  $('learnHeading').textContent=currentLevel===3?'LEARN — Family, Pets & Concepts':'LEARN — Family & Concepts';
+  $('conceptTab').textContent=currentLevel===3?'💡 THIS / THAT':'💡 HE / SHE';
+  $('practiceHeading').textContent=currentLevel===3?'PRACTICE — Family & Pet Questions':'PRACTICE — Family Questions';
+  $('playCardDescription').textContent=currentLevel===3?'One family or pet card.':'One family card.';
+  $('playSentenceDescription').textContent=currentLevel===3?'Family: “Who is he / she?” Pets: “What is this / that?”':'Ask: “Who is he / she?”';
+  document.querySelectorAll('#practice .language-bar span').forEach(el=>{const t=el.textContent.toLowerCase();el.hidden=currentLevel<3&&(t.includes('this =')||t.includes('that ='));});
+  $('startWelcomeHint').textContent=currentLevel===3?'Meet the family, then the pets!':'Tap a family member to say hello';
+  $('finishPrompt').innerHTML=currentLevel===3?'Ask: <b>Who is he/she?</b> • <b>What is this/that?</b>':'Ask: <b>Who is he?</b> • <b>Who is she?</b>';
+  document.querySelectorAll('.level3-only').forEach(el=>{el.hidden=currentLevel<3;});
+  stopStartGreeting();stopVoice();
+}
+document.querySelectorAll('.level-choice').forEach(b=>b.addEventListener('click',()=>selectLevel(b.dataset.level)));
+const $=id=>document.getElementById(id);
+let soundOn=true;
+function hydrateScreen(id){const screen=$(id);if(!screen)return;screen.querySelectorAll('img[data-src]').forEach(img=>{if(!img.src){img.src=img.dataset.src;img.removeAttribute('data-src');}});}
+function go(id){stopLessonAudio();closeSlideIndex();document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');hydrateScreen(id);window.scrollTo({top:0,behavior:'smooth'});if(id==='start'){startI=-1;startIntroSelected=null;renderStart();}if(id==='learn')renderLearn();if(id==='play')drawPlay();if(id==='practice')renderQuiz();if(id==='speak')newSpeak();if(id==='slides'){slideI=LEVEL_SLIDES[currentLevel][0];renderSlides();}}
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));$('homeBtn').onclick=()=>go('home');
+$('soundBtn').onclick=()=>{soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊':'🔇';if(!soundOn){stopLessonAudio();}};
+$('motionBtn').onclick=()=>{document.body.classList.toggle('calm');$('motionBtn').textContent=document.body.classList.contains('calm')?'🌿':'✨';};
+$('fullBtn').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.();};
+// Instant prerecorded voice sprite for online use.
+// One small file is fetched and decoded once; every Hear button then plays from RAM.
+const VOICE_SPRITE_URL='assets/audio/voice-sprite-stephane-v1.mp3';
+const VOICE_SPRITE_MAP={"mother":[0.055,0.39],"father":[0.565,0.36],"brother":[1.045,0.37],"sister":[1.535,0.475],"grandfather":[2.13,0.605],"grandmother":[2.855,0.56],"uncle":[3.535,0.455],"aunt":[4.11,0.29],"dog":[4.52,0.33],"cat":[4.969,0.235],"bird":[5.324,0.295],"fish":[5.739,0.35],"rabbit":[6.209,0.365],"he":[6.694,0.275],"she":[7.089,0.365],"this":[7.574,0.285],"that":[7.979,0.265],"Who is he? He is my _____.":[8.364,2.28],"Who is she? She is my _____.":[10.764,2.385],"This is my _____. This is a _____.":[13.269,2.65],"What is this? This is a _____.":[16.039,2.41],"What is that? That is a _____.":[18.569,2.39],"This is my mother.":[21.079,0.86],"This is my father.":[22.059,0.94],"This is my brother.":[23.119,0.962],"This is my sister.":[24.201,0.96],"This is my grandfather.":[25.281,1.145],"This is my grandmother.":[26.546,1.085],"This is my uncle.":[27.75,0.905],"This is my aunt.":[28.775,0.7],"This is a dog.":[29.595,0.755],"This is a cat.":[30.47,0.735],"This is a bird.":[31.325,0.73],"This is a fish.":[32.175,0.885],"This is a rabbit.":[33.18,0.78],"Correct":[34.08,0.305],"The answer is THIS":[34.505,0.935],"The answer is THAT":[35.56,0.9],"The answer is HE":[36.58,0.895],"The answer is SHE":[37.595,1.27],"The answer is mother":[38.985,1.015],"The answer is father":[40.12,1.04],"The answer is brother":[41.28,1.025],"The answer is sister":[42.425,1.04],"The answer is grandfather":[43.585,1.265],"The answer is grandmother":[44.97,1.185],"The answer is uncle":[46.275,1.035],"The answer is aunt":[47.43,0.855],"The answer is dog":[48.405,0.97],"The answer is cat":[49.494,1.157],"The answer is bird":[50.771,0.94],"The answer is fish":[51.831,1.045],"The answer is rabbit":[52.996,0.975],"He is my father.":[54.091,0.86],"He is my brother.":[55.071,0.815],"He is my grandfather.":[56.006,1.04],"He is my uncle.":[57.166,0.835],"She is my mother.":[58.121,0.83],"She is my sister.":[59.071,0.945],"She is my grandmother.":[60.136,1.025],"She is my aunt.":[61.281,0.67],"That is a dog.":[62.071,0.785],"That is a cat.":[62.976,0.74],"That is a bird.":[63.836,0.75],"That is a fish.":[64.706,0.88],"That is a rabbit.":[65.706,0.785],"Title":[66.611,0.365],"Meet My Family":[67.096,0.885],"Mother":[68.1,0.4],"Father":[68.62,0.36],"Brother":[69.1,0.365],"Sister":[69.585,0.47],"Family Review":[70.175,0.825],"Point and Tap":[71.12,0.675],"Who Is It?":[71.915,0.498],"Mother + Father sentences":[72.533,1.45],"Brother + Sister sentences":[74.103,1.48],"Family sentence review":[75.703,1.155],"Ask-Swap-Move overview":[76.978,1.785],"How to Play":[78.883,0.675],"Ask-Swap-Move model":[79.678,1.71],"Family recall":[81.508,0.83],"Grandparents":[82.458,0.555],"Uncle + Aunt":[83.133,0.73],"Big Family Review":[83.983,1.055],"Who are they?":[85.158,0.57],"Meet My Pets":[85.848,0.72],"More Pets":[86.688,0.565],"My Pets review":[87.372,0.89],"What is this?":[88.382,0.565],"Two Sentences":[89.067,0.835],"Examples":[90.022,0.66],"Family or Pet?":[90.802,0.765],"Let’s Speak":[91.687,0.57],"Ask-Swap-Move pets":[92.377,1.585],"Family / Pet swap":[94.082,1.2],"My Family Photo":[95.402,1.01],"Model Presentation":[96.532,1.125],"Your Turn":[97.777,0.565],"Great Job":[98.462,0.671]};
+let voiceCtx=null,voiceBuffer=null,voiceSource=null,voiceReady=false;
+let voiceLoadPromise=null,offlineAudio=null,offlineStopTimer=null;
+
+function voiceKey(t){return String(t??'').trim().replace(/\s+/g,' ');}
+function ensureVoiceContext(){
+  if(!voiceCtx){const C=window.AudioContext||window.webkitAudioContext;if(C)voiceCtx=new C();}
+  return voiceCtx;
+}
+function ensureOfflineAudio(){
+  if(!offlineAudio){offlineAudio=new Audio(VOICE_SPRITE_URL);offlineAudio.preload='auto';offlineAudio.playsInline=true;}
+  return offlineAudio;
+}
+async function loadVoiceSprite(){
+  if(voiceBuffer)return voiceBuffer;
+  if(voiceLoadPromise)return voiceLoadPromise;
+  voiceLoadPromise=(async()=>{
+    try{
+      // file:// pages cannot reliably use fetch(); the local HTMLAudioElement path below handles offline folders.
+      if(location.protocol==='file:'){ensureOfflineAudio().load();document.documentElement.dataset.voiceReady='local';return null;}
+      const r=await fetch(VOICE_SPRITE_URL,{cache:'force-cache',credentials:'same-origin'});
+      if(!r.ok)throw new Error('voice '+r.status);
+      const ab=await r.arrayBuffer();
+      const ctx=ensureVoiceContext();
+      if(!ctx)throw new Error('No AudioContext');
+      voiceBuffer=await ctx.decodeAudioData(ab.slice(0));
+      voiceReady=true;document.documentElement.dataset.voiceReady='1';
+      return voiceBuffer;
+    }catch(e){
+      // Never substitute a computer/TTS voice. Keep the same prerecorded voice via media playback fallback.
+      console.warn('AudioBuffer preload unavailable; using prerecorded media fallback.',e);
+      ensureOfflineAudio().load();document.documentElement.dataset.voiceReady='media';return null;
+    }
+  })();
+  return voiceLoadPromise;
+}
+function stopVoice(){
+  if(voiceSource){try{voiceSource.stop();}catch(e){} voiceSource=null;}
+  if(offlineStopTimer){clearTimeout(offlineStopTimer);offlineStopTimer=null;}
+  if(offlineAudio){try{offlineAudio.pause();}catch(e){}}
+}
+async function playMediaSegment(seg){
+  const a=ensureOfflineAudio();
+  stopVoice();
+  const start=seg[0],dur=seg[1];
+  try{
+    if(a.readyState<1)await new Promise(resolve=>{const done=()=>{a.removeEventListener('loadedmetadata',done);resolve();};a.addEventListener('loadedmetadata',done,{once:true});a.load();setTimeout(done,1200);});
+    a.currentTime=start;
+    const p=a.play();if(p&&p.catch)await p.catch(()=>{});
+    offlineStopTimer=setTimeout(()=>{try{a.pause();}catch(e){} offlineStopTimer=null;},Math.ceil((dur+0.035)*1000));
+  }catch(e){console.warn('Prerecorded voice playback failed.',e);}
+}
+async function speak(t){
+  if(!soundOn||!t)return;
+  const key=voiceKey(t),seg=VOICE_SPRITE_MAP[key];
+  if(!seg){console.warn('No prerecorded voice segment for:',key);return;}
+  const ctx=ensureVoiceContext();
+  if(ctx&&ctx.state==='suspended')try{await ctx.resume();}catch(e){}
+  const buf=voiceBuffer||await loadVoiceSprite();
+  if(!buf){await playMediaSegment(seg);return;}
+  stopVoice();
+  const src=ctx.createBufferSource();src.buffer=buf;src.connect(ctx.destination);voiceSource=src;
+  src.onended=()=>{if(voiceSource===src)voiceSource=null;};
+  src.start(0,seg[0],Math.min(seg[1],buf.duration-seg[0]));
+}
+// Warm the one compact sprite early. After decoding, every click plays from RAM with no network round-trip.
+loadVoiceSprite();
+['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,()=>{
+  const c=ensureVoiceContext();if(c&&c.state==='suspended')c.resume().catch(()=>{});
+  const a=ensureOfflineAudio();if(location.protocol==='file:'&&a.readyState<2)a.load();
+  loadVoiceSprite();
+},{once:true,passive:true}));
+function ptxt(name){return `assets/flashcards/picture_text/${name}.webp`}function ponly(name){return `assets/flashcards/picture_only/${name}.webp`}
+function whoQuestion(name){return MALE.has(name)?'Who is he?':'Who is she?';}
+function whoAnswer(name){return `${MALE.has(name)?'He':'She'} is my ${name}.`;}
+function petQuestion(near){return near?'What is this?':'What is that?';}
+function petAnswer(name,near){return `${near?'This':'That'} is my ${name}.`;}
+function sentenceFor(name){if(FAMILY.includes(name))return currentLevel===3?`This is my ${name}.`:whoAnswer(name);return petAnswer(name,true);}
+let extraUtterance=null,lessonSpeechSeq=0;
+function stopLessonAudio(){lessonSpeechSeq++;stopVoice();stopStartGreeting();extraUtterance=null;}
+function speakLesson(text){
+ if(!soundOn||!text)return;
+ stopLessonAudio();
+ const normalized=voiceKey(text);
+ if(VOICE_SPRITE_MAP[normalized]){speak(normalized);return;}
+ if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){
+  console.warn('No audio recording for the full text:',normalized);return;
+ }
+ const pair=normalized.match(/^((?:Who is (?:he|she)|What is (?:this|that))\?)\s+(.+)$/i);
+ const recordedAnswer=pair&&VOICE_SPRITE_MAP[voiceKey(pair[2])];
+ const utterance=new SpeechSynthesisUtterance(recordedAnswer?pair[1]:normalized);
+ const seq=lessonSpeechSeq;
+ utterance.lang='en-US';utterance.rate=.84;utterance.pitch=1;
+ const english=window.speechSynthesis.getVoices().find(v=>v.lang.toLowerCase()==='en-us'&&v.localService)||window.speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith('en'));
+ if(english)utterance.voice=english;
+ // Prefer the original prerecorded answer whenever it exists; only the isolated question uses browser TTS.
+ if(recordedAnswer)utterance.onend=()=>{if(seq===lessonSpeechSeq&&soundOn)speak(pair[2]);};
+ extraUtterance=utterance;
+ try{window.speechSynthesis.speak(utterance);}catch(e){if(recordedAnswer)speak(pair[2]);else console.warn('English voice unavailable:',e);}
+}
+
+function idlePreload(url){if(!url)return;const conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(conn?.saveData||/2g/.test(conn?.effectiveType||''))return;const run=()=>{const img=new Image();img.decoding='async';img.src=url;};if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:1500});else setTimeout(run,900);}
+
+/* Start */
+// START is an introduction, not a vocabulary drill. The LEARN section remains unchanged.
+const START_GREETINGS={
+ mother:"Hi there! Nice to meet you! I'm the mother. Welcome to our home!",
+ father:"Hello! I'm the father. Nice to meet you! Come on in!",
+ brother:"Hi! I'm the brother. Let's have some fun!",
+ sister:"Hello! I'm the sister. It's nice to meet you!",
+ grandfather:"Hello! I'm the grandfather. Welcome to our family!",
+ grandmother:"Hi there! I'm the grandmother. It's lovely to meet you!",
+ uncle:"Hey! I'm the uncle. Nice to meet you!",
+ aunt:"Hello! I'm the aunt. Welcome to our home!",
+ dog:"Woof woof! Hi! I'm the dog. Nice to meet you!",
+ cat:"Meow! Hello! I'm the cat. Welcome!",
+ bird:"Tweet tweet! Hello! I'm the bird!",
+ fish:"Hello! I'm the fish. Nice to meet you!",
+ rabbit:"Hi there! I'm the rabbit! Welcome!"
+};
+let startI=-1, startIntroSelected=null, startSpeechUtterance=null;
+function stopStartGreeting(){
+  if('speechSynthesis' in window){try{window.speechSynthesis.cancel();}catch(e){}}
+  startSpeechUtterance=null;
+}
+function speakStartGreeting(name){
+  if(!name || !soundOn)return;
+  stopVoice();stopStartGreeting();
+  if(!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)){
+    console.warn('Introduction speech needs a browser with speech synthesis. The text remains visible.');
+    return;
+  }
+  const u=new SpeechSynthesisUtterance(START_GREETINGS[name]);
+  u.lang='en-US';u.rate=.86;u.pitch=MALE.has(name)?.96:1.07;u.volume=1;
+  const voices=window.speechSynthesis.getVoices();
+  const english=voices.find(v=>v.lang.toLowerCase()==='en-us'&&v.localService) || voices.find(v=>v.lang.toLowerCase()==='en-us') || voices.find(v=>v.lang.toLowerCase().startsWith('en'));
+  if(english)u.voice=english;
+  startSpeechUtterance=u;
+  try{window.speechSynthesis.speak(u);}catch(e){console.warn('Introduction audio unavailable',e);}
+}
+function playIntroPerson(name){
+  startIntroSelected=name;
+  $('startIntroWho').textContent=`${name.toUpperCase()} SAYS HELLO!`;
+  $('startIntroSpeech').textContent=START_GREETINGS[name];
+  document.querySelectorAll('#start .start-tap-target').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.meet===name)));
+  speakStartGreeting(name);
+}
+function renderStart(){
+  const sequence=wordsNow();
+  const isWelcome=startI<0;
+  $('start').dataset.mode=isWelcome?'welcome':'person';
+  if(isWelcome){
+    $('startWelcomeCounter').textContent=`LEVEL ${currentLevel} • ${wordsNow().length} PICTURE CARDS`;
+    $('startIntroNext').textContent='MEET FATHER →';
+    $('startIntroWho').textContent=startIntroSelected?`${startIntroSelected.toUpperCase()} SAYS HELLO!`:'HELLO!';
+    $('startIntroSpeech').textContent=startIntroSelected?START_GREETINGS[startIntroSelected]:'Welcome! Touch Mother, Father, Brother or Sister. They will say hello!';
+    document.querySelectorAll('#start .start-tap-target').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.meet===startIntroSelected)));
+    return;
+  }
+  const n=sequence[startI];
+  $('startImg').src=ponly(n);$('startImg').alt=`Picture of ${n}. Touch to hear the greeting.`;
+  $('startWord').textContent=n.toUpperCase();
+  $('startPersonTitle').textContent=`Meet ${n[0].toUpperCase()+n.slice(1)}`;
+  $('startGreetingText').textContent=START_GREETINGS[n];
+  $('startCount').textContent=`${startI+1} / ${sequence.length}`;
+  $('startNext').textContent=startI===sequence.length-1?'GO TO LEARN →':'NEXT →';
+}
+document.querySelectorAll('#start .start-tap-target').forEach(el=>el.addEventListener('click',()=>playIntroPerson(el.dataset.meet)));
+$('startIntroHear').onclick=()=>{if(startIntroSelected)playIntroPerson(startIntroSelected);else playIntroPerson('mother');};
+$('startIntroNext').onclick=()=>{stopStartGreeting();startI=0;renderStart();};
+$('startPrev').onclick=()=>{stopStartGreeting();startI=Math.max(-1,startI-1);renderStart();};
+$('startNext').onclick=()=>{stopStartGreeting();if(startI===wordsNow().length-1){go('learn');return;}startI++;renderStart();};
+$('startHear').onclick=()=>{if(startI>=0)speakStartGreeting(wordsNow()[startI]);};
+$('startPortrait').onclick=()=>{if(startI>=0)speakStartGreeting(wordsNow()[startI]);};
+/* Learn — 100% modelled support; unlike Practice, show full question and answer. */
+let learnCat='family', learnView='picture', learnI=0;
+let sentenceSelected=0;
+const learnTabs=document.querySelectorAll('[data-cat]');
+learnTabs.forEach(b=>b.onclick=()=>{
+ if(b.hidden)return;
+ learnTabs.forEach(x=>x.classList.remove('active'));
+ b.classList.add('active');learnCat=b.dataset.cat;learnI=0;sentenceSelected=0;renderLearn();
+});
+/* V5: Each LEARN submenu has one purpose only.
+   FAMILY = labelled word pictures (no pronoun cards).
+   HE/SHE = new-level dedicated pronoun cards only.
+   PETS = labelled pet word pictures; THIS/THAT appears in Level 3 concepts only. */
+// Level 3: first five THIS=NEAR cards, then five THAT=FAR cards.
+const LEVEL3_DISTANCE_CARDS=['this_dog','this_rabbit','this_fish','this_bird','this_cat','that_dog','that_rabbit','that_fish','that_bird','that_cat'];
+function learnList(){
+ if(learnCat==='family')return familyNow();
+ if(learnCat==='pets')return petsNow();
+ if(learnCat==='concepts')return currentLevel===1?familyNow():currentLevel===2?familyNow().slice(4):LEVEL3_DISTANCE_CARDS;
+ return [];
+}
+function lessonImage(url,alt){return `<img src="${url}" alt="${alt}" decoding="async">`;}
+function tabButtons(){return `<div class="controls lesson-nav"><button class="btn gray" data-teach="previous">← PREVIOUS</button><button class="btn blue" data-teach="hear">🔊 HEAR</button><button class="btn green" data-teach="next">NEXT →</button></div>`;}
+function teachingTag(i){
+ if(learnCat==='family'){
+  const name=learnList()[i]||'';
+  const review=currentLevel===3||(currentLevel===2&&familyNow().indexOf(name)<4);
+  return (review?(currentLevel===3?'REVIEW • LEVELS 1 & 2':'REVIEW • LEVEL 1'):`LEVEL ${currentLevel}`)+' • FAMILY';
+ }
+ if(learnCat==='concepts')return `LEVEL ${currentLevel} • ${currentLevel===3?'THIS / THAT':'HE / SHE'}`;
+ return learnCat==='pets'?'LEVEL 3 • PETS':'LOOK • LISTEN • SAY';
+}
+function learnTeachingData(){
+ const list=learnList(); learnI=((learnI%list.length)+list.length)%list.length;
+ const name=list[learnI];
+ if(learnCat==='concepts'){
+  if(FAMILY.includes(name)){
+   const male=MALE.has(name),pronoun=male?'HE':'SHE';
+   return {name,mode:'pronoun',pronoun,question:whoQuestion(name),answer:whoAnswer(name)};
+  }
+  const [concept,pet]=name.split('_');
+  const near=concept==='this';
+  return {name:pet,conceptKey:name,mode:'distance',pronoun:concept.toUpperCase(),question:petQuestion(near),
+   answer:petAnswer(pet,near),explain:near?'THIS means something near you.':'THAT means something far from you.',near};
+ }
+ if(learnCat==='pets'){
+  const near=learnI%2===0;
+  return {name,mode:'pet',question:petQuestion(near),answer:petAnswer(name,near),
+    explain:'Look at the picture. Listen and say the complete sentence.'};
+ }
+ return {name,mode:'word',question:whoQuestion(name),answer:whoAnswer(name),
+   explain:'Look at the picture. Listen to the question and answer.'};
+}
+const USER_WORD_CARDS={father:1,mother:1,brother:1,sister:1,grandfather:1,grandmother:1,uncle:1,aunt:1,dog:1,cat:1,bird:1,fish:1,rabbit:1};
+const USER_PRONOUN_CARDS={father:1,mother:1,brother:1,sister:1,grandfather:1,grandmother:1,uncle:1,aunt:1,this:1,that:1};
+function userWordImage(name){return USER_WORD_CARDS[name]?`assets/flashcards/user_text/${name}.webp`:ptxt(name);}
+function userPronounImage(name){return USER_PRONOUN_CARDS[name]?`assets/flashcards/user_pronouns/${name}.webp`:userWordImage(name);}
+// Each level teaches only its own sentence patterns.
+// Review vocabulary remains available in the FAMILY tab; there are no repeated
+// Level 1 sentence cards in Level 2 or family sentence cards in Level 3.
+const SENTENCE_CARDS=[
+ {id:'who_he',question:'Who is he?',answer:'He is my _____.',example:'He is my father.',image:'father'},
+ {id:'who_she',question:'Who is she?',answer:'She is my _____.',example:'She is my mother.',image:'mother'}
+];
+const LEVEL2_SENTENCES=[
+ {id:'grandmother',question:'Who is she?',answer:'She is my _____.',example:'She is my grandmother.',image:'grandmother'},
+ {id:'grandfather',question:'Who is he?',answer:'He is my _____.',example:'He is my grandfather.',image:'grandfather'},
+ {id:'uncle',question:'Who is he?',answer:'He is my _____.',example:'He is my uncle.',image:'uncle'},
+ {id:'auntie',question:'Who is she?',answer:'She is my _____.',example:'She is my auntie.',image:'aunt'}
+];
+const LEVEL3_SENTENCES=[
+ {id:'dog',question:'What is this?',answer:'This is my _____.',example:'This is my dog.',image:'dog',near:true},
+ {id:'cat',question:'What is that?',answer:'That is my _____.',example:'That is my cat.',image:'cat',near:false},
+ {id:'bird',question:'What is this?',answer:'This is my _____.',example:'This is my bird.',image:'bird',near:true},
+ {id:'fish',question:'What is that?',answer:'That is my _____.',example:'That is my fish.',image:'fish',near:false},
+ {id:'rabbit',question:'What is this?',answer:'This is my _____.',example:'This is my rabbit.',image:'rabbit',near:true}
+];
+function sentencesNow(){return currentLevel===3?LEVEL3_SENTENCES:currentLevel===2?LEVEL2_SENTENCES:SENTENCE_CARDS;}
+// For the new grammar, use the existing pet card artwork with live size/distance
+// indications rather than adding another fixed background picture.
+function sentencePicture(d){
+ const src=d.image==='aunt'?ponly('aunt'):userWordImage(d.image);
+ const image=learningPicture(src,'Picture of '+(d.id==='auntie'?'auntie':d.image),'sentence-flashcard');
+ const label=d.id==='auntie'?'<span class="sentence-auntie-caption">Auntie</span>':'';
+ if(typeof d.near!=='boolean')return `<div class="sentence-picture-inner">${image}${label}</div>`;
+ return `<div class="sentence-picture-inner sentence-distance ${d.near?'sentence-near':'sentence-far'}" aria-label="${d.near?'Nearby':'Distant'} ${d.image}"><span class="sentence-distance-label">${d.near?'THIS • NEAR':'THAT • FAR'}</span>${image}</div>`;
+}
+function learningPicture(src,alt,kind){
+ return `<button type="button" class="teach-picture-button ${kind||''}" data-teach="hear" aria-label="Hear this card: ${alt}"><img src="${src}" alt="${alt}" decoding="async"></button>`;
+}
+function pronounPicture(d){
+ return learningPicture(userPronounImage(d.name),`${d.name} — ${d.pronoun}`,'pronoun-flashcard');
+}
+function renderLearn(){
+ document.querySelectorAll('#learn .language-bar span').forEach((hint,i)=>{hint.hidden=((learnCat==='family'||learnCat==='pets')&&i>0)||(i===3&&currentLevel<3);});
+ const stage=$('learnStage');
+ if(learnCat==='sentences'){
+  const choices=sentencesNow();sentenceSelected=((sentenceSelected%choices.length)+choices.length)%choices.length;
+  const d=choices[sentenceSelected];
+  stage.innerHTML=`<div class="teach-layout sentence-teach"><div class="teach-model teach-text-left"><span class="teach-tag">SENTENCE CARD • LEVEL ${currentLevel}</span><div class="teach-question">${d.question}</div><div class="teach-answer">${d.answer}</div><div class="teach-example">${d.example}</div><p>Read • Listen • Say</p>${tabButtons()}<div class="counter">${sentenceSelected+1} / ${choices.length}</div></div><div class="teach-photo teach-image-right">${sentencePicture(d)}</div></div>`;
+  return;
+ }
+ const d=learnTeachingData(),list=learnList();
+ let image,content;
+ if(d.mode==='pronoun'){
+  image=pronounPicture(d);
+  content=`<div class="teach-question">${d.question}</div><div class="teach-answer">${d.answer}</div>`;
+ }else if(d.mode==='distance'){
+  image=learningPicture(`assets/flashcards/level3_this_that/${d.conceptKey}.webp`,`${d.name}: ${d.pronoun} means ${d.near?'near':'far'}`,'distance-flashcard');
+  content=`<div class="teach-pronoun">${d.pronoun}</div><div class="teach-explain">${d.explain}</div><div class="teach-question">${d.question}</div><div class="teach-answer">${d.answer}</div>`;
+ }else{
+  image=learningPicture(userWordImage(d.name),`${d.name} vocabulary card with text`,'word-flashcard');
+  content=`<span class="teach-tag">LOOK • LISTEN • SAY</span><div class="teach-vocab">${d.name}</div>`;
+ }
+ stage.innerHTML=`<div class="teach-layout ${d.mode==='pronoun'?'concept-teach':d.mode==='distance'?'distance-teach':''}"><div class="teach-photo ${d.mode==='pronoun'?'concept-photo':d.mode==='distance'?'distance-photo':''}">${image}</div><div class="teach-model"><span class="teach-tag">${teachingTag(learnI)}</span>${content}${tabButtons()}<div class="counter">${learnI+1} / ${list.length}</div></div></div>`;
+}
+function hearLearn(){
+ if(learnCat==='sentences'){const d=sentencesNow()[sentenceSelected];speakLesson(`${d.question} ${d.example}`);return;}
+ const d=learnTeachingData();
+ speakLesson(d.mode==='pronoun'?`${d.question} ${d.answer}`:d.mode==='distance'?`${d.explain} ${d.question} ${d.answer}`:d.name);
+}
+function moveLearn(delta){stopLessonAudio();if(learnCat==='sentences'){sentenceSelected=(sentenceSelected+delta+sentencesNow().length)%sentencesNow().length;}else{const n=learnList().length;learnI=(learnI+delta+n)%n;}renderLearn();}
+$('learnStage').addEventListener('click',e=>{
+ const btn=e.target.closest('button[data-teach]');if(!btn)return;
+ if(btn.dataset.teach==='hear')hearLearn();if(btn.dataset.teach==='next')moveLearn(1);if(btn.dataset.teach==='previous')moveLearn(-1);
+});
+window.learnNext=()=>moveLearn(1);window.learnPrev=()=>moveLearn(-1);
+
+/* Play — matching the grammar already taught. */
+let playName='mother',playPromptText='';
+function drawPlay(){
+ playName=randomFrom(wordsNow());
+ $('playImg').src=ponly(playName);
+ if(FAMILY.includes(playName)){
+  if(currentLevel===3&&Math.random()<.35)playPromptText=`This is my ${playName}.`;
+  else playPromptText=`${whoQuestion(playName)} ${whoAnswer(playName)}`;
+ }else{
+  const near=Math.random()<.5;
+  playPromptText=`${petQuestion(near)} ${petAnswer(playName,near)}`;
+ }
+ $('playPrompt').textContent=playPromptText;
+}
+$('drawBtn').onclick=drawPlay;
+$('playHear').onclick=()=>speakLesson(playPromptText);
+
+/* Practice — picture only, visible prompt and answer choices; reveal after response. */
+let quizMode='words',quizCurrent=null;
+document.querySelectorAll('[data-quiz]').forEach(b=>b.onclick=()=>{
+ if(b.hidden)return;
+ document.querySelectorAll('[data-quiz]').forEach(x=>x.classList.remove('active'));
+ b.classList.add('active');quizMode=b.dataset.quiz;renderQuiz();
+});
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function quizImage(name,near){
+ if(near===undefined)return `<img src="${ponly(name)}" decoding="async" alt="A family member or pet">`;
+ return `<div class="distance-demo practice-distance ${near?'near':'far'}"><img src="${ponly(name)}" decoding="async" alt="Pet ${near?'near':'far'} away"></div>`;
+}
+function quizMarkup(img,question,answers){
+ return `<div class="quiz-wrap"><div class="quiz-card">${img}<div class="quiz-q">${question}</div></div><div class="quiz-answer-area"><div class="quiz-directions">Look • Think • Choose</div><div class="answers">${answers.map(x=>`<button class="answer" data-answer="${x.toLowerCase()}">${x}</button>`).join('')}</div><div class="feedback" id="quizFeedback" aria-live="polite"></div><div class="controls"><button class="btn blue" type="button" id="quizHear">🔊 HEAR QUESTION</button><button class="btn green" type="button" id="quizNext">NEXT →</button></div></div></div>`;
+}
+function renderQuiz(){
+ const stage=$('quizStage');let question,answers,illustration;
+ if(quizMode==='distance'){
+  const near=Math.random()<.5,name=randomFrom(petsNow());
+  quizCurrent={answer:near?'THIS':'THAT',question:'Is the pet near or far?'};
+  illustration=quizImage(name,near);question=quizCurrent.question;answers=['THIS','THAT'];
+ }else if(quizMode==='pronouns'){
+  const name=randomFrom(familyNow());
+  quizCurrent={answer:MALE.has(name)?'HE':'SHE',question:'HE or SHE?'};
+  illustration=quizImage(name);question=quizCurrent.question;answers=['HE','SHE'];
+ }else{
+  const name=randomFrom(wordsNow());
+  const near=currentLevel===3&&petsNow().includes(name)?Math.random()<.5:null;
+  question=near===null?whoQuestion(name):petQuestion(near);
+  quizCurrent={answer:name,question,near};
+  illustration=quizImage(name,near===null?undefined:near);
+  const sameGroup=FAMILY.includes(name)?familyNow():petsNow();
+  answers=shuffle([name,...shuffle(sameGroup.filter(x=>x!==name)).slice(0,3)]).map(x=>x.toUpperCase());
+ }
+ stage.innerHTML=quizMarkup(illustration,question,answers);
+ stage.querySelectorAll('.answer').forEach(btn=>btn.addEventListener('click',()=>answerQuiz(btn,btn.dataset.answer)));
+ stage.querySelector('#quizHear').onclick=()=>speakLesson(quizCurrent.question);
+ stage.querySelector('#quizNext').onclick=()=>{stopLessonAudio();renderQuiz();};
+}
+window.answerQuiz=(btn,val)=>{
+ if(!quizCurrent)return;
+ const ok=val.toLowerCase()===quizCurrent.answer.toLowerCase();
+ btn.classList.add(ok?'correct':'wrong');
+ if(ok){
+  document.querySelectorAll('#quizStage .answer').forEach(x=>{x.disabled=true;x.classList.toggle('correct',x.dataset.answer.toLowerCase()===quizCurrent.answer.toLowerCase());});
+  $('quizFeedback').innerHTML='<span class="ok">✓ Correct!</span>';
+  speak('Correct');
+ }else{
+  btn.disabled=true;
+  $('quizFeedback').innerHTML='<span class="try">Try another answer!</span>';
+ }
+};
+
+/* Speak — picture first, hidden answer until teacher reveals it. */
+let speakMode='family',speakAnswer='',speakQuestion='';
+document.querySelectorAll('[data-speakmode]').forEach(b=>b.onclick=()=>{
+ if(b.hidden)return;
+ document.querySelectorAll('[data-speakmode]').forEach(x=>x.classList.remove('active'));
+ b.classList.add('active');speakMode=b.dataset.speakmode;newSpeak();
+});
+function newSpeak(){
+ stopLessonAudio();
+ let name,q,a;
+ if(speakMode==='pets'&&currentLevel===3){
+  name=randomFrom(petsNow());const near=Math.random()<.5;
+  q=petQuestion(near);a=petAnswer(name,near);
+ }else if(speakMode==='family'){
+  name=randomFrom(familyNow());
+  const lateThis=currentLevel===3&&Math.random()<.3;
+  q=lateThis?'Introduce this family member.':whoQuestion(name);
+  a=lateThis?`This is my ${name}.`:whoAnswer(name);
+ }else{
+  if(currentLevel===3&&Math.random()<.4){name=randomFrom(petsNow());const near=Math.random()<.5;q=petQuestion(near);a=petAnswer(name,near);}
+  else{name=randomFrom(familyNow());q=whoQuestion(name);a=whoAnswer(name);}
+ }
+ speakQuestion=q;speakAnswer=a;
+ $('speakImg').src=ponly(name);$('speakQ').textContent=q;
+ $('speakA').textContent=a;$('speakA').style.visibility='hidden';$('hearSpeak').disabled=true;$('hearSpeak').title='Reveal the answer first';
+}
+$('newSpeak').onclick=newSpeak;
+$('revealSpeak').onclick=()=>{$('speakA').style.visibility='visible';$('hearSpeak').disabled=false;$('hearSpeak').title='Hear the model answer';};
+$('hearSpeak').onclick=()=>speakLesson(speakAnswer);
+
+/* Finish */
+document.querySelectorAll('.check').forEach(b=>b.onclick=()=>{b.classList.toggle('done');let done=document.querySelectorAll('.check.done').length;$('finishMsg').textContent=done===6?'Excellent — all six goals checked!':'Great job!';});
+/* Slides */
+let slideI=1;const slideNames=['Title','Meet My Family','Mother','Father','Brother','Sister','Family Review','Point and Tap','Who Is It?','Mother + Father sentences','Brother + Sister sentences','Family sentence review','Ask-Swap-Move overview','How to Play','Ask-Swap-Move model','Family recall','Grandparents','Uncle + Aunt','Big Family Review','Who are they?','Meet My Pets','More Pets','My Pets review','What is this?','Two Sentences','Examples','Family or Pet?','Let’s Speak','Ask-Swap-Move pets','Family / Pet swap','My Family Photo','Model Presentation','Your Turn','Great Job'];
+function renderSlides(){let list=$('slideList'),allowed=LEVEL_SLIDES[currentLevel];if(!allowed.includes(slideI))slideI=allowed[0];list.innerHTML=`<button class="slides-close" onclick="closeSlideIndex()">✕ CLOSE SLIDE INDEX</button>`+allowed.map(n=>`<button class="${n===slideI?'active':''}" onclick="setSlide(${n})">${n}. ${slideNames[n-1]}</button>`).join('');$('slideImg').src=`assets/slides/slide_${String(slideI).padStart(2,'0')}.webp`;$('slideCount').textContent=`LEVEL ${currentLevel} • Slide ${LEVEL_SLIDES[currentLevel].indexOf(slideI)+1} / ${allowed.length} — ${slideNames[slideI-1]}`;const next=slideI===allowed[allowed.length-1]?allowed[0]:slideI+1;idlePreload(`assets/slides/slide_${String(next).padStart(2,'0')}.webp`);}
+function closeSlideIndex(){const list=$('slideList');if(!list)return;list.hidden=true;const btn=$('slideIndexToggle');if(btn)btn.setAttribute('aria-expanded','false');}
+$('slideIndexToggle').onclick=()=>{const list=$('slideList');list.hidden=!list.hidden;$('slideIndexToggle').setAttribute('aria-expanded',String(!list.hidden));};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSlideIndex();if(!document.querySelector('#slides.active'))return;if(['ArrowLeft','ArrowRight'].includes(e.key)&&!(e.target instanceof HTMLButtonElement)){e.preventDefault();e.key==='ArrowLeft'?$('slidePrev').click():$('slideNext').click();}});
+window.setSlide=n=>{if(LEVEL_SLIDES[currentLevel].includes(n)){slideI=n;renderSlides();}closeSlideIndex()};$('slidePrev').onclick=()=>{const a=LEVEL_SLIDES[currentLevel];slideI=a[(a.indexOf(slideI)-1+a.length)%a.length];renderSlides()};$('slideNext').onclick=()=>{const a=LEVEL_SLIDES[currentLevel];slideI=a[(a.indexOf(slideI)+1)%a.length];renderSlides()};$('slideHear').onclick=()=>speak(slideNames[slideI-1]);
+
+
+selectLevel(1);
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+
+<script>
+/* Pawn to Professor — Inline Lesson Protection
+   Blocks normal right-click "Save image as...", image dragging,
+   Ctrl/Cmd+S, Ctrl/Cmd+P and Ctrl/Cmd+U inside this lesson.
+   This is deterrence only; screenshots/devtools cannot be fully prevented.
+*/
+(() => {
+  'use strict';
+
+  const PROTECTED = 'img,picture,canvas,svg,video,[data-protect-media]';
+
+  function showNotice(message) {
+    let box = document.getElementById('ptp-protection-message');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'ptp-protection-message';
+      Object.assign(box.style, {
+        position:'fixed',
+        left:'50%',
+        bottom:'18px',
+        transform:'translateX(-50%)',
+        zIndex:'2147483647',
+        padding:'9px 14px',
+        borderRadius:'999px',
+        background:'rgba(8,47,37,.94)',
+        color:'#fff',
+        font:'700 12px system-ui,sans-serif',
+        boxShadow:'0 8px 25px rgba(0,0,0,.25)',
+        opacity:'0',
+        transition:'opacity .15s ease',
+        pointerEvents:'none'
+      });
+      document.body.appendChild(box);
+    }
+    box.textContent = message;
+    box.style.opacity = '1';
+    clearTimeout(box._timer);
+    box._timer = setTimeout(() => { box.style.opacity = '0'; }, 1400);
+  }
+
+  function protectMedia(root = document) {
+    try {
+      root.querySelectorAll(PROTECTED).forEach(el => {
+        el.setAttribute('draggable','false');
+        el.style.webkitUserDrag = 'none';
+        el.style.userSelect = 'none';
+        el.style.webkitUserSelect = 'none';
+        el.style.webkitTouchCallout = 'none';
+      });
+    } catch {}
+  }
+
+  document.addEventListener('contextmenu', event => {
+    if (event.target instanceof Element && event.target.closest(PROTECTED)) {
+      event.preventDefault();
+      event.stopPropagation();
+      showNotice('Saving lesson images is disabled.');
+    }
+  }, true);
+
+  document.addEventListener('dragstart', event => {
+    if (event.target instanceof Element && event.target.closest(PROTECTED)) {
+      event.preventDefault();
+      event.stopPropagation();
+      showNotice('Dragging lesson images is disabled.');
+    }
+  }, true);
+
+  document.addEventListener('keydown', event => {
+    const mod = event.ctrlKey || event.metaKey;
+    const key = String(event.key || '').toLowerCase();
+
+    if (mod && ['s','p','u'].includes(key)) {
+      event.preventDefault();
+      event.stopPropagation();
+      showNotice('Saving or printing this lesson is disabled.');
+    }
+  }, true);
+
+  protectMedia(document);
+
+  const observer = new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (node instanceof Element) protectMedia(node);
+      }
+    }
+  });
+
+  observer.observe(document.documentElement, {
+    childList:true,
+    subtree:true
+  });
+
+  globalThis.PTP_LESSON_PROTECTION = { version:'inline-1.0' };
+})();
+</script>
+
+</body></html>

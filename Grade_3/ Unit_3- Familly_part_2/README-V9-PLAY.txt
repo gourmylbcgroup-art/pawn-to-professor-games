@@ -1,0 +1,1 @@
+V9: The user-provided PLAY screenshot is integrated as a background without generating new images. Dynamic PLAY cards, Draw new card, Hear sentence, six activity directions and level filtering remain interactive. All other rooms unchanged.

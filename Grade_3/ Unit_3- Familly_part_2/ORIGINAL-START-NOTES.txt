@@ -1,0 +1,19 @@
+GRADE 3 UNIT 3 — START INTRODUCTION INTEGRATION
+
+Background: exact user-supplied family welcome picture, converted to compressed WebP. No new art generated.
+Scope: START redesigned as a character-introduction activity, all other lesson rooms preserved.
+
+START FLOW
+1) Full family welcome photo; tap Father, Mother, Brother or Sister. A speech bubble displays each welcome. Tap again or HEAR AGAIN to repeat.
+2) MEET MOTHER advances to eight picture-and-speech introduction screens: Mother, Father, Brother, Sister, Grandfather, Grandmother, Uncle, Aunt.
+3) PREVIOUS returns one member, or to family photo from Mother. NEXT advances; after Aunt, GO TO LEARN opens LEARN.
+4) Tapping the big family-member card speaks the complete greeting.
+
+AUDIO NOTE
+The original 100 prerecorded lesson audio entries are unchanged. New greeting sentences were not included in the source recording, so START uses the browser's English speech-synthesis voice (language en-US). It is dependent on installed voices/browser support, especially when opening files offline. To use your exact teacher voice, record the eight greeting lines and provide audio clips for integration.
+
+CHECKLIST
+- Existing seven HOME hotspots untouched.
+- Start background exact photo supplied in conversation.
+- All eight family picture cards reused.
+- Only START markup/style/logic and service-worker cache version updated.
