@@ -47,17 +47,17 @@ button{font:inherit;cursor:pointer} .pill{border:3px solid #fff;background:white
 </main>
 <script>
 const weekIndex=Math.max(0,Math.min(3,Number(new URLSearchParams(location.search).get("week")||0)));
-const weekNames=["Week 1: Monday & Tuesday","Week 2: Tuesday, Wednesday & Thursday","Week 3: Friday, Saturday & Sunday","Week 4: All Seven Days"];
+const weekNames=["Week 1: Monday & Tuesday","Week 2: Wednesday & Thursday","Week 3: Friday, Saturday & Sunday","Week 4: All Seven Days"];
 const days=[
-{name:'Monday',color:'#1688f5',img:'monday.webp'},
-{name:'Tuesday',color:'#f5bf19',img:'tuesday.webp'},
-{name:'Wednesday',color:'#f1343c',img:'wednesday.webp'},
-{name:'Thursday',color:'#8f43e6',img:'thursday.webp'},
-{name:'Friday',color:'#27b947',img:'friday.webp'},
-{name:'Saturday',color:'#f44f9a',img:'saturday.webp'},
-{name:'Sunday',color:'#fa821a',img:'sunday.webp'}
+{name:'Monday',color:'#1688F5',img:'monday.webp'},
+{name:'Tuesday',color:'#FFD21A',img:'tuesday.webp'},
+{name:'Wednesday',color:'#32C548',img:'wednesday.webp'},
+{name:'Thursday',color:'#FF8C22',img:'thursday.webp'},
+{name:'Friday',color:'#F1343C',img:'friday.webp'},
+{name:'Saturday',color:'#F44F9A',img:'saturday.webp'},
+{name:'Sunday',color:'#9344E8',img:'sunday.webp'}
 ];
-const allowedByWeek=[[0,1],[1,2,3],[4,5,6],[0,1,2,3,4,5,6]];
+const allowedByWeek=[[0,1],[2,3],[4,5,6],[0,1,2,3,4,5,6]];
 const allowed=allowedByWeek[weekIndex];
 const positions={
 2:[[30,45],[70,45]],
@@ -67,7 +67,7 @@ const positions={
 };
 let gameMode="timed",musicEnabled=true,secondsLeft=60,countdown=null,gameOver=false;
 const song=document.getElementById("song"),clock=document.getElementById("clock");song.volume=.42;
-let count=weekIndex===0?2:weekIndex===3?7:3,selected=[],target=null,locked=false,completed=0,seq=0, mystery=false,hideWords=false;let swimTimer=null;
+let count=weekIndex===0||weekIndex===1?2:weekIndex===3?7:3,selected=[],target=null,locked=false,completed=0,seq=0, mystery=false,hideWords=false;let swimTimer=null;
 const soup=document.getElementById('soup'),word=document.getElementById('word'),status=document.getElementById('status'),toast=document.getElementById('toast');
 function shuffle(a){return a.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(v=>v[1])}
 // Locally hosted recorded voice: reuse preloaded audio instead of browser/cloud TTS.
@@ -138,7 +138,7 @@ function round(){
   const b=document.createElement('button');b.className='character';b.style.setProperty('--c',days[i].color);
   b.style.setProperty('--rot',(Math.random()*18-9).toFixed(1)+'deg');
   b.style.left=positions[count][j][0]+'%';b.style.top=positions[count][j][1]+'%';
-  b.setAttribute('aria-label','Character '+(j+1));
+  b.setAttribute('aria-label','Character '+(j+1));b.dataset.day=days[i].name;b.dataset.color=days[i].color;
   const img=document.createElement('img');img.src=days[i].img;img.decoding='async';img.alt='';b.appendChild(img);
   b.onclick=()=>choose(i);soup.appendChild(b);
  });

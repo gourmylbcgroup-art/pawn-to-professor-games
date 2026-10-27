@@ -1,7 +1,7 @@
 Grade 2 Unit 2 - integrated illustrated lesson
 
 Open index.html in a browser. Choose a week, then select Soup Game to play the original attached game embedded in the lesson.
-Week 1: Monday, Tuesday. Week 2: Tuesday, Wednesday, Thursday. Week 3: Friday, Saturday, Sunday. Week 4: It’s + all seven days.
+Week 1: Monday, Tuesday. Week 2: Wednesday, Thursday. Week 3: Friday, Saturday, Sunday. Week 4: It’s + all seven days.
 
 The 13 original screenshot cards have been installed in assets/words and assets/sentences. The source archive does not contain a day-only Tuesday card, so it has been derived from the supplied It’s Tuesday card by replacing the caption.
 
