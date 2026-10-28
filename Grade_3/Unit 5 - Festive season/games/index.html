@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0b2a61" />
+<title>New Year Compare — Touch Game</title>
+<link rel="stylesheet" href="styles.css?v=5" />
+</head>
+<body>
+<main id="gameApp" class="app" aria-live="polite">
+  <section id="startScreen" class="screen start-screen">
+    <div class="start-card">
+      <h1>New Year Compare</h1>
+      <p>Touch the correct items and listen to the sentence.</p>
+      <div class="scene-buttons" role="group" aria-label="Choose a scene">
+        <button class="scene-select food" data-scene="0">FOOD</button>
+        <button class="scene-select objects" data-scene="1">OBJECTS</button>
+        <button class="scene-select celebration" data-scene="2">CELEBRATION</button>
+      </div>
+      <button id="startBtn" class="primary-btn">START</button>
+    </div>
+  </section>
+
+  <section id="gameScreen" class="screen game-screen hidden">
+    <header class="hud">
+      <div class="category-tabs" role="tablist" aria-label="Game scenes">
+        <button class="tab food" data-scene="0">FOOD</button>
+        <button class="tab objects" data-scene="1">OBJECTS</button>
+        <button class="tab celebration" data-scene="2">CELEBRATION</button>
+      </div>
+
+      <div class="prompt-wrap">
+        <button id="repeatBtn" class="icon-btn" aria-label="Repeat instruction">🔊</button>
+        <div>
+          <div id="prompt" class="prompt">Find a food. Touch one.</div>
+          <div id="feedback" class="feedback" aria-live="assertive"></div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div id="progressText" class="progress-text">0 / 8</div>
+        <div class="progress-track" aria-hidden="true">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+      </div>
+    </header>
+
+    <div id="sceneFrame" class="scene-frame" aria-label="Touch game scene">
+      <div id="sceneCanvas" class="scene-canvas">
+        <img id="sceneImage" class="scene-image" alt="New Year comparison scene" draggable="false" />
+        <div id="hotspotLayer" class="hotspot-layer"></div>
+      </div>
+      <div id="sceneComplete" class="scene-complete hidden" role="dialog" aria-modal="true">
+        <div class="complete-card">
+          <div class="complete-stars">★ ★ ★</div>
+          <h2 id="completeTitle">Scene complete!</h2>
+          <p id="completeMessage">Great job!</p>
+          <button id="nextSceneBtn" class="primary-btn">NEXT SCENE</button>
+          <button id="replayBtn" class="secondary-btn">PLAY AGAIN</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer-controls">
+      <button id="backBtn" class="secondary-btn">← BACK</button>
+      <button id="menuBtn" class="secondary-btn">MENU</button>
+      <button id="soundBtn" class="secondary-btn" aria-pressed="true">SOUND: ON</button>
+      <button id="fullscreenBtn" class="secondary-btn">FULL SCREEN</button>
+      <button id="nextBtn" class="primary-btn" disabled>NEXT SCENE →</button>
+    </footer>
+  </section>
+</main>
+<script src="game.js?v=5"></script>
+</body>
+</html>
