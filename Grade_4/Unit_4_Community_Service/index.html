@@ -511,16 +511,7 @@ body.spatialGameMode .topTools,body.spatialGameMode .weekSwitch,body.spatialGame
 #gameChooser .homeSpot{left:41.3%;top:80.1%;width:17.5%;height:11.6%;border-radius:25%;}
 #gameChooser .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;}
 @media(prefers-reduced-motion:reduce){#gameChooser .gameChooserHotspot{transition:none}}
-</style>
-<style id="ptp-image-protection-style">
-/* Browser-level saving deterrents, not asset-level access control. */
-img:not([draggable="true"]), picture, .slide-frame img { -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-user-drag:none; }
-@media print { html,body { visibility:hidden!important; } }
-#ptp-copyright-mark { position:fixed;bottom:8px;right:12px;z-index:2147483000;pointer-events:none;font:700 clamp(11px,1.1vw,16px)/1.3 Arial,sans-serif;color:#123a65;opacity:.30;text-shadow:0 1px 2px white,0 0 3px white;user-select:none; }
-#ptp-save-warning {position:fixed;left:50%;bottom:45px;z-index:2147483001;transform:translateX(-50%);background:#172e50ed;color:white;font:600 14px/1.4 Arial,sans-serif;padding:9px 16px;border-radius:12px;pointer-events:none;opacity:0;transition:opacity .15s ease;}
-#ptp-save-warning.visible {opacity:1}
-</style>
-</head><body class="homeMode"><div id="app">
+</style></head><body class="homeMode"><div id="app">
 <div class="topTools"><button data-go="howto">HOW TO PLAY</button><button data-go="presentation">PRESENTATION</button><button data-go="flashcards">FLASHCARDS</button><button id="soundBtn">🔊</button><button id="fullBtn">⛶</button></div>
 <div class="weekSwitch"><button id="w1" class="active">WEEK 1</button><button id="w2">WEEK 2</button><button id="w3">WEEK 3</button></div><div class="weekBanner" id="weekBanner">WEEK 1 — IN • ON</div>
 <section id="home" class="screen active homeIndexScreen">
@@ -1121,21 +1112,4 @@ $('gameReturn').addEventListener('click',gameMenu);
 $('gameHome').addEventListener('click',()=>show('home'));
 window.addEventListener('load',()=>{updateWeek();renderHow();renderPlaySets();resetPractice();renderPres();renderViewer();$('finishIntro').textContent='';$('gameDesc').textContent='';});
 </script><!-- V17 PEDAGOGY: guided learn -> choice practice -> reduced-help play -> speak frame -> minimal finish -> no-help final game -->
-
-<div id="ptp-copyright-mark" aria-hidden="true">© pawntoprofessor.com</div>
-<div id="ptp-save-warning" aria-live="polite">Saving lesson images is disabled.</div>
-<script id="ptp-image-protection-script">
-(()=>{'use strict';
- let hideHandle;
- function warning(){const n=document.getElementById('ptp-save-warning');if(!n)return;n.classList.add('visible');clearTimeout(hideHandle);hideHandle=setTimeout(()=>n.classList.remove('visible'),1750)}
- function isMedia(t){return Boolean(t?.closest?.('img,picture,svg,canvas,video,.slide-frame,.flashcard,.viewer,.card-image'))}
- function isDragActivity(t){return Boolean(t?.closest?.('[draggable="true"],.draggable,.drag-item'))}
- document.addEventListener('contextmenu',e=>{if(e.target?.closest?.('input,textarea,[contenteditable="true"]'))return;e.preventDefault();if(isMedia(e.target))warning()},true);
- document.addEventListener('dragstart',e=>{if(isDragActivity(e.target))return;if(e.target?.tagName==='IMG'||e.target?.tagName==='PICTURE'){e.preventDefault();warning()}},true);
- document.addEventListener('keydown',e=>{const k=e.key.toLowerCase();const shortcut=(e.ctrlKey||e.metaKey)&&['s','p','u'].includes(k);if(shortcut){e.preventDefault();e.stopImmediatePropagation();warning()}},true);
- function disableNativeImageSaving(root){if(root.nodeType!==1&&root.nodeType!==9)return;const nodes=root.matches?.('img')?[root]:root.querySelectorAll('img');for(const im of nodes){if(!isDragActivity(im))im.draggable=false;im.setAttribute('oncontextmenu','return false');}}
- disableNativeImageSaving(document);
- if(window.MutationObserver){new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes)disableNativeImageSaving(n)}).observe(document.documentElement,{childList:true,subtree:true});}
-})();
-</script>
 </body></html>
