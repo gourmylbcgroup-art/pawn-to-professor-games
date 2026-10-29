@@ -8,7 +8,7 @@ main{max-width:1040px;margin:auto;padding:15px 14px 32px;text-align:center}h1{fo
 button{font:inherit;cursor:pointer} .pill{border:3px solid #fff;background:white;color:#3b4260;padding:9px 17px;border-radius:30px;font-weight:700;font-size:clamp(15px,2vw,20px)}
 .pill.active{background:#ffad55;color:#4b2312;border-color:#ffcc91}
 .prompt{background:#fff;color:#24294b;border-radius:25px;padding:10px 18px;display:inline-flex;gap:12px;align-items:center;font-size:clamp(21px,3.4vw,38px);font-weight:700;box-shadow:0 7px 0 #e6b58e}
-.word{border-radius:14px;padding:3px 13px;color:#18202c;background:#fff;text-shadow:none}
+.word{border:4px solid transparent;border-radius:14px;padding:3px 13px;color:#18202c;background:#fff;text-shadow:none}
 .speak{border:0;background:#ffcb4d;border-radius:50%;font-size:27px;width:52px;height:52px}
 .soup{position:relative;width:min(90vw,690px);height:min(70vw,520px);min-height:340px;margin:18px auto 12px;border-radius:50%;background:radial-gradient(ellipse at 40% 32%,#ffde9e,#e8a859 66%,#b97138 98%);border:clamp(14px,3vw,25px) solid #fff;box-shadow:0 18px 0 #bcc1c8,0 28px 30px #0006,inset 0 0 25px #9b5e2d}
 .soup:before{content:'🥕     🥬';position:absolute;inset:20% 5%;font-size:38px;opacity:.3;pointer-events:none;letter-spacing:30px}
@@ -51,11 +51,11 @@ const weekNames=["Week 1: Monday & Tuesday","Week 2: Wednesday & Thursday","Week
 const days=[
 {name:'Monday',color:'#1688F5',img:'monday.webp'},
 {name:'Tuesday',color:'#FFD21A',img:'tuesday.webp'},
-{name:'Wednesday',color:'#32C548',img:'wednesday.webp'},
-{name:'Thursday',color:'#FF8C22',img:'thursday.webp'},
-{name:'Friday',color:'#F1343C',img:'friday.webp'},
+{name:'Wednesday',color:'#F1343C',img:'wednesday.webp'},
+{name:'Thursday',color:'#9344E8',img:'thursday.webp'},
+{name:'Friday',color:'#32C548',img:'friday.webp'},
 {name:'Saturday',color:'#F44F9A',img:'saturday.webp'},
-{name:'Sunday',color:'#9344E8',img:'sunday.webp'}
+{name:'Sunday',color:'#FF8C22',img:'sunday.webp'}
 ];
 const allowedByWeek=[[0,1],[2,3],[4,5,6],[0,1,2,3,4,5,6]];
 const allowed=allowedByWeek[weekIndex];
@@ -111,7 +111,7 @@ function say(s){
 
 function updateWords(){
  word.textContent=(mystery||hideWords)?'❓':(weekIndex===3?"It's "+days[target].name+'!':days[target].name);
- word.style.background='#fff';word.style.color='#18202c';
+ word.style.background='#fff';word.style.color='#18202c';word.style.borderColor=days[target].color;
  document.getElementById('wordsToggle').textContent=(hideWords?'👁 Show Words':'🙈 Hide Words');
 }
 function announce(){say(weekIndex===3?"Find: It's "+days[target].name+'!':'Find '+days[target].name+'!')}
@@ -149,7 +149,7 @@ function choose(i){
  if(locked||gameOver)return;
  if(i!==target){status.textContent='Try again! 😊';say('Oops! Try again!');return}
  locked=true;if(swimTimer)clearInterval(swimTimer);completed++;try{localStorage.setItem('magic_soup_week_'+weekIndex,JSON.stringify({caught:completed,updated:new Date().toISOString()}));}catch(e){}status.textContent='⭐ Great job! '+completed+' correct!';
- toast.textContent='🌟 '+(weekIndex===3?"It's ":'')+days[i].name+'! 🌟';toast.classList.add('show');
+ toast.textContent='🌟 '+(weekIndex===3?"It's ":'')+days[i].name+'! 🌟';toast.style.borderColor=days[i].color;toast.style.color=i===1?'#6D5300':days[i].color;toast.classList.add('show');
  say(weekIndex===3?"It's "+days[i].name+'!':days[i].name);
  const token=++seq;setTimeout(()=>{if(token!==seq)return;toast.classList.remove('show');round()},1900);
 }

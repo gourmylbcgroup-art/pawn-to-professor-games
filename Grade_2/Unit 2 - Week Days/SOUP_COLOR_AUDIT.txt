@@ -1,56 +1,29 @@
-MAGIC DAYS SOUP — CORRECTION AND AUDIT REPORT
-Date: 27 October 2026
+MAGIC DAYS SOUP — COLOR FIX / AUDIT
+Date: 29 October 2026
 
-OFFICIAL DAY-TO-COLOR MAPPING (from the supplied screenshot)
-  Monday     BLUE    #1688F5
-  Tuesday    YELLOW  #FFD21A
-  Wednesday  GREEN   #32C548
-  Thursday   ORANGE  #FF8C22
-  Friday     RED     #F1343C
-  Saturday   PINK    #F44F9A
-  Sunday     PURPLE  #9344E8
+OFFICIAL DAY → COLOR
+Monday     BLUE     #1688F5
+Tuesday    YELLOW   #FFD21A
+Wednesday  RED      #F1343C
+Thursday   PURPLE   #9344E8
+Friday     GREEN    #32C548
+Saturday   PINK     #F44F9A
+Sunday     ORANGE   #FF8C22
 
-WHAT WAS WRONG AND WHAT WAS FIXED
-  Previous Wednesday character was red; now green.
-  Previous Thursday character was purple; now orange.
-  Previous Friday character was green; now red.
-  Previous Sunday character was orange; now purple.
-  Monday, Tuesday and Saturday were already the correct character colors.
-  Character-frame colors now correspond to the character artworks.
-  Final picture-challenge illustrations corrected to those same colors.
-  Interactive word and It's ... sentence cards corrected accordingly.
-  Previous Tuesday word-card caption contained duplicate lettering; cleaned up.
-  Week 2 mismatch fixed (main lesson & soup: Wednesday + Thursday).
+IMPLEMENTED
+- Corrected Wednesday, Thursday, Friday and Sunday in the Soup Game JavaScript.
+- Matched moving Soup Game images and character borders to the selected day.
+- Added a same-color outline around the spoken/printed day prompt.
+- Matched final picture challenge illustrations to their spoken day.
+- Corrected word and sentence flashcards (including visible day labels).
+- Corrected ancillary sentence PNG card images.
+- Reused existing high-resolution character artwork from the supplied pack,
+  preserving pupils, accessories, backgrounds, and original visual style.
+- Removed the old donor 'FRIDAY' footer from the new Wednesday soup picture.
+- Monday, Tuesday and Saturday remain unchanged.
+- All 50 original presentation slides remain unchanged, as they already show
+  the requested color sequence.
+- Voice recordings, music, timing, all four week filters and scoring logic unchanged.
 
-WEEK FILTERS
-  Week 1 = Monday + Tuesday (2); Week 2 = Wednesday + Thursday (2).
-  Week 3 = Friday + Saturday + Sunday (3).
-  Week 4 = All 7; Easy (3), Medium (5), Challenge (7), Mystery (7).
-
-TESTS COMPLETED
-  PASS: Static mappings for seven days and exact border colors.
-  PASS: Character illustration and challenge image file presence.
-  PASS: All 7 day, 'find day', and 'It's day' voice file presence.
-  PASS: All seven interactive day word / sentence card files present.
-  PASS: Browser JavaScript interaction checks for Weeks 1, 2, 3 and 4.
-  PASS: Wrong choice is not scored; correct choice scores with feedback.
-  PASS: Word hide/show, Listen/Repeat, Mix, music switch, Home/restart.
-  PASS: One-minute / continuous mode switching.
-  PASS: Week 4 modes (3, 5, 7, and Mystery), hidden Mystery prompt.
-  PASS: Main lesson Week 2 selection, soup iframe week, picture-challenge.
-  PASS: No uncaught JavaScript errors during isolated interaction checks.
-  PASS: Node script syntax checks, images decoded, ZIP integrity checked.
-
-SCOPE / TEST LIMITATIONS
-  Original presentation slides (assets/presentation/slide-01..50.webp)
-  remain unchanged. Some original slide artwork still uses the old
-  day-character palette. This fix focuses on Soup Game and its interactive
-  lesson/challenge image assets, not the separate 50-slide presentation.
-
-  Browser interaction tests ran with the real HTML/JS in isolated pages
-  (the test environment blocks local URL navigation). Audio file existence
-  was confirmed, but live audio playback, actual fullscreen behavior,
-  hosting performance and 100-user concurrency were not load-tested.
-
-  Keep all files together when publishing the site. To refresh an old
-  cached version, reupload the full package and hard-refresh the browser.
+VALIDATION
+See COLOR_FIX_TEST_REPORT.txt for the verified static, image and browser checks.

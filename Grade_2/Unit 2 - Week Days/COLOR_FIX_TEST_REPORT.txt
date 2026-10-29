@@ -1,0 +1,62 @@
+MAGIC DAYS SOUP — BUILD, FIX AND AUDIT REPORT
+29 October 2026
+
+STATUS: PASS — 76 / 76 automated checks.
+
+OFFICIAL DAY COLORS:
+Monday     Blue    #1688F5
+Tuesday    Yellow  #FFD21A
+Wednesday  Red     #F1343C
+Thursday   Purple  #9344E8
+Friday     Green   #32C548
+Saturday   Pink    #F44F9A
+Sunday     Orange  #FF8C22
+
+FIXES APPLIED
+- Corrected four outdated day-color entries in original-soup/index.html.
+- Updated the four Soup Game character illustrations and colored frames.
+- Added the matching day-colored border around each word prompt.
+- Matching-day success toast color for positive feedback.
+- Replaced four Final Challenge character pictures.
+- Corrected four word flashcards and four sentence flashcards,
+  including the printed weekday titles.
+- Corrected four companion PNG cards for consistency.
+- Art was reused from the original provided game and slides,
+  without color artifacts from pixel-by-pixel recoloring.
+- All original week filters, levels and gameplay modes preserved.
+
+AUDIT RESULTS (76 checks)
+PASS: All 7 source-code weekday hex colors.
+PASS: Every color used on the corresponding visible character frame.
+PASS: All four teaching weeks with expected day counts (2, 2, 3, 7).
+PASS: The day prompt uses the target day color.
+PASS: Correct and incorrect answer scoring on all 4 weeks.
+PASS: One-minute mode, continuous mode, hide words, music toggle.
+PASS: Week 4 Easy (3), Medium (5), Challenge (7), Mystery (7).
+PASS: Flashcards, picture challenges and Soup iframe week references.
+PASS: Touchscreen start, character visibility and image loading.
+PASS: No uncaught JavaScript exceptions in isolated browser tests.
+PASS: All 35 weekday image assets present.
+PASS: All 85 images (35 images + 50 slides) decode.
+PASS: All 50 original slides byte-for-byte identical.
+PASS: All 54 original MP3 tracks byte-for-byte identical.
+PASS: Browser JavaScript syntax check.
+
+TEST SCOPE / LIMITATIONS
+- Real HTML/CSS/JS was exercised in a Chromium browser using
+  an isolated local document because automated URL navigation is
+  restricted in this environment. The hosted Soup iframe was
+  checked for correct URL/week reference, not navigated end-to-end.
+- The presence and byte-level integrity of original audio tracks
+  were checked; live audio synchronization, actual sound output,
+  network performance and 100-user concurrency were not measured.
+- Images and flashcards were visually inspected in a contact sheet.
+- All original 50 presentation slides were intentionally unchanged.
+
+INSTALLATION
+- Upload/replace the complete folder contents on your web host.
+- Keep index.html, script.js, style.css, original-soup/ and assets/
+  together; do not upload index.html alone.
+- If your browser still shows old colors, hard-refresh and clear
+  cached files, or deploy with a new versioned folder/path.
+
